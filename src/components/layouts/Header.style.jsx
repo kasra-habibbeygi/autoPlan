@@ -33,7 +33,9 @@ export const HeaderStyle = styled.div(props => ({
         li:{
             listStyleType:'none',
             fontSize:'1.1rem',
-            color:props.theme.colors.textColor
+            a:{
+                color:props.theme.colors.textColor,
+            }
         }
     },
     '& .login':{

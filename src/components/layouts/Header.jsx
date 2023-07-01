@@ -28,10 +28,13 @@ const Header = () => {
                 </li>
               
             </ul>
-            <div className='login'>
-                <img src={loginIcon} alt='loginIcon'/>
-                <p>ورود به سیستم</p>
-            </div>
+            <Link to='/'>
+                <div className='login'>
+                    <img src={loginIcon} alt='loginIcon'/>
+                    <p>ورود به سیستم</p>
+                </div>
+            </Link>
+       
         </HeaderStyle>
     );
 };
