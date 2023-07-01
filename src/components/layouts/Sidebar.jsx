@@ -1,4 +1,6 @@
 import React from 'react';
+
+//assets
 import { SidebarStyle } from './Sidebar.style';
 
 const SideBar = () => {

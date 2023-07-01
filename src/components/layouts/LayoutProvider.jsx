@@ -1,6 +1,6 @@
 import React from 'react';
 
-//styles
+//assets
 import { LayoutProdiverStyle } from './LayoutProdiver.style';
 
 //components
