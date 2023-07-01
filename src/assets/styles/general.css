@@ -32,6 +32,11 @@ html {
     src: url('../fonts//yekanBakhFamily/YekanBakh-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'bold';
+    src: url('../fonts//yekanBakhFamily/YekanBakh-Bold.ttf');
+}
+
 table {
     border-collapse: collapse;
     font-family: 'main' !important;

@@ -7,9 +7,11 @@ export const getDesignTokens = mode => ({
         mainColor:'#174787',
         secondery:'#5F7D88',
         darkBlue:'#1C274C',
+        blue:'#1B74E4',
         black: '#0F0F10',
         gray:'#F0EFEF',
-        white: '#fff'
+        white: '#fff',
+        textColor: '#5A5A5A',
     },
     boxShadow: '0px 8px 24px rgba(112, 144, 176, 0.08)',
     garadient: 'linear-gradient(237.23deg, #0920EE -27.12%, #FF0800 129.48%)'

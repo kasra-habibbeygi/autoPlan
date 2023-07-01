@@ -21,8 +21,26 @@ export const HeaderStyle = styled.div(props => ({
         },
 
         h2:{
-            fontSize:'1.3rem'
+            fontSize:'1.3rem',
+            fontFamily:'bold',
+            color:props.theme.colors.mainColor
         }
+    },
+    '& .menuList':{
+        display:'flex',
+        alignItems:'center',
+        gap:'68px',
+        li:{
+            listStyleType:'none',
+            fontSize:'1.1rem',
+            color:props.theme.colors.textColor
+        }
+    },
+    '& .login':{
+        display:'flex',
+        alignItems:'center',
+        gap:'7px',
+        color:props.theme.colors.blue
     }
   
 }));
