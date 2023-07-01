@@ -3,14 +3,19 @@ import { getDesignTokens } from '../configs/theme';
 
 // Assets
 import '../assets/styles/general.css';
+import { Route, Routes } from 'react-router-dom';
 
+//components
+import LayoutProvider from './layouts/LayoutProvider'
 
 function App() {
   const themeConfig = createTheme(getDesignTokens('light'));
 
   return (
     <ThemeProvider theme={themeConfig}>
-
+        <Routes>
+           <Route path='/' element={<LayoutProvider />}/>
+        </Routes>
     </ThemeProvider>
   );
 }

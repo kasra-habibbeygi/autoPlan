@@ -2,25 +2,13 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-}
-
-table {
-    border-collapse: collapse;
-    font-family: 'main' !important;
-    text-align: center;
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent
-}
-
-th , td {
-    font-family: 'main' !important;
+    direction: rtl !important;
 }
 
 body,
 html {
     font-family: 'main'  !important;
-    background-color: #F3F4F5;
+    background-color: #F7F7F7;
 }
 
 body {
@@ -36,6 +24,25 @@ html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent
+}
+
+
+@font-face {
+    font-family: 'main';
+    src: url('../fonts//yekanBakhFamily/YekanBakh-Regular.ttf');
+}
+
+table {
+    border-collapse: collapse;
+    font-family: 'main' !important;
+    text-align: center;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent
+}
+
+th , td {
+    font-family: 'main' !important;
 }
 
 hr {
