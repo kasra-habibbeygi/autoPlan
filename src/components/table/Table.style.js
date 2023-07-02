@@ -13,7 +13,8 @@ export const TableComponent = styled.table(props => ({
     },
 
     '& td, th': {
-        padding: '23px'
+        padding: '23px',
+        fontSize: '20px'
     },
 
     '& td:first-child , th:first-child': {

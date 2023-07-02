@@ -11,7 +11,8 @@ export const PagesHeaderStyle = styled.div(props => ({
         padding: '23px',
         fontSize: '15px',
         flexGrow: 1,
-        textAlign: 'center'
+        textAlign: 'center',
+        whiteSpace: 'nowrap'
     },
 
     '& .addButton': {

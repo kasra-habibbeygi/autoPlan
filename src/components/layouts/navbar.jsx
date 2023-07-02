@@ -29,12 +29,10 @@ const Navbar = () => {
                     <NavLink to='/some'>تماس با ما</NavLink>
                 </li>
             </ul>
-            <Link to='/'>
-                <Button className='login'>
-                    <img src={loginIcon} alt='loginIcon' />
-                    <p>ورود به سیستم</p>
-                </Button>
-            </Link>
+            <Button className='login'>
+                <img src={loginIcon} alt='loginIcon' />
+                <p>ورود به سیستم</p>
+            </Button>
         </NavbarStyle>
     );
 };

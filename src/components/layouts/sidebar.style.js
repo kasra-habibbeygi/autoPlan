@@ -9,7 +9,8 @@ export const SidebarStyle = styled.div(props => ({
 
     '& .item': {
         display: 'flex',
-        gap: '10px'
+        gap: '10px',
+        whiteSpace: 'nowrap'
     },
 
     li: {

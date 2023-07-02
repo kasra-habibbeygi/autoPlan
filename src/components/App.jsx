@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 //components
 import LayoutProvider from './layouts/layout-provider';
 import Qualification from '../pages/qualification/qualification';
+import Deficiency from '../pages/deficiency/deficiency';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -18,6 +19,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<LayoutProvider />}>
                     <Route path='qualification' element={<Qualification />} />
+                    <Route path='deficiency' element={<Deficiency />} />
                 </Route>
             </Routes>
         </ThemeProvider>

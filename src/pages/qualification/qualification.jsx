@@ -81,9 +81,14 @@ const Qualification = () => {
             gas: 23
         }
     ];
+
+    const openModal = () => {
+        //codes
+    };
+
     return (
         <>
-            <PagesHeader />
+            <PagesHeader buttonTitle='ثبت ظرفیت سنجی جدید' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} />
         </>
     );

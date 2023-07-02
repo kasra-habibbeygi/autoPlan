@@ -36,7 +36,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/deficiency'>
                         <div className='item'>
                             <img src={Box} alt='' />
                             <p>کسری قطعات انبار</p>

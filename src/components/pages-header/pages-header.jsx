@@ -7,14 +7,14 @@ import plus from './../../assets/images/pagesHeader/plus.svg';
 import { PagesHeaderStyle } from './pages-header.style';
 import Button from '../form-groups/button';
 
-const PagesHeader = () => {
+const PagesHeader = ({ buttonTitle, onButtonClick }) => {
     return (
         <PagesHeaderStyle>
             <p>ادمین اصلی ، نیاز شکوری ، خوش آمدید !</p>
             <p>ساعت کاری مجموعه : ۸ ساعت</p>
             <p>کد نمایندگی : ۱۸۴۷۴۶</p>
-            <Button className='addButton'>
-                <p>ثبت ظرفیت سنجی جدید</p>
+            <Button className='addButton' onClick={onButtonClick}>
+                <p>{buttonTitle}</p>
                 <img src={plus} alt='' />
             </Button>
         </PagesHeaderStyle>
