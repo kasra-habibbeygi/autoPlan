@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //Assets
 
@@ -7,6 +7,10 @@ import Table from '../../components/table/Table';
 import PagesHeader from '../../components/pages-header/pages-header';
 
 const Deficiency = () => {
+    const [pageStatus, setPageStatus] = useState({
+        total: 1,
+        current: 1
+    });
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
@@ -66,7 +70,7 @@ const Deficiency = () => {
     return (
         <>
             <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={openModal} />
-            <Table columns={columns} rows={rows} />
+            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
         </>
     );
 };

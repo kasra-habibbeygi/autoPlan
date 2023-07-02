@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //Assets
 
@@ -8,6 +8,11 @@ import PagesHeader from '../../components/pages-header/pages-header';
 import Button from '../../components/form-groups/button';
 
 const Qualification = () => {
+    const [pageStatus, setPageStatus] = useState({
+        total: 1,
+        current: 1
+    });
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
@@ -89,7 +94,7 @@ const Qualification = () => {
     return (
         <>
             <PagesHeader buttonTitle='ثبت ظرفیت سنجی جدید' onButtonClick={openModal} />
-            <Table columns={columns} rows={rows} />
+            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
         </>
     );
 };
