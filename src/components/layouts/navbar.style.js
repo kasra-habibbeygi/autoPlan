@@ -33,7 +33,14 @@ export const NavbarStyle = styled.nav(props => ({
             listStyleType: 'none',
             fontSize: '1.1rem',
             a: {
-                color: props.theme.colors.textColor
+                color: props.theme.colors.textColor,
+
+                '&:hover': {
+                    color: props.theme.colors.mainColor
+                }
+            },
+            '& .active': {
+                color: props.theme.colors.mainColor
             }
         }
     },

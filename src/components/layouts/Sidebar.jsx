@@ -5,14 +5,15 @@ import { NavLink } from 'react-router-dom';
 import { SidebarStyle } from './sidebar.style';
 import Bill from './../../assets/images/sideBar/Bill.svg';
 import Box from './../../assets/images/sideBar/Box.svg';
-import Document from './../../assets/images/sideBar/Document Add.svg';
-import Group from './../../assets/images/sideBar/Group 2.svg';
-import Home from './../../assets/images/sideBar/Home Smile.svg';
+import Document from './../../assets/images/sideBar/DocumentAdd.svg';
+import Group from './../../assets/images/sideBar/Group2.svg';
+import Home from './../../assets/images/sideBar/HomeSmile.svg';
 import Notes from './../../assets/images/sideBar/Notes.svg';
-import User from './../../assets/images/sideBar/User Check.svg';
-import UserId from './../../assets/images/sideBar/User Id.svg';
-import Widget from './../../assets/images/sideBar/Widget Add.svg';
+import User from './../../assets/images/sideBar/UserCheck.svg';
+import UserId from './../../assets/images/sideBar/UserId.svg';
+import Widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import Exit from './../../assets/images/sideBar/Exit.svg';
+import Button from './../form-groups/button';
 
 const SideBar = () => {
     return (
@@ -93,10 +94,10 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <button className='item'>
+                <Button className='item'>
                     <img src={Exit} alt='' />
                     <p>خروج</p>
-                </button>
+                </Button>
             </div>
         </SidebarStyle>
     );

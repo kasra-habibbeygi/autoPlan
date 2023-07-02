@@ -8,7 +8,7 @@ import { ButtonField } from './button.style';
 const Button = ({
     children,
     loaderStatus = false,
-    borderType = 'noraml_border',
+    borderType = 'normal_border',
     type = 'normal',
     onClick,
     className = '',

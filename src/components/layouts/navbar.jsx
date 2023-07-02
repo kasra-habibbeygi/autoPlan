@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 //Assets
 import { NavbarStyle } from './navbar.style';
 import logo from '../../assets/images/header/logo.svg';
 import loginIcon from '../../assets/images/header/loginIcon.svg';
+import Button from './../form-groups/button';
 
 const Navbar = () => {
     return (
@@ -15,23 +16,24 @@ const Navbar = () => {
             </Link>
             <ul className='menuList'>
                 <li>
-                    <Link>صفحه اصلی</Link>
+                    <NavLink to='/'>صفحه اصلی</NavLink>
+                </li>
+
+                <li>
+                    <NavLink to='/some'>خدمات</NavLink>
                 </li>
                 <li>
-                    <Link>خدمات</Link>
+                    <NavLink to='/some'>درباره ما</NavLink>
                 </li>
                 <li>
-                    <Link>درباره ما</Link>
-                </li>
-                <li>
-                    <Link>تماس با ما</Link>
+                    <NavLink to='/some'>تماس با ما</NavLink>
                 </li>
             </ul>
             <Link to='/'>
-                <div className='login'>
+                <Button className='login'>
                     <img src={loginIcon} alt='loginIcon' />
                     <p>ورود به سیستم</p>
-                </div>
+                </Button>
             </Link>
         </NavbarStyle>
     );
