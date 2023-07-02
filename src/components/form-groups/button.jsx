@@ -10,12 +10,12 @@ const Button = ({
     loaderStatus = false,
     borderType = 'noraml_border',
     type = 'normal',
-    handler,
+    onClick,
     className = '',
     disabled = false
 }) => {
     return (
-        <ButtonField className={`${borderType} ${type} ${className}`} onClick={() => handler && handler()} disabled={disabled}>
+        <ButtonField className={`${borderType} ${type} ${className}`} onClick={() => onClick && onClick()} disabled={disabled}>
             <PulseLoader loading={loaderStatus} color='#ffffff' size={10} />
             {!loaderStatus && children}
         </ButtonField>
