@@ -19,7 +19,7 @@ export const SidebarStyle = styled.div(props => ({
             padding: '24px 24px 21px 24px',
             borderRadius: '14px',
             color: props.theme.colors.black,
-            transition: 'all 0.2s',
+            transition: 'all 0.1s',
 
             '&:hover': {
                 backgroundColor: props.theme.colors.gray

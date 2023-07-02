@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 
 export const ButtonField = styled(Button)({
+    padding: 0,
+    margin: 0
     // display: 'flex',
     // alignItems: 'center',
     // gap: '10px',

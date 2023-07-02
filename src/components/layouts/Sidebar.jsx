@@ -28,7 +28,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/qualification'>
                         <div className='item'>
                             <img src={User} alt='' />
                             <p>ظرفیت سنجی</p>
