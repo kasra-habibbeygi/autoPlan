@@ -1,24 +1,26 @@
 import React from 'react';
 
 //assets
-import { LayoutProdiverStyle } from './LayoutProdiver.style';
+import { LayoutProviderStyle } from './LayoutProvider.style';
 
 //components
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
+import SideBar from './Sidebar';
 
 const LayoutProvider = () => {
-    return (
-        <>
-            <Header/>
-            <LayoutProdiverStyle>
-                <div className='content'>
-                    hi
-                    <Outlet />
-                </div>
-            </LayoutProdiverStyle>
-        </>
-    );
+   return (
+      <>
+         <Header />
+         <LayoutProviderStyle>
+            <SideBar />
+            <div className="content">
+               hi
+               <Outlet />
+            </div>
+         </LayoutProviderStyle>
+      </>
+   );
 };
 
 export default LayoutProvider;
