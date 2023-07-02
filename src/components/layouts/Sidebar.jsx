@@ -15,91 +15,91 @@ import Widget from './../../assets/images/sideBar/Widget Add.svg';
 import Exit from './../../assets/images/sideBar/Exit.svg';
 
 const SideBar = () => {
-   return (
-      <SidebarStyle>
-         <ul>
-            <li>
-               <NavLink to="/">
-                  <div className="item">
-                     <img src={Home} alt="" />
-                     <p>صفحه اصلی</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={User} alt="" />
-                     <p>ظرفیت سنجی</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Box} alt="" />
-                     <p>کسری قطعات انبار</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Widget} alt="" />
-                     <p>برنامه ریزی تعمیرات</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Bill} alt="" />
-                     <p>علت انحرافات</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Notes} alt="" />
-                     <p>گزارش گیری</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Document} alt="" />
-                     <p>اقدام اصلاحی</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={UserId} alt="" />
-                     <p>دسترسی پنل</p>
-                  </div>
-               </NavLink>
-            </li>
-            <li>
-               <NavLink to="/some">
-                  <div className="item">
-                     <img src={Group} alt="" />
-                     <p>تنظیمات سایت</p>
-                  </div>
-               </NavLink>
-            </li>
-         </ul>
+    return (
+        <SidebarStyle>
+            <ul>
+                <li>
+                    <NavLink to='/'>
+                        <div className='item'>
+                            <img src={Home} alt='' />
+                            <p>صفحه اصلی</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={User} alt='' />
+                            <p>ظرفیت سنجی</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Box} alt='' />
+                            <p>کسری قطعات انبار</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Widget} alt='' />
+                            <p>برنامه ریزی تعمیرات</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Bill} alt='' />
+                            <p>علت انحرافات</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Notes} alt='' />
+                            <p>گزارش گیری</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Document} alt='' />
+                            <p>اقدام اصلاحی</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={UserId} alt='' />
+                            <p>دسترسی پنل</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/some'>
+                        <div className='item'>
+                            <img src={Group} alt='' />
+                            <p>تنظیمات سایت</p>
+                        </div>
+                    </NavLink>
+                </li>
+            </ul>
 
-         <div className="logout">
-            <button className="item">
-               <img src={Exit} alt="" />
-               <p>خروج</p>
-            </button>
-         </div>
-      </SidebarStyle>
-   );
+            <div className='logout'>
+                <button className='item'>
+                    <img src={Exit} alt='' />
+                    <p>خروج</p>
+                </button>
+            </div>
+        </SidebarStyle>
+    );
 };
 
 export default SideBar;

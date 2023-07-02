@@ -10,7 +10,7 @@ const Navbar = () => {
     return (
         <NavbarStyle>
             <Link to='/' className='logoHeader'>
-                <img src={logo} alt='logo' className='logoStyle'/>
+                <img src={logo} alt='logo' className='logoStyle' />
                 <h2>اوتوپلن</h2>
             </Link>
             <ul className='menuList'>
@@ -25,14 +25,14 @@ const Navbar = () => {
                 </li>
                 <li>
                     <Link>تماس با ما</Link>
-                </li>              
+                </li>
             </ul>
             <Link to='/'>
                 <div className='login'>
-                    <img src={loginIcon} alt='loginIcon'/>
+                    <img src={loginIcon} alt='loginIcon' />
                     <p>ورود به سیستم</p>
                 </div>
-            </Link>       
+            </Link>
         </NavbarStyle>
     );
 };

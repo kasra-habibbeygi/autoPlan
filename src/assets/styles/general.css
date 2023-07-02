@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'main';
+    src: url('../fonts//yekanBakhFamily/YekanBakh-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'bold';
+    src: url('../fonts//yekanBakhFamily/YekanBakh-Bold.ttf');
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -7,7 +17,7 @@
 
 body,
 html {
-    font-family: 'main'  !important;
+    font-family: 'main' !important;
     background-color: #F7F7F7;
 }
 
@@ -26,17 +36,6 @@ html {
     -webkit-tap-highlight-color: transparent
 }
 
-
-@font-face {
-    font-family: 'main';
-    src: url('../fonts//yekanBakhFamily/YekanBakh-Regular.ttf');
-}
-
-@font-face {
-    font-family: 'bold';
-    src: url('../fonts//yekanBakhFamily/YekanBakh-Bold.ttf');
-}
-
 table {
     border-collapse: collapse;
     font-family: 'main' !important;
@@ -46,7 +45,8 @@ table {
     -webkit-tap-highlight-color: transparent
 }
 
-th , td {
+th,
+td {
     font-family: 'main' !important;
 }
 
@@ -94,12 +94,11 @@ button {
     font-family: 'main' !important;
 }
 
-label{
-    font-family: 'main'  !important;
+label {
+    font-family: 'main' !important;
     background: white;
 }
 
-input{
-    font-family: 'main'  !important;
+input {
+    font-family: 'main' !important;
 }
-
