@@ -7,7 +7,6 @@ export const LayoutProviderStyle = styled.div(props => ({
    margin: '0px auto',
    padding: '50px 0px',
    '& .content': {
-      // width: 'calc(100% - 360px)',
       marginRight: '360px',
       direction: 'rtl',
    },

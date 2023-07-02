@@ -1,8 +1,8 @@
 import React from 'react';
-
-//assets
-import { SidebarStyle } from './Sidebar.style';
 import { NavLink } from 'react-router-dom';
+
+//Assets
+import { SidebarStyle } from './sidebar.style';
 import Bill from './../../assets/images/sideBar/Bill.svg';
 import Box from './../../assets/images/sideBar/Box.svg';
 import Document from './../../assets/images/sideBar/Document Add.svg';

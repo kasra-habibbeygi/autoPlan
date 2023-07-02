@@ -1,7 +1,7 @@
 
 import styled from '@emotion/styled';
 
-export const HeaderStyle = styled.div(props => ({
+export const NavbarStyle = styled.nav(props => ({
     width:'100%',
     height:'85px',
     display:'flex',

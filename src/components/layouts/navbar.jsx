@@ -1,14 +1,14 @@
 import React from 'react';
-
-//assets
-import { HeaderStyle } from './Header.style';
-import logo from '../../assets/images/header/logo.svg';
-import loginIcon from '../../assets/images/header/loginIcon.svg';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+//Assets
+import { NavbarStyle } from './navbar.style';
+import logo from '../../assets/images/header/logo.svg';
+import loginIcon from '../../assets/images/header/loginIcon.svg';
+
+const Navbar = () => {
     return (
-        <HeaderStyle>
+        <NavbarStyle>
             <Link to='/' className='logoHeader'>
                 <img src={logo} alt='logo' className='logoStyle'/>
                 <h2>اوتوپلن</h2>
@@ -25,18 +25,16 @@ const Header = () => {
                 </li>
                 <li>
                     <Link>تماس با ما</Link>
-                </li>
-              
+                </li>              
             </ul>
             <Link to='/'>
                 <div className='login'>
                     <img src={loginIcon} alt='loginIcon'/>
                     <p>ورود به سیستم</p>
                 </div>
-            </Link>
-       
-        </HeaderStyle>
+            </Link>       
+        </NavbarStyle>
     );
 };
 
-export default Header;
+export default Navbar;
