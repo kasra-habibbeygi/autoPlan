@@ -10,6 +10,7 @@ export const LayoutProviderStyle = styled.div({
     '& .content': {
         // marginRight: '360px',
         direction: 'rtl',
-        flexGrow: 1
+        flexGrow: 1,
+        width: 'calc(100% - 302px)'
     }
 });

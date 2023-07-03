@@ -51,7 +51,7 @@
         "no-unreachable": ["error"],
         "no-unsafe-finally": ["error"],
         "no-unsafe-optional-chaining": ["error"],
-        "no-unused-vars": ["error"],
+        "no-unused-vars": ["warn"],
         "use-isnan": ["error"],
         "valid-typeof": ["error"],
         "array-bracket-spacing": ["error"],

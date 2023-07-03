@@ -6,7 +6,6 @@ export const TableComponent = styled.div(props => ({
         width: '100%',
         borderCollapse: 'separate',
         borderSpacing: '0 10px',
-        // overflow: 'auto',
 
         tr: {
             backgroundColor: props.theme.colors.white,

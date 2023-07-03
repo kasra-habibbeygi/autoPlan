@@ -60,7 +60,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/reporting'>
                         <div className='item'>
                             <img src={Notes} alt='' />
                             <p>گزارش گیری</p>

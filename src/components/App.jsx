@@ -14,6 +14,7 @@ import Planning from '../pages/planning/planning';
 import Deviation from '../pages/deviation/deviation';
 import Corrective from '../pages/corrective/corrective';
 import Accessibility from '../pages/accessibility/accessibility';
+import Reporting from '../pages/reporting/reporting';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -28,6 +29,7 @@ function App() {
                     <Route path='deviation' element={<Deviation />} />
                     <Route path='corrective' element={<Corrective />} />
                     <Route path='accessibility' element={<Accessibility />} />
+                    <Route path='reporting' element={<Reporting />} />
                 </Route>
             </Routes>
         </ThemeProvider>
