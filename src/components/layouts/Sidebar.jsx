@@ -76,7 +76,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/accessibility'>
                         <div className='item'>
                             <img src={UserId} alt='' />
                             <p>دسترسی پنل</p>

@@ -13,6 +13,7 @@ import Deficiency from '../pages/deficiency/deficiency';
 import Planning from '../pages/planning/planning';
 import Deviation from '../pages/deviation/deviation';
 import Corrective from '../pages/corrective/corrective';
+import Accessibility from '../pages/accessibility/accessibility';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -26,6 +27,7 @@ function App() {
                     <Route path='planning' element={<Planning />} />
                     <Route path='deviation' element={<Deviation />} />
                     <Route path='corrective' element={<Corrective />} />
+                    <Route path='accessibility' element={<Accessibility />} />
                 </Route>
             </Routes>
         </ThemeProvider>
