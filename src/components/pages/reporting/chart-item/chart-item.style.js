@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 export const ChartItemWrapper = styled.div(props => {
-    console.log(props);
     return {
         display: 'flex',
         alignItems: 'center',

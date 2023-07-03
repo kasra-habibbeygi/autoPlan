@@ -9,6 +9,7 @@ import ItemHeader from '../../components/pages/reporting/item-header/item-header
 import ChartItem from '../../components/pages/reporting/chart-item/chart-item';
 import DeficiencyChart from '../../components/pages/reporting/deficiency-chart/deficiency-chart';
 import ReportingChart from '../../components/pages/reporting/reporting-chart/reporting-chart';
+import ReportingLineChart from '../../components/pages/reporting/line-chart/line-chart';
 
 const Reporting = () => {
     return (
@@ -54,6 +55,9 @@ const Reporting = () => {
                 <Grid item xs={12} md={6}>
                     <div className='item'>
                         <ItemHeader title='میزان بروز انحراف در شش ماه گذشته' onClick={() => console.log('object')} />
+                        <div className='mainChart'>
+                            <ReportingLineChart />
+                        </div>
                     </div>
                 </Grid>
             </Grid>
