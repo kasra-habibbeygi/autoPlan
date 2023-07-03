@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 
 export const TableComponent = styled.div(props => ({
+    maxWidth: '100%',
     table: {
         width: '100%',
         borderCollapse: 'separate',
         borderSpacing: '0 10px',
-        overflow: 'auto',
+        // overflow: 'auto',
 
         tr: {
             backgroundColor: props.theme.colors.white,
@@ -33,6 +34,7 @@ export const TableComponent = styled.div(props => ({
         display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
+        marginTop: '20px',
 
         '& *': {
             direction: 'ltr !important'

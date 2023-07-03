@@ -44,7 +44,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/planning'>
                         <div className='item'>
                             <img src={Widget} alt='' />
                             <p>برنامه ریزی تعمیرات</p>

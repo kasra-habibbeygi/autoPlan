@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const SidebarStyle = styled.div(props => ({
     width: '302px',
+    minWidth: '302px',
     height: '100vh',
     backgroundColor: props.theme.colors.white,
     borderRadius: '18px',
