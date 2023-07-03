@@ -32,21 +32,23 @@ const Table = ({ columns, rows, pageStatus, setPageStatus }) => {
                 </tbody>
             </table>
 
-            <div className='paginationWrapper'>
-                <Pagination
-                    count={pageStatus.total}
-                    size='small'
-                    page={pageStatus.current}
-                    onChange={(_, value) =>
-                        setPageStatus(prev => {
-                            return {
-                                ...prev,
-                                current: value
-                            };
-                        })
-                    }
-                />
-            </div>
+            {pageStatus && setPageStatus && (
+                <div className='paginationWrapper'>
+                    <Pagination
+                        count={pageStatus.total}
+                        size='small'
+                        page={pageStatus.current}
+                        onChange={(_, value) =>
+                            setPageStatus(prev => {
+                                return {
+                                    ...prev,
+                                    current: value
+                                };
+                            })
+                        }
+                    />
+                </div>
+            )}
         </TableComponent>
     );
 };

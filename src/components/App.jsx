@@ -12,6 +12,7 @@ import Qualification from '../pages/qualification/qualification';
 import Deficiency from '../pages/deficiency/deficiency';
 import Planning from '../pages/planning/planning';
 import Deviation from '../pages/deviation/deviation';
+import Corrective from '../pages/corrective/corrective';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -24,6 +25,7 @@ function App() {
                     <Route path='deficiency' element={<Deficiency />} />
                     <Route path='planning' element={<Planning />} />
                     <Route path='deviation' element={<Deviation />} />
+                    <Route path='corrective' element={<Corrective />} />
                 </Route>
             </Routes>
         </ThemeProvider>

@@ -68,7 +68,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/corrective'>
                         <div className='item'>
                             <img src={Document} alt='' />
                             <p>اقدام اصلاحی</p>
