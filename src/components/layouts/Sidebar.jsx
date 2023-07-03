@@ -52,7 +52,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/deviation'>
                         <div className='item'>
                             <img src={Bill} alt='' />
                             <p>علت انحرافات</p>

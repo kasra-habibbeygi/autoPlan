@@ -24,7 +24,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus }) => {
                                 colIndex === 0 ? (
                                     <td key={column.id}>{rowIndex + 1}</td>
                                 ) : (
-                                    <td key={column.id}>{row[column.key] ? row[column.key] : column.renderCell}</td>
+                                    <td key={column.id}>{row[column.key] ? row[column.key] : column.renderCell(row)}</td>
                                 )
                             )}
                         </tr>

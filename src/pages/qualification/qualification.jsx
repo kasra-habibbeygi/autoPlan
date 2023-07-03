@@ -24,7 +24,7 @@ const Qualification = () => {
             id: 7,
             title: 'جایگاه',
             key: 'position',
-            renderCell: <Button>مشاهده</Button>
+            renderCell: () => <Button>مشاهده</Button>
         }
     ];
 

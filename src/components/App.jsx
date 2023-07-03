@@ -11,6 +11,7 @@ import LayoutProvider from './layouts/layout-provider';
 import Qualification from '../pages/qualification/qualification';
 import Deficiency from '../pages/deficiency/deficiency';
 import Planning from '../pages/planning/planning';
+import Deviation from '../pages/deviation/deviation';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -22,6 +23,7 @@ function App() {
                     <Route path='qualification' element={<Qualification />} />
                     <Route path='deficiency' element={<Deficiency />} />
                     <Route path='planning' element={<Planning />} />
+                    <Route path='deviation' element={<Deviation />} />
                 </Route>
             </Routes>
         </ThemeProvider>
