@@ -84,7 +84,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>
+                    <NavLink to='/setting'>
                         <div className='item'>
                             <img src={Group} alt='' />
                             <p>تنظیمات سایت</p>

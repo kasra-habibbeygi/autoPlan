@@ -16,6 +16,7 @@ import Corrective from '../pages/corrective/corrective';
 import Accessibility from '../pages/accessibility/accessibility';
 import Reporting from '../pages/reporting/reporting';
 import Home from '../pages/home/home';
+import Setting from '../pages/setting/setting';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -32,6 +33,7 @@ function App() {
                     <Route path='corrective' element={<Corrective />} />
                     <Route path='accessibility' element={<Accessibility />} />
                     <Route path='reporting' element={<Reporting />} />
+                    <Route path='setting' element={<Setting />} />
                 </Route>
             </Routes>
         </ThemeProvider>
