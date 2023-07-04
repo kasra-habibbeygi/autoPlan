@@ -5,19 +5,23 @@ import { Grid } from '@mui/material';
 
 //Components
 import { ReportingWrapper } from './reporting.style';
-import ItemHeader from '../../components/pages/reporting/item-header/item-header';
+import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
 import ChartItem from '../../components/pages/reporting/chart-item/chart-item';
 import DeficiencyChart from '../../components/pages/reporting/deficiency-chart/deficiency-chart';
-import ReportingChart from '../../components/pages/reporting/reporting-chart/reporting-chart';
+import ReportingChart from '../../components/reporting-chart/reporting-chart';
 import ReportingLineChart from '../../components/pages/reporting/line-chart/line-chart';
 
 const Reporting = () => {
     return (
         <ReportingWrapper>
-            <Grid container spacing={2}>
+            <Grid container spacing={1.5}>
                 <Grid item xs={12} md={5}>
                     <div className='item'>
-                        <ItemHeader title='گزارش پذیرش در ماه اخیر' onClick={() => console.log('object')} />
+                        <DetailBoxHeader
+                            title='گزارش پذیرش در ماه اخیر'
+                            onClick={() => console.log('object')}
+                            buttonText='دریافت گزارش کامل دوره'
+                        />
                         <div className='chartWrapper'>
                             <div className='chartItems'>
                                 <ChartItem title='تعمیرات مکانیکی' percent='۳۸' color='#ad9bfd' />
@@ -33,7 +37,11 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={7}>
                     <div className='item'>
-                        <ItemHeader title='میزان انحراف در هر بخشی نمایندگی' onClick={() => console.log('object')} />
+                        <DetailBoxHeader
+                            title='میزان انحراف در هر بخشی نمایندگی'
+                            onClick={() => console.log('object')}
+                            buttonText='دریافت گزارش کامل دوره'
+                        />
                         <div className='chartWrapper'>
                             <div className='chartItems'>
                                 <ChartItem title='انحراف در بخش مکانیکی' percent='۳۸' color='#ad9bfd' />
@@ -49,12 +57,20 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <ItemHeader title='گزارش میزان انحراف در هر بخش' onClick={() => console.log('object')} />
+                        <DetailBoxHeader
+                            title='گزارش میزان انحراف در هر بخش'
+                            onClick={() => console.log('object')}
+                            buttonText='دریافت گزارش کامل دوره'
+                        />
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <ItemHeader title='میزان بروز انحراف در شش ماه گذشته' onClick={() => console.log('object')} />
+                        <DetailBoxHeader
+                            title='میزان بروز انحراف در شش ماه گذشته'
+                            onClick={() => console.log('object')}
+                            buttonText='دریافت گزارش کامل دوره'
+                        />
                         <div className='mainChart'>
                             <ReportingLineChart />
                         </div>
