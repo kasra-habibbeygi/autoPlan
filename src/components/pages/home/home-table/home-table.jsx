@@ -1,4 +1,8 @@
 import React from 'react';
+
+//Assets
+
+//Components
 import { TableWrapper } from './home-table.style';
 
 const HomeTable = ({ data }) => {

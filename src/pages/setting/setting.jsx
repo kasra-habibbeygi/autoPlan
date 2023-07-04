@@ -1,11 +1,15 @@
 import React from 'react';
-import PagesHeader from '../../components/pages-header/pages-header';
-import { SettingWrapper } from './setting.style';
 import { Grid } from '@mui/material';
+
+//Assets
+import pen from './../../assets/images/global/pen.svg';
+
+//Components
+import { SettingWrapper } from './setting.style';
+import PagesHeader from '../../components/pages-header/pages-header';
+import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
 import ReceptionForm from '../../components/pages/setting/reception-form/reception-form';
 import WorkTimeForm from '../../components/pages/setting/work-time-form/work-time-form';
-import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
-import pen from './../../assets/images/global/pen.svg';
 
 const Setting = () => {
     const openModal = () => {

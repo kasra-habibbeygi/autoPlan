@@ -2,9 +2,11 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 //Assets
-import { NavbarStyle } from './navbar.style';
 import logo from '../../assets/images/header/logo.svg';
 import loginIcon from '../../assets/images/header/loginIcon.svg';
+
+//Components
+import { NavbarStyle } from './navbar.style';
 import Button from './../form-groups/button';
 
 const Navbar = () => {

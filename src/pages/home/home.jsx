@@ -1,11 +1,15 @@
 import React from 'react';
-import PagesHeader from '../../components/pages-header/pages-header';
 import { Grid } from '@mui/material';
+
+//Assets
+
+//Components
 import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
 import ChartItem from '../../components/pages/reporting/chart-item/chart-item';
 import ReportingChart from '../../components/reporting-chart/reporting-chart';
 import { HomeWrapper } from './home.style';
 import HomeTable from '../../components/pages/home/home-table/home-table';
+import PagesHeader from '../../components/pages-header/pages-header';
 
 const Home = () => {
     const tableData = [

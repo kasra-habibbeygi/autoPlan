@@ -2,7 +2,9 @@
 import React from 'react';
 import { PulseLoader } from 'react-spinners';
 
-// Assets
+//Assets
+
+//Components
 import { ButtonField } from './button.style';
 
 const Button = ({

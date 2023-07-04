@@ -1,6 +1,10 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
+//Assets
+
+//Components
+
 const DeficiencyChart = () => {
     const data = [
         { name: 'Group A', value: 400 },

@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 //Assets
-import { SidebarStyle } from './sidebar.style';
 import Bill from './../../assets/images/sideBar/Bill.svg';
 import Box from './../../assets/images/sideBar/Box.svg';
 import Document from './../../assets/images/sideBar/DocumentAdd.svg';
@@ -13,6 +12,9 @@ import User from './../../assets/images/sideBar/UserCheck.svg';
 import UserId from './../../assets/images/sideBar/UserId.svg';
 import Widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import Exit from './../../assets/images/sideBar/Exit.svg';
+
+//Components
+import { SidebarStyle } from './sidebar.style';
 import Button from './../form-groups/button';
 
 const SideBar = () => {

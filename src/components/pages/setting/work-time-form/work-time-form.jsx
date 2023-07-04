@@ -1,11 +1,14 @@
 import React from 'react';
-import InputComponent from '../../../input-component/input-component';
-import calender from './../../../../assets/images/global/Calendar.svg';
 import { useForm } from 'react-hook-form';
-import FormButton from '../../../form-button/form-button';
+
+//Assets
+import calender from './../../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../../assets/images/global/brokenArrow.svg';
+
+//Components
+import FormButton from '../../../form-button/form-button';
 import { FormWrapper } from './work-time-form.style';
-import DetailBoxHeader from '../../../detail-box-header/detail-box-header';
+import InputComponent from '../../../input-component/input-component';
 
 const WorkTimeForm = () => {
     const { register, handleSubmit, formState } = useForm({
