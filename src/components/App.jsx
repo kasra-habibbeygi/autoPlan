@@ -25,6 +25,8 @@ function App() {
     return (
         <ThemeProvider theme={themeConfig}>
             <Routes>
+                <Route path='/' element={<Landing />} />
+
                 <Route path='/' element={<LayoutProvider />}>
                     <Route path='home' element={<Home />} />
                     <Route path='qualification' element={<Qualification />} />
@@ -36,7 +38,6 @@ function App() {
                     <Route path='reporting' element={<Reporting />} />
                     <Route path='setting' element={<Setting />} />
                 </Route>
-                <Route path='/' element={<Landing />} />
             </Routes>
         </ThemeProvider>
     );
