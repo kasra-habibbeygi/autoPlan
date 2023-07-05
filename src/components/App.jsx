@@ -17,6 +17,7 @@ import Accessibility from '../pages/accessibility/accessibility';
 import Reporting from '../pages/reporting/reporting';
 import Home from '../pages/home/home';
 import Setting from '../pages/setting/setting';
+import Landing from '../pages/landing/landing';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -25,7 +26,7 @@ function App() {
         <ThemeProvider theme={themeConfig}>
             <Routes>
                 <Route path='/' element={<LayoutProvider />}>
-                    <Route path='' element={<Home />} />
+                    <Route path='home' element={<Home />} />
                     <Route path='qualification' element={<Qualification />} />
                     <Route path='deficiency' element={<Deficiency />} />
                     <Route path='planning' element={<Planning />} />
@@ -35,6 +36,7 @@ function App() {
                     <Route path='reporting' element={<Reporting />} />
                     <Route path='setting' element={<Setting />} />
                 </Route>
+                <Route path='/' element={<Landing />} />
             </Routes>
         </ThemeProvider>
     );

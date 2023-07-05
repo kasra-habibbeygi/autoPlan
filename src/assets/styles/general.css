@@ -1,11 +1,16 @@
 @font-face {
     font-family: 'main';
-    src: url('../fonts//yekanBakhFamily/YekanBakh-Regular.ttf');
+    src: url('../fonts/YekanBakh-Regular.ttf');
 }
 
 @font-face {
     font-family: 'bold';
-    src: url('../fonts//yekanBakhFamily/YekanBakh-Bold.ttf');
+    src: url('../fonts/YekanBakh-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'faNum';
+    src: url('../fonts/YekanBakhFaNum-Regular.ttf');
 }
 
 * {

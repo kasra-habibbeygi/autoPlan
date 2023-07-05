@@ -22,7 +22,7 @@ const SideBar = () => {
         <SidebarStyle>
             <ul>
                 <li>
-                    <NavLink to='/'>
+                    <NavLink to='/home'>
                         <div className='item'>
                             <img src={Home} alt='' />
                             <p>صفحه اصلی</p>

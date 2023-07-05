@@ -18,17 +18,17 @@ const Navbar = () => {
             </Link>
             <ul className='menuList'>
                 <li>
-                    <NavLink to='/'>صفحه اصلی</NavLink>
+                    <NavLink to='/home'>صفحه اصلی</NavLink>
                 </li>
 
                 <li>
-                    <NavLink to='/some'>خدمات</NavLink>
+                    <NavLink to='/'>خدمات</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>درباره ما</NavLink>
+                    <NavLink to='/'>درباره ما</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/some'>تماس با ما</NavLink>
+                    <NavLink to='/'>تماس با ما</NavLink>
                 </li>
             </ul>
             <Button className='login'>
