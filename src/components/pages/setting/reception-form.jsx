@@ -22,8 +22,7 @@ const ReceptionForm = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {
-    };
+    const formSubmit = data => {};
 
     return (
         <FormWrapper>

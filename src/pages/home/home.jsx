@@ -66,11 +66,7 @@ const Home = () => {
                 <Grid container columnSpacing={1.5}>
                     <Grid item xs={12} md={5}>
                         <div className='item'>
-                            <DetailBoxHeader
-                                title='گزارش پذیرش در ماه اخیر'
-                                onClick={() => { }}
-                                buttonText='دریافت گزارش کامل دوره'
-                            />
+                            <DetailBoxHeader title='گزارش پذیرش در ماه اخیر' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                             <div className='chartWrapper'>
                                 <div className='chartItems'>
                                     <ChartItem title='تعمیرات مکانیکی' percent='۳۸' color='#ad9bfd' />
@@ -84,31 +80,27 @@ const Home = () => {
                             </div>
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='برنامه ریزی تعمیرات' onClick={() => { }} buttonText='بیشتر' />
+                            <DetailBoxHeader title='برنامه ریزی تعمیرات' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='کسری قطعات انبار' onClick={() => { }} buttonText='بیشتر' />
+                            <DetailBoxHeader title='کسری قطعات انبار' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='ظرفیت سنجی' onClick={() => { }} buttonText='بیشتر' />
+                            <DetailBoxHeader title='ظرفیت سنجی' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                     </Grid>
                     <Grid item xs={12} md={7}>
                         <div className='item'>
-                            <DetailBoxHeader
-                                title='مدیریت برنامه ریزی تعمیرات'
-                                onClick={() => { }}
-                                buttonText='مدیریت تعمیرات'
-                            />
+                            <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' onClick={() => {}} buttonText='مدیریت تعمیرات' />
                             <HomeTable data={tableData} />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='تنظیمات سایت' onClick={() => { }} buttonText='بیشتر' />
+                            <DetailBoxHeader title='تنظیمات سایت' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='اقدام اصلاحی' onClick={() => { }} buttonText='بیشتر' />
+                            <DetailBoxHeader title='اقدام اصلاحی' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                     </Grid>
                 </Grid>
