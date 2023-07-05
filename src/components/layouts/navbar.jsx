@@ -12,7 +12,7 @@ import Button from './../form-groups/button';
 const Navbar = () => {
     return (
         <NavbarStyle>
-            <Link to='/' className='logoHeader'>
+            <Link to='/home' className='logoHeader'>
                 <img src={logo} alt='logo' className='logoStyle' />
                 <h2>اوتوپلن</h2>
             </Link>
@@ -22,13 +22,13 @@ const Navbar = () => {
                 </li>
 
                 <li>
-                    <NavLink to='/'>خدمات</NavLink>
+                    <a href='#services'>خدمات</a>
                 </li>
                 <li>
-                    <NavLink to='/'>درباره ما</NavLink>
+                    <a href='#about'>درباره ما</a>
                 </li>
                 <li>
-                    <NavLink to='/'>تماس با ما</NavLink>
+                    <a href='#contact'>تماس با ما</a>
                 </li>
             </ul>
             <Button className='login'>
