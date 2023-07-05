@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 //assets
 import { LayoutProviderStyle } from './layout-provider.style';
+import bg from '../../assets/images/global/bg.svg';
 
 //components
 import Navbar from './navbar';
@@ -12,7 +13,7 @@ const LayoutProvider = () => {
     return (
         <>
             <Navbar />
-            <LayoutProviderStyle>
+            <LayoutProviderStyle bg={bg}>
                 <SideBar />
                 <div className='content'>
                     <Outlet />

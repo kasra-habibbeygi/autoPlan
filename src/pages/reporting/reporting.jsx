@@ -17,11 +17,7 @@ const Reporting = () => {
             <Grid container spacing={1.5}>
                 <Grid item xs={12} md={5}>
                     <div className='item'>
-                        <DetailBoxHeader
-                            title='گزارش پذیرش در ماه اخیر'
-                            onClick={() => { }}
-                            buttonText='دریافت گزارش کامل دوره'
-                        />
+                        <DetailBoxHeader title='گزارش پذیرش در ماه اخیر' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                         <div className='chartWrapper'>
                             <div className='chartItems'>
                                 <ChartItem title='تعمیرات مکانیکی' percent='۳۸' color='#ad9bfd' />
@@ -37,11 +33,7 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={7}>
                     <div className='item'>
-                        <DetailBoxHeader
-                            title='میزان انحراف در هر بخشی نمایندگی'
-                            onClick={() => { }}
-                            buttonText='دریافت گزارش کامل دوره'
-                        />
+                        <DetailBoxHeader title='میزان انحراف در هر بخشی نمایندگی' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                         <div className='chartWrapper'>
                             <div className='chartItems'>
                                 <ChartItem title='انحراف در بخش مکانیکی' percent='۳۸' color='#ad9bfd' />
@@ -57,20 +49,12 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <DetailBoxHeader
-                            title='گزارش میزان انحراف در هر بخش'
-                            onClick={() => { }}
-                            buttonText='دریافت گزارش کامل دوره'
-                        />
+                        <DetailBoxHeader title='گزارش میزان انحراف در هر بخش' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <DetailBoxHeader
-                            title='میزان بروز انحراف در شش ماه گذشته'
-                            onClick={() => { }}
-                            buttonText='دریافت گزارش کامل دوره'
-                        />
+                        <DetailBoxHeader title='میزان بروز انحراف در شش ماه گذشته' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                         <div className='mainChart'>
                             <ReportingLineChart />
                         </div>

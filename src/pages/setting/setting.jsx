@@ -32,11 +32,7 @@ const Setting = () => {
                         </div>
                         <br />
                         <div className='item'>
-                            <DetailBoxHeader
-                                title='نام نمایندگی : فلان'
-                                onClick={() => { }}
-                                buttonText={<img src={pen} />}
-                            />
+                            <DetailBoxHeader title='نام نمایندگی : فلان' onClick={() => {}} buttonText={<img src={pen} />} />
                         </div>
                     </Grid>
                 </Grid>
