@@ -1,18 +1,35 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
+import enheraf from '../../assets/images/global/BlackHole.svg';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
+import FormButton from '../../components/form-button/form-button';
 import Button from '../../components/form-groups/button';
+import Modal from '../../components/template/modal';
+import InputComponent from './../../components/form-groups/input-component';
 
 const Deviation = () => {
+    const [modalOpen, setModalOpen] = useState(false);
+
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
+    });
+
+    const { register, handleSubmit, formState, errors } = useForm({
+        defaultValues: {
+            date: '',
+            internetReception: '',
+            phoneReception: '',
+            presentReception: ''
+        },
+        mode: 'onTouched'
     });
 
     const columns = [
@@ -116,13 +133,34 @@ const Deviation = () => {
     ];
 
     const openModal = () => {
-        //codes
+        setModalOpen(true);
     };
+    const formSubmit = () => {};
 
     return (
         <>
             <PagesHeader buttonTitle='ثبت انحراف جدید' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Modal state={modalOpen} setState={setModalOpen} maxWidth='sm'>
+                <h2>ثبت انحراف جدید</h2>
+                <form onSubmit={handleSubmit(formSubmit)}>
+                    <InputComponent
+                        title='علت انحراف'
+                        type='text'
+                        icon={enheraf}
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.date}
+                    />
+                    <FormButton text='ثبت' loading={false} type='submit' />
+                </form>
+            </Modal>
         </>
     );
 };

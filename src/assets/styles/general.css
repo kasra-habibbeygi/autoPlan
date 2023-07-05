@@ -9,6 +9,11 @@
 }
 
 @font-face {
+    font-family: 'bold-FaNum';
+    src: url('../fonts/YekanBakhFaNum-Bold.ttf');
+}
+
+@font-face {
     font-family: 'faNum';
     src: url('../fonts/YekanBakhFaNum-Regular.ttf');
 }

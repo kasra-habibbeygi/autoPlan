@@ -2,8 +2,6 @@ import React from 'react';
 import { Pagination } from '@mui/material';
 
 //Assets
-
-//Components
 import { TableComponent } from './Table.style';
 
 const Table = ({ columns, rows, pageStatus, setPageStatus }) => {
