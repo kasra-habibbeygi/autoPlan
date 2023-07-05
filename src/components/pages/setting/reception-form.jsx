@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormWrapper } from './reception-form.style';
-import InputComponent from '../../../input-component/input-component';
 import { useForm } from 'react-hook-form';
 
 //Assets
-import calender from './../../../../assets/images/global/Calendar.svg';
-import brokenArrow from './../../../../assets/images/global/brokenArrow.svg';
+import calender from './../../../assets/images/global/Calendar.svg';
+import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 
 //Components
-import FormButton from '../../../form-button/form-button';
+import FormButton from '../../form-button/form-button';
+import InputComponent from './../../form-groups/input-component';
 
 const ReceptionForm = () => {
     const { register, handleSubmit, formState } = useForm({
@@ -23,9 +23,7 @@ const ReceptionForm = () => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
     };
-    // console.log(errors);
 
     return (
         <FormWrapper>

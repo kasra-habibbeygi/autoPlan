@@ -7,7 +7,6 @@ import { InputWrapper } from './input-component.style';
 
 const InputComponent = ({ title, icon, type, detail, error }) => {
     const inputRef = useRef();
-    console.log(error);
 
     return (
         <InputWrapper>

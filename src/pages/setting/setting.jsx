@@ -6,10 +6,10 @@ import pen from './../../assets/images/global/pen.svg';
 
 //Components
 import { SettingWrapper } from './setting.style';
-import PagesHeader from '../../components/pages-header/pages-header';
-import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
-import ReceptionForm from '../../components/pages/setting/reception-form/reception-form';
-import WorkTimeForm from '../../components/pages/setting/work-time-form/work-time-form';
+import PagesHeader from '../../components/template/pages-header';
+import DetailBoxHeader from '../../components/template/detail-box-header';
+import ReceptionForm from '../../components/pages/setting/reception-form';
+import WorkTimeForm from '../../components/pages/setting/work-time-form';
 
 const Setting = () => {
     const openModal = () => {
@@ -34,7 +34,7 @@ const Setting = () => {
                         <div className='item'>
                             <DetailBoxHeader
                                 title='نام نمایندگی : فلان'
-                                onClick={() => console.log('object')}
+                                onClick={() => { }}
                                 buttonText={<img src={pen} />}
                             />
                         </div>

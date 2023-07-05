@@ -5,11 +5,11 @@ import { Grid } from '@mui/material';
 
 //Components
 import { ReportingWrapper } from './reporting.style';
-import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
-import ChartItem from '../../components/pages/reporting/chart-item/chart-item';
-import DeficiencyChart from '../../components/pages/reporting/deficiency-chart/deficiency-chart';
-import ReportingChart from '../../components/reporting-chart/reporting-chart';
-import ReportingLineChart from '../../components/pages/reporting/line-chart/line-chart';
+import DetailBoxHeader from '../../components/template/detail-box-header';
+import ChartItem from '../../components/pages/reporting/chart-item';
+import DeficiencyChart from '../../components/pages/reporting/deficiency-chart';
+import ReportingChart from '../../components/template/reporting-chart';
+import ReportingLineChart from '../../components/pages/reporting/line-chart';
 
 const Reporting = () => {
     return (
@@ -19,7 +19,7 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader
                             title='گزارش پذیرش در ماه اخیر'
-                            onClick={() => console.log('object')}
+                            onClick={() => { }}
                             buttonText='دریافت گزارش کامل دوره'
                         />
                         <div className='chartWrapper'>
@@ -39,7 +39,7 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader
                             title='میزان انحراف در هر بخشی نمایندگی'
-                            onClick={() => console.log('object')}
+                            onClick={() => { }}
                             buttonText='دریافت گزارش کامل دوره'
                         />
                         <div className='chartWrapper'>
@@ -59,7 +59,7 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader
                             title='گزارش میزان انحراف در هر بخش'
-                            onClick={() => console.log('object')}
+                            onClick={() => { }}
                             buttonText='دریافت گزارش کامل دوره'
                         />
                     </div>
@@ -68,7 +68,7 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader
                             title='میزان بروز انحراف در شش ماه گذشته'
-                            onClick={() => console.log('object')}
+                            onClick={() => { }}
                             buttonText='دریافت گزارش کامل دوره'
                         />
                         <div className='mainChart'>

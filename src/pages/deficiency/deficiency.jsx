@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 //Assets
 
 //Components
-import Table from '../../components/table/Table';
-import PagesHeader from '../../components/pages-header/pages-header';
+import Table from '../../components/template/Table';
+import PagesHeader from '../../components/template/pages-header';
 
 const Deficiency = () => {
     const [pageStatus, setPageStatus] = useState({

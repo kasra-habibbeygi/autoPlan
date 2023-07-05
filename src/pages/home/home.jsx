@@ -4,12 +4,12 @@ import { Grid } from '@mui/material';
 //Assets
 
 //Components
-import DetailBoxHeader from '../../components/detail-box-header/detail-box-header';
-import ChartItem from '../../components/pages/reporting/chart-item/chart-item';
-import ReportingChart from '../../components/reporting-chart/reporting-chart';
+import DetailBoxHeader from '../../components/template/detail-box-header';
+import ChartItem from '../../components/pages/reporting/chart-item';
+import ReportingChart from '../../components/template/reporting-chart';
 import { HomeWrapper } from './home.style';
-import HomeTable from '../../components/pages/home/home-table/home-table';
-import PagesHeader from '../../components/pages-header/pages-header';
+import HomeTable from '../../components/pages/home/home-table';
+import PagesHeader from '../../components/template/pages-header';
 
 const Home = () => {
     const tableData = [
@@ -68,7 +68,7 @@ const Home = () => {
                         <div className='item'>
                             <DetailBoxHeader
                                 title='گزارش پذیرش در ماه اخیر'
-                                onClick={() => console.log('object')}
+                                onClick={() => { }}
                                 buttonText='دریافت گزارش کامل دوره'
                             />
                             <div className='chartWrapper'>
@@ -84,31 +84,31 @@ const Home = () => {
                             </div>
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='برنامه ریزی تعمیرات' onClick={() => console.log('object')} buttonText='بیشتر' />
+                            <DetailBoxHeader title='برنامه ریزی تعمیرات' onClick={() => { }} buttonText='بیشتر' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='کسری قطعات انبار' onClick={() => console.log('object')} buttonText='بیشتر' />
+                            <DetailBoxHeader title='کسری قطعات انبار' onClick={() => { }} buttonText='بیشتر' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='ظرفیت سنجی' onClick={() => console.log('object')} buttonText='بیشتر' />
+                            <DetailBoxHeader title='ظرفیت سنجی' onClick={() => { }} buttonText='بیشتر' />
                         </div>
                     </Grid>
                     <Grid item xs={12} md={7}>
                         <div className='item'>
                             <DetailBoxHeader
                                 title='مدیریت برنامه ریزی تعمیرات'
-                                onClick={() => console.log('object')}
+                                onClick={() => { }}
                                 buttonText='مدیریت تعمیرات'
                             />
                             <HomeTable data={tableData} />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='تنظیمات سایت' onClick={() => console.log('object')} buttonText='بیشتر' />
+                            <DetailBoxHeader title='تنظیمات سایت' onClick={() => { }} buttonText='بیشتر' />
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='اقدام اصلاحی' onClick={() => console.log('object')} buttonText='بیشتر' />
+                            <DetailBoxHeader title='اقدام اصلاحی' onClick={() => { }} buttonText='بیشتر' />
                         </div>
                     </Grid>
                 </Grid>

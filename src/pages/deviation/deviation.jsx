@@ -5,8 +5,8 @@ import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 
 //Components
-import Table from '../../components/table/Table';
-import PagesHeader from '../../components/pages-header/pages-header';
+import Table from '../../components/template/Table';
+import PagesHeader from '../../components/template/pages-header';
 import Button from '../../components/form-groups/button';
 
 const Deviation = () => {

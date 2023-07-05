@@ -7,8 +7,8 @@ import eye from './../../assets/images/global/Eye.svg';
 import arrow from './../../assets/images/global/arrowUpChart.svg';
 
 //Components
-import Table from '../../components/table/Table';
-import PagesHeader from '../../components/pages-header/pages-header';
+import Table from '../../components/template/Table';
+import PagesHeader from '../../components/template/pages-header';
 import Button from '../../components/form-groups/button';
 import { PercentWrapper } from './corrective.style';
 

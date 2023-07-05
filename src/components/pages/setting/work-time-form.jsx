@@ -2,13 +2,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 //Assets
-import calender from './../../../../assets/images/global/Calendar.svg';
-import brokenArrow from './../../../../assets/images/global/brokenArrow.svg';
+import calender from './../../../assets/images/global/Calendar.svg';
+import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 
 //Components
-import FormButton from '../../../form-button/form-button';
+import FormButton from '../../form-button/form-button';
 import { FormWrapper } from './work-time-form.style';
-import InputComponent from '../../../input-component/input-component';
+import InputComponent from '../../form-groups/input-component';
 
 const WorkTimeForm = () => {
     const { register, handleSubmit, formState } = useForm({
@@ -23,9 +23,7 @@ const WorkTimeForm = () => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
     };
-    // console.log(errors);
 
     return (
         <FormWrapper>
