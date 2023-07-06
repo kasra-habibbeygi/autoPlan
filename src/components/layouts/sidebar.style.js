@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 
 export const SidebarStyle = styled.div(props => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '302px',
     minWidth: '302px',
-    height: '100vh',
     backgroundColor: props.theme.colors.white,
     borderRadius: '18px',
     padding: '24px',
@@ -37,7 +39,6 @@ export const SidebarStyle = styled.div(props => ({
 
     '& .logout': {
         padding: '24px 24px 21px 24px',
-        marginTop: 'auto',
         cursor: 'pointer',
 
         button: {

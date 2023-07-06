@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 
 //Assets
+import Bus from '../../assets/images/icons/Bus.svg';
+import CalendarDate from '../../assets/images/icons/CalendarDate.svg';
+import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
+import Accumulator from '../../assets/images/icons/Accumulator.svg';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
+import Modal from '../../components/template/modal';
+import { useForm } from 'react-hook-form';
+import InputComponent from '../../components/form-groups/input-component';
+import FormButton from '../../components/form-button/form-button';
+import UploadFile from '../../components/form-groups/UploadFile';
 
 const Deficiency = () => {
+    const [modalIsOpen, setIsModalOpen] = useState(false);
+    const [fileNameValue, setFileNameValue] = useState('');
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -17,6 +28,16 @@ const Deficiency = () => {
         { id: 3, title: 'نام قطعه', key: 'partName' },
         { id: 4, title: 'نوع خودرو', key: 'carType' }
     ];
+
+    const { register, handleSubmit, errors } = useForm({
+        defaultValues: {
+            date: '',
+            internetReception: '',
+            phoneReception: '',
+            presentReception: ''
+        },
+        mode: 'onTouched'
+    });
 
     const rows = [
         {
@@ -64,13 +85,95 @@ const Deficiency = () => {
     ];
 
     const openModal = () => {
-        //codes
+        setIsModalOpen(true);
+    };
+
+    const formSubmit = () => {};
+
+    const inputValueHandler = e => {
+        setFileNameValue(e.target.files[0].name);
     };
 
     return (
         <>
             <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm'>
+                <h2>کسری قطعات</h2>
+                <form onSubmit={handleSubmit(formSubmit)}>
+                    <InputComponent
+                        title='تاریخ'
+                        icon={CalendarDate}
+                        type='date'
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.date}
+                    />
+                    <InputComponent
+                        title='نام قطعه'
+                        type='text'
+                        icon={ShockAbsorber}
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.date}
+                    />
+                    <InputComponent
+                        title='کد قطعه'
+                        type='text'
+                        icon={Accumulator}
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.date}
+                    />
+                    <InputComponent
+                        title='نوع خودرو'
+                        type='text'
+                        icon={Bus}
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.date}
+                    />
+                    <UploadFile
+                        name='uploadFile'
+                        fileName={fileNameValue ?? fileNameValue}
+                        valueHandler={inputValueHandler}
+                        detail={{
+                            ...register('date', {
+                                required: {
+                                    value: false,
+                                    message: 'این فیلد اجباری نیست'
+                                }
+                            })
+                        }}
+                    />
+
+                    <FormButton text='ثبت' loading={false} type='submit' />
+                </form>
+            </Modal>
         </>
     );
 };

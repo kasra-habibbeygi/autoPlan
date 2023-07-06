@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const LayoutProviderStyle = styled.div(props => ({
     width: '100%',
+    minHeight: '100vh',
     padding: '50px 5%',
     display: 'flex',
     justifyContent: 'space-between',

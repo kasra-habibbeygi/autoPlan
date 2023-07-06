@@ -18,8 +18,8 @@ export const ReportingWrapper = styled.div(props => ({
         '& .barchart_items': {
             display: 'flex',
             alignItems: 'center',
-            fontSize: '10px',
-            gap: '5px',
+            fontSize: '12px',
+            gap: '8px',
             flexWrap: 'wrap',
 
             '& .first': {
@@ -42,13 +42,14 @@ export const ReportingWrapper = styled.div(props => ({
                 display: 'flex',
                 alignItems: 'center',
                 whiteSpace: 'nowrap',
-                gap: '2px'
+                gap: '4px'
             },
 
             span: {
                 display: 'block',
                 width: '10px',
-                height: '5px'
+                height: '5px',
+                borderRadius: '2px'
             }
         },
 

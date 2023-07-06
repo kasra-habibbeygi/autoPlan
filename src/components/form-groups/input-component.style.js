@@ -13,6 +13,7 @@ export const InputWrapper = styled.div(props => ({
         display: 'flex',
         alignItems: 'center',
         width: '100%',
+        background: props.theme.colors.white,
         boxShadow: '0px 4px 14px 0px #0000000D',
         padding: '15px 20px',
         borderRadius: '8px',
