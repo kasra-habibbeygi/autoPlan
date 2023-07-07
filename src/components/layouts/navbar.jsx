@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 //Assets
 import logo from '../../assets/images/header/logo.svg';
 import loginIcon from '../../assets/images/header/loginIcon.svg';
+import { NavbarStyle } from './navbar.style';
 
 //Components
-import { NavbarStyle } from './navbar.style';
 import Button from './../form-groups/button';
+import Login from '../../pages/login/login';
 
 const Navbar = () => {
+    const [showModal, setShowModal] = useState(false);
     return (
         <NavbarStyle>
             <Link to='/home' className='logoHeader'>
@@ -31,10 +33,11 @@ const Navbar = () => {
                     <a href='#contact'>تماس با ما</a>
                 </li>
             </ul>
-            <Button className='login'>
+            <Button className='login' onClick={() => setShowModal(true)}>
                 <img src={loginIcon} alt='loginIcon' />
                 <p>ورود به سیستم</p>
             </Button>
+            <Login showModal={showModal} setShowModal={setShowModal} />
         </NavbarStyle>
     );
 };

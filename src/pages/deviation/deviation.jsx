@@ -22,7 +22,7 @@ const Deviation = () => {
         current: 1
     });
 
-    const { register, handleSubmit, formState, errors } = useForm({
+    const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -31,6 +31,7 @@ const Deviation = () => {
         },
         mode: 'onTouched'
     });
+    const { errors } = formState;
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },

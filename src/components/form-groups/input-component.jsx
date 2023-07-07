@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 //Components
 import { InputWrapper } from './input-component.style';
 
-const InputComponent = ({ title, icon, type, detail, error }) => {
+const InputComponent = ({ title, icon, type, detail, error, placeHolder }) => {
     const inputRef = useRef();
 
     return (
@@ -13,7 +13,7 @@ const InputComponent = ({ title, icon, type, detail, error }) => {
             {title && <p>{title}</p>}
 
             <div className='container'>
-                <input type={type} ref={inputRef} {...detail} />
+                <input type={type} ref={inputRef} {...detail} placeholder={placeHolder} />
                 <img src={icon} onClick={() => inputRef?.current?.focus()} />
             </div>
             {error && <span className='error'>{error?.message}</span>}

@@ -8188,6 +8188,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-verification-input@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmmirror.com/react-verification-input/-/react-verification-input-3.3.0.tgz#df1075345e959c1dc83e33cbfaa065c66cd6626f"
+  integrity sha512-VeMnoY1pZIfXFixU06Kn0477DmKhAovIuuM7kKaot4mCXYjFDp/AXORHPYNgxMSaIabTqScqcusXH21IMh4ZNw==
+
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"

@@ -23,7 +23,13 @@ export const InputWrapper = styled.div(props => ({
             border: 'none',
             outline: 'none',
             padding: '0 10px',
-            fontSize: '16px'
+            fontSize: '16px',
+            '&[type=number]': {
+                '::-webkit-outer-spin-button, ::-webkit-inner-spin-button': {
+                    margin: 0,
+                    WebkitAppearance: 'none'
+                }
+            }
         }
     },
     '& .error': {
