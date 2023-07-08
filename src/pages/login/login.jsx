@@ -6,6 +6,8 @@ import addPhone from './../../assets/images/login/addPhone.svg';
 import Modal from '../../components/template/modal';
 import { LoginStyle } from './login.style';
 import VerificationInput from 'react-verification-input';
+import shape1 from './../../assets/images/login/shape1.png';
+import shape2 from './../../assets/images/login/shape2.png';
 
 const Login = ({ showModal, setShowModal }) => {
     const [loginStatus, setLoginStatus] = useState('addPhoneNumber');
@@ -33,6 +35,10 @@ const Login = ({ showModal, setShowModal }) => {
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
             <LoginStyle>
+                <img src={shape1} alt='' className='shapeTop' />
+                <img src={shape2} alt='' className='shapeTop' />
+                <img src={shape1} alt='' className='shapeBottom' />
+                <img src={shape2} alt='' className='shapeBottom' />
                 <form onSubmit={handleSubmit(sendCodeHandler)}>
                     <h2 className='title'>ورود به سیستم</h2>
                     {loginStatus === 'addPhoneNumber' ? (
