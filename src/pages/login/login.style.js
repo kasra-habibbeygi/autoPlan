@@ -8,6 +8,19 @@ export const LoginStyle = styled.nav(props => ({
     width: '420px',
     height: '500px',
 
+    '& .shapeTop': {
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
+
+    '& .shapeBottom': {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        transform: 'rotate(180deg)'
+    },
+
     '& .title': {
         color: props.theme.colors.mainColor
     },

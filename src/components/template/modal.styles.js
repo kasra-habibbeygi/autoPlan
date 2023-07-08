@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const ModalStyle = styled.div(props => ({
+    position: 'relative',
     background: props.bgStatus ? `url(${props.bg}) no-repeat center center` : '#FAFAFA',
     backgroundSize: 'cover',
 
