@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 //Assets
 import { ProgressBarStyle } from './progress-bar.style';
 
-const ProgressBar = () => {
-    const [step, setStep] = useState(3);
-
+const ProgressBar = ({ step }) => {
     return (
         <ProgressBarStyle>
             <div className={`progress ${step >= 1 ? 'active' : ''}`}>

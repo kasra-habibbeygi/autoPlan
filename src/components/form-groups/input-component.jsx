@@ -1,8 +1,6 @@
 import React, { useRef } from 'react';
 
 //Assets
-
-//Components
 import { InputWrapper } from './input-component.style';
 
 const InputComponent = ({ title, icon, type, detail, error, placeHolder }) => {

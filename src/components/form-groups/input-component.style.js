@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 export const InputWrapper = styled.div(props => ({
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
     gap: '10px',
     p: {
         fontWeight: 600,

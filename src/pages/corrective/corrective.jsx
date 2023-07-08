@@ -14,22 +14,17 @@ import Button from '../../components/form-groups/button';
 import { PercentWrapper } from './corrective.style';
 import Modal from '../../components/template/modal';
 import ProgressBar from '../../components/pages/corrective/progress-bar';
+import Problem from '../../components/pages/corrective/problem';
+import Rootting from '../../components/pages/corrective/rootting';
+import Action from '../../components/pages/corrective/action';
 
 const Corrective = () => {
+    const [step, setStep] = useState(1);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
-    });
-
-    const { register, handleSubmit, formState } = useForm({
-        defaultValues: {
-            date: '',
-            internetReception: '',
-            phoneReception: '',
-            presentReception: ''
-        },
-        mode: 'onTouched'
     });
 
     const columns = [
@@ -149,13 +144,30 @@ const Corrective = () => {
         setIsModalOpen(true);
     };
 
+    console.log(step);
+
     return (
         <>
             <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
             <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg'>
-                <h2>اقدام اصلاحی - عدم انطباق</h2>
-                <ProgressBar />
+                <h2>اقدام اصلاحی</h2>
+                <ProgressBar step={step} />
+                {step === 1 ? (
+                    <Problem setStep={setStep} />
+                ) : step === 2 ? (
+                    <Rootting setStep={setStep} />
+                ) : step === 3 ? (
+                    <Action setStep={setStep} />
+                ) : step === 4 ? (
+                    <Problem setStep={setStep} />
+                ) : step === 5 ? (
+                    <Problem setStep={setStep} />
+                ) : step === 6 ? (
+                    <Problem setStep={setStep} />
+                ) : (
+                    step === 7 && <Problem />
+                )}
             </Modal>
         </>
     );
