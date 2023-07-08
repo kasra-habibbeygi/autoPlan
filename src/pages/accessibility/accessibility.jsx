@@ -9,6 +9,8 @@ import eye from './../../assets/images/global/Eye.svg';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Button from '../../components/form-groups/button';
+import FormButton from '../../components/form-button/form-button';
+import { ActionCell } from './accessibility.style';
 
 const Accessibility = () => {
     const [pageStatus, setPageStatus] = useState({
@@ -27,17 +29,11 @@ const Accessibility = () => {
             title: 'عملیات',
             key: 'actions',
             renderCell: () => (
-                <>
-                    <Button>
-                        <img src={eye} alt='' />
-                    </Button>
-                    <Button>
-                        <img src={pen} alt='' />
-                    </Button>
-                    <Button>
-                        <img src={trashBin} alt='' />
-                    </Button>
-                </>
+                <ActionCell>
+                    <FormButton icon={eye} />
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
             )
         }
     ];

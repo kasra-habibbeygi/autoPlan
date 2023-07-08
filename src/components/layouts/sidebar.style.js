@@ -42,6 +42,7 @@ export const SidebarStyle = styled.div(props => ({
         cursor: 'pointer',
 
         button: {
+            flexDirection: 'row-reverse',
             color: props.theme.colors.textDisable,
             backgroundColor: 'transparent'
         }

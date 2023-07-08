@@ -15,7 +15,7 @@ import Exit from './../../assets/images/sideBar/Exit.svg';
 
 //Components
 import { SidebarStyle } from './sidebar.style';
-import Button from './../form-groups/button';
+import FormButton from '../form-button/form-button';
 
 const SideBar = () => {
     return (
@@ -96,10 +96,7 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <Button className='item'>
-                    <img src={Exit} alt='' />
-                    <p>خروج</p>
-                </Button>
+                <FormButton text={'خروج'} icon={Exit} width={'fit-content'} className='item' />
             </div>
         </SidebarStyle>
     );

@@ -11,9 +11,10 @@ import arrow from './../../assets/images/global/arrowUpChart.svg';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Button from '../../components/form-groups/button';
-import { PercentWrapper } from './corrective.style';
+import { ActionCell, PercentWrapper } from './corrective.style';
 import Modal from '../../components/template/modal';
 import ProgressBar from '../../components/pages/corrective/progress-bar';
+import FormButton from '../../components/form-button/form-button';
 
 const Corrective = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,17 +51,11 @@ const Corrective = () => {
             title: 'عملیات',
             key: 'actions',
             renderCell: () => (
-                <>
-                    <Button>
-                        <img src={eye} alt='' />
-                    </Button>
-                    <Button>
-                        <img src={pen} alt='' />
-                    </Button>
-                    <Button>
-                        <img src={trashBin} alt='' />
-                    </Button>
-                </>
+                <ActionCell>
+                    <FormButton icon={eye} />
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
             )
         }
     ];

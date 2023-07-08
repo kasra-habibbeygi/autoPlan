@@ -22,7 +22,7 @@ const ReceptionForm = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {};
+    const formSubmit = () => {};
 
     return (
         <FormWrapper>
@@ -85,7 +85,15 @@ const ReceptionForm = () => {
                     }}
                     error={errors?.presentReception}
                 />
-                <FormButton text='ثبت' icon={brokenArrow} loading={false} type='submit' />
+                <FormButton
+                    text='ثبت'
+                    icon={brokenArrow}
+                    loading={false}
+                    type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
+                />
             </form>
         </FormWrapper>
     );

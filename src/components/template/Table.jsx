@@ -33,6 +33,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus }) => {
             {pageStatus && setPageStatus && (
                 <div className='paginationWrapper'>
                     <Pagination
+                        color='primary'
                         count={pageStatus.total}
                         size='small'
                         page={pageStatus.current}

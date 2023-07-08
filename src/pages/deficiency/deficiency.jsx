@@ -29,7 +29,7 @@ const Deficiency = () => {
         { id: 4, title: 'نوع خودرو', key: 'carType' }
     ];
 
-    const { register, handleSubmit, errors } = useForm({
+    const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -38,6 +38,7 @@ const Deficiency = () => {
         },
         mode: 'onTouched'
     });
+    const { errors } = formState;
 
     const rows = [
         {
@@ -83,7 +84,6 @@ const Deficiency = () => {
             carType: 'شاهین'
         }
     ];
-
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -171,7 +171,7 @@ const Deficiency = () => {
                         }}
                     />
 
-                    <FormButton text='ثبت' loading={false} type='submit' />
+                    <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                 </form>
             </Modal>
         </>

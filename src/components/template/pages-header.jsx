@@ -6,17 +6,27 @@ import plus from './../../assets/images/pagesHeader/plus.svg';
 //Components
 import { PagesHeaderStyle } from './pages-header.style';
 import Button from '../form-groups/button';
+import FormButton from '../form-button/form-button';
 
-const PagesHeader = ({ buttonTitle, onButtonClick }) => {
+const today = new Date();
+const date = String(today.getDate()).padStart(2, '0');
+const month = String(today.getMonth() + 1).padStart(2, '0');
+const year = today.getFullYear();
+
+const PagesHeader = ({
+    buttonTitle,
+    onButtonClick,
+    adminName = 'نیاز شکوری',
+    secondFiled = `تاریخ امروز : ${date}/${month}/${year}`,
+    representationCode = 123475
+}) => {
     return (
         <PagesHeaderStyle>
-            <p>ادمین اصلی ، نیاز شکوری ، خوش آمدید !</p>
-            <p>ساعت کاری مجموعه : ۸ ساعت</p>
-            <p>کد نمایندگی : ۱۸۴۷۴۶</p>
-            <Button className='addButton' onClick={onButtonClick}>
-                <p>{buttonTitle}</p>
-                <img src={plus} alt='' />
-            </Button>
+            <p>ادمین اصلی ، {adminName} ، خوش آمدید !</p>
+            <p>{secondFiled}</p>
+            <p>کد نمایندگی : {representationCode}</p>
+
+            <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
         </PagesHeaderStyle>
     );
 };

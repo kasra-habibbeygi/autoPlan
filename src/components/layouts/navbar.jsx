@@ -7,8 +7,8 @@ import loginIcon from '../../assets/images/header/loginIcon.svg';
 import { NavbarStyle } from './navbar.style';
 
 //Components
-import Button from './../form-groups/button';
 import Login from '../../pages/login/login';
+import FormButton from '../form-button/form-button';
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
@@ -33,10 +33,15 @@ const Navbar = () => {
                     <a href='#contact'>تماس با ما</a>
                 </li>
             </ul>
-            <Button className='login' onClick={() => setShowModal(true)}>
-                <img src={loginIcon} alt='loginIcon' />
-                <p>ورود به سیستم</p>
-            </Button>
+
+            <FormButton
+                text='ورود به سیستم'
+                icon={loginIcon}
+                loading={false}
+                width={'fit-content'}
+                className='login'
+                onClick={() => setShowModal(true)}
+            />
             <Login showModal={showModal} setShowModal={setShowModal} />
         </NavbarStyle>
     );

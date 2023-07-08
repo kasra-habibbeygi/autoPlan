@@ -1,16 +1,16 @@
 import React from 'react';
 
 //Assets
+import { HeaderWrapper } from './detail-box-header.style';
 
 //Components
-import Button from '../form-groups/button';
-import { HeaderWrapper } from './detail-box-header.style';
+import FormButton from '../form-button/form-button';
 
 const DetailBoxHeader = ({ title, buttonText, onClick }) => {
     return (
         <HeaderWrapper>
             <p>{title}</p>
-            <Button onClick={onClick}>{buttonText}</Button>
+            <FormButton onClick={onClick} text={buttonText} width={'fit-content'} fontSize={12} />
         </HeaderWrapper>
     );
 };

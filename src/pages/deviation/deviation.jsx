@@ -10,9 +10,9 @@ import enheraf from '../../assets/images/global/BlackHole.svg';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-button/form-button';
-import Button from '../../components/form-groups/button';
 import Modal from '../../components/template/modal';
 import InputComponent from './../../components/form-groups/input-component';
+import { ActionCell } from './deviation.style';
 
 const Deviation = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -41,14 +41,10 @@ const Deviation = () => {
             title: 'عملیات',
             key: 'actions',
             renderCell: () => (
-                <>
-                    <Button>
-                        <img src={pen} alt='' />
-                    </Button>
-                    <Button>
-                        <img src={trashBin} alt='' />
-                    </Button>
-                </>
+                <ActionCell>
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
             )
         }
     ];
@@ -159,7 +155,7 @@ const Deviation = () => {
                         }}
                         error={errors?.date}
                     />
-                    <FormButton text='ثبت' loading={false} type='submit' />
+                    <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                 </form>
             </Modal>
         </>
