@@ -146,14 +146,14 @@ const Deviation = () => {
                         type='text'
                         icon={enheraf}
                         detail={{
-                            ...register('date', {
+                            ...register('text', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.date}
+                        error={errors?.text}
                     />
                     <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                 </form>

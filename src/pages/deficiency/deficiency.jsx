@@ -120,49 +120,49 @@ const Deficiency = () => {
                         type='text'
                         icon={ShockAbsorber}
                         detail={{
-                            ...register('date', {
+                            ...register('name', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.date}
+                        error={errors?.name}
                     />
                     <InputComponent
                         title='کد قطعه'
                         type='text'
                         icon={Accumulator}
                         detail={{
-                            ...register('date', {
+                            ...register('code', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.date}
+                        error={errors?.code}
                     />
                     <InputComponent
                         title='نوع خودرو'
                         type='text'
                         icon={Bus}
                         detail={{
-                            ...register('date', {
+                            ...register('type', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.date}
+                        error={errors?.type}
                     />
                     <UploadFile
                         name='uploadFile'
                         fileName={fileNameValue ?? fileNameValue}
                         valueHandler={inputValueHandler}
                         detail={{
-                            ...register('date', {
+                            ...register('file', {
                                 required: {
                                     value: false,
                                     message: 'این فیلد اجباری نیست'
