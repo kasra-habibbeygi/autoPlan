@@ -9,7 +9,7 @@ const InputComponent = ({ title, icon, type, detail, error, placeHolder }) => {
     const inputRef = useRef();
 
     return (
-        <InputWrapper>
+        <InputWrapper error={error}>
             {title && <p>{title}</p>}
 
             <div className='container'>

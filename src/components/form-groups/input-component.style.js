@@ -5,8 +5,10 @@ export const InputWrapper = styled.div(props => ({
     flexDirection: 'column',
     gap: '10px',
     p: {
-        fontWeight: 600
-        // fontSize: '20px'
+        fontWeight: 600,
+        ...(props.error && {
+            color: '#830000'
+        })
     },
 
     '& .container': {
@@ -17,6 +19,10 @@ export const InputWrapper = styled.div(props => ({
         boxShadow: '0px 4px 14px 0px #0000000D',
         padding: '15px 20px',
         borderRadius: '8px',
+        ...(props.error && {
+            border: '1px solid #830000'
+        }),
+
         input: {
             color: props.theme.colors.textColor,
             width: '100%',
@@ -34,6 +40,6 @@ export const InputWrapper = styled.div(props => ({
     },
     '& .error': {
         fontSize: '12px',
-        color: props.theme.colors.error
+        color: '#830000'
     }
 }));
