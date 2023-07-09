@@ -4,7 +4,7 @@ import React from 'react';
 import { HeaderWrapper } from './detail-box-header.style';
 
 //Components
-import FormButton from '../form-button/form-button';
+import FormButton from '../form-groups/form-button';
 
 const DetailBoxHeader = ({ title, buttonText, onClick }) => {
     return (

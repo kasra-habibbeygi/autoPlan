@@ -12,7 +12,7 @@ import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
 import { useForm } from 'react-hook-form';
 import InputComponent from '../../components/form-groups/input-component';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';
 
 const Deficiency = () => {

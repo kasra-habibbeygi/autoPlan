@@ -12,7 +12,7 @@ import PagesHeader from '../../components/template/pages-header';
 import { ActionCell, PercentWrapper } from './corrective.style';
 import Modal from '../../components/template/modal';
 import ProgressBar from '../../components/pages/corrective/progress-bar';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import Problem from '../../components/pages/corrective/problem';
 import Rootting from '../../components/pages/corrective/rootting';
 import Action from '../../components/pages/corrective/action';

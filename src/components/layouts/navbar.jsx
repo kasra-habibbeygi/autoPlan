@@ -8,7 +8,7 @@ import { NavbarStyle } from './navbar.style';
 
 //Components
 import Login from '../../pages/login/login';
-import FormButton from '../form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false);

@@ -15,7 +15,7 @@ import Exit from './../../assets/images/sideBar/Exit.svg';
 
 //Components
 import { SidebarStyle } from './sidebar.style';
-import FormButton from '../form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 
 const SideBar = () => {
     return (

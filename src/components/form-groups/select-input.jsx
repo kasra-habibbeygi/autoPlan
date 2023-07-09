@@ -1,7 +1,7 @@
 import React from 'react';
 import { SelectWrapper } from './select-input.style';
 import plus from './../../assets/images/icons/plus.svg';
-import FormButton from '../form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 
 const SelectInput = ({ title, icon, onClick, items = [], submitCount }) => {
     return (

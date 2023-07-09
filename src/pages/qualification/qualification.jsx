@@ -14,7 +14,7 @@ import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';

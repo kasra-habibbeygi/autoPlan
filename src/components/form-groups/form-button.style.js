@@ -18,6 +18,10 @@ export const FormButtonWrapper = styled(LoadingButton)(
             backgroundColor: background_color
         }),
 
+        '&:hover': {
+            backgroundColor: '#ffffffb3'
+        },
+
         p: {
             display: 'flex',
             alignItems: 'center',

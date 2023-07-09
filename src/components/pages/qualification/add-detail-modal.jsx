@@ -3,7 +3,7 @@ import { FormWrapper } from './add-detail-modal.style';
 import InputComponent from '../../form-groups/input-component';
 import circle from './../../../assets/images/icons/circle.svg';
 import { useForm } from 'react-hook-form';
-import FormButton from '../../form-button/form-button';
+import FormButton from '../../form-groups/form-button';
 import decreesArrow from './../../../assets/images/icons/decreesArrow.svg';
 import increaseArrow from './../../../assets/images/icons/increaseArrow.svg';
 

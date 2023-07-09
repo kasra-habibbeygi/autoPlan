@@ -5,8 +5,7 @@ import plus from './../../assets/images/pagesHeader/plus.svg';
 
 //Components
 import { PagesHeaderStyle } from './pages-header.style';
-import Button from '../form-groups/button';
-import FormButton from '../form-button/form-button';
+import FormButton from '../form-groups/form-button';
 
 const today = new Date();
 const date = String(today.getDate()).padStart(2, '0');

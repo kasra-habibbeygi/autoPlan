@@ -8,8 +8,7 @@ import eye from './../../assets/images/global/Eye.svg';
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
-import Button from '../../components/form-groups/button';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from './accessibility.style';
 
 const Accessibility = () => {
