@@ -40,6 +40,9 @@ const Problem = ({ setStep }) => {
                     text='بعدی'
                     loading={false}
                     type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
                     onClick={() => {
                         setStep(2);
                     }}

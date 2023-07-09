@@ -16,6 +16,7 @@ import FormButton from '../../components/form-groups/form-button';
 import Problem from '../../components/pages/corrective/problem';
 import Rootting from '../../components/pages/corrective/rootting';
 import Action from '../../components/pages/corrective/action';
+import ResponsibleForAction from '../../components/pages/corrective/ResponsibleForAction';
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
@@ -153,7 +154,7 @@ const Corrective = () => {
                 ) : step === 3 ? (
                     <Action setStep={setStep} />
                 ) : step === 4 ? (
-                    <Problem setStep={setStep} />
+                    <ResponsibleForAction setStep={setStep} />
                 ) : step === 5 ? (
                     <Problem setStep={setStep} />
                 ) : step === 6 ? (
