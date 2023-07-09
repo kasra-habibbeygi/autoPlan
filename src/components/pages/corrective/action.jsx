@@ -27,7 +27,7 @@ const Action = ({ setStep }) => {
                         title='اقدام'
                         icon={Question}
                         type='text'
-                        placeHolder='مشکل خود را بنویسید'
+                        placeHolder='اقدام  خود را برای رفع مشکل بنویسید'
                         detail={{
                             ...register('action', {
                                 required: {
@@ -46,8 +46,11 @@ const Action = ({ setStep }) => {
                     text='بعدی'
                     loading={false}
                     type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
                     onClick={() => {
-                        setStep(3);
+                        setStep(4);
                     }}
                 />{' '}
             </form>
