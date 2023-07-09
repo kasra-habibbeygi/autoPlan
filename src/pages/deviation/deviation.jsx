@@ -9,7 +9,7 @@ import enheraf from '../../assets/images/global/BlackHole.svg';
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import Modal from '../../components/template/modal';
 import InputComponent from './../../components/form-groups/input-component';
 import { ActionCell } from './deviation.style';

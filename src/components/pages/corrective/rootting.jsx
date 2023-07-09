@@ -8,7 +8,7 @@ import { Style } from './style';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
-import FormButton from '../../form-button/form-button';
+import FormButton from '../../form-groups/form-button';
 
 const Rootting = ({ setStep }) => {
     const [inputs, setInputs] = useState([{ name: '', value: '' }]);

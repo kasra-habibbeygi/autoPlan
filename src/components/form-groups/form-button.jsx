@@ -1,8 +1,6 @@
 import React from 'react';
 
 //Assets
-
-//Components
 import { FormButtonWrapper } from './form-button.style';
 
 const FormButton = ({
