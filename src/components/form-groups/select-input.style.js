@@ -65,5 +65,11 @@ export const SelectWrapper = styled.div(props => ({
         height: '58px',
         width: '55px',
         cursor: 'pointer'
+    },
+
+    '& .error': {
+        color: '#830000',
+        fontSize: '12px',
+        marginTop: '-20px'
     }
 }));

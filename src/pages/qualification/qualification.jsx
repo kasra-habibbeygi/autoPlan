@@ -12,15 +12,23 @@ import { QualificationWrapper } from './qualification.style';
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
-import Button from '../../components/form-groups/button';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-button/form-button';
 import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
+import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showSubModal, setShowSubModal] = useState(false);
+    const [subModalStatus, setSubModalStatus] = useState();
+    const [details, setDetails] = useState({
+        blockingList: [],
+        mechanicList: [],
+        electricList: [],
+        gasList: []
+    });
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -102,22 +110,31 @@ const Qualification = () => {
 
     const { register, handleSubmit, formState, reset } = useForm({
         defaultValues: {
-            date: '',
-            blocking: '',
-            mechanic: '',
-            electrician: '',
-            gas: ''
+            date: ''
         },
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    const { errors, submitCount } = formState;
 
     const formSubmit = () => {};
 
     const closeModalHandler = () => {
         reset();
+        setDetails({
+            blockingList: [],
+            mechanicList: [],
+            electricList: [],
+            gasList: []
+        });
     };
+
+    const closeSubModalHandler = () => {
+        setSubModalStatus();
+        setShowSubModal(false);
+    };
+
+    // console.log(details);
 
     return (
         <QualificationWrapper>
@@ -146,73 +163,57 @@ const Qualification = () => {
                             }}
                             error={errors?.date}
                         />
-                        <SelectInput title='جلوبندی' icon={blocking} />
-                        {/* <InputComponent
+                        <SelectInput
                             title='جلوبندی'
-                            type='text'
                             icon={blocking}
-                            detail={{
-                                ...register('blocking', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('جلوبندی');
                             }}
-                            error={errors?.blocking}
-                        /> */}
-                        <SelectInput title='مکانیک' icon={ShockAbsorber} />
+                            items={details.blockingList}
+                            submitCount={submitCount}
+                        />
 
-                        {/* <InputComponent
+                        <SelectInput
                             title='مکانیک'
-                            type='text'
                             icon={ShockAbsorber}
-                            detail={{
-                                ...register('mechanic', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('مکانیک');
                             }}
-                            error={errors?.mechanic}
-                        /> */}
-                        <SelectInput title='برق' icon={Accumulator} />
+                            items={details.mechanicList}
+                            submitCount={submitCount}
+                        />
 
-                        {/* <InputComponent
+                        <SelectInput
                             title='برق'
-                            type='text'
                             icon={Accumulator}
-                            detail={{
-                                ...register('electrician', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('برق');
                             }}
-                            error={errors?.electrician}
-                        /> */}
-                        <SelectInput title='گاز' icon={GasStation} />
+                            items={details.electricList}
+                            submitCount={submitCount}
+                        />
 
-                        {/* <InputComponent
+                        <SelectInput
                             title='گاز'
-                            type='text'
                             icon={GasStation}
-                            detail={{
-                                ...register('gas', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('گاز');
                             }}
-                            error={errors?.gas}
-                        /> */}
+                            items={details.gasList}
+                            submitCount={submitCount}
+                        />
 
                         <FormButton text='ادامه' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                     </form>
                 </div>
+            </Modal>
+
+            <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
+                <AddDetailModal subModalStatus={subModalStatus} setDetails={setDetails} closeSubModalHandler={closeSubModalHandler} />
             </Modal>
         </QualificationWrapper>
     );
