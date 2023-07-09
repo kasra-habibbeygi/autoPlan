@@ -2,6 +2,10 @@ import styled from '@emotion/styled';
 
 export const FormWrapper = styled.form(props => {
     return {
+        '& *': {
+            fontFamily: 'main !important'
+        },
+
         padding: '0 45px',
 
         '& .auto_error': {
@@ -31,7 +35,8 @@ export const FormWrapper = styled.form(props => {
             },
 
             button: {
-                marginTop: '0 !important'
+                marginTop: '0 !important',
+                width: 'auto '
             }
         },
 

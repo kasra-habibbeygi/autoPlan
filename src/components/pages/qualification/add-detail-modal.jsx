@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 
 //assets
@@ -82,17 +82,43 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                 <img src={circle} />
             </div>
             <p className='auto_error'>{errors?.name?.message}</p>
-
-            <div className='radios'>
-                <div>
-                    <input type='radio' {...register('time')} value={'partTime'} id='partTime' />
-                    <label htmlFor='partTime'>پاره وقت</label>
-                </div>
-                <div>
-                    <input type='radio' {...register('time')} value={'fullTime'} id='fullTime' />
-                    <label htmlFor='fullTime'>تمام وقت</label>
-                </div>
-            </div>
+            <Controller
+                control={control}
+                name='time'
+                defaultValue='partTime'
+                render={({ field: { onChange, value } }) => (
+                    <RadioGroup row name='radio-buttons-group' value={value} onChange={event => onChange(event.target.value)}>
+                        <FormControlLabel
+                            value='partTime'
+                            control={
+                                <Radio
+                                    sx={{
+                                        '&.Mui-checked': {
+                                            color: '#0A7900'
+                                        }
+                                    }}
+                                />
+                            }
+                            label='پاره وقت'
+                            sx={{ backgroundColor: 'transparent' }}
+                        />
+                        <FormControlLabel
+                            value='fullTime'
+                            control={
+                                <Radio
+                                    sx={{
+                                        '&.Mui-checked': {
+                                            color: '#0A7900'
+                                        }
+                                    }}
+                                />
+                            }
+                            label='تمام وقت'
+                            sx={{ backgroundColor: 'transparent' }}
+                        />
+                    </RadioGroup>
+                )}
+            />
 
             <div className='work_hour'>
                 <div>
