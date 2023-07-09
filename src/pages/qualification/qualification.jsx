@@ -14,11 +14,11 @@ import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
-import FormButton from '../../components/form-groups/form-button';
 import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import QualificationTable from '../../components/pages/qualification/qualification-table';
+import FormButton from '../../components/form-groups/form-button';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -120,14 +120,11 @@ const Qualification = () => {
     const { errors, submitCount } = formState;
 
     const formSubmit = data => {
-        if (
-            details.blockingList.length > 0 &&
-            details.electricList.length > 0 &&
-            details.gasList.length > 0 &&
-            details.mechanicList.length > 0
-        ) {
-            setStep(2);
-        }
+        // if (
+        details.blockingList.length > 0 && details.electricList.length > 0 && details.gasList.length > 0 && details.mechanicList.length > 0;
+        // ) {
+        setStep(2);
+        // }
     };
 
     const closeModalHandler = () => {
@@ -224,9 +221,7 @@ const Qualification = () => {
                             <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                         </form>
                     ) : (
-                        <>
-                            <QualificationTable />
-                        </>
+                        <QualificationTable />
                     )}
                 </div>
             </Modal>

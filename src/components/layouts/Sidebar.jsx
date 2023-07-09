@@ -12,9 +12,9 @@ import User from './../../assets/images/sideBar/UserCheck.svg';
 import UserId from './../../assets/images/sideBar/UserId.svg';
 import Widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import Exit from './../../assets/images/sideBar/Exit.svg';
+import { SidebarStyle } from './sidebar.style';
 
 //Components
-import { SidebarStyle } from './sidebar.style';
 import FormButton from '../../components/form-groups/form-button';
 
 const SideBar = () => {

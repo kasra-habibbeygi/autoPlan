@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormWrapper } from './reception-form.style';
 import { useForm } from 'react-hook-form';
 
 //Assets
+import { FormWrapper } from './reception-form.style';
 import calender from './../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 

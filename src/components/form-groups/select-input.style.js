@@ -34,9 +34,10 @@ export const SelectWrapper = styled.div(props => ({
             '& .items': {
                 display: 'flex',
                 alignItems: 'center',
+                flexWrap: 'wrap',
                 gap: '5px',
                 margin: 0,
-                overflow: 'auto',
+                // overflow: 'auto',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
 

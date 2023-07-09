@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import enheraf from '../../assets/images/global/BlackHole.svg';
+import { ActionCell } from './deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -12,7 +13,6 @@ import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
 import Modal from '../../components/template/modal';
 import InputComponent from './../../components/form-groups/input-component';
-import { ActionCell } from './deviation.style';
 
 const Deviation = () => {
     const [modalOpen, setModalOpen] = useState(false);

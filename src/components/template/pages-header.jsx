@@ -2,9 +2,9 @@ import React from 'react';
 
 //Assets
 import plus from './../../assets/images/pagesHeader/plus.svg';
-
-//Components
 import { PagesHeaderStyle } from './pages-header.style';
+
+//components
 import FormButton from '../form-groups/form-button';
 
 const today = new Date();
@@ -25,7 +25,11 @@ const PagesHeader = ({
             <p>{secondFiled}</p>
             <p>کد نمایندگی : {representationCode}</p>
 
-            <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
+            {onButtonClick ? (
+                <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
+            ) : (
+                <p>{buttonTitle}</p>
+            )}
         </PagesHeaderStyle>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //Assets
 import { ProgressBarStyle } from './progress-bar.style';

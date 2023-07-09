@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 
 export const TableWrapper = styled.div(props => ({
+    '& .footer': {
+        marginTop: '-50px',
+        marginBottom: '30px',
+        color: props.theme.colors.error
+    },
+
     table: {
         margin: '100px 0',
         borderCollapse: 'collapse',

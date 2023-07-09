@@ -1,7 +1,11 @@
 import React from 'react';
-import { TableWrapper } from './qualification-table.style';
-import FormButton from '../../form-button/form-button';
 import { useForm } from 'react-hook-form';
+
+//assets
+import { TableWrapper } from './qualification-table.style';
+
+//components
+import FormButton from '../../form-groups/form-button';
 
 const QualificationTable = () => {
     const { register, handleSubmit, formState } = useForm({
@@ -244,6 +248,7 @@ const QualificationTable = () => {
                         </tr>
                     </tbody>
                 </table>
+                {Object.keys(errors).length !== 0 ? <p className='footer'>تمام مقادیر را پر کنید</p> : null}
                 <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
             </form>
         </TableWrapper>

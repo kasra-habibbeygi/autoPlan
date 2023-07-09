@@ -11,7 +11,6 @@ export const LayoutProviderStyle = styled.div(props => ({
     background: `url(${props.bg}) no-repeat center center`,
     backgroundSize: 'cover',
     '& .content': {
-        // marginRight: '360px',
         direction: 'rtl',
         flexGrow: 1,
         width: 'calc(100% - 302px)'

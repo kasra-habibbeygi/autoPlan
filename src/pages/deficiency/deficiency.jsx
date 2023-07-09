@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 //Assets
 import Bus from '../../assets/images/icons/Bus.svg';
@@ -10,7 +11,6 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
-import { useForm } from 'react-hook-form';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';

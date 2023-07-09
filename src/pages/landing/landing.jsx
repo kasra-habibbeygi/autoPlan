@@ -1,12 +1,16 @@
 import React from 'react';
-import { LandingWrapper } from './landing.style';
-import Navbar from '../../components/layouts/navbar';
 import { Grid } from '@mui/material';
+
+//assets
+import { LandingWrapper } from './landing.style';
+import phoneCalling from './../../assets/images/landing/phoneCalling.svg';
+import email from './../../assets/images/landing/email.svg';
 import plumber from './../../assets/images/landing/plumber1.png';
 import plumberTumbUP from './../../assets/images/landing/plumber-with-thumb-up.png';
 import plumberPhone from './../../assets/images/landing/plumber-making-phone-gesture.png';
-import phoneCalling from './../../assets/images/landing/phoneCalling.svg';
-import email from './../../assets/images/landing/email.svg';
+
+//components
+import Navbar from '../../components/layouts/navbar';
 
 const Landing = () => {
     return (
