@@ -12,7 +12,7 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount }) => {
                 <div className='wrapper'>
                     <div className='items'>
                         {items.map(item => (
-                            <p key={item.title}>{item.fullText}</p>
+                            <p key={item.name}>{item.fullText}</p>
                         ))}
                     </div>
                     <img src={icon} />

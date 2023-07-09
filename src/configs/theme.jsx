@@ -12,7 +12,8 @@ export const getDesignTokens = mode => ({
         gray: '#F0EFEF',
         white: '#fff',
         textColor: '#5A5A5A',
-        textDisable: '#ABADB2'
+        textDisable: '#ABADB2',
+        borderTable: '#7C7C7C'
     },
     boxShadow: '0px 8px 24px rgba(112, 144, 176, 0.08)',
     gradient: 'linear-gradient(237.23deg, #0920EE -27.12%, #FF0800 129.48%)'
