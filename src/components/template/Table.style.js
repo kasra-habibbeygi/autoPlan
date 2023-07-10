@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const TableComponent = styled.div(props => ({
     maxWidth: '100%',
+
     table: {
         width: '100%',
         borderCollapse: 'separate',
@@ -15,7 +16,7 @@ export const TableComponent = styled.div(props => ({
 
         '& td, th': {
             padding: '23px',
-            fontSize: '20px'
+            fontSize: '1rem'
         },
 
         '& td:first-of-type , th:first-of-type': {
