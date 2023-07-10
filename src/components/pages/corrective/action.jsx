@@ -2,7 +2,7 @@ import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 //Assets
-import Question from '../../../assets/images/corrective/Question.svg';
+import check from '../../../assets/images/icons/check.svg';
 import add from '../../../assets/images/corrective/Add.svg';
 import arrow from './../../../assets/images/global/arrow.svg';
 
@@ -48,7 +48,7 @@ const Action = ({ setStep, setAllDetail }) => {
                         <div className='inputField' key={filed.id}>
                             <InputComponent
                                 title={`اقدام اصلاحی  ${index + 1}`}
-                                icon={Question}
+                                icon={check}
                                 type='text'
                                 placeHolder='اقدام اصلاحی برای رفع عدم انطباق'
                                 detail={{

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
+import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
 
 //Components
@@ -42,7 +43,15 @@ const Problem = ({ setStep, setAllDetail }) => {
                     }}
                     error={errors?.problem}
                 />
-                <FormButton text='بعدی' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <FormButton
+                    text='بعدی'
+                    loading={false}
+                    type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
+                    icon={arrow}
+                />
             </form>
         </Style>
     );

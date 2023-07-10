@@ -159,7 +159,7 @@ const Corrective = () => {
                 ) : step === 3 ? (
                     <Action setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 4 ? (
-                    <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} />
+                    <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                 ) : step === 5 ? (
                     <Problem setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 6 ? (
