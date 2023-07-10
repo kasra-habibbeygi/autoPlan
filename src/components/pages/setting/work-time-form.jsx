@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 //Assets
 import calender from './../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
+import { FormWrapper } from './work-time-form.style';
 
 //Components
-import FormButton from '../../form-button/form-button';
-import { FormWrapper } from './work-time-form.style';
+import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
 
 const WorkTimeForm = () => {

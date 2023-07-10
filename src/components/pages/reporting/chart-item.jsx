@@ -1,9 +1,9 @@
 import React from 'react';
 
 //Assets
+import { ChartItemWrapper } from './chart-item.style';
 
 //Components
-import { ChartItemWrapper } from './chart-item.style';
 
 const ChartItem = ({ title, percent, color }) => {
     return (

@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import InputComponent from '../../components/form-groups/input-component';
-import FormButton from '../../components/form-button/form-button';
-import addPhone from './../../assets/images/login/addPhone.svg';
-import Modal from '../../components/template/modal';
-import { LoginStyle } from './login.style';
 import VerificationInput from 'react-verification-input';
+
+//assets
+import { LoginStyle } from './login.style';
 import shape1 from './../../assets/images/login/shape1.png';
 import shape2 from './../../assets/images/login/shape2.png';
+import addPhone from './../../assets/images/login/addPhone.svg';
+
+//components
+import Modal from '../../components/template/modal';
+import InputComponent from '../../components/form-groups/input-component';
+import FormButton from '../../components/form-groups/form-button';
 
 const Login = ({ showModal, setShowModal }) => {
     const [loginStatus, setLoginStatus] = useState('addPhoneNumber');

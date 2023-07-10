@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //Assets
 import { ProgressBarStyle } from './progress-bar.style';
 
-const ProgressBar = () => {
-    const [step, setStep] = useState(2);
-
+const ProgressBar = ({ step }) => {
     return (
         <ProgressBarStyle>
             <div className={`progress ${step >= 1 ? 'active' : ''}`}>

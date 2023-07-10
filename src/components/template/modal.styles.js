@@ -2,11 +2,16 @@ import styled from '@emotion/styled';
 
 export const ModalStyle = styled.div(props => ({
     position: 'relative',
-    background: props.bgStatus ? `url(${props.bg}) no-repeat center center` : '#FAFAFA',
     backgroundSize: 'cover',
 
+    '& .MuiPaper-root': {
+        background: props.bgStatus ? `url(${props.bg}) no-repeat center center` : '#FAFAFA',
+        backgroundSize: 'cover',
+        borderRadius: '20px'
+    },
+
     '& .childrenStyle': {
-        background: '#FAFAFA',
+        // background: '#FAFAFA',
         textAlign: 'right',
         padding: '70px 50px',
         borderRadius: '20px',
@@ -24,9 +29,5 @@ export const ModalStyle = styled.div(props => ({
                 marginBottom: '15px'
             }
         }
-    },
-
-    '& .MuiPaper-root': {
-        borderRadius: '20px'
     }
 }));

@@ -1,13 +1,13 @@
 import React from 'react';
-import { FormWrapper } from './reception-form.style';
 import { useForm } from 'react-hook-form';
 
 //Assets
+import { FormWrapper } from './reception-form.style';
 import calender from './../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 
 //Components
-import FormButton from '../../form-button/form-button';
+import FormButton from '../../form-groups/form-button';
 import InputComponent from './../../form-groups/input-component';
 
 const ReceptionForm = () => {

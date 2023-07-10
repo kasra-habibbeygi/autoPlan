@@ -2,9 +2,9 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 //Assets
+import { ReportingWrapper } from './reporting.style';
 
 //Components
-import { ReportingWrapper } from './reporting.style';
 import DetailBoxHeader from '../../components/template/detail-box-header';
 import ChartItem from '../../components/pages/reporting/chart-item';
 import DeficiencyChart from '../../components/pages/reporting/deficiency-chart';

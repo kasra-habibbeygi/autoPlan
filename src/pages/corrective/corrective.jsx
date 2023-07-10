@@ -5,17 +5,18 @@ import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
 import arrow from './../../assets/images/global/arrowUpChart.svg';
+import { ActionCell, PercentWrapper } from './corrective.style';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
-import { ActionCell, PercentWrapper } from './corrective.style';
 import Modal from '../../components/template/modal';
 import ProgressBar from '../../components/pages/corrective/progress-bar';
-import FormButton from '../../components/form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 import Problem from '../../components/pages/corrective/problem';
 import Rootting from '../../components/pages/corrective/rootting';
 import Action from '../../components/pages/corrective/action';
+import ResponsibleForAction from '../../components/pages/corrective/ResponsibleForAction';
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
@@ -153,7 +154,7 @@ const Corrective = () => {
                 ) : step === 3 ? (
                     <Action setStep={setStep} />
                 ) : step === 4 ? (
-                    <Problem setStep={setStep} />
+                    <ResponsibleForAction setStep={setStep} />
                 ) : step === 5 ? (
                     <Problem setStep={setStep} />
                 ) : step === 6 ? (

@@ -8,21 +8,22 @@ import { NavbarStyle } from './navbar.style';
 
 //Components
 import Login from '../../pages/login/login';
-import FormButton from '../form-button/form-button';
+import FormButton from '../../components/form-groups/form-button';
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
 
     return (
-        <NavbarStyle>
-            <Link to='/home' className='logoHeader'>
-                <img src={logo} alt='logo' className='logoStyle' />
-                <h2>اوتوپلن</h2>
-            </Link>
-            <ul className='menuList'>
-                <li>
-                    <NavLink to='/home'>صفحه اصلی</NavLink>
-                </li>
+        <>
+            <NavbarStyle>
+                <Link to='/home' className='logoHeader'>
+                    <img src={logo} alt='logo' className='logoStyle' />
+                    <h2>اوتوپلن</h2>
+                </Link>
+                <ul className='menuList'>
+                    <li>
+                        <NavLink to='/home'>صفحه اصلی</NavLink>
+                    </li>
 
                 <li>
                     <Link href='/#services'>خدمات</Link>
@@ -35,16 +36,17 @@ const Navbar = () => {
                 </li>
             </ul>
 
-            <FormButton
-                text='ورود به سیستم'
-                icon={loginIcon}
-                loading={false}
-                width={'fit-content'}
-                className='login'
-                onClick={() => setShowModal(true)}
-            />
+                <FormButton
+                    text='ورود به سیستم'
+                    icon={loginIcon}
+                    loading={false}
+                    width={'fit-content'}
+                    className='login'
+                    onClick={() => setShowModal(true)}
+                />
+            </NavbarStyle>
             <Login showModal={showModal} setShowModal={setShowModal} />
-        </NavbarStyle>
+        </>
     );
 };
 

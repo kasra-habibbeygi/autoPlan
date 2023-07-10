@@ -3,22 +3,18 @@ import { Grid } from '@mui/material';
 
 //Assets
 import pen from './../../assets/images/global/pen.svg';
+import { SettingWrapper } from './setting.style';
 
 //Components
-import { SettingWrapper } from './setting.style';
 import PagesHeader from '../../components/template/pages-header';
 import DetailBoxHeader from '../../components/template/detail-box-header';
 import ReceptionForm from '../../components/pages/setting/reception-form';
 import WorkTimeForm from '../../components/pages/setting/work-time-form';
 
 const Setting = () => {
-    const openModal = () => {
-        //codes
-    };
-
     return (
         <>
-            <PagesHeader buttonTitle='نام نمایندگی' onButtonClick={openModal} />
+            <PagesHeader buttonTitle='نام نمایندگی : فلان' />
             <SettingWrapper>
                 <Grid container columnSpacing={1.5}>
                     <Grid item xs={12} md={6}>

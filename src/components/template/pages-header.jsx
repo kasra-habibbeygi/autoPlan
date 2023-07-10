@@ -2,11 +2,11 @@ import React from 'react';
 
 //Assets
 import plus from './../../assets/images/pagesHeader/plus.svg';
-
-//Components
+import filter from './../../assets/images/pagesHeader/Filter.svg';
 import { PagesHeaderStyle } from './pages-header.style';
-import Button from '../form-groups/button';
-import FormButton from '../form-button/form-button';
+
+//components
+import FormButton from '../form-groups/form-button';
 
 const today = new Date();
 const date = String(today.getDate()).padStart(2, '0');
@@ -18,15 +18,22 @@ const PagesHeader = ({
     onButtonClick,
     adminName = 'نیاز شکوری',
     secondFiled = `تاریخ امروز : ${date}/${month}/${year}`,
-    representationCode = 123475
+    representationCode = 123475,
+    hasFilter,
+    onFilterClick
 }) => {
     return (
         <PagesHeaderStyle>
             <p>ادمین اصلی ، {adminName} ، خوش آمدید !</p>
             <p>{secondFiled}</p>
             <p>کد نمایندگی : {representationCode}</p>
+            {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
 
-            <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
+            {onButtonClick ? (
+                <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
+            ) : (
+                <p>{buttonTitle}</p>
+            )}
         </PagesHeaderStyle>
     );
 };

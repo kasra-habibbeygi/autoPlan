@@ -7,7 +7,7 @@ import { Style } from './style';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
-import FormButton from '../../form-button/form-button';
+import FormButton from '../../form-groups/form-button';
 
 const Problem = ({ setStep }) => {
     const { register, handleSubmit, formState } = useForm({
@@ -40,6 +40,9 @@ const Problem = ({ setStep }) => {
                     text='بعدی'
                     loading={false}
                     type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
                     onClick={() => {
                         setStep(2);
                     }}

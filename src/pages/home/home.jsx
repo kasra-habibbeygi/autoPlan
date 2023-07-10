@@ -2,12 +2,12 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 //Assets
+import { HomeWrapper } from './home.style';
 
 //Components
 import DetailBoxHeader from '../../components/template/detail-box-header';
 import ChartItem from '../../components/pages/reporting/chart-item';
 import ReportingChart from '../../components/template/reporting-chart';
-import { HomeWrapper } from './home.style';
 import HomeTable from '../../components/pages/home/home-table';
 import PagesHeader from '../../components/template/pages-header';
 
@@ -55,13 +55,9 @@ const Home = () => {
         }
     ];
 
-    const openModal = () => {
-        //codes
-    };
-
     return (
         <>
-            <PagesHeader buttonTitle='نام نمایندگی' onButtonClick={openModal} />
+            <PagesHeader buttonTitle='نام نمایندگی : فلان' />
             <HomeWrapper>
                 <Grid container columnSpacing={1.5}>
                     <Grid item xs={12} md={5}>

@@ -1,7 +1,11 @@
 import React from 'react';
+
+//assets
 import { SelectWrapper } from './select-input.style';
 import plus from './../../assets/images/icons/plus.svg';
-import FormButton from '../form-button/form-button';
+
+//components
+import FormButton from '../../components/form-groups/form-button';
 
 const SelectInput = ({ title, icon, onClick, items = [], submitCount }) => {
     return (
@@ -12,7 +16,7 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount }) => {
                 <div className='wrapper'>
                     <div className='items'>
                         {items.map(item => (
-                            <p key={item.title}>{item.fullText}</p>
+                            <p key={item.id}>{item.fullText}</p>
                         ))}
                     </div>
                     <img src={icon} />

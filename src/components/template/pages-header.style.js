@@ -20,5 +20,11 @@ export const PagesHeaderStyle = styled.div(props => ({
         justifyContent: 'center',
         gap: '5px',
         alignItems: 'center'
+    },
+
+    '& .filterButton': {
+        borderRadius: '18px',
+        backgroundColor: props.theme.colors.white,
+        padding: '25px 0'
     }
 }));

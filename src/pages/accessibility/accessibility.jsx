@@ -4,13 +4,12 @@ import React, { useState } from 'react';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
+import { ActionCell } from './accessibility.style';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
-import Button from '../../components/form-groups/button';
-import FormButton from '../../components/form-button/form-button';
-import { ActionCell } from './accessibility.style';
+import FormButton from '../../components/form-groups/form-button';
 
 const Accessibility = () => {
     const [pageStatus, setPageStatus] = useState({
@@ -124,7 +123,7 @@ const Accessibility = () => {
 
     return (
         <>
-            <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
+            <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
         </>
     );

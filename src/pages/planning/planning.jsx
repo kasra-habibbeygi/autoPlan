@@ -108,9 +108,13 @@ const Planning = () => {
         //codes
     };
 
+    const filterHandler = () => {
+        //codes
+    };
+
     return (
         <>
-            <PagesHeader buttonTitle='ثبت برنامه جدید' onButtonClick={openModal} />
+            <PagesHeader buttonTitle='ثبت برنامه جدید' onButtonClick={openModal} hasFilter={true} onFilterClick={filterHandler} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
         </>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 //Assets
@@ -10,9 +10,7 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Rootting = ({ setStep }) => {
-    const [inputs, setInputs] = useState([{ name: '', value: '' }]);
-
+const ResponsibleForAction = ({ setStep }) => {
     const { register, handleSubmit, formState } = useForm({
         mode: 'onTouched'
     });
@@ -21,19 +19,15 @@ const Rootting = ({ setStep }) => {
 
     const formSubmit = () => {};
 
-    const handleAddInput = () => {
-        setInputs([...inputs, { name: '', value: '' }]);
-    };
-
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
                 <div className='inputField'>
                     <InputComponent
-                        title='ریشه یابی'
+                        title='مسئول اقدام'
                         icon={Question}
                         type='text'
-                        placeHolder='چرا-1 '
+                        placeHolder='مسئول اقدام اصلاحی برای رفع مشکل'
                         detail={{
                             ...register('action', {
                                 required: {
@@ -44,7 +38,7 @@ const Rootting = ({ setStep }) => {
                         }}
                         error={errors?.action}
                     />
-                    <div className='add' onClick={handleAddInput}>
+                    <div className='add'>
                         <img src={add} alt='add' />
                     </div>
                 </div>
@@ -56,7 +50,7 @@ const Rootting = ({ setStep }) => {
                     color={'white'}
                     height={48}
                     onClick={() => {
-                        setStep(3);
+                        setStep(4);
                     }}
                 />{' '}
             </form>
@@ -64,4 +58,4 @@ const Rootting = ({ setStep }) => {
     );
 };
 
-export default Rootting;
+export default ResponsibleForAction;
