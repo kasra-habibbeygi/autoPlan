@@ -1,18 +1,33 @@
 import styled from '@emotion/styled';
-import bgpic from './../../assets/images/landing/background-plumber.png';
+import bgPic from './../../assets/images/landing/background-plumber.png';
 
 export const LandingWrapper = styled.div(props => ({
     backgroundColor: props.theme.colors.white,
 
     '& .container': {
+        '& .img_wrapper': {
+            position: 'relative',
+
+            '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(0deg, rgba(255,255,255,1) 14%, rgba(255,255,255,0) 25%)'
+            }
+        },
+
         img: {
             width: '100%'
         },
-        '& .intruduce': {
+
+        '& .introduce': {
             padding: '150px 250px'
         },
 
-        '& .intruduce_text': {
+        '& .introduce_text': {
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -35,7 +50,7 @@ export const LandingWrapper = styled.div(props => ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundImage: `url(${bgpic})`,
+            backgroundImage: `url(${bgPic})`,
             // backgroundPosition: 'center center',
             // backgroundRepeat: 'no-repeat',
             color: props.theme.colors.mainColor,
@@ -102,7 +117,7 @@ export const LandingWrapper = styled.div(props => ({
                 },
 
                 '& .contact_text': {
-                    '& .contact_item_wrappr': {
+                    '& .contact_item_wrapper': {
                         display: 'flex',
                         gap: '70px'
                     },

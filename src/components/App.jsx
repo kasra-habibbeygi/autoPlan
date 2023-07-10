@@ -1,6 +1,8 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { getDesignTokens } from '../configs/theme';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // Assets
 import '../assets/styles/general.css';
@@ -24,21 +26,23 @@ function App() {
 
     return (
         <ThemeProvider theme={themeConfig}>
-            <Routes>
-                <Route path='/' element={<Landing />} />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Routes>
+                    <Route path='/' element={<Landing />} />
 
-                <Route path='/' element={<LayoutProvider />}>
-                    <Route path='home' element={<Home />} />
-                    <Route path='qualification' element={<Qualification />} />
-                    <Route path='deficiency' element={<Deficiency />} />
-                    <Route path='planning' element={<Planning />} />
-                    <Route path='deviation' element={<Deviation />} />
-                    <Route path='corrective' element={<Corrective />} />
-                    <Route path='accessibility' element={<Accessibility />} />
-                    <Route path='reporting' element={<Reporting />} />
-                    <Route path='setting' element={<Setting />} />
-                </Route>
-            </Routes>
+                    <Route path='/' element={<LayoutProvider />}>
+                        <Route path='home' element={<Home />} />
+                        <Route path='qualification' element={<Qualification />} />
+                        <Route path='deficiency' element={<Deficiency />} />
+                        <Route path='planning' element={<Planning />} />
+                        <Route path='deviation' element={<Deviation />} />
+                        <Route path='corrective' element={<Corrective />} />
+                        <Route path='accessibility' element={<Accessibility />} />
+                        <Route path='reporting' element={<Reporting />} />
+                        <Route path='setting' element={<Setting />} />
+                    </Route>
+                </Routes>
+            </LocalizationProvider>
         </ThemeProvider>
     );
 }

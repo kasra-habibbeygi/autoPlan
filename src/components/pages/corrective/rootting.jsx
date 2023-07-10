@@ -58,7 +58,7 @@ const Rootting = ({ setStep }) => {
                     onClick={() => {
                         setStep(3);
                     }}
-                />{' '}
+                />
             </form>
         </Style>
     );

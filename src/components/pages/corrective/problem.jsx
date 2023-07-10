@@ -16,7 +16,9 @@ const Problem = ({ setStep }) => {
 
     const { errors } = formState;
 
-    const formSubmit = () => {};
+    const formSubmit = () => {
+        setStep(2);
+    };
 
     return (
         <Style>
@@ -36,17 +38,7 @@ const Problem = ({ setStep }) => {
                     }}
                     error={errors?.problem}
                 />
-                <FormButton
-                    text='بعدی'
-                    loading={false}
-                    type='submit'
-                    backgroundColor={'#174787'}
-                    color={'white'}
-                    height={48}
-                    onClick={() => {
-                        setStep(2);
-                    }}
-                />
+                <FormButton text='بعدی' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
             </form>
         </Style>
     );

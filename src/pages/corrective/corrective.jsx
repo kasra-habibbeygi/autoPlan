@@ -138,7 +138,7 @@ const Corrective = () => {
         setIsModalOpen(true);
     };
 
-    console.log(step);
+    // console.log(step);
 
     return (
         <>

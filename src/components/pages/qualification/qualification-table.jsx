@@ -14,10 +14,8 @@ const QualificationTable = () => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
+        // console.log(data);
     };
-
-    // console.log(errors);
 
     return (
         <TableWrapper>
