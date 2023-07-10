@@ -120,11 +120,8 @@ const Qualification = () => {
     const { errors, submitCount } = formState;
 
     const formSubmit = data => {
-        // if (
         details.blockingList.length > 0 && details.electricList.length > 0 && details.gasList.length > 0 && details.mechanicList.length > 0;
-        // ) {
         setStep(2);
-        // }
     };
 
     const closeModalHandler = () => {
@@ -143,8 +140,6 @@ const Qualification = () => {
         setShowSubModal(false);
     };
 
-    // console.log(details);
-
     return (
         <QualificationWrapper>
             <PagesHeader
@@ -157,7 +152,6 @@ const Qualification = () => {
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
                     <ProgressBar step={step} />
-
                     {step === 1 ? (
                         <form onSubmit={handleSubmit(formSubmit)}>
                             <InputComponent

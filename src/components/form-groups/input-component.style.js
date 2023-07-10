@@ -5,6 +5,7 @@ export const InputWrapper = styled.div(props => ({
     flexDirection: 'column',
     width: '100%',
     gap: '10px',
+
     p: {
         fontWeight: 600,
         ...(props.error && {
@@ -30,6 +31,7 @@ export const InputWrapper = styled.div(props => ({
             outline: 'none',
             padding: '0 10px',
             fontSize: '16px',
+
             '&[type=number]': {
                 '::-webkit-outer-spin-button, ::-webkit-inner-spin-button': {
                     margin: 0,
@@ -38,6 +40,7 @@ export const InputWrapper = styled.div(props => ({
             }
         }
     },
+
     '& .error': {
         fontSize: '12px',
         color: '#830000'

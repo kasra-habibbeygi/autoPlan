@@ -44,35 +44,35 @@ const WorkTimeForm = () => {
                     }}
                     error={errors?.date}
                 />
-                <div className='time'>
-                    <p>ساعت شروع کار نمایندگی</p>
-                    <div className={errors?.start_time?.message ? 'time_picker error' : 'time_picker'}>
-                        <Controller
-                            control={control}
-                            name='start_time'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return <TimePicker value={value} onChange={newValue => onChange(newValue)} sx={{ width: '100%' }} />;
-                            }}
-                        />
-                    </div>
-                    <p className='time_error'>{errors?.start_time?.message}</p>
-                </div>
+                <InputComponent
+                    title='تاریخ'
+                    icon={calender}
+                    type='date'
+                    detail={{
+                        ...register('date', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                    error={errors?.date}
+                />
 
-                <div className='time'>
-                    <p>ساعت پایان کار نمایندگی</p>
-                    <div className={errors?.finish_time?.message ? 'time_picker error' : 'time_picker'}>
-                        <Controller
-                            control={control}
-                            name='finish_time'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return <TimePicker value={value} onChange={newValue => onChange(newValue)} sx={{ width: '100%' }} />;
-                            }}
-                        />
-                    </div>
-                    <p className='time_error'>{errors?.finish_time?.message}</p>
-                </div>
+                <InputComponent
+                    title='تاریخ'
+                    icon={calender}
+                    type='date'
+                    detail={{
+                        ...register('date', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                    error={errors?.date}
+                />
                 <FormButton
                     text='ثبت'
                     icon={brokenArrow}
