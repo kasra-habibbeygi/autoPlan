@@ -16,7 +16,7 @@ export const ProgressBarStyle = styled.div(props => ({
         position: 'relative',
 
         p: {
-            width: '100px',
+            width: 'max-content',
             textAlign: 'center',
             position: 'absolute',
             top: '-30px'

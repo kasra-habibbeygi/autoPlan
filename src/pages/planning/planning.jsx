@@ -17,6 +17,7 @@ import FormButton from '../../components/form-groups/form-button';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
+    const [step, setStep] = useState(3);
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -39,9 +40,7 @@ const Planning = () => {
 
     const filterHandler = () => {};
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = () => {};
 
     return (
         <PlanningField>
@@ -49,77 +48,354 @@ const Planning = () => {
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
             <Modal state={modalIsOpen} setState={setIsModalOpen} bgStatus={true}>
                 <div className='formControl'>
-                    <h2>کسری قطعات</h2>
-                    <ProgressBar />
-                    <form onSubmit={handleSubmit(formSubmit)}>
-                        <InputComponent
-                            title='برند'
-                            type='text'
-                            icon={Bus}
-                            detail={{
-                                ...register('name', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.name}
-                        />
-                        <InputComponent
-                            title='مدل'
-                            type='text'
-                            icon={Bus}
-                            detail={{
-                                ...register('name', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.name}
-                        />
-                        <InputComponent
-                            title='نام آورنده'
-                            type='text'
-                            icon={Bus}
-                            detail={{
-                                ...register('name', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.name}
-                        />
-                        <InputComponent
-                            title='شماره موبایل'
-                            type='text'
-                            icon={PhoneIcon}
-                            detail={{
-                                ...register('name', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.name}
-                        />
-                        <FormButton
-                            text='ورود به سیستم'
-                            icon={Arrow}
-                            loading={false}
-                            width='fit-content'
-                            className='login'
-                            backgroundColor={'#174787'}
-                            onClick={() => {}}
-                            height='48px'
-                            type='submit'
-                        />
-                    </form>
+                    <h2>برنامه ریزی تعمیرات</h2>
+                    <ProgressBar step={step} />
+                    {step === 1 && (
+                        <form onSubmit={handleSubmit(formSubmit)}>
+                            <InputComponent
+                                title='برند'
+                                placeHolder='برند خودرو'
+                                type='text'
+                                icon={Bus}
+                                detail={{
+                                    ...register('name', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={errors?.name}
+                            />
+                            <InputComponent
+                                title='مدل'
+                                placeHolder='مدل خودرو'
+                                type='text'
+                                icon={Bus}
+                                detail={{
+                                    ...register('name', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={errors?.name}
+                            />
+                            <InputComponent
+                                title='نام آورنده'
+                                placeHolder='نام آورنده خودرو'
+                                type='text'
+                                icon={Bus}
+                                detail={{
+                                    ...register('name', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={errors?.name}
+                            />
+                            <InputComponent
+                                title='شماره موبایل'
+                                placeHolder='09----------'
+                                type='text'
+                                icon={PhoneIcon}
+                                detail={{
+                                    ...register('name', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={errors?.name}
+                            />
+                            <FormButton
+                                text='بعدی'
+                                icon={Arrow}
+                                loading={false}
+                                width='fit-content'
+                                className='login'
+                                backgroundColor={'#174787'}
+                                onClick={() => {}}
+                                height='48px'
+                                type='submit'
+                            />
+                        </form>
+                    )}
+
+                    {step === 2 && (
+                        <form className='form_double_col'>
+                            <div className='col'>
+                                <InputComponent
+                                    title='نوع تعمیر'
+                                    placeHolder='نوع تعمیر خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='جایگاه'
+                                    placeHolder='جایگاه تعمیر خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='کد تعمیر کار | نام تعمیر کار'
+                                    placeHolder='کد | نام تعمیر کار خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='شماره هرم'
+                                    placeHolder='شماره هرم'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                            </div>
+                            <div className='col'>
+                                <InputComponent
+                                    title='تاریخ'
+                                    placeHolder='تاریخ مراجعه خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='زمان تقریبی شروع'
+                                    placeHolder='زمان تقریبی شروع تعمیر خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='زمان تقریبی پایان'
+                                    placeHolder='زمان تقریبی پایان تعمیر خودرو'
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                                <InputComponent
+                                    title='قطعات مورد نیاز تعمیرات'
+                                    placeHolder=''
+                                    type='text'
+                                    icon={PhoneIcon}
+                                    detail={{
+                                        ...register('name', {
+                                            required: {
+                                                value: true,
+                                                message: 'این فیلد اجباری است'
+                                            }
+                                        })
+                                    }}
+                                    error={errors?.name}
+                                />
+                            </div>
+                            <FormButton
+                                text='بعدی'
+                                icon={Arrow}
+                                loading={false}
+                                width='fit-content'
+                                className='submit'
+                                backgroundColor={'#174787'}
+                                onClick={() => {}}
+                                height='48px'
+                                type='submit'
+                            />
+                        </form>
+                    )}
+
+                    {step === 3 && (
+                        <>
+                            <form className='form_double_col'>
+                                <div className='col'>
+                                    <InputComponent
+                                        title='زمان تقریبی شروع'
+                                        placeHolder='1402/04/08 - 20:20'
+                                        type='text'
+                                        icon={PhoneIcon}
+                                        detail={{
+                                            ...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'این فیلد اجباری است'
+                                                }
+                                            })
+                                        }}
+                                        error={errors?.name}
+                                    />
+                                    <InputComponent
+                                        title='زمان واقعی شروع'
+                                        placeHolder='1402/04/08 - 19:20'
+                                        type='text'
+                                        icon={PhoneIcon}
+                                        detail={{
+                                            ...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'این فیلد اجباری است'
+                                                }
+                                            })
+                                        }}
+                                        error={errors?.name}
+                                    />
+                                </div>
+                                <div className='col'>
+                                    <InputComponent
+                                        title='زمان تقریبی پایان'
+                                        placeHolder='1402/04/08 - 20:20'
+                                        type='text'
+                                        icon={PhoneIcon}
+                                        detail={{
+                                            ...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'این فیلد اجباری است'
+                                                }
+                                            })
+                                        }}
+                                        error={errors?.name}
+                                    />
+                                    <InputComponent
+                                        title='زمان واقعی پایان'
+                                        placeHolder='1402/04/08 - 19:20'
+                                        type='text'
+                                        icon={PhoneIcon}
+                                        detail={{
+                                            ...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'این فیلد اجباری است'
+                                                }
+                                            })
+                                        }}
+                                        error={errors?.name}
+                                    />
+                                </div>
+                            </form>
+                            <div className='summary'>
+                                <div className='right_field'>
+                                    <div className='pill'>
+                                        <p>تاخیر در شروع</p>
+                                        <div>
+                                            <img src={PhoneIcon} alt='' />
+                                            یک ساعت تاخیر در شروع
+                                        </div>
+                                    </div>
+                                    <div className='pill'>
+                                        <p>تاخیر در شروع</p>
+                                        <div>
+                                            <img src={PhoneIcon} alt='' />
+                                            یک ساعت تاخیر در شروع
+                                        </div>
+                                    </div>
+                                    <div className='pill'>
+                                        <p>تاخیر در شروع</p>
+                                        <div>
+                                            <img src={PhoneIcon} alt='' />
+                                            یک ساعت تاخیر در شروع
+                                        </div>
+                                    </div>
+                                    <div className='pill'>
+                                        <p>تاخیر در شروع</p>
+                                        <div>
+                                            <img src={PhoneIcon} alt='' />
+                                            یک ساعت تاخیر در شروع
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='left_field'>
+                                    <InputComponent
+                                        title='زمان تقریبی شروع'
+                                        placeHolder='1402/04/08 - 20:20'
+                                        type='text'
+                                        icon={PhoneIcon}
+                                        detail={{
+                                            ...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'این فیلد اجباری است'
+                                                }
+                                            })
+                                        }}
+                                        error={errors?.name}
+                                    />
+                                </div>
+                            </div>
+                            <FormButton
+                                text='بعدی'
+                                icon={Arrow}
+                                loading={false}
+                                width='fit-content'
+                                className='submit'
+                                backgroundColor={'#174787'}
+                                onClick={() => {}}
+                                height='48px'
+                                type='submit'
+                            />
+                        </>
+                    )}
                 </div>
             </Modal>
         </PlanningField>
