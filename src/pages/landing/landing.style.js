@@ -35,7 +35,6 @@ export const LandingWrapper = styled.div(props => ({
             fontSize: '62px',
             fontWeight: '1000',
             lineHeight: '96px',
-            fontFamily: 'bold',
 
             '& p:nth-child(2)': {
                 color: props.theme.colors.secondary

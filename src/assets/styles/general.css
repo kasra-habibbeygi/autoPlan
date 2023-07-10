@@ -1,21 +1,13 @@
 @font-face {
-    font-family: 'main';
-    src: url('../fonts/YekanBakh-Regular.ttf');
+    font-family: "main";
+    src: url(../fonts/YekanBakhFaNum-Bold.ttf) format("truetype");
+    font-weight: 900;
 }
 
 @font-face {
-    font-family: 'bold';
-    src: url('../fonts/YekanBakh-Bold.ttf');
-}
-
-@font-face {
-    font-family: 'bold-FaNum';
-    src: url('../fonts/YekanBakhFaNum-Bold.ttf');
-}
-
-@font-face {
-    font-family: 'faNum';
-    src: url('../fonts/YekanBakhFaNum-Regular.ttf');
+    font-family: "main";
+    src: url(../fonts/YekanBakhFaNum-Regular.ttf) format("truetype");
+    font-weight: 300;
 }
 
 * {
@@ -27,7 +19,7 @@
 
 body,
 html {
-    font-family: 'main' !important;
+    font-family: 'main';
     background-color: #F7F7F7;
 }
 
@@ -48,16 +40,10 @@ html {
 
 table {
     border-collapse: collapse;
-    font-family: 'main' !important;
     text-align: center;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent
-}
-
-th,
-td {
-    font-family: 'main' !important;
 }
 
 hr {
@@ -105,10 +91,13 @@ button {
 }
 
 label {
-    font-family: 'main' !important;
     background: white;
 }
 
 input {
+    font-family: 'main' !important;
+}
+
+textarea {
     font-family: 'main' !important;
 }

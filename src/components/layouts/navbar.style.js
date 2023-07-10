@@ -21,7 +21,6 @@ export const NavbarStyle = styled.nav(props => ({
 
         h2: {
             fontSize: '1.3rem',
-            fontFamily: 'bold',
             color: props.theme.colors.mainColor
         }
     },

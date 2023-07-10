@@ -10,8 +10,7 @@ export const ReportingWrapper = styled.div(props => ({
 
             select: {
                 border: 'none',
-                outline: 'none',
-                fontFamily: 'main'
+                outline: 'none'
             }
         },
 

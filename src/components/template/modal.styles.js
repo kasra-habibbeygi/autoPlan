@@ -17,7 +17,6 @@ export const ModalStyle = styled.div(props => ({
         borderRadius: '20px',
         h2: {
             fontSize: '1.8rem',
-            fontFamily: 'bold-FaNum',
             textAlign: 'center',
             marginBottom: '20px'
         },

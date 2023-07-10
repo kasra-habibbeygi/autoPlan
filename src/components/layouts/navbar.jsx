@@ -12,6 +12,7 @@ import FormButton from '../../components/form-groups/form-button';
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
+
     return (
         <>
             <NavbarStyle>
@@ -23,15 +24,14 @@ const Navbar = () => {
                     <li>
                         <NavLink to='/home'>صفحه اصلی</NavLink>
                     </li>
-
                     <li>
-                        <a href='#services'>خدمات</a>
+                        <Link href='/#services'>خدمات</Link>
                     </li>
                     <li>
-                        <a href='#about'>درباره ما</a>
+                        <Link href='/#about'>درباره ما</Link>
                     </li>
                     <li>
-                        <a href='#contact'>تماس با ما</a>
+                        <Link href='/#contact'>تماس با ما</Link>
                     </li>
                 </ul>
 
