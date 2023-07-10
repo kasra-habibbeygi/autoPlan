@@ -24,17 +24,16 @@ const Navbar = () => {
                     <li>
                         <NavLink to='/home'>صفحه اصلی</NavLink>
                     </li>
-
-                <li>
-                    <Link href='/#services'>خدمات</Link>
-                </li>
-                <li>
-                    <Link href='/#about'>درباره ما</Link>
-                </li>
-                <li>
-                    <Link href='/#contact'>تماس با ما</Link>
-                </li>
-            </ul>
+                    <li>
+                        <Link href='/#services'>خدمات</Link>
+                    </li>
+                    <li>
+                        <Link href='/#about'>درباره ما</Link>
+                    </li>
+                    <li>
+                        <Link href='/#contact'>تماس با ما</Link>
+                    </li>
+                </ul>
 
                 <FormButton
                     text='ورود به سیستم'
