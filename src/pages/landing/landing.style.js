@@ -20,7 +20,6 @@ export const LandingWrapper = styled.div(props => ({
             fontSize: '62px',
             fontWeight: '1000',
             lineHeight: '96px',
-            fontFamily: 'bold',
 
             '& p:nth-child(2)': {
                 color: props.theme.colors.secondary
@@ -36,8 +35,6 @@ export const LandingWrapper = styled.div(props => ({
             justifyContent: 'center',
             alignItems: 'center',
             backgroundImage: `url(${bgpic})`,
-            // backgroundPosition: 'center center',
-            // backgroundRepeat: 'no-repeat',
             color: props.theme.colors.mainColor,
             height: '760px',
             padding: '150px 250px',

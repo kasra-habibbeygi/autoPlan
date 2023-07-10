@@ -35,8 +35,7 @@ export const UploadFileStyle = styled.div(props => ({
         h3: {
             fontSize: '1rem',
             color: props.theme.colors.black,
-            marginBottom: '20px',
-            fontFamily: 'bold-FaNum'
+            marginBottom: '20px'
         }
     }
 }));
