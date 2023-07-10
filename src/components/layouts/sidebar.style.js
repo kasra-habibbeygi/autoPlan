@@ -16,11 +16,17 @@ export const SidebarStyle = styled.div(props => ({
         whiteSpace: 'nowrap'
     },
 
+    ul: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+    },
+
     li: {
         listStyle: 'none',
 
         div: {
-            padding: '24px 24px 21px 24px',
+            padding: '18px 20px',
             borderRadius: '14px',
             color: props.theme.colors.black,
             transition: 'all 0.1s',
@@ -38,7 +44,7 @@ export const SidebarStyle = styled.div(props => ({
     },
 
     '& .logout': {
-        padding: '24px 24px 21px 24px',
+        padding: '18px 20px',
         cursor: 'pointer',
 
         button: {

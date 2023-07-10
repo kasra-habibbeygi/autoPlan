@@ -15,14 +15,14 @@ import Exit from './../../assets/images/sideBar/Exit.svg';
 import { SidebarStyle } from './sidebar.style';
 
 //Components
-import FormButton from '../../components/form-groups/form-button';
+import FormButton from '../form-groups/form-button';
 
 const SideBar = () => {
     return (
         <SidebarStyle>
             <ul>
                 <li>
-                    <NavLink to='/home'>
+                    <NavLink to='/dashboard'>
                         <div className='item'>
                             <img src={Home} alt='' />
                             <p>صفحه اصلی</p>
@@ -96,7 +96,7 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <FormButton text={'خروج'} icon={Exit} width={'fit-content'} className='item' />
+                <FormButton text='خروج' icon={Exit} width='fit-content' className='item' />
             </div>
         </SidebarStyle>
     );
