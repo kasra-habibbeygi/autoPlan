@@ -10,6 +10,7 @@ import GasStation from '../../assets/images/icons/GasStation.svg';
 import { QualificationWrapper } from './qualification.style';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
+import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -21,7 +22,6 @@ import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import QualificationTable from '../../components/pages/qualification/qualification-table';
 import FormButton from '../../components/form-groups/form-button';
-import { ActionCell } from '../deviation/deviation.style';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -128,8 +128,14 @@ const Qualification = () => {
     const { errors, submitCount } = formState;
 
     const formSubmit = data => {
-        details.blockingList.length > 0 && details.electricList.length > 0 && details.gasList.length > 0 && details.mechanicList.length > 0;
-        setStep(2);
+        if (
+            details.blockingList.length > 0 &&
+            details.electricList.length > 0 &&
+            details.gasList.length > 0 &&
+            details.mechanicList.length > 0
+        ) {
+            setStep(2);
+        }
     };
 
     const closeModalHandler = () => {
@@ -185,6 +191,7 @@ const Qualification = () => {
                                 }}
                                 items={details.blockingList}
                                 submitCount={submitCount}
+                                setDetails={setDetails}
                             />
 
                             <SelectInput
@@ -196,6 +203,7 @@ const Qualification = () => {
                                 }}
                                 items={details.mechanicList}
                                 submitCount={submitCount}
+                                setDetails={setDetails}
                             />
 
                             <SelectInput
@@ -207,6 +215,7 @@ const Qualification = () => {
                                 }}
                                 items={details.electricList}
                                 submitCount={submitCount}
+                                setDetails={setDetails}
                             />
 
                             <SelectInput
@@ -218,6 +227,7 @@ const Qualification = () => {
                                 }}
                                 items={details.gasList}
                                 submitCount={submitCount}
+                                setDetails={setDetails}
                             />
 
                             <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />

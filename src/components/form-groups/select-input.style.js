@@ -42,11 +42,20 @@ export const SelectWrapper = styled.div(props => ({
                 msOverflowStyle: 'none',
 
                 p: {
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px',
                     fontSize: '12px',
                     backgroundColor: '#F3F3F3',
                     padding: '5px 14px',
                     whiteSpace: 'nowrap',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
+
+                    img: {
+                        width: '14px',
+                        height: '14px',
+                        cursor: 'pointer'
+                    }
                 }
             },
 
