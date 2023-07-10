@@ -36,7 +36,7 @@ const Deficiency = () => {
             key: 'actions',
             renderCell: () => (
                 <ActionCell>
-                    <FormButton icon={pen} />
+                    <FormButton icon={pen} onClick={() => setIsModalOpen(true)} />
                     <FormButton icon={trashBin} />
                 </ActionCell>
             )
@@ -113,7 +113,7 @@ const Deficiency = () => {
             <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
             <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm'>
-                <h2>کسری قطعات</h2>
+                <h2> کسری قطعات </h2>
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <InputComponent
                         title='تاریخ'

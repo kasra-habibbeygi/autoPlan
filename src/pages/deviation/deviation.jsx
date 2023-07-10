@@ -42,7 +42,7 @@ const Deviation = () => {
             key: 'actions',
             renderCell: () => (
                 <ActionCell>
-                    <FormButton icon={pen} />
+                    <FormButton icon={pen} onClick={() => setModalOpen(true)} />
                     <FormButton icon={trashBin} />
                 </ActionCell>
             )

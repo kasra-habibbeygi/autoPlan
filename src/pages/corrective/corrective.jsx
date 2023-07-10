@@ -7,6 +7,7 @@ import eye from './../../assets/images/global/Eye.svg';
 import arrow from './../../assets/images/global/arrowUpChart.svg';
 import { PercentWrapper } from './corrective.style';
 import { ActionCell } from '../deviation/deviation.style';
+import { EditModalStyle } from '../deviation/edit-modal-style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -24,6 +25,7 @@ const Corrective = () => {
     const [allDetail, setAllDetail] = useState({});
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -48,7 +50,7 @@ const Corrective = () => {
             key: 'actions',
             renderCell: () => (
                 <ActionCell>
-                    <FormButton icon={eye} />
+                    <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
                     <FormButton icon={pen} />
                     <FormButton icon={trashBin} />
                 </ActionCell>
@@ -165,6 +167,88 @@ const Corrective = () => {
                 ) : (
                     step === 7 && <Problem />
                 )}
+            </Modal>
+            <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
+                <EditModalStyle>
+                    <h2>اقدام اصلاحی</h2>
+                    <div>
+                        <ol>
+                            <li>
+                                <p>تاریخ صدور اقدام اصلاحی</p>
+                                <span>1402/04/08 - 22:20</span>
+                            </li>
+                            <li>
+                                <p>عدم انطباق </p>
+                                <span>مشکل فلان بیسار هستش </span>
+                            </li>
+                            <li>
+                                <p>ریشه یابی </p>
+                                <div>
+                                    <span>
+                                        <b>چرا 1 :</b>
+                                        چرا فلان اتفاق رخ داده است ؟
+                                    </span>
+                                    <span>
+                                        <b>چرا 2 :</b>
+                                        چرا فلان اتفاق رخ داده است ؟
+                                    </span>
+                                    <span>
+                                        <b>چرا 3 :</b>
+                                        چرا فلان اتفاق رخ داده است ؟
+                                    </span>
+                                    <span>
+                                        <b>چرا 4 :</b>
+                                        چرا فلان اتفاق رخ داده است ؟
+                                    </span>
+                                    <span>
+                                        <b>چرا 5 :</b>
+                                        چرا فلان اتفاق رخ داده است ؟
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <p>اقدام یا اقدامات اصلاحی</p>
+                                <div>
+                                    <span>
+                                        <b>اقدام اصلاحی 1 :</b>
+                                        یکی از اقداماتی که باعث اصلاح این مشکل میشه
+                                    </span>
+                                    <span>
+                                        <b>اقدام اصلاحی 2 :</b>
+                                        یکی از اقداماتی که باعث اصلاح این مشکل میشه
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <p>مسئول اقدامات اصلاحی</p>
+                                <div>
+                                    <span>
+                                        <b>مسئول اقدام اصلاحی 1 :</b>
+                                        مهران زارع
+                                    </span>
+                                    <span>
+                                        <b>مسئول اقدام اصلاحی 2 :</b>
+                                        مهران زارع
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <p>تاریخ اجرا</p>
+                                <span>1402/04/08 - 22:20</span>
+                            </li>
+                            <li>
+                                <p>نتیجه</p>
+                                <span>
+                                    نتیجه این راه حل و اقدام اصلاحی فلان و بیسار هستش نتیجه این راه حل و اقدام اصلاحی فلان و بیسار هستش{' '}
+                                </span>
+                            </li>
+                            <li>
+                                <p>تاریخ کنترل اثر بخشی </p>
+                                <span>1402/04/08 - 22:20</span>
+                            </li>
+                        </ol>
+                    </div>
+                </EditModalStyle>
             </Modal>
         </>
     );
