@@ -7,7 +7,7 @@ import bg from '../../assets/images/global/bg.svg';
 
 //components
 import Navbar from './navbar';
-import SideBar from './sidebar';
+import SideBar from './Sidebar';
 
 const LayoutProvider = () => {
     return (
