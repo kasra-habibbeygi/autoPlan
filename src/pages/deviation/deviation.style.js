@@ -4,5 +4,8 @@ export const ActionCell = styled.div(() => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '8px'
+    gap: '20px',
+    button: {
+        width: 'max-content'
+    }
 }));

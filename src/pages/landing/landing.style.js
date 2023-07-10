@@ -36,11 +36,11 @@ export const LandingWrapper = styled.div(props => ({
             fontWeight: '1000',
             lineHeight: '96px',
 
-            '& p:nth-child(2)': {
+            '& p:nth-of-type(2)': {
                 color: props.theme.colors.secondary
             },
 
-            '& p:nth-child(3)': {
+            '& p:nth-of-type(3)': {
                 color: props.theme.colors.mainColor
             }
         },

@@ -6,6 +6,8 @@ import Bus from '../../assets/images/icons/Bus.svg';
 import CalendarDate from '../../assets/images/icons/CalendarDate.svg';
 import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
 import Accumulator from '../../assets/images/icons/Accumulator.svg';
+import trashBin from './../../assets/images/global/TrashBin.svg';
+import pen from './../../assets/images/global/pen.svg';
 
 //Components
 import Table from '../../components/template/Table';
@@ -14,6 +16,7 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';
+import { ActionCell } from '../deviation/deviation.style';
 
 const Deficiency = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
@@ -26,7 +29,18 @@ const Deficiency = () => {
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
         { id: 3, title: 'نام قطعه', key: 'partName' },
-        { id: 4, title: 'نوع خودرو', key: 'carType' }
+        { id: 4, title: 'نوع خودرو', key: 'carType' },
+        {
+            id: 5,
+            title: 'عملیات',
+            key: 'actions',
+            renderCell: () => (
+                <ActionCell>
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
+            )
+        }
     ];
 
     const { register, handleSubmit, formState } = useForm({

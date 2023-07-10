@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
-import { ActionCell } from './accessibility.style';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
+import { ActionCell } from '../deviation/deviation.style';
 
 const Accessibility = () => {
     const [pageStatus, setPageStatus] = useState({

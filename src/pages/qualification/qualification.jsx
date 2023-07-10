@@ -8,6 +8,8 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import blocking from '../../assets/images/icons/blocking.svg';
 import GasStation from '../../assets/images/icons/GasStation.svg';
 import { QualificationWrapper } from './qualification.style';
+import trashBin from './../../assets/images/global/TrashBin.svg';
+import pen from './../../assets/images/global/pen.svg';
 
 //Components
 import Table from '../../components/template/Table';
@@ -19,6 +21,7 @@ import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import QualificationTable from '../../components/pages/qualification/qualification-table';
 import FormButton from '../../components/form-groups/form-button';
+import { ActionCell } from '../deviation/deviation.style';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -45,9 +48,14 @@ const Qualification = () => {
         { id: 6, title: 'گاز', key: 'gas' },
         {
             id: 7,
-            title: 'جایگاه',
-            key: 'position',
-            renderCell: () => <FormButton text={'مشاهده'} />
+            title: 'عملیات',
+            key: 'actions',
+            renderCell: () => (
+                <ActionCell>
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
+            )
         }
     ];
 
