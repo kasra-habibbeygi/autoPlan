@@ -4,13 +4,14 @@ import { useForm, useFieldArray } from 'react-hook-form';
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
 import add from '../../../assets/images/corrective/Add.svg';
+import arrow from './../../../assets/images/global/arrow.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import { RootingStyle } from './rootting.style';
 
-const Rootting = ({ setStep }) => {
+const Rootting = ({ setStep, setAllDetail }) => {
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             whyFiled: [{ reason: '' }]
@@ -43,7 +44,7 @@ const Rootting = ({ setStep }) => {
                         {fields.map((filed, index) => (
                             <div className='inputField' key={filed.id}>
                                 <InputComponent
-                                    title={`ریشه یابی ${index + 1}`}
+                                    title={index === 0 ? `ریشه یابی ${index + 1}` : '‍'}
                                     icon={Question}
                                     type='text'
                                     placeHolder={`چرا-${index + 1}`}
@@ -64,7 +65,15 @@ const Rootting = ({ setStep }) => {
                         </div>
                     </div>
                 </div>
-                <FormButton text='بعدی' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <FormButton
+                    text='بعدی'
+                    loading={false}
+                    type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
+                    icon={arrow}
+                />
             </form>
         </RootingStyle>
     );

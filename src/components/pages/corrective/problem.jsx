@@ -9,15 +9,19 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Problem = ({ setStep }) => {
+const Problem = ({ setStep, setAllDetail }) => {
     const { register, handleSubmit, formState } = useForm({
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
-    const formSubmit = () => {
+    const formSubmit = data => {
         setStep(2);
+        setAllDetail(prev => ({
+            ...prev,
+            problem: data.problem
+        }));
     };
 
     return (

@@ -21,6 +21,7 @@ import ResponsibleForAction from '../../components/pages/corrective/ResponsibleF
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
+    const [allDetail, setAllDetail] = useState({});
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pageStatus, setPageStatus] = useState({
@@ -140,6 +141,7 @@ const Corrective = () => {
     };
 
     // console.log(step);
+    console.log(allDetail);
 
     return (
         <>
@@ -149,15 +151,15 @@ const Corrective = () => {
                 <h2>اقدام اصلاحی</h2>
                 <ProgressBar step={step} />
                 {step === 1 ? (
-                    <Problem setStep={setStep} />
+                    <Problem setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 2 ? (
-                    <Rootting setStep={setStep} />
+                    <Rootting setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 3 ? (
-                    <Action setStep={setStep} />
+                    <Action setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 4 ? (
-                    <ResponsibleForAction setStep={setStep} />
+                    <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 5 ? (
-                    <Problem setStep={setStep} />
+                    <Problem setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 6 ? (
                     <Problem setStep={setStep} />
                 ) : (
