@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 
 //assets
@@ -11,8 +11,20 @@ import plumberPhone from './../../assets/images/landing/plumber-making-phone-ges
 
 //components
 import Navbar from '../../components/layouts/navbar';
+import { useLocation } from 'react-router-dom';
 
 const Landing = () => {
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.hash) {
+            const target = document.querySelector(location.hash);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [location.hash]);
+
     return (
         <LandingWrapper>
             <Navbar />

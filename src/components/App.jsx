@@ -15,7 +15,7 @@ import Deviation from '../pages/deviation/deviation';
 import Corrective from '../pages/corrective/corrective';
 import Accessibility from '../pages/accessibility/accessibility';
 import Reporting from '../pages/reporting/reporting';
-import Home from '../pages/home/home';
+import Dashboard from '../pages/dashboard/dashboard';
 import Setting from '../pages/setting/setting';
 import Landing from '../pages/landing/landing';
 
@@ -26,9 +26,8 @@ function App() {
         <ThemeProvider theme={themeConfig}>
             <Routes>
                 <Route path='/' element={<Landing />} />
-
                 <Route path='/' element={<LayoutProvider />}>
-                    <Route path='home' element={<Home />} />
+                    <Route path='dashboard' element={<Dashboard />} />
                     <Route path='qualification' element={<Qualification />} />
                     <Route path='deficiency' element={<Deficiency />} />
                     <Route path='planning' element={<Planning />} />

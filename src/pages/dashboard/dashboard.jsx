@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 
 //Assets
-import { HomeWrapper } from './home.style';
+import { HomeWrapper } from './dashboard.style';
 
 //Components
 import DetailBoxHeader from '../../components/template/detail-box-header';

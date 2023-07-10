@@ -12,7 +12,6 @@ import FormButton from '../../components/form-groups/form-button';
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
-
     return (
         <>
             <NavbarStyle>
@@ -22,19 +21,18 @@ const Navbar = () => {
                 </Link>
                 <ul className='menuList'>
                     <li>
-                        <NavLink to='/home'>صفحه اصلی</NavLink>
+                        <NavLink to='/'>صفحه اصلی</NavLink>
                     </li>
                     <li>
-                        <Link href='/#services'>خدمات</Link>
+                        <a href='/#services'>خدمات</a>
                     </li>
                     <li>
-                        <Link href='/#about'>درباره ما</Link>
+                        <a href='/#about'>درباره ما</a>
                     </li>
                     <li>
-                        <Link href='/#contact'>تماس با ما</Link>
+                        <a href='/#contact'>تماس با ما</a>
                     </li>
                 </ul>
-
                 <FormButton
                     text='ورود به سیستم'
                     icon={loginIcon}
