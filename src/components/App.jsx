@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { getDesignTokens } from '../configs/theme';
-
 // Assets
 import '../assets/styles/general.css';
 import { Route, Routes } from 'react-router-dom';

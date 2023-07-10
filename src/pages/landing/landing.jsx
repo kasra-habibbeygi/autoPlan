@@ -6,7 +6,7 @@ import { LandingWrapper } from './landing.style';
 import phoneCalling from './../../assets/images/landing/phoneCalling.svg';
 import email from './../../assets/images/landing/email.svg';
 import plumber from './../../assets/images/landing/plumber1.png';
-import plumberTumbUP from './../../assets/images/landing/plumber-with-thumb-up.png';
+import plumberThumbUP from './../../assets/images/landing/plumber-with-thumb-up.png';
 import plumberPhone from './../../assets/images/landing/plumber-making-phone-gesture.png';
 
 //components
@@ -29,17 +29,19 @@ const Landing = () => {
         <LandingWrapper>
             <Navbar />
             <div className='container'>
-                <div className='intruduce' id='intruduce'>
+                <div className='introduce' id='introduce'>
                     <Grid container>
                         <Grid item xs={12} md={6}>
-                            <div className='intruduce_text'>
+                            <div className='introduce_text'>
                                 <p>اتو پـــــلنـــــــــــــــ</p>
                                 <p>متن ساختگی</p>
                                 <p>لورم ایپسوم</p>
                             </div>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <img src={plumber} alt='' />
+                            <div className='img_wrapper'>
+                                <img src={plumber} alt='' />
+                            </div>
                         </Grid>
                     </Grid>
                 </div>
@@ -71,7 +73,7 @@ const Landing = () => {
                             </div>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <img src={plumberTumbUP} alt='' />
+                            <img src={plumberThumbUP} alt='' />
                         </Grid>
                     </Grid>
                 </div>
@@ -79,13 +81,15 @@ const Landing = () => {
                 <div className='contact' id='contact'>
                     <Grid container>
                         <Grid item xs={12} md={6}>
-                            <img src={plumberPhone} alt='' />
+                            <div className='img_wrapper'>
+                                <img src={plumberPhone} alt='' />
+                            </div>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <div className='container'>
                                 <p className='title'>تماس با ما</p>
                                 <div className='contact_text'>
-                                    <div className='contact_item_wrappr'>
+                                    <div className='contact_item_wrapper'>
                                         <div className='contact_item'>
                                             <img src={phoneCalling} alt='' />
                                             <p>0935898419816</p>
@@ -95,7 +99,7 @@ const Landing = () => {
                                             <p>0935898419816</p>
                                         </div>
                                     </div>
-                                    <div className='contact_item_wrappr'>
+                                    <div className='contact_item_wrapper'>
                                         <div className='contact_item'>
                                             <img src={phoneCalling} alt='' />
                                             <p>0935898419816</p>
@@ -105,7 +109,7 @@ const Landing = () => {
                                             <p>0935898419816</p>
                                         </div>
                                     </div>
-                                    <div className='contact_item_wrappr'>
+                                    <div className='contact_item_wrapper'>
                                         <div className='contact_item'>
                                             <img src={email} alt='' />
                                             <p>someemail@gmail.com</p>
