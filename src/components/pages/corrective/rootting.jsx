@@ -28,8 +28,8 @@ const Rootting = ({ setStep, setAllDetail }) => {
     });
 
     const formSubmit = data => {
-        console.log(data);
-        // setStep(3);
+        // console.log(data);
+        setStep(3);
     };
 
     const handleAddInput = () => {

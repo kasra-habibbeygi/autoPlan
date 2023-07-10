@@ -1,46 +1,73 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
 import add from '../../../assets/images/corrective/Add.svg';
-import { Style } from './style';
+import arrow from './../../../assets/images/global/arrow.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
+import { ActionStyle } from './action.style';
 
-const Action = ({ setStep }) => {
-    const { register, handleSubmit, formState } = useForm({
+const Action = ({ setStep, setAllDetail }) => {
+    const { register, handleSubmit, formState, control } = useForm({
+        defaultValues: {
+            actionFields: [{ action: '' }]
+        },
+
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
-    const formSubmit = () => {};
+    const { fields, append } = useFieldArray({
+        name: 'actionFields',
+        control
+    });
+
+    const formSubmit = data => {
+        console.log(data);
+        setAllDetail(prev => ({
+            ...prev,
+            actions: data.actionFields
+        }));
+        setStep(4);
+    };
+
+    const handleAddInput = () => {
+        append({ action: '' });
+    };
 
     return (
-        <Style>
+        <ActionStyle>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <div className='inputField'>
-                    <InputComponent
-                        title='اقدام'
-                        icon={Question}
-                        type='text'
-                        placeHolder='اقدام  خود را برای رفع مشکل بنویسید'
-                        detail={{
-                            ...register('action', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={errors?.action}
-                    />
-                    <div className='add'>
-                        <img src={add} alt='add' />
-                    </div>
+                <div className='input_group'>
+                    {fields.map((filed, index) => (
+                        <div className='inputField' key={filed.id}>
+                            <InputComponent
+                                title={`اقدام اصلاحی  ${index + 1}`}
+                                icon={Question}
+                                type='text'
+                                placeHolder='اقدام اصلاحی برای رفع عدم انطباق'
+                                detail={{
+                                    ...register(`actionFields.${index}.action`, {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={errors?.actionFields?.[index]?.action?.message}
+                            />
+                            {index + 1 === fields.length && (
+                                <div className='add' onClick={handleAddInput}>
+                                    <img src={add} alt='add' />
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
                 <FormButton
                     text='بعدی'
@@ -49,12 +76,10 @@ const Action = ({ setStep }) => {
                     backgroundColor={'#174787'}
                     color={'white'}
                     height={48}
-                    onClick={() => {
-                        setStep(4);
-                    }}
-                />{' '}
+                    icon={arrow}
+                />
             </form>
-        </Style>
+        </ActionStyle>
     );
 };
 
