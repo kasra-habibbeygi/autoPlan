@@ -5,7 +5,8 @@ import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
 import arrow from './../../assets/images/global/arrowUpChart.svg';
-import { ActionCell, PercentWrapper } from './corrective.style';
+import { PercentWrapper } from './corrective.style';
+import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
