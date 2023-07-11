@@ -21,6 +21,7 @@ import Action from '../../components/pages/corrective/action';
 import ResponsibleForAction from '../../components/pages/corrective/ResponsibleForAction';
 import ExecuteDate from '../../components/pages/corrective/execute-date';
 import Result from '../../components/pages/corrective/result';
+import Effective from '../../components/pages/corrective/effective';
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
@@ -167,7 +168,7 @@ const Corrective = () => {
                 ) : step === 6 ? (
                     <Result setStep={setStep} setAllDetail={setAllDetail} />
                 ) : (
-                    step === 7 && <Problem />
+                    step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
                 )}
             </Modal>
             <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
