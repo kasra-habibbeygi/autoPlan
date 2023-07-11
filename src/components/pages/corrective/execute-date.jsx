@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 //Assets
-import check from '../../../assets/images/icons/check.svg';
+import clock from '../../../assets/images/icons/ClockSquare.svg';
 import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
 
@@ -32,7 +32,7 @@ const ExecuteDate = ({ setStep, setAllDetail }) => {
                 <div className='inputField'>
                     <InputComponent
                         title='زمان شروع اقدام اصلاحی'
-                        icon={check}
+                        icon={clock}
                         type='date'
                         detail={{
                             ...register('started_time', {
@@ -49,7 +49,7 @@ const ExecuteDate = ({ setStep, setAllDetail }) => {
                 <div className='inputField'>
                     <InputComponent
                         title='زمان پایان اقدام اصلاحی'
-                        icon={check}
+                        icon={clock}
                         type='date'
                         detail={{
                             ...register('finished_time', {
