@@ -4,14 +4,23 @@ import React, { useState } from 'react';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
+import UserPlusRounded from './../../assets/images/corrective/UserPlusRounded.svg';
+import RoundGraph from './../../assets/images/corrective/RoundGraph.svg';
+import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
-import { ActionCell } from '../deviation/deviation.style';
+import Modal from '../../components/template/modal';
+import { AccessibilityWrapper } from './accessibility.style';
+import AddPost from '../../components/pages/accessibility/add-post';
+import AddPersonnel from '../../components/pages/accessibility/add-personell';
 
 const Accessibility = () => {
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showSubModal, setShowSubModal] = useState(false);
+    const [subModalStatus, setSubModalStatus] = useState();
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -118,14 +127,46 @@ const Accessibility = () => {
     ];
 
     const openModal = () => {
-        //codes
+        setShowAddModal(true);
     };
 
     return (
-        <>
+        <AccessibilityWrapper>
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
-        </>
+            <Modal state={showAddModal} setState={setShowAddModal} maxWidth='sm'>
+                <div className='button_wrapper'>
+                    <FormButton
+                        text='اضافه کردن پرسنل'
+                        icon={UserPlusRounded}
+                        reverse={true}
+                        backgroundColor={'#d9d9d9'}
+                        color={'black'}
+                        borderRadius={20}
+                        onClick={() => {
+                            setShowSubModal(true);
+                            setSubModalStatus('personnel');
+                        }}
+                    />
+                    <FormButton
+                        text='اضافه کردن پست'
+                        icon={RoundGraph}
+                        reverse={true}
+                        backgroundColor={'#d9d9d9'}
+                        color={'black'}
+                        borderRadius={20}
+                        onClick={() => {
+                            setShowSubModal(true);
+                            setSubModalStatus('post');
+                        }}
+                    />
+                </div>
+            </Modal>
+
+            <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()}>
+                {subModalStatus === 'post' ? <AddPost /> : subModalStatus === 'personnel' ? <AddPersonnel /> : null}
+            </Modal>
+        </AccessibilityWrapper>
     );
 };
 

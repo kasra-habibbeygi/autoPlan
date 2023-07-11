@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-export const PercentWrapper = styled.div(props => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '5px',
-    color: props.theme.colors.mainColor
+export const AccessibilityWrapper = styled.div(() => ({
+    '& .button_wrapper': {
+        display: 'flex',
+        gap: '10px',
+        height: '62px'
+    }
 }));

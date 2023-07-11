@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { LoadingButton } from '@mui/lab';
 
 export const FormButtonWrapper = styled(LoadingButton)(
-    ({ loading, gap, border_radius, fontSize, margin, padding, width, height, text_color, background_color }) => ({
+    ({ loading, gap, border_radius, fontSize, margin, padding, width, height, text_color, background_color, reverse }) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -16,6 +16,9 @@ export const FormButtonWrapper = styled(LoadingButton)(
         ...(!loading && {
             color: text_color,
             backgroundColor: background_color
+        }),
+        ...(reverse && {
+            flexDirection: 'row-reverse'
         }),
 
         '&:hover': {
