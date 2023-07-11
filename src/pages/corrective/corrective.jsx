@@ -22,6 +22,7 @@ import ResponsibleForAction from '../../components/pages/corrective/ResponsibleF
 import ExecuteDate from '../../components/pages/corrective/execute-date';
 import Result from '../../components/pages/corrective/result';
 import Effective from '../../components/pages/corrective/effective';
+import ShowAll from '../../components/pages/corrective/show-all';
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
@@ -145,30 +146,34 @@ const Corrective = () => {
         setIsModalOpen(true);
     };
 
-    // console.log(step);
-    console.log(allDetail);
-
     return (
         <>
             <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
             <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg'>
-                <h2>اقدام اصلاحی</h2>
-                <ProgressBar step={step} />
-                {step === 1 ? (
-                    <Problem setStep={setStep} setAllDetail={setAllDetail} />
-                ) : step === 2 ? (
-                    <Rootting setStep={setStep} setAllDetail={setAllDetail} />
-                ) : step === 3 ? (
-                    <Action setStep={setStep} setAllDetail={setAllDetail} />
-                ) : step === 4 ? (
-                    <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
-                ) : step === 5 ? (
-                    <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
-                ) : step === 6 ? (
-                    <Result setStep={setStep} setAllDetail={setAllDetail} />
+                {step === 8 ? (
+                    <ShowAll setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                 ) : (
-                    step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                    <>
+                        <h2>اقدام اصلاحی</h2>
+
+                        <ProgressBar step={step} />
+                        {step === 1 ? (
+                            <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 2 ? (
+                            <Rootting setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 3 ? (
+                            <Action setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 4 ? (
+                            <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                        ) : step === 5 ? (
+                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 6 ? (
+                            <Result setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : (
+                            step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                        )}
+                    </>
                 )}
             </Modal>
             <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>

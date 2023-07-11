@@ -22,7 +22,7 @@ const Effective = ({ setStep, setAllDetail }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        // setStep(2);
+        setStep(8);
         setAllDetail(prev => ({
             ...prev,
             effective_detail: data

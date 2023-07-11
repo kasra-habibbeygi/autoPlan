@@ -18,10 +18,15 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
+        const newDate = Object.keys(data).map(key => {
+            const newObj = {};
+            newObj[key] = data[key];
+            return newObj;
+        });
+
         setAllDetail(prev => ({
             ...prev,
-            actionPerson: data
+            actionPerson: newDate
         }));
         setStep(5);
     };
