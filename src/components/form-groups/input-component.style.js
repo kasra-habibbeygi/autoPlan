@@ -38,6 +38,11 @@ export const InputWrapper = styled.div(props => ({
                     WebkitAppearance: 'none'
                 }
             }
+        },
+
+        img: {
+            width: 'auto',
+            maxWidth: '100%'
         }
     },
 

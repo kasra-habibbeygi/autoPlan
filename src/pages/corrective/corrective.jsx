@@ -19,6 +19,7 @@ import Problem from '../../components/pages/corrective/problem';
 import Rootting from '../../components/pages/corrective/rootting';
 import Action from '../../components/pages/corrective/action';
 import ResponsibleForAction from '../../components/pages/corrective/ResponsibleForAction';
+import ExecuteDate from '../../components/pages/corrective/execute-date';
 
 const Corrective = () => {
     const [step, setStep] = useState(1);
@@ -161,7 +162,7 @@ const Corrective = () => {
                 ) : step === 4 ? (
                     <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                 ) : step === 5 ? (
-                    <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                    <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
                 ) : step === 6 ? (
                     <Problem setStep={setStep} />
                 ) : (

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 //Assets
 import check from '../../../assets/images/icons/check.svg';
+import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
 
 //Components
@@ -22,12 +23,13 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
             ...prev,
             actionPerson: data
         }));
+        setStep(5);
     };
 
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                {allDetail?.actions.map(item => (
+                {allDetail?.actions.map((item, index) => (
                     <div className='inputField' key={item.action}>
                         <InputComponent
                             title={`مسئول اقدام ${item.action}`}
@@ -35,14 +37,14 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
                             type='text'
                             placeHolder='مسئول اقدام اصلاحی برای رفع مشکل'
                             detail={{
-                                ...register(`correction_${item.action}`, {
+                                ...register(`correction_${index + 1}`, {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.[`correction_${item.action}`]}
+                            error={errors?.[`correction_${index + 1}`]}
                         />
                     </div>
                 ))}
@@ -53,10 +55,8 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
                     backgroundColor={'#174787'}
                     color={'white'}
                     height={48}
-                    onClick={() => {
-                        setStep(4);
-                    }}
-                />{' '}
+                    icon={arrow}
+                />
             </form>
         </Style>
     );
