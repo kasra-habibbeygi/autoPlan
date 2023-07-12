@@ -16,7 +16,7 @@ const Setting = () => {
         <>
             <PagesHeader buttonTitle='نام نمایندگی : فلان' />
             <SettingWrapper>
-                <Grid container columnSpacing={1.5}>
+                <Grid container spacing={1.5}>
                     <Grid item xs={12} md={6}>
                         <div className='item'>
                             <ReceptionForm />

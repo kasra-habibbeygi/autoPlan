@@ -1,6 +1,5 @@
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { useForm } from 'react-hook-form';
 
 //Assets
 import { FormWrapper } from './work-time-form.style';
@@ -12,7 +11,7 @@ import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
 
 const WorkTimeForm = () => {
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             date: '',
             start_time: '',
