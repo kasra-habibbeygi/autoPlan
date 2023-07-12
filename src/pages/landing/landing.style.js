@@ -24,7 +24,11 @@ export const LandingWrapper = styled.div(props => ({
         },
 
         '& .introduce': {
-            padding: '150px 250px'
+            padding: '150px 250px',
+
+            '@media(max-width : 900px)': {
+                padding: '150px 50px'
+            }
         },
 
         '& .introduce_text': {
@@ -35,6 +39,16 @@ export const LandingWrapper = styled.div(props => ({
             fontSize: '62px',
             fontWeight: '1000',
             lineHeight: '96px',
+
+            '@media(max-width : 1200px)': {
+                fontSize: '45px'
+            },
+
+            '@media(max-width : 1000px)': {
+                fontSize: '35px',
+                textAlign: 'center',
+                whiteSpace: 'nowrap'
+            },
 
             '& p:nth-of-type(2)': {
                 color: props.theme.colors.secondary
@@ -50,11 +64,13 @@ export const LandingWrapper = styled.div(props => ({
             justifyContent: 'center',
             alignItems: 'center',
             backgroundImage: `url(${bgPic})`,
-            // backgroundPosition: 'center center',
-            // backgroundRepeat: 'no-repeat',
             color: props.theme.colors.mainColor,
             height: '760px',
             padding: '150px 250px',
+
+            '@media(max-width : 1200px)': {
+                padding: '150px 50px'
+            },
 
             '& .container': {
                 height: '100%',
@@ -78,6 +94,10 @@ export const LandingWrapper = styled.div(props => ({
         '& .about': {
             padding: '150px 250px',
 
+            '@media(max-width : 900px)': {
+                padding: '150px 50px'
+            },
+
             '& .container': {
                 display: 'flex',
                 flexDirection: 'column',
@@ -90,16 +110,32 @@ export const LandingWrapper = styled.div(props => ({
                 '& .title': {
                     fontSize: '35px',
                     fontWeight: 1000,
-                    marginBottom: '20px'
+                    marginBottom: '20px',
+
+                    '@media(min-width: 900px) and (max-width: 1150px)': {
+                        fontSize: '25px'
+                    }
                 },
 
-                '& .about_text': {}
+                '& .about_text': {
+                    '@media(max-width : 900px)': {
+                        textAlign: 'center'
+                    },
+
+                    '@media(min-width: 900px) and (max-width: 1150px)': {
+                        fontSize: '12px'
+                    }
+                }
             }
         },
 
         '& .contact': {
             padding: '0 250px 150px 250px',
 
+            '@media(max-width : 900px)': {
+                padding: '0 50px 150px 50px'
+            },
+
             '& .container': {
                 display: 'flex',
                 flexDirection: 'column',
@@ -108,17 +144,26 @@ export const LandingWrapper = styled.div(props => ({
                 lineHeight: '35px',
                 textAlign: 'justify',
                 padding: '30px',
+                '@media(max-width : 900px)': {
+                    alignItems: 'center'
+                },
 
                 '& .title': {
                     fontSize: '35px',
                     fontWeight: 1000,
-                    marginBottom: '20px'
+                    marginBottom: '20px',
+                    whiteSpace: 'nowrap'
                 },
 
                 '& .contact_text': {
                     '& .contact_item_wrapper': {
                         display: 'flex',
-                        gap: '70px'
+                        gap: '70px',
+
+                        '@media(max-width : 1200px)': {
+                            flexDirection: 'column',
+                            gap: '0'
+                        }
                     },
 
                     '& .contact_item': {

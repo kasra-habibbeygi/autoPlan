@@ -4,6 +4,7 @@ export const PagesHeaderStyle = styled.div(props => ({
     display: 'flex',
     gap: '10px',
     width: '100%',
+    flexWrap: 'wrap',
 
     '& > p , & .addButton': {
         borderRadius: '18px',
