@@ -15,7 +15,7 @@ export const HomeWrapper = styled.div(props => ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            // flexWrap: 'wrap',
+            flexWrap: 'wrap',
             gap: '10px'
         },
 
@@ -27,7 +27,7 @@ export const HomeWrapper = styled.div(props => ({
         },
 
         '& .mainChart': {
-            width: '100%'
+            margin: '0 auto'
         }
     },
 

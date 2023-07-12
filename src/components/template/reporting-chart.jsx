@@ -16,7 +16,7 @@ const ReportingChart = () => {
     const colors = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
 
     return (
-        <ResponsiveContainer width={'100%'} height={200}>
+        <ResponsiveContainer width={150} height={200}>
             <PieChart>
                 <Pie data={data} innerRadius={55} outerRadius={75} dataKey='value'>
                     {data.map((entry, index) => (
