@@ -9,8 +9,21 @@ export const NavbarStyle = styled.nav(props => ({
     alignItems: 'center',
     background: props.theme.colors.white,
 
-    '@media(max-width : 1190px)': {
+    '@media(max-width : 1200px)': {
         padding: '20px 70px'
+    },
+
+    '& .rightItems': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+
+        button: {
+            img: {
+                width: '35px',
+                height: '35px'
+            }
+        }
     },
 
     '& .hamburgerMenu_icon': {
