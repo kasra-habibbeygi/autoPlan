@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
 
 //Assets
 
@@ -16,15 +16,13 @@ const DeficiencyChart = () => {
     const colors = ['#ad9bfd', '#f8c75b', '#8bf795', '#e8f6fd'];
 
     return (
-        <ResponsiveContainer width={'100%'} height={200}>
-            <PieChart>
-                <Pie data={data} innerRadius={50} outerRadius={80} dataKey='value'>
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={colors[index]} />
-                    ))}
-                </Pie>
-            </PieChart>
-        </ResponsiveContainer>
+        <PieChart width={170} height={200}>
+            <Pie data={data} innerRadius={50} outerRadius={80} dataKey='value'>
+                {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={colors[index]} />
+                ))}
+            </Pie>
+        </PieChart>
     );
 };
 

@@ -6,6 +6,7 @@ export const ChartItemWrapper = styled.div(props => {
         alignItems: 'center',
         justifyContent: 'space-between',
         whiteSpace: 'nowrap',
+        maxWidth: '250px',
 
         div: {
             display: 'flex',
