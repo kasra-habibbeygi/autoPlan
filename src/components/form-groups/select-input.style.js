@@ -20,8 +20,9 @@ export const SelectWrapper = styled.div(props => ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            maxWidth: '412px',
-            minWidth: '412px',
+            // maxWidth: '412px',
+            // minWidth: '412px',
+            width: '100%',
             gap: '10px',
             background: props.theme.colors.white,
             boxShadow: '0px 4px 14px 0px #0000000D',
@@ -37,7 +38,6 @@ export const SelectWrapper = styled.div(props => ({
                 flexWrap: 'wrap',
                 gap: '5px',
                 margin: 0,
-                // overflow: 'auto',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
 
@@ -48,7 +48,6 @@ export const SelectWrapper = styled.div(props => ({
                     fontSize: '12px',
                     backgroundColor: '#F3F3F3',
                     padding: '5px 14px',
-                    whiteSpace: 'nowrap',
                     borderRadius: '4px',
 
                     img: {

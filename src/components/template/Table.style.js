@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const TableComponent = styled.div(props => ({
     maxWidth: '100%',
+    overflow: 'auto',
 
     table: {
         width: '100%',
@@ -39,5 +40,16 @@ export const TableComponent = styled.div(props => ({
         '& *': {
             direction: 'ltr !important'
         }
+    }
+}));
+
+export const PaginationWrapper = styled.div(() => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: '20px',
+
+    '& *': {
+        direction: 'ltr !important'
     }
 }));

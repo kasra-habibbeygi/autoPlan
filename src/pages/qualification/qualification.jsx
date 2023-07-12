@@ -155,7 +155,7 @@ const Qualification = () => {
     };
 
     return (
-        <QualificationWrapper>
+        <QualificationWrapper step={step}>
             <PagesHeader
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
