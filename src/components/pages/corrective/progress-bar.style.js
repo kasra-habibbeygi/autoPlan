@@ -8,6 +8,14 @@ export const ProgressBarStyle = styled.div(props => ({
     justifyContent: 'center',
     marginTop: '50px',
 
+    '@media(max-width : 700px)': {
+        fontSize: '12px'
+    },
+
+    '@media(max-width : 580px)': {
+        fontSize: '10px'
+    },
+
     '& .progress': {
         display: 'flex',
         flexDirection: 'column',
@@ -29,7 +37,12 @@ export const ProgressBarStyle = styled.div(props => ({
             height: '35px',
             border: '2px solid #C6C7CC',
             borderRadius: '50%',
-            textAlign: 'center'
+            textAlign: 'center',
+
+            '@media(max-width : 700px)': {
+                width: '25px',
+                height: '25px'
+            }
         },
 
         '&.active': {
