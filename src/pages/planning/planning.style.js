@@ -3,31 +3,28 @@ import styled from '@emotion/styled';
 export const PlanningField = styled.div(props => ({
     '& .formControl': {
         margin: '0 auto',
-        width: '1000px',
         backgroundColor: props.theme.colors.white,
         padding: '50px 60px',
-        borderRadius: '12px'
+        borderRadius: '12px',
+
+        '@media(max-width : 700px)': {
+            padding: '50px 30px'
+        }
     },
 
     form: {
         marginTop: '30px',
-        margin: '20px auto',
-        width: '400px'
+        margin: '20px auto'
     },
 
     '& .form_double_col': {
-        display: 'flex',
-        flexWrap: 'wrap',
-        width: '100%',
-
-        '& .col': {
-            width: '50%',
-            padding: '0 20px'
-        },
-
         '& .submit': {
             width: '400px',
-            margin: '0 auto !important'
+            margin: '0 auto !important',
+
+            '@media(max-width : 720px)': {
+                width: '100%'
+            }
         }
     },
 
@@ -35,19 +32,14 @@ export const PlanningField = styled.div(props => ({
         marginTop: '20px',
         paddingTop: '20px',
         borderTop: '1px dashed #c8c8c8',
-        display: 'flex',
-        gap: '40px',
 
         '& .right_field': {
             width: '100%',
-            display: 'flex',
-            flexWrap: 'wrap',
 
             '& .pill': {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '10px',
-                width: '50%',
                 padding: '20px',
 
                 img: {

@@ -19,7 +19,11 @@ export const ProgressBarStyle = styled.div(props => ({
             width: 'max-content',
             textAlign: 'center',
             position: 'absolute',
-            top: '-30px'
+            top: '-30px',
+
+            '@media(max-width : 550px)': {
+                fontSize: '11px'
+            }
         },
 
         '& .number': {
