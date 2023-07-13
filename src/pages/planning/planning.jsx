@@ -14,9 +14,11 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import ProgressBar from '../../components/pages/planning/progress-bar';
 import FormButton from '../../components/form-groups/form-button';
+import FilterModal from '../../components/pages/planning/filter-modal';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
+    const [showFilterModal, setShowFilterModal] = useState(false);
     const [step, setStep] = useState(3);
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -38,14 +40,20 @@ const Planning = () => {
         setIsModalOpen(true);
     };
 
-    const filterHandler = () => {};
-
     const formSubmit = () => {};
 
     return (
         <PlanningField>
-            <PagesHeader buttonTitle='ثبت برنامه جدید' onButtonClick={openModal} hasFilter={true} onFilterClick={filterHandler} />
+            <PagesHeader
+                buttonTitle='ثبت برنامه جدید'
+                onButtonClick={openModal}
+                hasFilter={true}
+                onFilterClick={() => setShowFilterModal(true)}
+            />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
+                <FilterModal />
+            </Modal>
             <Modal state={modalIsOpen} setState={setIsModalOpen} bgStatus={true}>
                 <div className='formControl'>
                     <h2>برنامه ریزی تعمیرات</h2>
