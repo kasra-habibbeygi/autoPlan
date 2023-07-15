@@ -32,7 +32,6 @@ export const AddModalWrapper = styled.div(props => ({
                 }),
 
                 '& *': {
-                    marginBottom: '0 !important',
                     border: 'none',
                     fontFamily: 'main !important'
                 },

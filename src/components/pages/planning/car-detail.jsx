@@ -95,7 +95,6 @@ const CarDetail = ({ setStep }) => {
                     text='بعدی'
                     icon={Arrow}
                     loading={false}
-                    width='fit-content'
                     className='login'
                     backgroundColor={'#174787'}
                     onClick={() => {}}

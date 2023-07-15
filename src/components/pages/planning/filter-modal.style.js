@@ -34,7 +34,6 @@ export const FilterModalWrapper = styled.div(props => ({
             }),
 
             '& *': {
-                marginBottom: '0 !important',
                 border: 'none',
                 fontFamily: 'main !important'
             },

@@ -19,7 +19,6 @@ export const FormWrapper = styled.form(props => {
         },
 
         '& .auto_complete': {
-            marginBottom: '0 !important',
             marginTop: '10px',
             display: 'flex',
             alignItems: 'center',
@@ -33,7 +32,6 @@ export const FormWrapper = styled.form(props => {
             }),
 
             '& *': {
-                marginBottom: '0 !important',
                 border: 'none',
                 fontFamily: 'main !important'
             },
@@ -70,8 +68,7 @@ export const FormWrapper = styled.form(props => {
 
             div: {
                 display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0 !important'
+                alignItems: 'center'
             },
 
             '& .input_wrapper': {

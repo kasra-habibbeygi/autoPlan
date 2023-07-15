@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import { FormWrapper } from './reception-form.style';
@@ -9,9 +9,10 @@ import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 //Components
 import FormButton from '../../form-groups/form-button';
 import InputComponent from './../../form-groups/input-component';
+import DatePickerComponent from '../../form-groups/date-picker';
 
 const ReceptionForm = () => {
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -28,19 +29,13 @@ const ReceptionForm = () => {
         <FormWrapper>
             <p className='title'>تنظیمات پذیرش</p>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <InputComponent
-                    title='تاریخ'
-                    icon={calender}
-                    type='date'
-                    detail={{
-                        ...register('date', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
+                <Controller
+                    control={control}
+                    name='date'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
                     }}
-                    error={errors?.date}
                 />
 
                 <InputComponent

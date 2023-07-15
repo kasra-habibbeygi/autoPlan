@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const Modal = ({ state, setState, handleClose, children, bgStatus = false, maxWidth = 'lg' }) => {
+const Modal = ({ state, setState, handleClose, children, bgStatus = false, maxWidth = 'lg', fullScreen = false }) => {
     return (
         <ModalStyle bgStatus={bgStatus} bg={bg}>
             <Dialog
@@ -19,13 +19,14 @@ const Modal = ({ state, setState, handleClose, children, bgStatus = false, maxWi
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={() => {
-                    setState(false);
+                    setState && setState(false);
                     handleClose && handleClose();
                 }}
                 fullWidth={true}
                 maxWidth={maxWidth}
                 disablePortal
                 scroll='body'
+                fullScreen={fullScreen}
             >
                 <div className='childrenStyle'>{children}</div>
             </Dialog>

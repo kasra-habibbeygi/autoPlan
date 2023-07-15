@@ -27,6 +27,8 @@
         "react-spinners": "^0.13.8",
         "react-verification-input": "^3.3.0",
         "recharts": "^2.7.2",
+        "stylis": "^4.3.0",
+        "stylis-plugin-rtl": "^2.1.1",
         "uuid": "^9.0.0",
         "validator": "^13.9.0",
         "web-vitals": "^2.1.0"

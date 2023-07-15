@@ -60,7 +60,7 @@ const Home = () => {
             <PagesHeader buttonTitle='نام نمایندگی : فلان' />
             <HomeWrapper>
                 <Grid container columnSpacing={1.5} rowSpacing={1.5}>
-                    <Grid item xs={12} md={5}>
+                    <Grid item xs={12} xl={5}>
                         <div className='item'>
                             <DetailBoxHeader title='گزارش پذیرش در ماه اخیر' onClick={() => {}} buttonText='دریافت گزارش کامل دوره' />
                             <div className='chartWrapper'>
@@ -85,7 +85,7 @@ const Home = () => {
                             <DetailBoxHeader title='ظرفیت سنجی' onClick={() => {}} buttonText='بیشتر' />
                         </div>
                     </Grid>
-                    <Grid item xs={12} md={7} top={1.5}>
+                    <Grid item xs={12} xl={7} top={1.5}>
                         <div className='item'>
                             <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' onClick={() => {}} buttonText='مدیریت تعمیرات' />
                             <HomeTable data={tableData} />
