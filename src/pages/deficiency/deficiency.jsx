@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import Bus from '../../assets/images/icons/Bus.svg';
@@ -17,6 +17,7 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';
+import DatePickerComponent from '../../components/form-groups/date-picker';
 
 const Deficiency = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
@@ -43,7 +44,7 @@ const Deficiency = () => {
         }
     ];
 
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -115,20 +116,17 @@ const Deficiency = () => {
             <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm'>
                 <h2> کسری قطعات </h2>
                 <form onSubmit={handleSubmit(formSubmit)}>
-                    <InputComponent
-                        title='تاریخ'
-                        icon={CalendarDate}
-                        type='date'
-                        detail={{
-                            ...register('date', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
+                    <Controller
+                        control={control}
+                        name='start_time'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.start_time} />
+                            );
                         }}
-                        error={errors?.date}
                     />
+
                     <InputComponent
                         title='نام قطعه'
                         type='text'

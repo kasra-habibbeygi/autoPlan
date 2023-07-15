@@ -1,21 +1,20 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import { FormWrapper } from './work-time-form.style';
-import calender from './../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 
 //Components
 import FormButton from '../../form-groups/form-button';
-import InputComponent from '../../form-groups/input-component';
+import DatePickerComponent from '../../form-groups/date-picker';
 
 const WorkTimeForm = () => {
-    const { register, handleSubmit, formState } = useForm({
+    const { handleSubmit, formState, control } = useForm({
         defaultValues: {
             date: '',
             start_time: '',
-            finish_time: ''
+            finished_time: ''
         },
         mode: 'onTouched'
     });
@@ -29,49 +28,47 @@ const WorkTimeForm = () => {
         <FormWrapper>
             <p className='title'>ساعت کار نمایندگی</p>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <InputComponent
-                    title='تاریخ'
-                    icon={calender}
-                    type='date'
-                    detail={{
-                        ...register('date', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
+                <Controller
+                    control={control}
+                    name='date'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
                     }}
-                    error={errors?.date}
-                />
-                <InputComponent
-                    title='تاریخ'
-                    icon={calender}
-                    type='date'
-                    detail={{
-                        ...register('date', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
-                    }}
-                    error={errors?.date}
                 />
 
-                <InputComponent
-                    title='تاریخ'
-                    icon={calender}
-                    type='date'
-                    detail={{
-                        ...register('date', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
+                <Controller
+                    control={control}
+                    name='start_time'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DatePickerComponent
+                                value={value}
+                                onChange={onChange}
+                                title='شروع ساعت کاری نمایندگی'
+                                error={errors?.start_time}
+                            />
+                        );
                     }}
-                    error={errors?.date}
                 />
+
+                <Controller
+                    control={control}
+                    name='finished_time'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DatePickerComponent
+                                value={value}
+                                onChange={onChange}
+                                title='پایان ساعت کاری نمایندگی'
+                                error={errors?.finished_time}
+                            />
+                        );
+                    }}
+                />
+
                 <FormButton
                     text='ثبت'
                     icon={brokenArrow}

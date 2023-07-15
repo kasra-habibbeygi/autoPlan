@@ -21,13 +21,13 @@ export const ModalStyle = styled.div(props => ({
             marginBottom: '20px'
         },
 
-        button: {
+        '& > button': {
             marginTop: '20px',
             width: '100%'
         },
 
         form: {
-            div: {
+            '& > div': {
                 marginBottom: '15px'
             }
         }

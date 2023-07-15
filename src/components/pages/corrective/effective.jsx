@@ -1,17 +1,17 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
-import clock from '../../../assets/images/icons/ClockSquare.svg';
 import user from '../../../assets/images/icons/User.svg';
 import { Style } from './style';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
+import DatePickerComponent from '../../form-groups/date-picker';
 
 const Effective = ({ setStep, setAllDetail }) => {
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             effective_date: '',
             inCharge_person: ''
@@ -32,19 +32,20 @@ const Effective = ({ setStep, setAllDetail }) => {
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <InputComponent
-                    title='تاریخ کنترل اثر بخشی'
-                    icon={clock}
-                    type='date'
-                    detail={{
-                        ...register('effective_date', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
+                <Controller
+                    control={control}
+                    name='effective_date'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DatePickerComponent
+                                value={value}
+                                onChange={onChange}
+                                title='تاریخ کنترل اثر بخشی'
+                                error={errors?.effective_date}
+                            />
+                        );
                     }}
-                    error={errors?.effective_date}
                 />
 
                 <InputComponent

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import CalendarDate from '../../assets/images/icons/CalendarDate.svg';
@@ -22,6 +22,7 @@ import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import QualificationTable from '../../components/pages/qualification/qualification-table';
 import FormButton from '../../components/form-groups/form-button';
+import DatePickerComponent from '../../components/form-groups/date-picker';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -118,7 +119,7 @@ const Qualification = () => {
         }
     ];
 
-    const { register, handleSubmit, formState, reset } = useForm({
+    const { control, handleSubmit, formState, reset } = useForm({
         defaultValues: {
             date: ''
         },
@@ -168,20 +169,15 @@ const Qualification = () => {
                     <ProgressBar step={step} />
                     {step === 1 ? (
                         <form onSubmit={handleSubmit(formSubmit)}>
-                            <InputComponent
-                                title='تاریخ'
-                                icon={CalendarDate}
-                                type='date'
-                                detail={{
-                                    ...register('date', {
-                                        required: {
-                                            value: true,
-                                            message: 'این فیلد اجباری است'
-                                        }
-                                    })
+                            <Controller
+                                control={control}
+                                name='date'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
                                 }}
-                                error={errors?.date}
                             />
+
                             <SelectInput
                                 title='جلوبندی'
                                 icon={blocking}

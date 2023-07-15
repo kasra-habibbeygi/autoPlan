@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import clock from '../../../assets/images/icons/ClockSquare.svg';
@@ -9,9 +9,10 @@ import { Style } from './style';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
+import DatePickerComponent from '../../form-groups/date-picker';
 
 const ExecuteDate = ({ setStep, setAllDetail }) => {
-    const { register, handleSubmit, formState } = useForm({
+    const { control, handleSubmit, formState } = useForm({
         mode: 'onTouched'
     });
 
@@ -30,36 +31,38 @@ const ExecuteDate = ({ setStep, setAllDetail }) => {
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
                 <div className='inputField'>
-                    <InputComponent
-                        title='زمان شروع اقدام اصلاحی'
-                        icon={clock}
-                        type='date'
-                        detail={{
-                            ...register('started_time', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
+                    <Controller
+                        control={control}
+                        name='started_time'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DatePickerComponent
+                                    value={value}
+                                    onChange={onChange}
+                                    title='زمان شروع اقدام اصلاحی'
+                                    error={errors?.started_time}
+                                />
+                            );
                         }}
-                        error={errors?.started_time}
                     />
                 </div>
 
                 <div className='inputField'>
-                    <InputComponent
-                        title='زمان پایان اقدام اصلاحی'
-                        icon={clock}
-                        type='date'
-                        detail={{
-                            ...register('finished_time', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
+                    <Controller
+                        control={control}
+                        name='finished_time'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DatePickerComponent
+                                    value={value}
+                                    onChange={onChange}
+                                    title='زمان پایان اقدام اصلاحی'
+                                    error={errors?.finished_time}
+                                />
+                            );
                         }}
-                        error={errors?.finished_time}
                     />
                 </div>
 

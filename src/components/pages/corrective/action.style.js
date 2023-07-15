@@ -11,20 +11,17 @@ export const ActionStyle = styled.div(props => ({
     '& .input_group': {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom: '0 !important'
+        alignItems: 'center'
     },
 
     '& .inputField': {
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        gap: '10px',
-        marginBottom: '0 !important'
+        gap: '10px'
     },
 
     '& .add': {
-        marginBottom: '0 !important',
         width: '50px',
         height: '50px',
         display: 'flex',
