@@ -28,14 +28,19 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                         key={row.id}
                                         followCursor
                                         title={
-                                            <div className='tooltip'>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
                                                 <div>
-                                                    <p className='title'>زمان ثبت :</p>
-                                                    <p className='text'>08/12/1424 22:45</p>
+                                                    <p style={{ color: '#174787', fontWeight: 900, fontSize: '16px' }}>زمان ثبت :</p>
+                                                    <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
+                                                        1402/04/08 - 13:13
+                                                    </p>
                                                 </div>
+                                                <br />
                                                 <div>
-                                                    <p className='title'>آخرین ویرایش :</p>
-                                                    <p className='text'>08/12/1424 11:36</p>
+                                                    <p style={{ color: '#174787', fontWeight: 900, fontSize: '16px' }}>آخرین ویرایش :</p>
+                                                    <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
+                                                        1402/04/08 - 13:13
+                                                    </p>
                                                 </div>
                                             </div>
                                         }

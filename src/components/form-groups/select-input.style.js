@@ -20,8 +20,6 @@ export const SelectWrapper = styled.div(props => ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            // maxWidth: '412px',
-            // minWidth: '412px',
             width: '100%',
             gap: '10px',
             background: props.theme.colors.white,
@@ -55,6 +53,11 @@ export const SelectWrapper = styled.div(props => ({
                         height: '14px',
                         cursor: 'pointer'
                     }
+                },
+
+                span: {
+                    fontSize: '12px',
+                    color: '#505050'
                 }
             },
 
@@ -78,7 +81,6 @@ export const SelectWrapper = styled.div(props => ({
 
     '& .error': {
         color: '#830000',
-        fontSize: '12px',
-        marginTop: '-20px'
+        fontSize: '12px'
     }
 }));

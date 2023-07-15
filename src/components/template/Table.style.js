@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 export const TableComponent = styled.div(({ theme }) => ({
     maxWidth: '100%',
     overflow: 'auto',
-
     table: {
         width: '100%',
         borderCollapse: 'separate',

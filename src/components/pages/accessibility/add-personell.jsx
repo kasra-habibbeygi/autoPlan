@@ -34,6 +34,7 @@ const AddPersonnel = () => {
             <form onSubmit={handleSubmit(formSubmit)}>
                 <InputComponent
                     title='نام پست سازمانی جدید'
+                    placeHolder='نام پست'
                     icon={magnifier}
                     type='text'
                     detail={{

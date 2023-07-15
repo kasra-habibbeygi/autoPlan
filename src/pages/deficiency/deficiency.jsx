@@ -44,7 +44,7 @@ const Deficiency = () => {
         }
     ];
 
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, reset } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -113,7 +113,7 @@ const Deficiency = () => {
         <>
             <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
-            <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm'>
+            <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm' handleClose={reset}>
                 <h2> کسری قطعات </h2>
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <Controller
@@ -129,6 +129,7 @@ const Deficiency = () => {
 
                     <InputComponent
                         title='نام قطعه'
+                        placeHolder='نام قطعه'
                         type='text'
                         icon={ShockAbsorber}
                         detail={{
@@ -143,6 +144,7 @@ const Deficiency = () => {
                     />
                     <InputComponent
                         title='کد قطعه'
+                        placeHolder='کد قطعه'
                         type='text'
                         icon={Accumulator}
                         detail={{
@@ -157,6 +159,7 @@ const Deficiency = () => {
                     />
                     <InputComponent
                         title='نوع خودرو'
+                        placeHolder='نوع خودرو'
                         type='text'
                         icon={Bus}
                         detail={{

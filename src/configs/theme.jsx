@@ -15,7 +15,22 @@ export const getDesignTokens = mode => ({
         textDisable: '#ABADB2',
         borderTable: '#7C7C7C'
     },
+
     typography: {
         fontFamily: 'main'
+    },
+
+    components: {
+        MuiTooltip: {
+            styleOverrides: {
+                tooltip: {
+                    backgroundColor: 'white',
+                    borderRadius: '5px',
+                    border: '1px solid #5EA3FF',
+                    width: '300px',
+                    padding: '20px'
+                }
+            }
+        }
     }
 });
