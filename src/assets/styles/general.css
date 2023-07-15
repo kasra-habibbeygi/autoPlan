@@ -101,3 +101,24 @@ input {
 textarea {
     font-family: 'main' !important;
 }
+
+.MuiPickersCalendarHeader-label {
+    font-family: 'main' !important;
+}
+
+.MuiDayCalendar-weekDayLabel {
+    font-family: 'main' !important;
+}
+
+
+.MuiPickersArrowSwitcher-root {
+    direction: ltr !important
+}
+
+.MuiPickersArrowSwitcher-spacer {
+    display: none !important
+}
+
+.MuiPickersArrowSwitcher-root{
+    margin-left: 10px;
+}

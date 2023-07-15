@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import VerificationInput from 'react-verification-input';
+import Axios from '../../configs/axios';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -26,7 +27,7 @@ const Login = ({ showModal, setShowModal }) => {
     const { register, formState, handleSubmit, reset } = form;
     const { errors } = formState;
 
-    const sendCodeHandler = () => {
+    const sendCodeHandler = data => {
         setLoginStatus('sendConfirmCode');
     };
 
@@ -35,6 +36,10 @@ const Login = ({ showModal, setShowModal }) => {
         setLoginStatus('addPhoneNumber');
         setCodeValue();
     };
+
+    useEffect(() => {
+        Axios.get('/api/repair_type_mgmt/');
+    }, []);
 
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
@@ -74,14 +79,7 @@ const Login = ({ showModal, setShowModal }) => {
                                 error={errors?.phoneNumber}
                                 placeHolder='---------۰۹'
                             />
-                            <FormButton
-                                text='ادامه'
-                                loading={false}
-                                type='submit'
-                                backgroundColor={'#174787'}
-                                color={'white'}
-                                height={48}
-                            />
+                            <FormButton text='ادامه' loading={false} type='submit' backgroundColor='#174787' color='white' height={48} />
                         </div>
                     ) : loginStatus === 'sendConfirmCode' ? (
                         <div className='secondStep'>
@@ -95,14 +93,14 @@ const Login = ({ showModal, setShowModal }) => {
                                     onChange={value => setCodeValue(value)}
                                     validChars='0-9'
                                     placeholder='-'
-                                    onComplete={() => console.log('object')}
+                                    onComplete={() => {}}
                                     classNames={{
                                         container: 'container',
                                         character: 'character'
                                     }}
                                 />
                             </div>
-                            <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                            <FormButton text='ثبت' loading={false} type='button' backgroundColor={'#174787'} color={'white'} height={48} />
                         </div>
                     ) : null}
                 </form>
