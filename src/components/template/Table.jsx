@@ -66,9 +66,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
             {pageStatus && setPageStatus && (
                 <PaginationWrapper>
                     <Pagination
-                        color='primary'
                         count={pageStatus.total}
-                        size='small'
                         page={pageStatus.current}
                         onChange={(_, value) =>
                             setPageStatus(prev => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { prefixer } from 'stylis';
@@ -10,6 +10,7 @@ import { CacheProvider } from '@emotion/react';
 
 //Assets
 import { DatePickerWrapper } from './date-picker.style';
+import { TextField } from '@mui/material';
 
 //Components
 
@@ -22,19 +23,16 @@ const DatePickerComponent = ({ value, onChange, title, error }) => {
     return (
         <DatePickerWrapper error={error}>
             {title && <p>{title}</p>}
-
             <div className='container'>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    {/* <CacheProvider value={cacheRtl}> */}
-                    <DemoContainer components={['DatePicker']}>
+                <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
+                    <CacheProvider value={cacheRtl}>
                         <DatePicker
                             value={value?.valueOf()}
                             onChange={newValue => onChange(newValue?.valueOf())}
                             sx={{ width: '100%' }}
-                            format='YYYY/MM/DD'
+                            format='yyyy/MM/dd'
                         />
-                    </DemoContainer>
-                    {/* </CacheProvider> */}
+                    </CacheProvider>
                 </LocalizationProvider>
             </div>
             {error && <span className='error'>{error?.message}</span>}
