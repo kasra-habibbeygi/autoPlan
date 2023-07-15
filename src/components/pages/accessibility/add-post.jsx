@@ -34,6 +34,7 @@ const AddPost = () => {
             <form onSubmit={handleSubmit(formSubmit)}>
                 <InputComponent
                     title='کاربر'
+                    placeHolder='نام کاربر'
                     icon={magnifier}
                     type='text'
                     detail={{

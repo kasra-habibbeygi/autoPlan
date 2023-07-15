@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 //Assets
-import CalendarDate from '../../assets/images/icons/CalendarDate.svg';
 import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
 import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import blocking from '../../assets/images/icons/blocking.svg';
@@ -16,7 +15,6 @@ import { ActionCell } from '../deviation/deviation.style';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
-import InputComponent from '../../components/form-groups/input-component';
 import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
@@ -188,6 +186,7 @@ const Qualification = () => {
                                 items={details.blockingList}
                                 submitCount={submitCount}
                                 setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی جلوبندی'
                             />
 
                             <SelectInput
@@ -200,6 +199,7 @@ const Qualification = () => {
                                 items={details.mechanicList}
                                 submitCount={submitCount}
                                 setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی مکانیکی'
                             />
 
                             <SelectInput
@@ -212,6 +212,7 @@ const Qualification = () => {
                                 items={details.electricList}
                                 submitCount={submitCount}
                                 setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی برق کار'
                             />
 
                             <SelectInput
@@ -224,6 +225,7 @@ const Qualification = () => {
                                 items={details.gasList}
                                 submitCount={submitCount}
                                 setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی گاز کار'
                             />
 
                             <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />

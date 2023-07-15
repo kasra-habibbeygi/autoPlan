@@ -17,7 +17,7 @@ const Modal = ({ state, setState, handleClose, children, bgStatus = false, maxWi
             <Dialog
                 open={state}
                 TransitionComponent={Transition}
-                keepMounted
+                keepMounted={false}
                 onClose={() => {
                     setState && setState(false);
                     handleClose && handleClose();

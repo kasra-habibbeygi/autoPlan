@@ -1,16 +1,15 @@
 import styled from '@emotion/styled';
 
-export const TableComponent = styled.div(props => ({
+export const TableComponent = styled.div(({ theme }) => ({
     maxWidth: '100%',
     overflow: 'auto',
-
     table: {
         width: '100%',
         borderCollapse: 'separate',
         borderSpacing: '0 10px',
 
         tr: {
-            backgroundColor: props.theme.colors.white,
+            backgroundColor: theme.colors.white,
             marginBottom: '10px',
             whiteSpace: 'nowrap'
         },
@@ -30,15 +29,39 @@ export const TableComponent = styled.div(props => ({
             borderBottomLeftRadius: '18px'
         }
     },
-
-    '& .paginationWrapper': {
+    '& .loading': {
         display: 'flex',
         justifyContent: 'center',
-        alignContent: 'center',
-        marginTop: '20px',
+        alignItems: 'center',
+        backgroundColor: theme.colors.white,
+        padding: '50px 0',
+        borderRadius: '18px',
+        margin: '10px 0'
+    },
 
-        '& *': {
-            direction: 'ltr !important'
+    '& .tooltip': {
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '13px 20px',
+        backgroundColor: 'white',
+        width: '307px',
+        height: '80px',
+        borderRadius: '4px',
+        border: '2px solid #5EA3FF',
+
+        div: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+
+            '& .title': {
+                fontWeight: 900,
+                color: theme.colors.mainColor
+            },
+
+            '& .text': {
+                fontSize: '11px'
+            }
         }
     }
 }));

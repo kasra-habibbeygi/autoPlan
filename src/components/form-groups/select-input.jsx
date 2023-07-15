@@ -8,7 +8,7 @@ import closeIcon from './../../assets/images/global/closeIcon.svg';
 //components
 import FormButton from '../../components/form-groups/form-button';
 
-const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails }) => {
+const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails, placeHolder }) => {
     const deleteItemHandler = data => {
         setDetails(prevDetails => {
             const updatedDetails = { ...prevDetails };
@@ -28,12 +28,16 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails
             <div className='container'>
                 <div className='wrapper'>
                     <div className='items'>
-                        {items.map(item => (
-                            <p key={item.id}>
-                                {item.fullText}
-                                <img src={closeIcon} className='close_icon' onClick={() => deleteItemHandler(item)} />
-                            </p>
-                        ))}
+                        {items.length ? (
+                            items.map(item => (
+                                <p key={item.id}>
+                                    {item.fullText}
+                                    <img src={closeIcon} className='close_icon' onClick={() => deleteItemHandler(item)} />
+                                </p>
+                            ))
+                        ) : (
+                            <span>{placeHolder}</span>
+                        )}
                     </div>
                     <img src={icon} />
                 </div>

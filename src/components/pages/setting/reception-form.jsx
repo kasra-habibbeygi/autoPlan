@@ -3,8 +3,8 @@ import { Controller, useForm } from 'react-hook-form';
 
 //Assets
 import { FormWrapper } from './reception-form.style';
-import calender from './../../../assets/images/global/Calendar.svg';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
+import chart from './../../../assets/images/icons/chart.svg';
 
 //Components
 import FormButton from '../../form-groups/form-button';
@@ -40,7 +40,8 @@ const ReceptionForm = () => {
 
                 <InputComponent
                     title='پذیرش اینترنتی'
-                    icon={calender}
+                    placeHolder='اینترنتی'
+                    icon={chart}
                     type='text'
                     detail={{
                         ...register('internetReception', {
@@ -54,7 +55,8 @@ const ReceptionForm = () => {
                 />
                 <InputComponent
                     title='پذیرش تلفنی'
-                    icon={calender}
+                    placeHolder='تلفنی'
+                    icon={chart}
                     type='text'
                     detail={{
                         ...register('phoneReception', {
@@ -67,8 +69,9 @@ const ReceptionForm = () => {
                     error={errors?.phoneReception}
                 />
                 <InputComponent
-                    title='پذیرش پذیرش حضوری'
-                    icon={calender}
+                    title='پذیرش حضوری'
+                    placeHolder='حضوری'
+                    icon={chart}
                     type='text'
                     detail={{
                         ...register('presentReception', {

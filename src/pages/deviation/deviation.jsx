@@ -22,7 +22,7 @@ const Deviation = () => {
         current: 1
     });
 
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, reset } = useForm({
         defaultValues: {
             date: '',
             internetReception: '',
@@ -138,11 +138,12 @@ const Deviation = () => {
         <>
             <PagesHeader buttonTitle='ثبت انحراف جدید' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
-            <Modal state={modalOpen} setState={setModalOpen} maxWidth='sm'>
+            <Modal state={modalOpen} setState={setModalOpen} maxWidth='sm' handleClose={reset}>
                 <h2>ثبت انحراف جدید</h2>
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <InputComponent
                         title='علت انحراف'
+                        placeHolder='علت انحراف خود را وارد کنید'
                         type='text'
                         icon={enheraf}
                         detail={{

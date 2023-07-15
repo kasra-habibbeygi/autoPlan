@@ -17,7 +17,7 @@ export const ActionStyle = styled.div(props => ({
     '& .inputField': {
         width: '100%',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'end',
         gap: '10px'
     },
 
