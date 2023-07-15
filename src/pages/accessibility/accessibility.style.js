@@ -12,3 +12,9 @@ export const AccessibilityWrapper = styled.div(() => ({
         }
     }
 }));
+
+export const ModalStyleBg = styled.div(props => ({
+    background: '#FAFAFA',
+    padding: '50px',
+    borderRadius: '20px'
+}));

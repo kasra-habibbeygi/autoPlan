@@ -10,7 +10,7 @@ const MobileAlertModal = () => {
     return (
         <MobileAlertWrapper>
             <Alert severity='error'>
-                <p>سایت برای سایز موبایل پشتیبانی نمیشود !</p>
+                <p>سایت در موبایل پشتیبانی نمیشود !</p>
             </Alert>
             <Alert severity='warning'>
                 <p>لطفا تنها با تبلت یا صفحه های بزرگ تر وارد شوید</p>

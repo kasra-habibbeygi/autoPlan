@@ -13,7 +13,7 @@ import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
 import Modal from '../../components/template/modal';
-import { AccessibilityWrapper } from './accessibility.style';
+import { AccessibilityWrapper, ModalStyleBg } from './accessibility.style';
 import AddPost from '../../components/pages/accessibility/add-post';
 import AddPersonnel from '../../components/pages/accessibility/add-personell';
 
@@ -163,8 +163,10 @@ const Accessibility = () => {
                 </div>
             </Modal>
 
-            <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()}>
-                {subModalStatus === 'post' ? <AddPost /> : subModalStatus === 'personnel' ? <AddPersonnel /> : null}
+            <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()} bgStatus={true} maxWidth='md'>
+                <ModalStyleBg>
+                    {subModalStatus === 'post' ? <AddPost /> : subModalStatus === 'personnel' ? <AddPersonnel /> : null}{' '}
+                </ModalStyleBg>
             </Modal>
         </AccessibilityWrapper>
     );
