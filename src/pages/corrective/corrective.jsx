@@ -5,7 +5,7 @@ import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
 import arrow from './../../assets/images/global/arrowUpChart.svg';
-import { PercentWrapper } from './corrective.style';
+import { PercentWrapper, ModalStyleBg } from './corrective.style';
 import { ActionCell } from '../deviation/deviation.style';
 
 //Components
@@ -150,30 +150,25 @@ const Corrective = () => {
             <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
             <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true'>
-                {step === 8 ? (
-                    <ShowAll setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
-                ) : (
-                    <>
-                        <h2>اقدام اصلاحی</h2>
-
-                        <ProgressBar step={step} />
-                        {step === 1 ? (
-                            <Problem setStep={setStep} setAllDetail={setAllDetail} />
-                        ) : step === 2 ? (
-                            <Rootting setStep={setStep} setAllDetail={setAllDetail} />
-                        ) : step === 3 ? (
-                            <Action setStep={setStep} setAllDetail={setAllDetail} />
-                        ) : step === 4 ? (
-                            <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
-                        ) : step === 5 ? (
-                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
-                        ) : step === 6 ? (
-                            <Result setStep={setStep} setAllDetail={setAllDetail} />
-                        ) : (
-                            step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
-                        )}
-                    </>
-                )}
+                <ModalStyleBg>
+                    <h2>اقدام اصلاحی</h2>
+                    <ProgressBar step={step} />
+                    {step === 1 ? (
+                        <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                    ) : step === 2 ? (
+                        <Rootting setStep={setStep} setAllDetail={setAllDetail} />
+                    ) : step === 3 ? (
+                        <Action setStep={setStep} setAllDetail={setAllDetail} />
+                    ) : step === 4 ? (
+                        <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                    ) : step === 5 ? (
+                        <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
+                    ) : step === 6 ? (
+                        <Result setStep={setStep} setAllDetail={setAllDetail} />
+                    ) : (
+                        step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                    )}
+                </ModalStyleBg>
             </Modal>
             <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
                 <ShowAll allDetail={allDetail} />
