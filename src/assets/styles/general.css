@@ -110,7 +110,6 @@ textarea {
     font-family: 'main' !important;
 }
 
-
 .MuiPickersArrowSwitcher-root {
     direction: ltr !important
 }
@@ -119,6 +118,10 @@ textarea {
     display: none !important
 }
 
-.MuiPickersArrowSwitcher-root{
+.MuiPickersArrowSwitcher-root {
     margin-left: 10px;
+}
+
+.MuiAutocomplete-listbox {
+    font-family: 'main' !important;
 }

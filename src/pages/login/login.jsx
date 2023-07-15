@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import VerificationInput from 'react-verification-input';
-import Axios from '../../configs/axios';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -36,10 +35,6 @@ const Login = ({ showModal, setShowModal }) => {
         setLoginStatus('addPhoneNumber');
         setCodeValue();
     };
-
-    useEffect(() => {
-        Axios.get('/api/repair_type_mgmt/');
-    }, []);
 
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
