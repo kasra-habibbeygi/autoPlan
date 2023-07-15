@@ -149,7 +149,7 @@ const Corrective = () => {
         <>
             <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
-            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg'>
+            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true'>
                 {step === 8 ? (
                     <ShowAll setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                 ) : (

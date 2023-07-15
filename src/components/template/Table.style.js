@@ -43,11 +43,22 @@ export const TableComponent = styled.div(props => ({
     }
 }));
 
-export const PaginationWrapper = styled.div(() => ({
+export const PaginationWrapper = styled.div(props => ({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
     marginTop: '20px',
+
+    '& .MuiSvgIcon-root': {
+        color: props.theme.colors.white,
+        fontSize: '1.5rem'
+    },
+
+    '& .MuiPaginationItem-page': {
+        background: `${props.theme.colors.white} !important`,
+        color: `${props.theme.colors.textColor}  !important`,
+        fontSize: '1.3rem'
+    },
 
     '& *': {
         direction: 'ltr !important'

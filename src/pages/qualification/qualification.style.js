@@ -8,7 +8,7 @@ export const QualificationWrapper = styled.div(props => {
             padding: '20px 50px',
             borderRadius: '12px',
             ...(props.step === 1 && {
-                width: '500px',
+                width: '600px',
 
                 '@media(max-width : 700px)': {
                     width: '100%',
