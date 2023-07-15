@@ -16,13 +16,16 @@ import { SidebarStyle } from './sidebar.style';
 
 //Components
 import FormButton from '../form-groups/form-button';
+import { useDispatch } from 'react-redux';
+import { closeSideBar } from '../../store/reducers/sideBar';
 
 const SideBar = () => {
+    const dispatch = useDispatch();
     return (
         <SidebarStyle>
             <ul>
                 <li>
-                    <NavLink to='/dashboard'>
+                    <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Home} alt='' />
                             <p>داشبورد</p>
@@ -30,7 +33,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/qualification'>
+                    <NavLink to='/qualification' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={User} alt='' />
                             <p>ظرفیت سنجی</p>
@@ -38,7 +41,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/deficiency'>
+                    <NavLink to='/deficiency' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Box} alt='' />
                             <p>کسری قطعات انبار</p>
@@ -46,7 +49,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/planning'>
+                    <NavLink to='/planning' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Widget} alt='' />
                             <p>برنامه ریزی تعمیرات</p>
@@ -54,7 +57,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/deviation'>
+                    <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Bill} alt='' />
                             <p>علت انحرافات</p>
@@ -62,7 +65,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/reporting'>
+                    <NavLink to='/reporting' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Notes} alt='' />
                             <p>گزارش گیری</p>
@@ -70,7 +73,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/corrective'>
+                    <NavLink to='/corrective' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Document} alt='' />
                             <p>اقدام اصلاحی</p>
@@ -78,7 +81,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/accessibility'>
+                    <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={UserId} alt='' />
                             <p>دسترسی پنل</p>
@@ -86,7 +89,7 @@ const SideBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/setting'>
+                    <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
                         <div className='item'>
                             <img src={Group} alt='' />
                             <p>تنظیمات سایت</p>

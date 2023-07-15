@@ -8,6 +8,7 @@ import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
 import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
+import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -16,7 +17,6 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';
-import { ActionCell } from '../deviation/deviation.style';
 
 const Deficiency = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);

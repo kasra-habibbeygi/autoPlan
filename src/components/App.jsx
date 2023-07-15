@@ -17,27 +17,31 @@ import Reporting from '../pages/reporting/reporting';
 import Dashboard from '../pages/dashboard/dashboard';
 import Setting from '../pages/setting/setting';
 import Landing from '../pages/landing/landing';
+import { Provider } from 'react-redux';
+import store from '../store/store';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
 
     return (
-        <ThemeProvider theme={themeConfig}>
-            <Routes>
-                <Route path='/' element={<Landing />} />
-                <Route path='/' element={<LayoutProvider />}>
-                    <Route path='dashboard' element={<Dashboard />} />
-                    <Route path='qualification' element={<Qualification />} />
-                    <Route path='deficiency' element={<Deficiency />} />
-                    <Route path='planning' element={<Planning />} />
-                    <Route path='deviation' element={<Deviation />} />
-                    <Route path='corrective' element={<Corrective />} />
-                    <Route path='accessibility' element={<Accessibility />} />
-                    <Route path='reporting' element={<Reporting />} />
-                    <Route path='setting' element={<Setting />} />
-                </Route>
-            </Routes>
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider theme={themeConfig}>
+                <Routes>
+                    <Route path='/' element={<Landing />} />
+                    <Route path='/' element={<LayoutProvider />}>
+                        <Route path='dashboard' element={<Dashboard />} />
+                        <Route path='qualification' element={<Qualification />} />
+                        <Route path='deficiency' element={<Deficiency />} />
+                        <Route path='planning' element={<Planning />} />
+                        <Route path='deviation' element={<Deviation />} />
+                        <Route path='corrective' element={<Corrective />} />
+                        <Route path='accessibility' element={<Accessibility />} />
+                        <Route path='reporting' element={<Reporting />} />
+                        <Route path='setting' element={<Setting />} />
+                    </Route>
+                </Routes>
+            </ThemeProvider>
+        </Provider>
     );
 }
 

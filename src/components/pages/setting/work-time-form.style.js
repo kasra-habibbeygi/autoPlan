@@ -15,7 +15,7 @@ export const FormWrapper = styled.div(props => ({
     },
 
     '& .time': {
-        '& p:first-child': {
+        '& p:first-of-type': {
             fontSize: '14px',
             fontWeight: 700,
             marginBottom: '10px'

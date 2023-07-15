@@ -139,7 +139,7 @@ const Accessibility = () => {
                     <FormButton
                         text='اضافه کردن پست'
                         icon={UserPlusRounded}
-                        reverse={true}
+                        reverse='row-reverse'
                         backgroundColor={'#d9d9d9'}
                         color={'black'}
                         borderRadius={20}
@@ -151,7 +151,7 @@ const Accessibility = () => {
                     <FormButton
                         text='اضافه کردن پرسنل'
                         icon={RoundGraph}
-                        reverse={true}
+                        reverse='row-reverse'
                         backgroundColor={'#d9d9d9'}
                         color={'black'}
                         borderRadius={20}

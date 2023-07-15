@@ -4,6 +4,10 @@ export const Style = styled.div(props => ({
     width: '500px',
     margin: '50px auto',
 
+    '@media(max-width : 700px)': {
+        width: '100%'
+    },
+
     '& .MuiButtonBase-root': {
         '&:hover': {
             background: '#1976d2'

@@ -18,7 +18,7 @@ export const FormButtonWrapper = styled(LoadingButton)(
             backgroundColor: background_color
         }),
         ...(reverse && {
-            flexDirection: 'row-reverse'
+            flexDirection: reverse
         }),
 
         '&:hover': {

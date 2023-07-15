@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 export const ActionStyle = styled.div(props => ({
     width: '500px',
     margin: '50px auto',
+
+    '@media(max-width : 700px)': {
+        width: '100%'
+    },
+
     '& .input_group': {
         display: 'flex',
         flexDirection: 'column',

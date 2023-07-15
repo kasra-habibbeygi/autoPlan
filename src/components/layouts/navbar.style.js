@@ -9,6 +9,28 @@ export const NavbarStyle = styled.nav(props => ({
     alignItems: 'center',
     background: props.theme.colors.white,
 
+    '@media(max-width : 1200px)': {
+        padding: '20px 70px'
+    },
+
+    '& .rightItems': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+
+        button: {
+            img: {
+                width: '35px',
+                height: '35px'
+            }
+        }
+    },
+
+    '& .hamburgerMenu_icon': {
+        width: '30px',
+        height: '30px'
+    },
+
     '& .logoHeader': {
         display: 'flex',
         alignItems: 'center',
@@ -28,6 +50,11 @@ export const NavbarStyle = styled.nav(props => ({
         display: 'flex',
         alignItems: 'center',
         gap: '68px',
+
+        '@media(max-width : 1320px)': {
+            gap: '30px'
+        },
+
         li: {
             listStyleType: 'none',
             fontSize: '1.1rem',

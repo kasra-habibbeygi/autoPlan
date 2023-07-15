@@ -48,7 +48,7 @@ const Landing = () => {
 
                 <div className='services' id='services'>
                     <Grid container>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={7} xl={6}>
                             <div className='container'>
                                 <p className='title'>خدمات اتو پلن</p>
                                 <p className='services_text'>
@@ -57,7 +57,6 @@ const Landing = () => {
                                 </p>
                             </div>
                         </Grid>
-                        <Grid item xs={12} md={6}></Grid>
                     </Grid>
                 </div>
 

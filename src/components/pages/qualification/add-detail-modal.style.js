@@ -8,6 +8,10 @@ export const FormWrapper = styled.form(props => {
 
         padding: '0 45px',
 
+        '@media(max-width : 700px)': {
+            padding: '0'
+        },
+
         '& .auto_error': {
             fontSize: '12px',
             color: '#830000',
@@ -75,13 +79,21 @@ export const FormWrapper = styled.form(props => {
                 alignItems: 'center',
                 gap: '5px',
 
+                '@media(max-width : 600px)': {
+                    gap: '0'
+                },
+
                 input: {
                     width: '35px',
                     border: 'none',
                     outline: 'none',
                     fontSize: '20px',
                     fontWeight: 700,
-                    textAlign: 'center'
+                    textAlign: 'center',
+
+                    '@media(max-width : 600px)': {
+                        width: '30px'
+                    }
                 }
             }
         }

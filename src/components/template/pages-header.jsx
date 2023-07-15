@@ -30,7 +30,7 @@ const PagesHeader = ({
             {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
 
             {onButtonClick ? (
-                <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} />
+                <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} width={'fit-content'} />
             ) : (
                 <p>{buttonTitle}</p>
             )}

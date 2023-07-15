@@ -19,7 +19,7 @@ const FormButton = ({
     color,
     backgroundColor,
     className,
-    reverse = false
+    reverse
 }) => {
     return (
         <FormButtonWrapper

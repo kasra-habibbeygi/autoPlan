@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable no-unused-vars */
 import styled from '@emotion/styled';
 
 export const UploadFileStyle = styled.div(props => ({
@@ -26,6 +24,11 @@ export const UploadFileStyle = styled.div(props => ({
         justifyContent: 'center',
         alignItems: 'center',
         gap: '20px',
+
+        '@media(max-width : 700px)': {
+            flexDirection: 'column',
+            textAlign: 'center'
+        },
 
         img: {
             background: props.theme.colors.white,

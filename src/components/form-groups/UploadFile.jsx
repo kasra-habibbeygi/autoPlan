@@ -4,7 +4,6 @@ import React from 'react';
 
 //style
 import { UploadFileStyle } from './UploadFile.style';
-// import UploadImage from '../../assets/images/ordering/Vector (1).png';
 import Excel from '../../assets/images/global/Excel.svg';
 
 //mui

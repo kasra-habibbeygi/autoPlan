@@ -8,6 +8,10 @@ export const LoginStyle = styled.nav(props => ({
     width: '420px',
     height: '500px',
 
+    '@media(max-width : 600px)': {
+        width: '280px'
+    },
+
     '& .shapeTop': {
         position: 'absolute',
         top: 0,
