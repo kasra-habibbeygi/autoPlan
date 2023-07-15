@@ -137,7 +137,7 @@ const Accessibility = () => {
             <Modal state={showAddModal} setState={setShowAddModal} maxWidth='sm'>
                 <div className='button_wrapper'>
                     <FormButton
-                        text='اضافه کردن پرسنل'
+                        text='اضافه کردن پست'
                         icon={UserPlusRounded}
                         reverse={true}
                         backgroundColor={'#d9d9d9'}
@@ -149,7 +149,7 @@ const Accessibility = () => {
                         }}
                     />
                     <FormButton
-                        text='اضافه کردن پست'
+                        text='اضافه کردن پرسنل'
                         icon={RoundGraph}
                         reverse={true}
                         backgroundColor={'#d9d9d9'}

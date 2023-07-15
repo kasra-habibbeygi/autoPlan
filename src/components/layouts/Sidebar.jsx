@@ -25,7 +25,7 @@ const SideBar = () => {
                     <NavLink to='/dashboard'>
                         <div className='item'>
                             <img src={Home} alt='' />
-                            <p>صفحه اصلی</p>
+                            <p>داشبورد</p>
                         </div>
                     </NavLink>
                 </li>
