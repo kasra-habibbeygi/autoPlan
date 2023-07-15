@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/material';
 import { getDesignTokens } from '../configs/theme';
 // Assets
 import '../assets/styles/general.css';
@@ -19,9 +19,13 @@ import Setting from '../pages/setting/setting';
 import Landing from '../pages/landing/landing';
 import { Provider } from 'react-redux';
 import store from '../store/store';
+import Modal from './template/modal';
+import MobileAlertModal from './template/mobile-alert-modal';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down(450));
 
     return (
         <Provider store={store}>
@@ -41,6 +45,10 @@ function App() {
                     </Route>
                 </Routes>
             </ThemeProvider>
+
+            <Modal state={isMobile} fullScreen={true}>
+                <MobileAlertModal />
+            </Modal>
         </Provider>
     );
 }
