@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
-export const TableComponent = styled.div(({ theme, showElement, elementPosition }) => ({
-    position: 'relative',
+export const TableComponent = styled.div(({ theme }) => ({
     maxWidth: '100%',
     overflow: 'auto',
 
@@ -42,7 +41,7 @@ export const TableComponent = styled.div(({ theme, showElement, elementPosition 
     },
 
     '& .tooltip': {
-        display: 'none',
+        display: 'flex',
         justifyContent: 'space-between',
         padding: '13px 20px',
         backgroundColor: 'white',
@@ -50,13 +49,6 @@ export const TableComponent = styled.div(({ theme, showElement, elementPosition 
         height: '80px',
         borderRadius: '4px',
         border: '2px solid #5EA3FF',
-        position: 'absolute',
-        top: elementPosition.y,
-        left: elementPosition.x,
-
-        ...(showElement && {
-            display: 'flex'
-        }),
 
         div: {
             display: 'flex',

@@ -14,5 +14,8 @@ export const getDesignTokens = mode => ({
         textColor: '#5A5A5A',
         textDisable: '#ABADB2',
         borderTable: '#7C7C7C'
+    },
+    typography: {
+        fontFamily: 'main'
     }
 });
