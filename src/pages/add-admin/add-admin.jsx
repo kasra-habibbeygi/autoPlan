@@ -30,9 +30,9 @@ const AddAdmin = () => {
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
-    const [adminList, setAdminList] = useState([]);
+    const [adminList, setAdminList] = useState();
     const [reload, setReload] = useState(false);
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
