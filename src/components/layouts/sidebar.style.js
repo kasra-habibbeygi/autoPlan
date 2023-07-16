@@ -9,6 +9,9 @@ export const SidebarStyle = styled.div(props => ({
     backgroundColor: props.theme.colors.white,
     borderRadius: '18px',
     padding: '24px',
+    height: 'max-content',
+    position: 'sticky',
+    top: '10px',
 
     '& .item': {
         display: 'flex',
