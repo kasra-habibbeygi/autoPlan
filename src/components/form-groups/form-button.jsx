@@ -19,7 +19,9 @@ const FormButton = ({
     color,
     backgroundColor,
     className,
-    reverse
+    reverse,
+    justify_content,
+    disabled = false
 }) => {
     return (
         <FormButtonWrapper
@@ -38,6 +40,8 @@ const FormButton = ({
             variant={backgroundColor && 'contained'}
             className={className}
             reverse={reverse}
+            justify_content={justify_content}
+            disabled={disabled}
         >
             {text && <p>{text}</p>}
             {!loading && icon && <img src={icon} alt='submit' />}
