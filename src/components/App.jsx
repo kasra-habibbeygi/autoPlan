@@ -1,9 +1,11 @@
 import React from 'react';
 import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/material';
 import { getDesignTokens } from '../configs/theme';
+import { Provider } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+
 // Assets
 import '../assets/styles/general.css';
-import { Route, Routes } from 'react-router-dom';
 
 //components
 import LayoutProvider from './layouts/layout-provider';
@@ -17,10 +19,10 @@ import Reporting from '../pages/reporting/reporting';
 import Dashboard from '../pages/dashboard/dashboard';
 import Setting from '../pages/setting/setting';
 import Landing from '../pages/landing/landing';
-import { Provider } from 'react-redux';
 import store from '../store/store';
 import Modal from './template/modal';
 import MobileAlertModal from './template/mobile-alert-modal';
+import Station from '../pages/station/station';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -35,6 +37,7 @@ function App() {
                     <Route path='/' element={<LayoutProvider />}>
                         <Route path='dashboard' element={<Dashboard />} />
                         <Route path='qualification' element={<Qualification />} />
+                        <Route path='station' element={<Station />} />
                         <Route path='deficiency' element={<Deficiency />} />
                         <Route path='planning' element={<Planning />} />
                         <Route path='deviation' element={<Deviation />} />

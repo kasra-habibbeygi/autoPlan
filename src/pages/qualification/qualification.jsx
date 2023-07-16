@@ -135,7 +135,7 @@ const Qualification = () => {
             details.gasList.length > 0 &&
             details.mechanicList.length > 0
         ) {
-            setStep(2);
+            console.log(data);
         }
     };
 
@@ -166,75 +166,71 @@ const Qualification = () => {
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
-                    <ProgressBar step={step} />
-                    {step === 1 ? (
-                        <form onSubmit={handleSubmit(formSubmit)}>
-                            <Controller
-                                control={control}
-                                name='date'
-                                rules={{ required: 'این فیلد اجباری است' }}
-                                render={({ field: { onChange, value } }) => {
-                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                                }}
-                            />
+                    {/* <ProgressBar step={step} /> */}
+                    <form onSubmit={handleSubmit(formSubmit)}>
+                        <Controller
+                            control={control}
+                            name='date'
+                            rules={{ required: 'این فیلد اجباری است' }}
+                            render={({ field: { onChange, value } }) => {
+                                return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
+                            }}
+                        />
 
-                            <SelectInput
-                                title='جلوبندی'
-                                icon={blocking}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('جلوبندی');
-                                }}
-                                items={details.blockingList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی جلوبندی'
-                            />
+                        <SelectInput
+                            title='جلوبندی'
+                            icon={blocking}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('جلوبندی');
+                            }}
+                            items={details.blockingList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی جلوبندی'
+                        />
 
-                            <SelectInput
-                                title='مکانیک'
-                                icon={ShockAbsorber}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('مکانیک');
-                                }}
-                                items={details.mechanicList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی مکانیکی'
-                            />
+                        <SelectInput
+                            title='مکانیک'
+                            icon={ShockAbsorber}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('مکانیک');
+                            }}
+                            items={details.mechanicList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی مکانیکی'
+                        />
 
-                            <SelectInput
-                                title='برق'
-                                icon={Accumulator}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('برق');
-                                }}
-                                items={details.electricList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی برق کار'
-                            />
+                        <SelectInput
+                            title='برق'
+                            icon={Accumulator}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('برق');
+                            }}
+                            items={details.electricList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی برق کار'
+                        />
 
-                            <SelectInput
-                                title='گاز'
-                                icon={GasStation}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('گاز');
-                                }}
-                                items={details.gasList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی گاز کار'
-                            />
+                        <SelectInput
+                            title='گاز'
+                            icon={GasStation}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('گاز');
+                            }}
+                            items={details.gasList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی گاز کار'
+                        />
 
-                            <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
-                        </form>
-                    ) : (
-                        <QualificationTable />
-                    )}
+                        <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                    </form>
                 </div>
             </Modal>
 
