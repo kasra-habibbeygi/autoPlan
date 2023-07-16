@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const ConfirmModal = ({ status, setStatus, title }) => {
+const ConfirmModal = ({ status, setStatus, title, deleteHandler, loading }) => {
     return (
         <MainField>
             <Dialog
@@ -30,7 +30,7 @@ const ConfirmModal = ({ status, setStatus, title }) => {
                     <h3>{title}</h3>
                     <div className='button_group'>
                         <FormButton text='خیر' backgroundColor='#5F7D88' onClick={() => setStatus(false)} />
-                        <FormButton text='بله' backgroundColor='#174787' />
+                        <FormButton text='بله' backgroundColor='#174787' onClick={deleteHandler} loading={loading} />
                     </div>
                 </div>
             </Dialog>

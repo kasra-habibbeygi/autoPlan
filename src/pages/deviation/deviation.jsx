@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Axios from '../../configs/axios';
+import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -13,133 +16,127 @@ import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
 import Modal from '../../components/template/modal';
 import InputComponent from './../../components/form-groups/input-component';
+import ConfirmModal from '../../components/template/confirm-modal';
+
+//Utils
+import PERMISSION from '../../utils/permission.ts';
 
 const Deviation = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
-
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const [reload, setReload] = useState(false);
+    const [specificDeviationId, setSpecificDeviationId] = useState();
+    const [deviationData, setDeviationData] = useState([]);
+    const [modalStatus, setModalStatus] = useState('');
+    const [buttonLoader, setButtonLoader] = useState({
+        modalButton: false,
+        delete: false
+    });
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
 
-    const { register, handleSubmit, formState, reset } = useForm({
+    const { register, handleSubmit, formState, reset, setValue } = useForm({
         defaultValues: {
-            date: '',
-            internetReception: '',
-            phoneReception: '',
-            presentReception: ''
+            title: ''
         },
         mode: 'onTouched'
     });
     const { errors } = formState;
 
+    useEffect(() => {
+        setLoader(true);
+        Axios.get('deviation_type_mgmt/').then(res => {
+            setDeviationData(res.data.data);
+            setLoader(false);
+        });
+    }, [reload]);
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'علت انحراف', key: 'deviationReason' },
+        { id: 2, title: 'علت انحراف', key: 'title' },
         {
             id: 3,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setModalOpen(true)} />
-                    <FormButton icon={trashBin} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.DELETE)}
+                    />
                 </ActionCell>
             )
         }
     ];
 
-    const rows = [
-        {
-            id: 1,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 2,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 3,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 4,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 5,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 6,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 7,
-            deviationReason: 'عیوب پیش بینی نشده',
-            car: 'پژو',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        }
-    ];
-
-    const openModal = () => {
+    const addModalHandler = () => {
+        setModalStatus('add');
         setModalOpen(true);
     };
-    const formSubmit = () => {};
+
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificDeviationId(id);
+    };
+
+    const editModalHandler = data => {
+        setModalStatus('edit');
+        setModalOpen(true);
+        setValue('title', data.title);
+        setSpecificDeviationId(data.id);
+    };
+    const formSubmit = data => {
+        setButtonLoader({ ...buttonLoader, modalButton: true });
+
+        if (modalStatus === 'add') {
+            Axios.post('deviation_type_mgmt/', data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('انحراف جدید با موفقیت ثبت شد');
+                setModalOpen(false);
+                reset();
+            });
+        } else {
+            Axios.put(`deviation_type_mgmt/?id=${specificDeviationId}`, data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('انحراف  با موفقیت ویرایش شد');
+                setModalOpen(false);
+                reset();
+            });
+        }
+    };
+
+    const deleteHandler = () => {
+        setButtonLoader({ ...buttonLoader, delete: true });
+        Axios.delete(`deviation_type_mgmt/?id=${specificDeviationId}`).then(() => {
+            setButtonLoader({ ...buttonLoader, delete: false });
+            setReload(!reload);
+            toast.success('انحراف  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
 
     return (
         <>
-            <PagesHeader buttonTitle='ثبت انحراف جدید' onButtonClick={openModal} />
-            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <PagesHeader
+                buttonTitle='ثبت انحراف جدید'
+                onButtonClick={addModalHandler}
+                disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.ADD)}
+            />
+            <Table columns={columns} rows={deviationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} maxWidth='sm' handleClose={reset}>
-                <h2>ثبت انحراف جدید</h2>
+                {modalStatus === 'add' ? <h2>ثبت انحراف جدید</h2> : <h2>ویرایش انحراف </h2>}
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <InputComponent
                         title='علت انحراف'
@@ -147,18 +144,32 @@ const Deviation = () => {
                         type='text'
                         icon={enheraf}
                         detail={{
-                            ...register('text', {
+                            ...register('title', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.text}
+                        error={errors?.title}
                     />
-                    <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                    <FormButton
+                        text='ثبت'
+                        type='submit'
+                        backgroundColor={'#174787'}
+                        color={'white'}
+                        height={48}
+                        loading={buttonLoader.modalButton}
+                    />
                 </form>
             </Modal>
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
         </>
     );
 };

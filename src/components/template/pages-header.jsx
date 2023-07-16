@@ -20,7 +20,8 @@ const PagesHeader = ({
     secondFiled = `تاریخ امروز : ${date}/${month}/${year}`,
     representationCode = 123475,
     hasFilter,
-    onFilterClick
+    onFilterClick,
+    disabled = false
 }) => {
     return (
         <PagesHeaderStyle>
@@ -30,7 +31,14 @@ const PagesHeader = ({
             {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
 
             {onButtonClick ? (
-                <FormButton onClick={onButtonClick} className='addButton' text={buttonTitle} icon={plus} width={'fit-content'} />
+                <FormButton
+                    onClick={onButtonClick}
+                    className='addButton'
+                    text={buttonTitle}
+                    icon={plus}
+                    width={'fit-content'}
+                    disabled={disabled}
+                />
             ) : (
                 <p>{buttonTitle}</p>
             )}
