@@ -9,6 +9,7 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import { ActionCell } from '../deviation/deviation.style';
+import xlsx from '../../assets/example.xlsx';
 
 //Components
 import Table from '../../components/template/Table';
@@ -185,6 +186,15 @@ const Deficiency = () => {
                             })
                         }}
                     />
+                    <a
+                        href={xlsx}
+                        target='_blank'
+                        download
+                        rel='noreferrer'
+                        style={{ marginBottom: '20px', color: '#1C274C', display: 'inline-block' }}
+                    >
+                        دانلود نمونه فایل اکسل
+                    </a>
 
                     <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
                 </form>
