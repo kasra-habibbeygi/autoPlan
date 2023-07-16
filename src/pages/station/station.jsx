@@ -36,7 +36,6 @@ const Station = () => {
         Axios.get('station_mgmt/').then(res => {
             setStationData(res.data.data);
         });
-        toast.success('asdasd');
     }, []);
 
     const stationTypeNameChanger = item => {
