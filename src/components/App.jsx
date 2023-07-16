@@ -3,9 +3,11 @@ import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/materi
 import { getDesignTokens } from '../configs/theme';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 // Assets
 import '../assets/styles/general.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 //components
 import LayoutProvider from './layouts/layout-provider';
@@ -54,6 +56,8 @@ function App() {
             <Modal state={isMobile} fullScreen={true}>
                 <MobileAlertModal />
             </Modal>
+
+            <ToastContainer />
         </Provider>
     );
 }
