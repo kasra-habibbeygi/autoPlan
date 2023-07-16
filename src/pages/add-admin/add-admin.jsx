@@ -6,6 +6,10 @@ import { AddAdminWrapper } from './add-admin.style';
 import { ActionCell } from '../deviation/deviation.style';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
+import document from './../../assets/images/sideBar/DocumentAdd.svg';
+import notes from './../../assets/images/sideBar/Notes.svg';
+import bill from './../../assets/images/sideBar/Bill.svg';
+import homeSmile from './../../assets/images/sideBar/HomeSmile.svg';
 import addPhone from './../../assets/images/login/addPhone.svg';
 
 //Components
@@ -76,7 +80,7 @@ const AddAdmin = () => {
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <InputComponent
                             title='نام کامل'
-                            icon={addPhone}
+                            icon={document}
                             detail={{
                                 ...register('fullName', {
                                     required: {
@@ -91,7 +95,7 @@ const AddAdmin = () => {
 
                         <InputComponent
                             title='کد نمایندگی'
-                            icon={addPhone}
+                            icon={notes}
                             detail={{
                                 ...register('representation_code', {
                                     required: {
@@ -106,7 +110,7 @@ const AddAdmin = () => {
 
                         <InputComponent
                             title='نام نمایندگی'
-                            icon={addPhone}
+                            icon={bill}
                             detail={{
                                 ...register('representation_name', {
                                     required: {
@@ -156,7 +160,7 @@ const AddAdmin = () => {
                                         }
                                     })}
                                 ></textarea>
-                                <img src={addPhone} />
+                                <img src={homeSmile} />
                             </div>
                             <p className='error'>{errors?.representation_address?.message}</p>
                         </div>

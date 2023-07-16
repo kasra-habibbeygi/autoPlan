@@ -5,7 +5,9 @@ import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@m
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
-import addPhone from './../../assets/images/login/addPhone.svg';
+import notes from './../../assets/images/sideBar/Notes.svg';
+import document from './../../assets/images/sideBar/DocumentAdd.svg';
+import widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import { ActionCell } from '../deviation/deviation.style';
 import { StationWrapper } from './station.style';
 
@@ -78,7 +80,7 @@ const Station = () => {
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <InputComponent
                             title='عنوان'
-                            icon={addPhone}
+                            icon={notes}
                             detail={{
                                 ...register('title', {
                                     required: {
@@ -93,7 +95,7 @@ const Station = () => {
 
                         <InputComponent
                             title='کد'
-                            icon={addPhone}
+                            icon={document}
                             detail={{
                                 ...register('code', {
                                     required: {
@@ -128,7 +130,7 @@ const Station = () => {
                                     }}
                                 />
 
-                                <img src={addPhone} />
+                                <img src={widget} />
                             </div>
                             <p className='auto_complete_error'>{errors?.type?.message}</p>
                         </div>
