@@ -12,6 +12,7 @@ import User from './../../assets/images/sideBar/UserCheck.svg';
 import UserId from './../../assets/images/sideBar/UserId.svg';
 import Widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import Exit from './../../assets/images/sideBar/Exit.svg';
+import blocking from './../../assets/images/icons/blocking.svg';
 import { SidebarStyle } from './sidebar.style';
 
 //Components
@@ -37,6 +38,14 @@ const SideBar = () => {
                         <div className='item'>
                             <img src={User} alt='' />
                             <p>ظرفیت سنجی</p>
+                        </div>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
+                        <div className='item'>
+                            <img src={blocking} alt='' />
+                            <p>تعریف جایگاه</p>
                         </div>
                     </NavLink>
                 </li>
