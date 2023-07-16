@@ -117,7 +117,7 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <FormButton text='خروج' icon={Exit} width='fit-content' className='item' />
+                <FormButton text='خروج' icon={Exit} className='item' justify_content='start' padding='10px 0' />
             </div>
         </SidebarStyle>
     );
