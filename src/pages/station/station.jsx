@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import Axios from '../../configs/axios';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -24,19 +25,47 @@ import ConfirmModal from '../../components/template/confirm-modal';
 // Tools
 import Tools from '../../utils/tools';
 
+const selectValue = [
+    { label: 'مکانیک', value: 'mechanic' },
+    { label: 'هیبرید', value: 'hybrid' },
+    { label: 'برق کار', value: 'elec' },
+    { label: 'گاز کار', value: 'gas' },
+    { label: 'جلو بندی', value: 'blocking' }
+];
+
 const Station = () => {
-    const [showAddModal, setShowAddModal] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [stationData, setStationData] = useState([]);
     const [loader, setLoader] = useState(false);
+    const [reload, setReload] = useState(false);
+    const [specificDeviationId, setSpecificDeviationId] = useState();
+    const [buttonLoader, setButtonLoader] = useState({
+        modalButton: false,
+        delete: false
+    });
+
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
 
+    const { register, control, handleSubmit, formState, reset, setValue } = useForm({
+        defaultValues: {
+            title: '',
+            code: '',
+            type: '',
+            partsStatus: '',
+            equipmentStatus: ''
+        },
+        mode: 'onTouched'
+    });
+    const { errors } = formState;
+
     useEffect(() => {
         setLoader(true);
-        Axios.get(`station_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
+        Axios.get(`station_mgmt/?page=${pageStatus.current}`).then(res => {
             setStationData(res.data.data);
             setPageStatus({
                 ...pageStatus,
@@ -44,7 +73,7 @@ const Station = () => {
             });
             setLoader(false);
         });
-    }, [pageStatus.current]);
+    }, [pageStatus.current, reload]);
 
     const stationTypeNameChanger = item => {
         if (item === 'gas') {
@@ -81,42 +110,76 @@ const Station = () => {
             id: 8,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
-                    <FormButton icon={trashBin} onClick={() => setConfirmModalStatus(true)} />
+                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
                 </ActionCell>
             )
         }
     ];
 
-    const { register, control, handleSubmit, formState, reset } = useForm({
-        defaultValues: {
-            title: '',
-            code: '',
-            type: '',
-            partsStatus: '',
-            equipmentStatus: ''
-        },
-        mode: 'onTouched'
-    });
+    const formSubmit = data => {
+        setButtonLoader({ ...buttonLoader, modalButton: true });
+        if (modalStatus === 'add') {
+            Axios.post('station_mgmt/', data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('جایگاه جدید با موفقیت ثبت شد');
+                setModalOpen(false);
+                reset();
+            });
+        } else {
+            Axios.put(`station_mgmt/?id=${specificDeviationId}`, data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('جایگاه با موفقیت ویرایش شد');
+                setModalOpen(false);
+                reset();
+            });
+        }
+    };
 
-    const { errors } = formState;
+    const editModalHandler = data => {
+        setModalStatus('edit');
+        setModalOpen(true);
+        setValue('title', data.title);
+        setValue('code', data.code);
+        setValue('station_type', data.station_type);
+        setValue('tools_status', data.tools_status);
+        setValue('equipment_status', data.equipment_status);
+        setSpecificDeviationId(data.id);
+    };
 
-    const formSubmit = data => {};
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificDeviationId(id);
+    };
+
+    const addModalHandler = () => {
+        setModalStatus('add');
+        setModalOpen(true);
+        setValue('tools_status', false);
+        setValue('equipment_status', false);
+    };
+
+    const deleteHandler = () => {
+        setButtonLoader({ ...buttonLoader, delete: true });
+        Axios.delete(`station_mgmt/?id=${specificDeviationId}`).then(() => {
+            setButtonLoader({ ...buttonLoader, delete: false });
+            setReload(!reload);
+            toast.success('انحراف  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
 
     return (
         <StationWrapper error={errors?.type?.message}>
-            <PagesHeader
-                buttonTitle='ثبت جایگاه جدید'
-                secondFiled='ساعت کاری مجموعه : ۸ ساعت'
-                onButtonClick={() => setShowAddModal(true)}
-            />
+            <PagesHeader buttonTitle='ثبت جایگاه جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
-            <Modal state={showAddModal} setState={setShowAddModal} handleClose={reset} bgStatus={true}>
+            <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
-                    <h2>فرم ثبت جایگاه</h2>
-
+                    {modalStatus === 'add' ? <h2>فرم ثبت جایگاه</h2> : <h2>ویرایش جایگاه</h2>}
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <InputComponent
                             title='عنوان'
@@ -132,7 +195,6 @@ const Station = () => {
                             error={errors?.title}
                             placeHolder='عنوان'
                         />
-
                         <InputComponent
                             title='کد'
                             icon={document}
@@ -153,15 +215,16 @@ const Station = () => {
                             <div className='auto_complete'>
                                 <Controller
                                     control={control}
-                                    name='type'
+                                    name='station_type'
                                     rules={{ required: 'این فیلد اجباری است' }}
                                     render={({ field: { onChange, value } }) => {
                                         return (
                                             <Autocomplete
-                                                options={top100Films}
-                                                value={value?.label}
-                                                onChange={(event, newValue) => {
-                                                    onChange(newValue?.label);
+                                                options={selectValue}
+                                                value={selectValue?.filter(item => item.value === value)[0]}
+                                                onChange={(_, newValue) => {
+                                                    onChange(newValue?.value);
+                                                    console.log(selectValue.filter(item => item.value === value));
                                                 }}
                                                 sx={{ width: '100%' }}
                                                 renderInput={params => <TextField {...params} />}
@@ -169,7 +232,6 @@ const Station = () => {
                                         );
                                     }}
                                 />
-
                                 <img src={widget} />
                             </div>
                             <p className='auto_complete_error'>{errors?.type?.message}</p>
@@ -179,23 +241,17 @@ const Station = () => {
                             <p className='title'>وضعیت قطعات</p>
                             <Controller
                                 control={control}
-                                name='partsStatus'
-                                rules={{ required: 'این فیلد اجباری است' }}
+                                name='equipment_status'
                                 render={({ field: { onChange, value } }) => (
-                                    <RadioGroup
-                                        row
-                                        name='radio-buttons-group'
-                                        value={value}
-                                        onChange={event => onChange(event.target.value)}
-                                    >
+                                    <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value='imperfect'
+                                            value={false}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value='perfect'
+                                            value={true}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -205,28 +261,21 @@ const Station = () => {
                             />
                             <p className='error'>{errors?.partsStatus?.message}</p>
                         </div>
-
                         <div className='radios'>
                             <p className='title'>وضعیت تجهیزات</p>
                             <Controller
                                 control={control}
-                                name='equipmentStatus'
-                                rules={{ required: 'این فیلد اجباری است' }}
+                                name='tools_status'
                                 render={({ field: { onChange, value } }) => (
-                                    <RadioGroup
-                                        row
-                                        name='radio-buttons-group'
-                                        value={value}
-                                        onChange={event => onChange(event.target.value)}
-                                    >
+                                    <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value='imperfect'
+                                            value={false}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value='perfect'
+                                            value={true}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -241,18 +290,15 @@ const Station = () => {
                     </form>
                 </div>
             </Modal>
-
-            <ConfirmModal status={confirmModalStatus} setStatus={setConfirmModalStatus} title='آیا از حذف این ردیف مطمئن هستید ؟' />
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
         </StationWrapper>
     );
 };
 
 export default Station;
-
-const top100Films = [
-    { label: 'مکانیک', year: 1994 },
-    { label: 'هیبرید', year: 1994 },
-    { label: 'برق کار', year: 1994 },
-    { label: 'گاز کار', year: 1994 },
-    { label: 'جلو بندی', year: 1994 }
-];

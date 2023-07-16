@@ -100,6 +100,7 @@ const Deviation = () => {
         setValue('title', data.title);
         setSpecificDeviationId(data.id);
     };
+
     const formSubmit = data => {
         setButtonLoader({ ...buttonLoader, modalButton: true });
 
