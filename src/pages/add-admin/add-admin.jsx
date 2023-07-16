@@ -61,9 +61,7 @@ const AddAdmin = () => {
 
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <AddAdminWrapper textareaError={errors?.representation_address?.message}>

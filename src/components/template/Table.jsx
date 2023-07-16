@@ -23,7 +23,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                 </tr>
                             </thead>
                             <tbody>
-                                {rows.map((row, rowIndex) => (
+                                {rows?.map((row, rowIndex) => (
                                     <Tooltip
                                         key={row.id}
                                         followCursor
@@ -50,7 +50,9 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                                 colIndex === 0 ? (
                                                     <td key={column.id}>{rowIndex + 1}</td>
                                                 ) : (
-                                                    <td key={column.id}>{row[column.key] ? row[column.key] : column.renderCell(row)}</td>
+                                                    <td key={column.id}>
+                                                        {!column?.renderCell ? row[column.key] : column?.renderCell(row)}
+                                                    </td>
                                                 )
                                             )}
                                         </tr>
