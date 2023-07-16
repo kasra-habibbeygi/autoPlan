@@ -29,6 +29,7 @@ export const TableComponent = styled.div(({ theme }) => ({
             borderBottomLeftRadius: '18px'
         }
     },
+
     '& .loading': {
         display: 'flex',
         justifyContent: 'center',
@@ -37,6 +38,22 @@ export const TableComponent = styled.div(({ theme }) => ({
         padding: '50px 0',
         borderRadius: '18px',
         margin: '10px 0'
+    },
+
+    '& .empty': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '10px',
+        backgroundColor: theme.colors.white,
+        padding: '30px 0',
+        borderRadius: '18px',
+        margin: '10px 0',
+        fontWeight: 700,
+        img: {
+            width: '40px',
+            height: '40px'
+        }
     },
 
     '& .tooltip': {
