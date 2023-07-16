@@ -21,8 +21,8 @@ const PERMISSION = {
     //برنامه ریزی تعمیرات
     REPAIR_PLANNING: {
         EDIT: 10,
-        VEHICLE_SPECIFICATIONS: 11,
-        DIAGNOSIS: 12,
+        VEHICLE_SPECIFICATIONS: 11, // مشخصات خودرو
+        DIAGNOSIS: 12, //عیب یابی
         TIME: 13
     },
     //علت انحراف
@@ -53,8 +53,8 @@ const PERMISSION = {
     },
     //تنظیمات سایت
     SETTING: {
-        RECEPTION: 25,
-        REPRESENTATION: 26,
+        RECEPTION: 25, // تنظیمات پذیرنده
+        REPRESENTATION: 26, //ساعت کار نمایندگی
         EDIT_PROFILE: 27
     }
 };
