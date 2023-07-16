@@ -3,11 +3,9 @@ import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/materi
 import { getDesignTokens } from '../configs/theme';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 
 // Assets
 import '../assets/styles/general.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 //components
 import LayoutProvider from './layouts/layout-provider';
@@ -26,6 +24,7 @@ import Modal from './template/modal';
 import MobileAlertModal from './template/mobile-alert-modal';
 import Station from '../pages/station/station';
 import AddAdmin from '../pages/add-admin/add-admin';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -34,6 +33,14 @@ function App() {
 
     return (
         <Provider store={store}>
+            <Toaster
+                position='bottom-left'
+                containerStyle={{
+                    zIndex: 9999,
+                    fontWeight: '400',
+                    fontSize: '1rem'
+                }}
+            />
             <ThemeProvider theme={themeConfig}>
                 <Routes>
                     <Route path='/' element={<Landing />} />
@@ -56,8 +63,6 @@ function App() {
             <Modal state={isMobile} fullScreen={true}>
                 <MobileAlertModal />
             </Modal>
-
-            <ToastContainer />
         </Provider>
     );
 }

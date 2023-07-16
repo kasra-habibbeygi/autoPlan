@@ -19,6 +19,7 @@ import Table from '../../components/template/Table';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
+import { toast } from 'react-hot-toast';
 
 const Station = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -35,6 +36,7 @@ const Station = () => {
         Axios.get('station_mgmt/').then(res => {
             setStationData(res.data.data);
         });
+        toast.success('asdasd');
     }, []);
 
     const stationTypeNameChanger = item => {
@@ -89,9 +91,7 @@ const Station = () => {
 
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <StationWrapper error={errors?.type?.message}>
