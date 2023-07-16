@@ -25,9 +25,7 @@ const Time = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <form onSubmit={handleSubmit(formSubmit)}>

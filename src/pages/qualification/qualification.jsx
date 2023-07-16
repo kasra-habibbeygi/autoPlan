@@ -46,7 +46,6 @@ const Qualification = () => {
         { id: 3, title: 'جلوبندی', key: 'blocking' },
         { id: 4, title: 'مکانیک', key: 'mechanic' },
         { id: 5, title: 'برق', key: 'electric' },
-        { id: 6, title: 'گاز', key: 'gas' },
         {
             id: 7,
             title: 'عملیات',

@@ -20,9 +20,7 @@ const WorkTimeForm = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <FormWrapper>

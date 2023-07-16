@@ -24,9 +24,7 @@ const FilterModal = () => {
     });
     const { errors } = formState;
 
-    const filterFormHandler = data => {
-        console.log(data);
-    };
+    const filterFormHandler = data => {};
 
     return (
         <FilterModalWrapper error={Object.keys(errors).length === 0 ? false : true}>

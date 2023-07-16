@@ -25,7 +25,6 @@ const UploadFile = ({ name, fileName, detail, valueHandler }) => {
                         </p>
                     </div>
                 </div>
-                {console.log(fileName)}
             </IconButton>
         </UploadFileStyle>
     );

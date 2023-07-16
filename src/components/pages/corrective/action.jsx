@@ -28,7 +28,6 @@ const Action = ({ setStep, setAllDetail }) => {
     });
 
     const formSubmit = data => {
-        console.log(data);
         setAllDetail(prev => ({
             ...prev,
             actions: data.actionFields

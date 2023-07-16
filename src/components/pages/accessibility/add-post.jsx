@@ -24,9 +24,7 @@ const AddPost = () => {
 
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <AddModalWrapper error={errors?.post?.message}>

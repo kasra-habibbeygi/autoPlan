@@ -19,7 +19,6 @@ const ExecuteDate = ({ setStep, setAllDetail }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
         setAllDetail(prev => ({
             ...prev,
             execute_date: data
