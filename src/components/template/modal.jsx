@@ -4,7 +4,7 @@ import React from 'react';
 import { ModalStyle } from './modal.styles';
 import bg from '../../assets/images/global/bg.svg';
 
-//mui
+//MUI
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 const Transition = React.forwardRef(function Transition(props, ref) {

@@ -21,11 +21,13 @@ import AddDetailModal from '../../components/pages/qualification/add-detail-moda
 import QualificationTable from '../../components/pages/qualification/qualification-table';
 import FormButton from '../../components/form-groups/form-button';
 import DatePickerComponent from '../../components/form-groups/date-picker';
+import ConfirmModal from '../../components/template/confirm-modal';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [step, setStep] = useState(1);
     const [details, setDetails] = useState({
         blockingList: [],
@@ -52,7 +54,7 @@ const Qualification = () => {
             renderCell: () => (
                 <ActionCell>
                     <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
-                    <FormButton icon={trashBin} />
+                    <FormButton icon={trashBin} onClick={() => setConfirmModalStatus(true)} />
                 </ActionCell>
             )
         }
@@ -239,6 +241,7 @@ const Qualification = () => {
             <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
                 <AddDetailModal subModalStatus={subModalStatus} setDetails={setDetails} closeSubModalHandler={closeSubModalHandler} />
             </Modal>
+            <ConfirmModal status={confirmModalStatus} setStatus={setConfirmModalStatus} title='آیا از حذف این ردیف مطمئن هستید ؟' />
         </QualificationWrapper>
     );
 };
