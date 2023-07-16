@@ -4,7 +4,7 @@ export const StationWrapper = styled.div(props => ({
     '& .formControl': {
         margin: '0 auto',
         backgroundColor: props.theme.colors.white,
-        padding: '20px 50px',
+        padding: '20px 70px',
         borderRadius: '12px',
         width: '600px',
 
@@ -57,7 +57,8 @@ export const StationWrapper = styled.div(props => ({
 
             '& .auto_complete_error': {
                 color: '#830000',
-                fontSize: '12px'
+                fontSize: '12px',
+                marginTop: '10px'
             }
         }
     },

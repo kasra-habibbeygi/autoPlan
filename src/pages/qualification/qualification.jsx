@@ -15,11 +15,13 @@ import { ActionCell } from '../deviation/deviation.style';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
+import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import FormButton from '../../components/form-groups/form-button';
 import DatePickerComponent from '../../components/form-groups/date-picker';
 import ConfirmModal from '../../components/template/confirm-modal';
+import ShowAll from '../../components/pages/qualification/show-all';
 
 const Qualification = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -117,7 +119,7 @@ const Qualification = () => {
         }
     ];
 
-    const { control, handleSubmit, formState, reset } = useForm({
+    const { control, handleSubmit, formState, reset, getValues } = useForm({
         defaultValues: {
             date: ''
         },
@@ -133,7 +135,7 @@ const Qualification = () => {
             details.gasList.length > 0 &&
             details.mechanicList.length > 0
         ) {
-            console.log(data);
+            setStep(2);
         }
     };
 
@@ -154,7 +156,7 @@ const Qualification = () => {
     };
 
     return (
-        <QualificationWrapper step={step}>
+        <QualificationWrapper>
             <PagesHeader
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
@@ -164,71 +166,75 @@ const Qualification = () => {
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
-                    {/* <ProgressBar step={step} /> */}
-                    <form onSubmit={handleSubmit(formSubmit)}>
-                        <Controller
-                            control={control}
-                            name='date'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                            }}
-                        />
+                    <ProgressBar step={step} />
+                    {step === 1 ? (
+                        <form onSubmit={handleSubmit(formSubmit)}>
+                            <Controller
+                                control={control}
+                                name='date'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
+                                }}
+                            />
 
-                        <SelectInput
-                            title='جلوبندی'
-                            icon={blocking}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('جلوبندی');
-                            }}
-                            items={details.blockingList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی جلوبندی'
-                        />
+                            <SelectInput
+                                title='جلوبندی'
+                                icon={blocking}
+                                onClick={() => {
+                                    setShowSubModal(true);
+                                    setSubModalStatus('جلوبندی');
+                                }}
+                                items={details.blockingList}
+                                submitCount={submitCount}
+                                setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی جلوبندی'
+                            />
 
-                        <SelectInput
-                            title='مکانیک'
-                            icon={ShockAbsorber}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('مکانیک');
-                            }}
-                            items={details.mechanicList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی مکانیکی'
-                        />
+                            <SelectInput
+                                title='مکانیک'
+                                icon={ShockAbsorber}
+                                onClick={() => {
+                                    setShowSubModal(true);
+                                    setSubModalStatus('مکانیک');
+                                }}
+                                items={details.mechanicList}
+                                submitCount={submitCount}
+                                setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی مکانیکی'
+                            />
 
-                        <SelectInput
-                            title='برق'
-                            icon={Accumulator}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('برق');
-                            }}
-                            items={details.electricList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی برق کار'
-                        />
+                            <SelectInput
+                                title='برق'
+                                icon={Accumulator}
+                                onClick={() => {
+                                    setShowSubModal(true);
+                                    setSubModalStatus('برق');
+                                }}
+                                items={details.electricList}
+                                submitCount={submitCount}
+                                setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی برق کار'
+                            />
 
-                        <SelectInput
-                            title='گاز'
-                            icon={GasStation}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('گاز');
-                            }}
-                            items={details.gasList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی گاز کار'
-                        />
+                            <SelectInput
+                                title='گاز'
+                                icon={GasStation}
+                                onClick={() => {
+                                    setShowSubModal(true);
+                                    setSubModalStatus('گاز');
+                                }}
+                                items={details.gasList}
+                                submitCount={submitCount}
+                                setDetails={setDetails}
+                                placeHolder='ظرفیت سنجی گاز کار'
+                            />
 
-                        <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
-                    </form>
+                            <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                        </form>
+                    ) : (
+                        <ShowAll details={details} date={getValues('date')} />
+                    )}
                 </div>
             </Modal>
 

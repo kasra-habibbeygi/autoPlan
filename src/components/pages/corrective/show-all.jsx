@@ -1,6 +1,10 @@
 import React from 'react';
-import { ShowAllStyle } from './show-all.style';
 import { Grid } from '@mui/material';
+
+//Assets
+import { ShowAllStyle } from './show-all.style';
+
+//Components
 
 const ShowAll = ({ setStep, setAllDetail, allDetail }) => {
     return (

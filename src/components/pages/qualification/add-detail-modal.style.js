@@ -15,7 +15,8 @@ export const FormWrapper = styled.form(props => {
         '& .auto_error': {
             fontSize: '12px',
             color: '#830000',
-            marginTop: '15px'
+            marginTop: '15px',
+            marginBottom: '15px'
         },
 
         '& .auto_complete': {

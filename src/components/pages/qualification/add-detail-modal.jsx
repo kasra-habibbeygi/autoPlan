@@ -16,6 +16,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
     const { register, handleSubmit, control, formState, getValues, setValue, reset } = useForm({
         defaultValues: {
             name: '',
+            station: '',
             time: 'partTime',
             workTime: 1
         },
@@ -45,9 +46,10 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                     name: data.name,
                     time: data.time,
                     workTime: data.workTime,
+                    station: data.station,
                     fullText: `${data.name}-${data.time === 'partTime' ? 'پاره وقت' : data.time === 'fullTime' ? 'تمام وقت' : null} : ${
                         data.workTime
-                    } ساعت کاری`
+                    } ساعت کاری-در جایگاه ${data.station}`
                 }
             ]
         }));
@@ -82,6 +84,31 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                 <img src={circle} />
             </div>
             <p className='auto_error'>{errors?.name?.message}</p>
+
+            <p>جایگاه</p>
+            <div className='auto_complete'>
+                <Controller
+                    control={control}
+                    name='station'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <Autocomplete
+                                options={top100Films}
+                                value={value?.label}
+                                onChange={(event, newValue) => {
+                                    onChange(newValue?.label);
+                                }}
+                                sx={{ width: '100%' }}
+                                renderInput={params => <TextField {...params} />}
+                            />
+                        );
+                    }}
+                />
+
+                <img src={circle} />
+            </div>
+            <p className='auto_error'>{errors?.station?.message}</p>
             <Controller
                 control={control}
                 name='time'

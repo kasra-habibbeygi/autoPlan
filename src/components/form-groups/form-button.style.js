@@ -13,6 +13,7 @@ export const FormButtonWrapper = styled(LoadingButton)(
         width: width || '100%',
         height: height || '100%',
         minWidth: '0',
+
         ...(!loading && {
             color: text_color,
             backgroundColor: background_color
@@ -22,8 +23,8 @@ export const FormButtonWrapper = styled(LoadingButton)(
         }),
 
         '&:hover': {
-            backgroundColor: '#ffffffb3',
-            color: 'black'
+            backgroundColor: background_color === '#174787' ? '#1B74E4' : '#ffffffb3',
+            color: background_color === '#174787' ? 'white' : 'black'
         },
 
         p: {
