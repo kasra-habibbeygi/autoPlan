@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
@@ -20,9 +21,6 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
 
-import 'moment/locale/fa';
-import 'moment-jalaali';
-
 // Tools
 import Tools from '../../utils/tools';
 
@@ -37,11 +35,16 @@ const Station = () => {
     });
 
     useEffect(() => {
-        setLoader(false);
-        Axios.get('station_mgmt/').then(res => {
+        setLoader(true);
+        Axios.get(`station_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
             setStationData(res.data.data);
+            setPageStatus({
+                ...pageStatus,
+                total: res.data.total
+            });
+            setLoader(false);
         });
-    }, []);
+    }, [pageStatus.current]);
 
     const stationTypeNameChanger = item => {
         if (item === 'gas') {

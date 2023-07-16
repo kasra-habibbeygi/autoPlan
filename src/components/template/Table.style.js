@@ -80,7 +80,7 @@ export const PaginationWrapper = styled.div(props => ({
     '& .MuiPaginationItem-page': {
         background: `${props.theme.colors.white} !important`,
         color: `${props.theme.colors.textColor}  !important`,
-        fontSize: '1.3rem'
+        fontSize: '1rem'
     },
 
     '& *': {
