@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 //Assets
 import { AddAdminWrapper } from './add-admin.style';
@@ -23,9 +24,11 @@ import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
 import FormButton from '../../components/form-groups/form-button';
 
-import Tools from '../../utils/tools';
+// Tools
+import PERMISSION from '../../utils/permission.ts';
 
 const AddAdmin = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
@@ -43,7 +46,7 @@ const AddAdmin = () => {
         current: 1
     });
 
-    const { register, handleSubmit, formState, reset, setValue } = useForm({
+    const { register, handleSubmit, formState, reset } = useForm({
         defaultValues: {
             company_address: '',
             company_code: '',
@@ -89,28 +92,21 @@ const AddAdmin = () => {
     ];
 
     const formSubmit = data => {
-        setValue('username', new Date().getTime());
+        const newData = {
+            ...data,
+            username: new Date().getTime()
+        };
         setButtonLoader({ ...buttonLoader, modalButton: true });
         if (modalStatus === 'add') {
-            Axios.post('add_admin_user/', data).then(() => {
+            Axios.post('add_admin_user/', newData).then(() => {
                 setButtonLoader({ ...buttonLoader, modalButton: false });
                 setReload(!reload);
                 toast.success('ادمین جدید با موفقیت ثبت شد');
                 setModalOpen(false);
                 reset();
             });
-        } else {
-            Axios.put(`add_admin_user/?id=${specificDeviationId}`, data).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('ادمین با موفقیت ویرایش شد');
-                setModalOpen(false);
-                reset();
-            });
         }
     };
-
-    console.log(Tools.changeTimeStampToIsoDate(1672324160035));
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
@@ -228,7 +224,14 @@ const AddAdmin = () => {
                             <p className='error'>{errors?.company_address?.message}</p>
                         </div>
 
-                        <FormButton text='افزودن' type='submit' backgroundColor='#174787' color={'white'} height={48} />
+                        <FormButton
+                            text='افزودن'
+                            type='submit'
+                            backgroundColor='#174787'
+                            color={'white'}
+                            height={48}
+                            loading={buttonLoader.modalButton}
+                        />
                     </form>
                 </div>
             </Modal>
