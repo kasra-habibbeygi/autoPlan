@@ -22,11 +22,7 @@ const AddPersonnel = () => {
 
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
-
-    // console.log(errors);
+    const formSubmit = data => {};
 
     return (
         <AddModalWrapper error={errors?.accesses?.message}>

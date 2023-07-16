@@ -33,7 +33,6 @@ const Diagnosis = ({ setStep }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
         setStep(3);
     };
 

@@ -20,7 +20,6 @@ const Result = ({ setStep, setAllDetail }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
         setAllDetail(prev => ({
             ...prev,
             action_result: data.action_result

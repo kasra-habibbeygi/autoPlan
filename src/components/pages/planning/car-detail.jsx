@@ -24,7 +24,6 @@ const CarDetail = ({ setStep }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(data);
         setStep(2);
     };
 
