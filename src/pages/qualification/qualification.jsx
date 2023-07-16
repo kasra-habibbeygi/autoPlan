@@ -168,14 +168,16 @@ const Qualification = () => {
                     <ProgressBar step={step} />
                     {step === 1 ? (
                         <form onSubmit={handleSubmit(formSubmit)}>
-                            <Controller
-                                control={control}
-                                name='date'
-                                rules={{ required: 'این فیلد اجباری است' }}
-                                render={({ field: { onChange, value } }) => {
-                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                                }}
-                            />
+                            <div className='date_wrapper'>
+                                <Controller
+                                    control={control}
+                                    name='date'
+                                    rules={{ required: 'این فیلد اجباری است' }}
+                                    render={({ field: { onChange, value } }) => {
+                                        return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
+                                    }}
+                                />
+                            </div>
 
                             <SelectInput
                                 title='جلوبندی'

@@ -16,7 +16,11 @@ export const QualificationWrapper = styled.div(props => {
         },
 
         form: {
-            marginTop: '30px'
+            marginTop: '30px',
+
+            '& .date_wrapper': {
+                maxWidth: '442px'
+            }
         }
     };
 });
