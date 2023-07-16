@@ -5,6 +5,9 @@ import { CircularProgress, Pagination, Tooltip } from '@mui/material';
 import { PaginationWrapper, TableComponent } from './Table.style';
 import emptyBox from './../../assets/images/global/emptyBox.png';
 
+// Tools
+import Tools from '../../utils/tools';
+
 const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) => {
     return (
         <>
@@ -34,7 +37,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                                     <div>
                                                         <p style={{ color: '#174787', fontWeight: 900, fontSize: '16px' }}>زمان ثبت :</p>
                                                         <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
-                                                            1402/04/08 - 13:13
+                                                            {Tools.changeDateToJalali(row.date_created ?? 0)}
                                                         </p>
                                                     </div>
                                                     <br />
@@ -43,7 +46,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                                             آخرین ویرایش :
                                                         </p>
                                                         <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
-                                                            1402/04/08 - 13:13
+                                                            {Tools.changeDateToJalali(row.date_modified ?? 0)}
                                                         </p>
                                                     </div>
                                                 </div>
