@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
@@ -49,11 +50,15 @@ const Deviation = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get('deviation_type_mgmt/').then(res => {
+        Axios.get(`deviation_type_mgmt/?page=${pageStatus.current}`).then(res => {
             setDeviationData(res.data.data);
             setLoader(false);
+            setPageStatus({
+                ...pageStatus,
+                total: res.data.total
+            });
         });
-    }, [reload]);
+    }, [reload, pageStatus.current]);
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
