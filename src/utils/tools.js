@@ -8,6 +8,10 @@ class Tools {
     changeDateToJalali(date) {
         return jMoment.unix(parseInt(Date.parse(date) / 1000)).format('jYYYY/jMM/jDD - HH:mm:ss');
     }
+
+    changeTimeStampToIsoDate(date) {
+        return new Date(date).toISOString();
+    }
 }
 
 export default new Tools();

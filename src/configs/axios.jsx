@@ -7,13 +7,13 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async config => {
-    // if (config.data) {
-    //     for (const key of Object.keys(config.data)) {
-    //         if (config.data[key] === '') {
-    //             delete config.data[key];
-    //         }
-    //     }
-    // }
+    if (config.data) {
+        for (const key of Object.keys(config.data)) {
+            if (config.data[key] === '') {
+                delete config.data[key];
+            }
+        }
+    }
     return config;
 });
 

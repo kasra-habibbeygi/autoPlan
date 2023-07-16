@@ -19,7 +19,7 @@ import Modal from '../../components/template/modal';
 import InputComponent from './../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
 
-//Utils
+//Tools
 import PERMISSION from '../../utils/permission.ts';
 
 const Deviation = () => {

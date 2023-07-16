@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -24,6 +25,7 @@ import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
 import Tools from '../../utils/tools';
+import PERMISSION from '../../utils/permission.ts';
 
 const selectValue = [
     { label: 'مکانیک', value: 'mechanic' },
@@ -34,6 +36,7 @@ const selectValue = [
 ];
 
 const Station = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
@@ -112,8 +115,16 @@ const Station = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -125,7 +136,7 @@ const Station = () => {
             Axios.post('station_mgmt/', data).then(() => {
                 setButtonLoader({ ...buttonLoader, modalButton: false });
                 setReload(!reload);
-                toast.success('جایگاه جدید با موفقیت ثبت شد');
+                toast.success('ادمین جدید با موفقیت ثبت شد');
                 setModalOpen(false);
                 reset();
             });
@@ -133,7 +144,7 @@ const Station = () => {
             Axios.put(`station_mgmt/?id=${specificDeviationId}`, data).then(() => {
                 setButtonLoader({ ...buttonLoader, modalButton: false });
                 setReload(!reload);
-                toast.success('جایگاه با موفقیت ویرایش شد');
+                toast.success('ادمین با موفقیت ویرایش شد');
                 setModalOpen(false);
                 reset();
             });
@@ -143,11 +154,7 @@ const Station = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        setValue('title', data.title);
-        setValue('code', data.code);
-        setValue('station_type', data.station_type);
-        setValue('tools_status', data.tools_status);
-        setValue('equipment_status', data.equipment_status);
+        // setValue('title', data.title);
         setSpecificDeviationId(data.id);
     };
 
@@ -168,14 +175,19 @@ const Station = () => {
         Axios.delete(`station_mgmt/?id=${specificDeviationId}`).then(() => {
             setButtonLoader({ ...buttonLoader, delete: false });
             setReload(!reload);
-            toast.success('انحراف  با موفقیت حذف شد');
+            toast.success('ادمین  با موفقیت حذف شد');
             setConfirmModalStatus(false);
         });
     };
 
     return (
         <StationWrapper error={errors?.type?.message}>
-            <PagesHeader buttonTitle='ثبت جایگاه جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
+            <PagesHeader
+                buttonTitle='ثبت جایگاه جدید'
+                secondFiled='ساعت کاری مجموعه : ۸ ساعت'
+                onButtonClick={addModalHandler}
+                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.ADD)}
+            />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
@@ -286,7 +298,14 @@ const Station = () => {
                             <p className='error'>{errors?.equipmentStatus?.message}</p>
                         </div>
 
-                        <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                        <FormButton
+                            text='ادامه'
+                            type='submit'
+                            backgroundColor='#174787'
+                            color='white'
+                            height={48}
+                            loading={buttonLoader.modalButton}
+                        />
                     </form>
                 </div>
             </Modal>
