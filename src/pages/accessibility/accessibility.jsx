@@ -26,14 +26,13 @@ const Accessibility = () => {
         current: 1
     });
 
-    const columns = [
+    const columnsPosts = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'موبایل', key: 'mobileNumber' },
-        { id: 3, title: 'پست کاربر', key: 'userRole' },
-        { id: 4, title: 'دسترسی ها', key: 'accessibility' },
+        { id: 2, title: 'نام پست', key: 'postName' },
+        { id: 3, title: 'دسترسی ها', key: 'accessibility' },
 
         {
-            id: 5,
+            id: 4,
             title: 'عملیات',
             key: 'actions',
             renderCell: () => (
@@ -46,83 +45,106 @@ const Accessibility = () => {
         }
     ];
 
-    const rows = [
+    const columnsPersonnel = [
+        { id: 1, title: 'ردیف', key: 'index' },
+        { id: 2, title: 'موبایل', key: 'mobileNumber' },
+        { id: 3, title: 'نام کاربری', key: 'userName' },
+        { id: 4, title: 'نقش کاربر', key: 'userRole' },
+        { id: 5, title: 'نام و نام خانوادگی', key: 'fullName' },
+
+        {
+            id: 6,
+            title: 'عملیات',
+            key: 'actions',
+            renderCell: () => (
+                <ActionCell>
+                    <FormButton icon={pen} />
+                    <FormButton icon={trashBin} />
+                </ActionCell>
+            )
+        }
+    ];
+
+    const rowsPost = [
         {
             id: 1,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 2,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 3,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 4,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 5,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 6,
-            userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
         },
         {
             id: 7,
+            postName: 'ادمین',
+            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
+        }
+    ];
+
+    const rowsPersonnel = [
+        {
+            id: 1,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
             userRole: 'ادمین اصلی',
-            correctivePercent: '۴۰',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی',
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
+            fullName: 'محسن چاووشی'
+        },
+        {
+            id: 2,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
+            userRole: 'ادمین اصلی',
+            fullName: 'محسن چاووشی'
+        },
+        {
+            id: 3,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
+            userRole: 'ادمین اصلی',
+            fullName: 'محسن چاووشی'
+        },
+        {
+            id: 4,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
+            userRole: 'ادمین اصلی',
+            fullName: 'محسن چاووشی'
+        },
+        {
+            id: 5,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
+            userRole: 'ادمین اصلی',
+            fullName: 'محسن چاووشی'
+        },
+        {
+            id: 6,
+            mobileNumber: '09383939515',
+            userName: 'aliSomeOne',
+            userRole: 'ادمین اصلی',
+            fullName: 'محسن چاووشی'
         }
     ];
 
@@ -133,7 +155,20 @@ const Accessibility = () => {
     return (
         <AccessibilityWrapper>
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
-            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <div className='table_wrapper'>
+                <p className='table_header'>پست سازمانی</p>
+                <Table columns={columnsPosts} rows={rowsPost} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+            <div className='table_wrapper'>
+                <p className='table_header'>پرسنل</p>
+                <Table columns={columnsPersonnel} rows={rowsPersonnel} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            </div>
+
             <Modal state={showAddModal} setState={setShowAddModal} maxWidth='sm'>
                 <div className='button_wrapper'>
                     <FormButton

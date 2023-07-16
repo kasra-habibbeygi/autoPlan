@@ -10,10 +10,22 @@ export const AccessibilityWrapper = styled.div(() => ({
             flexDirection: 'column',
             height: '124px'
         }
+    },
+
+    '& .table_wrapper': {
+        '& .table_header': {
+            marginTop: '20px',
+            backgroundColor: 'white',
+            borderRadius: '18px',
+            padding: '15px 23px',
+            fontSize: '22px',
+            fontWeight: 700,
+            textAlign: 'center'
+        }
     }
 }));
 
-export const ModalStyleBg = styled.div(props => ({
+export const ModalStyleBg = styled.div(() => ({
     background: '#FAFAFA',
     padding: '50px',
     borderRadius: '20px'

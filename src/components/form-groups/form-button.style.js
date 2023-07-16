@@ -14,7 +14,8 @@ export const FormButtonWrapper = styled(LoadingButton)(
         text_color,
         background_color,
         reverse,
-        justify_content
+        justify_content,
+        disabled
     }) => ({
         display: 'flex',
         justifyContent: justify_content || 'center',
@@ -45,6 +46,12 @@ export const FormButtonWrapper = styled(LoadingButton)(
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: fontSize || '16px'
+        },
+
+        img: {
+            ...(disabled && {
+                opacity: '0.4'
+            })
         }
     })
 );
