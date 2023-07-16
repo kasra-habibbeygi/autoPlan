@@ -8,6 +8,7 @@ import circle from './../../../assets/images/icons/circle.svg';
 import { FormWrapper } from './add-detail-modal.style';
 import decreesArrow from './../../../assets/images/icons/decreesArrow.svg';
 import increaseArrow from './../../../assets/images/icons/increaseArrow.svg';
+import blocking from './../../../assets/images/icons/blocking.svg';
 
 //components
 import FormButton from '../../form-groups/form-button';
@@ -106,7 +107,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                     }}
                 />
 
-                <img src={circle} />
+                <img src={blocking} />
             </div>
             <p className='auto_error'>{errors?.station?.message}</p>
             <Controller

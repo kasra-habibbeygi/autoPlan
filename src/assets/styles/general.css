@@ -129,3 +129,7 @@ textarea {
 .MuiAutocomplete-listbox {
     font-family: 'main' !important;
 }
+
+.Toastify *{
+    font-family: 'main' !important;
+}
