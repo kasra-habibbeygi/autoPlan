@@ -39,6 +39,7 @@ const Login = ({ showModal, setShowModal }) => {
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
             <LoginStyle>
+                asd
                 <img src={shape1} alt='' className='shapeTop' />
                 <img src={shape2} alt='' className='shapeTop' />
                 <img src={shape1} alt='' className='shapeBottom' />
