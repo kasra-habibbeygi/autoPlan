@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import Axios from '../../configs/axios';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -22,19 +23,46 @@ import ConfirmModal from '../../components/template/confirm-modal';
 const Station = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [stationData, setStationData] = useState([]);
+    const [loader, setLoader] = useState(false);
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
+
+    useEffect(() => {
+        setLoader(false);
+        Axios.get('station_mgmt/').then(res => {
+            setStationData(res.data.data);
+        });
+    }, []);
+
+    const stationTypeNameChanger = item => {
+        if (item === 'gas') {
+            return 'گاز کار';
+        } else if (item === 'mechanic') {
+            return 'مکانیک';
+        } else if (item === 'elec') {
+            return 'برق کار';
+        } else if (item === 'blocking') {
+            return 'جلوبندی';
+        }
+        return 'هیبرید';
+    };
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
         { id: 3, title: 'عنوان', key: 'title' },
         { id: 4, title: 'کد', key: 'code' },
-        { id: 5, title: 'وضعیت قطعات', key: 'partsStatus' },
-        { id: 6, title: 'وضعیت تجهیزات', key: 'equipmentStatus' },
-        { id: 7, title: 'نوع', key: 'type' },
+        { id: 5, title: 'وضعیت قطعات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
+        { id: 6, title: 'وضعیت تجهیزات', key: 'tools_status', renderCell: data => (data.tools_status ? 'کامل' : 'ناقص') },
+        {
+            id: 7,
+            title: 'نوع',
+            key: 'station_type',
+            renderCell: data => stationTypeNameChanger(data.station_type)
+        },
         {
             id: 8,
             title: 'عملیات',
@@ -72,7 +100,7 @@ const Station = () => {
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
             />
-            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={showAddModal} setState={setShowAddModal} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
                     <h2>فرم ثبت جایگاه</h2>
@@ -208,72 +236,6 @@ const Station = () => {
 };
 
 export default Station;
-
-const rows = [
-    {
-        id: 1,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 2,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 3,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 4,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 5,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 6,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    },
-    {
-        id: 7,
-        date: '۱۴۰۲-۰۴-۰۸',
-        title: 'محسن',
-        code: 37,
-        partsStatus: 'کامل',
-        equipmentStatus: 'ناقص',
-        type: 'مکانیک'
-    }
-];
 
 const top100Films = [
     { label: 'مکانیک', year: 1994 },
