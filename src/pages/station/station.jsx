@@ -5,7 +5,6 @@ import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@m
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
-import ConfirmModal from '../../components/template/confirm-modal';
 import addPhone from './../../assets/images/login/addPhone.svg';
 import { ActionCell } from '../deviation/deviation.style';
 import { StationWrapper } from './station.style';
@@ -16,6 +15,7 @@ import PagesHeader from '../../components/template/pages-header';
 import Table from '../../components/template/Table';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
+import ConfirmModal from '../../components/template/confirm-modal';
 
 const Station = () => {
     const [showAddModal, setShowAddModal] = useState(false);
