@@ -19,7 +19,12 @@ import Table from '../../components/template/Table';
 import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
-import { toast } from 'react-hot-toast';
+
+import 'moment/locale/fa';
+import 'moment-jalaali';
+
+// Tools
+import Tools from '../../utils/tools';
 
 const Station = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -53,7 +58,12 @@ const Station = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date' },
+        {
+            id: 2,
+            title: 'تاریخ',
+            key: 'date_created',
+            renderCell: data => Tools.changeDateToJalali(data.date_created)
+        },
         { id: 3, title: 'عنوان', key: 'title' },
         { id: 4, title: 'کد', key: 'code' },
         { id: 5, title: 'وضعیت قطعات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
