@@ -149,26 +149,28 @@ const Corrective = () => {
         <>
             <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
             <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
-            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true'>
-                <ModalStyleBg>
-                    <h2>اقدام اصلاحی</h2>
-                    <ProgressBar step={step} />
-                    {step === 1 ? (
-                        <Problem setStep={setStep} setAllDetail={setAllDetail} />
-                    ) : step === 2 ? (
-                        <Rootting setStep={setStep} setAllDetail={setAllDetail} />
-                    ) : step === 3 ? (
-                        <Action setStep={setStep} setAllDetail={setAllDetail} />
-                    ) : step === 4 ? (
-                        <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
-                    ) : step === 5 ? (
-                        <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
-                    ) : step === 6 ? (
-                        <Result setStep={setStep} setAllDetail={setAllDetail} />
-                    ) : (
-                        step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
-                    )}
-                </ModalStyleBg>
+            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true' handleClose={() => setStep(1)}>
+                {isModalOpen ? (
+                    <ModalStyleBg>
+                        <h2>اقدام اصلاحی</h2>
+                        <ProgressBar step={step} />
+                        {step === 1 ? (
+                            <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 2 ? (
+                            <Rootting setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 3 ? (
+                            <Action setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 4 ? (
+                            <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                        ) : step === 5 ? (
+                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : step === 6 ? (
+                            <Result setStep={setStep} setAllDetail={setAllDetail} />
+                        ) : (
+                            step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                        )}
+                    </ModalStyleBg>
+                ) : null}
             </Modal>
             <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
                 <ShowAll allDetail={allDetail} />

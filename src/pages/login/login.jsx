@@ -74,7 +74,15 @@ const Login = ({ showModal, setShowModal }) => {
                                 error={errors?.phoneNumber}
                                 placeHolder='---------۰۹'
                             />
-                            <FormButton text='ادامه' loading={false} type='submit' backgroundColor='#174787' color='white' height={48} />
+                            <FormButton
+                                text='ادامه'
+                                loading={false}
+                                type='submit'
+                                backgroundColor='#174787'
+                                color='white'
+                                height={48}
+                                margin='30px 0 0 0'
+                            />
                         </div>
                     ) : loginStatus === 'sendConfirmCode' ? (
                         <div className='secondStep'>
@@ -95,7 +103,15 @@ const Login = ({ showModal, setShowModal }) => {
                                     }}
                                 />
                             </div>
-                            <FormButton text='ثبت' loading={false} type='button' backgroundColor={'#174787'} color={'white'} height={48} />
+                            <FormButton
+                                text='ثبت'
+                                loading={false}
+                                type='button'
+                                backgroundColor={'#174787'}
+                                color={'white'}
+                                height={48}
+                                margin='30px 0 0 0'
+                            />
                         </div>
                     ) : null}
                 </form>

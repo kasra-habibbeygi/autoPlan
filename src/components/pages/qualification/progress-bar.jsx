@@ -13,7 +13,7 @@ const ProgressBar = ({ step }) => {
             <span className={`divider ${step >= 2 ? 'active' : ''}`}></span>
 
             <div className={`progress ${step >= 2 ? 'active' : ''}`}>
-                <p>جایگاه</p>
+                <p>پیش نمایش</p>
                 <span className='number'>2</span>
             </div>
         </ProgressBarStyle>
