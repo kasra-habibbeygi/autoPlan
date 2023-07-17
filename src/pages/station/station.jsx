@@ -118,12 +118,12 @@ const Station = () => {
                     <FormButton
                         icon={pen}
                         onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.EDIT)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.EDIT)}
                     />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.DELETE)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.DELETE)}
                     />
                 </ActionCell>
             )
@@ -154,7 +154,11 @@ const Station = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        // setValue('title', data.title);
+        setValue('title', data.title);
+        setValue('code', data.code);
+        setValue('station_type', data.station_type);
+        setValue('equipment_status', data.equipment_status);
+        setValue('tools_status', data.tools_status);
         setSpecificDeviationId(data.id);
     };
 
@@ -186,7 +190,7 @@ const Station = () => {
                 buttonTitle='ثبت جایگاه جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={addModalHandler}
-                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.ADD)}
+                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.ADD)}
             />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>

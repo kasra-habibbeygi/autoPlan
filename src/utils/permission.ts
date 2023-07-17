@@ -7,7 +7,7 @@ const PERMISSION = {
         ADD: 3
     },
     // تعریف جایگاه
-    STATION_DEFINATION: {
+    STATION_DEFINITION: {
         EDIT: 4,
         DELETE: 5,
         ADD: 6
@@ -26,7 +26,7 @@ const PERMISSION = {
         TIME: 13
     },
     //علت انحراف
-    DEVIATION_RESON: {
+    DEVIATION_REASON: {
         EDIT: 14,
         DELETE: 15,
         ADD: 16
@@ -49,7 +49,7 @@ const PERMISSION = {
         EDIT: 21,
         DELETE: 22,
         ADD_POST: 23,
-        ADD_PERSONEL: 24
+        ADD_PERSONNEL: 24
     },
     //تنظیمات سایت
     SETTING: {
