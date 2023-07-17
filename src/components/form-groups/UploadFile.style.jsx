@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const UploadFileStyle = styled.div(props => ({
+export const UploadFileStyle = styled.form(props => ({
     '& .upload': {
         color: '#727A89',
         display: 'flex',
@@ -8,6 +8,9 @@ export const UploadFileStyle = styled.div(props => ({
         borderRadius: '20px',
         padding: '30px 10px',
         border: '1px dashed gray',
+        ...(props.error && {
+            borderColor: '#830000'
+        }),
 
         p: {
             overflow: 'hidden',
@@ -40,5 +43,11 @@ export const UploadFileStyle = styled.div(props => ({
             color: props.theme.colors.black,
             marginBottom: '20px'
         }
+    },
+
+    '& .error_message': {
+        fontSize: '12px',
+        color: '#830000',
+        margin: '10px 0 20px 0'
     }
 }));
