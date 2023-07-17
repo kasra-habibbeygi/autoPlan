@@ -24,7 +24,6 @@ const AddPost = () => {
     });
 
     const { errors } = formState;
-
     const formSubmit = data => {};
 
     return (
@@ -88,7 +87,6 @@ const AddPost = () => {
                     </div>
                     <p className='auto_complete_error'>{errors?.post?.message}</p>
                 </div>
-
                 <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
             </form>
         </AddModalWrapper>

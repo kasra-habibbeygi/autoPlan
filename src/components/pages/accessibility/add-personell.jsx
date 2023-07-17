@@ -14,9 +14,9 @@ import FormButton from '../../form-groups/form-button';
 import { Autocomplete, TextField } from '@mui/material';
 
 const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAccessibilityId, editModalData }) => {
-    console.log('test');
     const [permissionList, setPermissionList] = useState([{ value: '', lable: '', id: '' }]);
     const [buttonLoader, setButtonLoader] = useState(false);
+    const [test, setTest] = useState([]);
     const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             post_name: '',
@@ -28,11 +28,6 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
     const { errors } = formState;
 
     useEffect(() => {
-        if (modalStatus === 'edit') {
-            setValue('title', editModalData.title);
-            setValue('permissions', editModalData.permissions);
-        }
-
         Axios.get('permission-list/').then(res => {
             let permission = res.data.results.map(item => ({
                 label: item.title,
@@ -40,8 +35,28 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
                 id: item.id
             }));
             setPermissionList(permission);
+
+            if (modalStatus === 'edit') {
+                setValue('title', editModalData.title);
+
+                let equals = [];
+
+                for (let obj1 of permission) {
+                    for (let obj2 of editModalData.permission) {
+                        if (obj1.id === obj2.id) {
+                            equals.push(obj1);
+                        }
+                    }
+                }
+
+                setTest(equals);
+            }
         });
     }, []);
+
+    useEffect(() => {
+        setValue('permissions', test);
+    }, [test]);
 
     const formSubmit = data => {
         setButtonLoader(true);
@@ -84,7 +99,6 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
                     }}
                     error={errors?.title}
                 />
-
                 <div className='auto_complete_wrapper'>
                     <p className='auto_complete_title'>دسترسی</p>
                     <div className='auto_complete'>
@@ -97,8 +111,10 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
                                     <Autocomplete
                                         multiple
                                         options={permissionList}
-                                        value={value?.label}
-                                        onChange={(event, newValue) => {
+                                        value={value}
+                                        filterSelectedOptions
+                                        getOptionLabel={option => option.label}
+                                        onChange={(_, newValue) => {
                                             onChange(newValue.map(value => value?.id));
                                         }}
                                         sx={{ width: '100%' }}
@@ -107,13 +123,11 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
                                 );
                             }}
                         />
-
                         <img src={UserHandUp} />
                     </div>
                     <p className='auto_complete_error'>{errors?.accesses?.message}</p>
                 </div>
-
-                <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} loading={buttonLoader} />
+                <FormButton text='ثبت' type='submit' backgroundColor='#174787' color='white' height={48} loading={buttonLoader} />
             </form>
         </AddModalWrapper>
     );
