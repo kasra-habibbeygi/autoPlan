@@ -52,7 +52,7 @@ const Qualification = () => {
             key: 'actions',
             renderCell: () => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} disabled={true} />
+                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
                     <FormButton icon={trashBin} onClick={() => setConfirmModalStatus(true)} />
                 </ActionCell>
             )

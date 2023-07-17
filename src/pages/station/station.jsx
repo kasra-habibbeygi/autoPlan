@@ -154,7 +154,11 @@ const Station = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        // setValue('title', data.title);
+        setValue('title', data.title);
+        setValue('code', data.code);
+        setValue('station_type', data.station_type);
+        setValue('equipment_status', data.equipment_status);
+        setValue('tools_status', data.tools_status);
         setSpecificDeviationId(data.id);
     };
 
