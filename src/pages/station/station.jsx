@@ -118,12 +118,12 @@ const Station = () => {
                     <FormButton
                         icon={pen}
                         onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.EDIT)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.EDIT)}
                     />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.DELETE)}
+                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.DELETE)}
                     />
                 </ActionCell>
             )
@@ -186,7 +186,7 @@ const Station = () => {
                 buttonTitle='ثبت جایگاه جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={addModalHandler}
-                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINATION.ADD)}
+                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.ADD)}
             />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
