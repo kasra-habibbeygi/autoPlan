@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
 
 //Assets
 import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
@@ -7,9 +10,9 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import blocking from '../../assets/images/icons/blocking.svg';
 import GasStation from '../../assets/images/icons/GasStation.svg';
 import { QualificationWrapper } from './qualification.style';
+import { ActionCell } from '../deviation/deviation.style';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
-import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -23,100 +26,40 @@ import DatePickerComponent from '../../components/form-groups/date-picker';
 import ConfirmModal from '../../components/template/confirm-modal';
 import ShowAll from '../../components/pages/qualification/show-all';
 
+// Tools
+import Tools from '../../utils/tools';
+import PERMISSION from '../../utils/permission.ts';
+import { toast } from 'react-hot-toast';
+
 const Qualification = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [specificQualificationId, setSpecificQualificationId] = useState();
     const [step, setStep] = useState(1);
+    const [loader, setLoader] = useState(true);
+    const [reload, setReload] = useState(false);
+    const [qualificationList, setQualificationList] = useState();
+    const [buttonLoader, setButtonLoader] = useState({
+        modalButton: false,
+        delete: false
+    });
+
+    console.log(specificQualificationId);
+
     const [details, setDetails] = useState({
         blockingList: [],
         mechanicList: [],
         electricList: [],
         gasList: []
     });
+
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
-
-    const columns = [
-        { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date' },
-        { id: 3, title: 'جلوبندی', key: 'blocking' },
-        { id: 4, title: 'مکانیک', key: 'mechanic' },
-        { id: 5, title: 'برق', key: 'electric' },
-        {
-            id: 7,
-            title: 'عملیات',
-            key: 'actions',
-            renderCell: () => (
-                <ActionCell>
-                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
-                    <FormButton icon={trashBin} onClick={() => setConfirmModalStatus(true)} />
-                </ActionCell>
-            )
-        }
-    ];
-
-    const rows = [
-        {
-            id: 1,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 2,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 3,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 4,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 5,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 6,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        },
-        {
-            id: 7,
-            date: '۱۴۰۲-۰۴-۰۸',
-            blocking: 13,
-            mechanic: 37,
-            electric: 25,
-            gas: 23
-        }
-    ];
 
     const { control, handleSubmit, formState, reset, getValues } = useForm({
         defaultValues: {
@@ -124,8 +67,36 @@ const Qualification = () => {
         },
         mode: 'onTouched'
     });
-
     const { errors, submitCount } = formState;
+
+    const columns = [
+        { id: 1, title: 'ردیف', key: 'index' },
+        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => Tools.changeDateToJalali(data.date_created) },
+        { id: 3, title: 'جلوبندی', key: 'blocking_number' },
+        { id: 4, title: 'مکانیک', key: 'mechanic_number' },
+        { id: 4, title: 'گاز', key: 'gas_number' },
+        { id: 5, title: 'برق', key: 'elec_number' },
+        { id: 5, title: 'هیبرید', key: 'hybrid_number' },
+        {
+            id: 7,
+            title: 'عملیات',
+            key: 'actions',
+            renderCell: data => (
+                <ActionCell>
+                    <FormButton
+                        icon={pen}
+                        onClick={() => setShowAddModal(true)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.DELETE)}
+                    />
+                </ActionCell>
+            )
+        }
+    ];
 
     const formSubmit = data => {
         if (
@@ -154,14 +125,42 @@ const Qualification = () => {
         setShowSubModal(false);
     };
 
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificQualificationId(id);
+    };
+
+    const deleteHandler = () => {
+        setButtonLoader({ ...buttonLoader, delete: true });
+        Axios.delete(`workshop_capacity_mgmt/?id=${specificQualificationId}`).then(() => {
+            setButtonLoader({ ...buttonLoader, delete: false });
+            setReload(!reload);
+            toast.success('ظرفیت  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
+
+    useEffect(() => {
+        setLoader(true);
+        Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
+            setQualificationList(res.data.data);
+            setPageStatus({
+                ...pageStatus,
+                total: res.data.total
+            });
+            setLoader(false);
+        });
+    }, [pageStatus.current, reload]);
+
     return (
         <QualificationWrapper>
             <PagesHeader
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
+                disabled={!userPermissions.includes(PERMISSION.CAPACITY.ADD)}
             />
-            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Table columns={columns} rows={qualificationList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
@@ -238,11 +237,16 @@ const Qualification = () => {
                     )}
                 </div>
             </Modal>
-
             <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
                 <AddDetailModal subModalStatus={subModalStatus} setDetails={setDetails} closeSubModalHandler={closeSubModalHandler} />
             </Modal>
-            <ConfirmModal status={confirmModalStatus} setStatus={setConfirmModalStatus} title='آیا از حذف این ردیف مطمئن هستید ؟' />
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
         </QualificationWrapper>
     );
 };

@@ -52,7 +52,7 @@ const Deficiency = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date) },
+        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date, false) },
         { id: 3, title: 'نام قطعه', key: 'title' },
         { id: 4, title: 'نوع خودرو', key: 'car_type' },
         {
@@ -89,14 +89,15 @@ const Deficiency = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`repository_mgmt/?page=${pageStatus.current}`).then(res => {
-            setDeficiencyData(res.data.data);
-            setLoader(false);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-        });
+        Axios.get(`repository_mgmt/?page=${pageStatus.current}`)
+            .then(res => {
+                setDeficiencyData(res.data.data);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .finally(() => setLoader(false));
     }, [reload, pageStatus.current]);
 
     const addModalHandler = () => {

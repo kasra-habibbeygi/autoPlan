@@ -18,7 +18,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                     </div>
                 ) : (
                     <>
-                        {rows.length ? (
+                        {rows?.length ? (
                             <table>
                                 <thead>
                                     <tr>
@@ -55,7 +55,9 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                             <tr>
                                                 {columns.map((column, colIndex) =>
                                                     colIndex === 0 ? (
-                                                        <td key={column.id}>{rowIndex + 1}</td>
+                                                        <td key={column.id}>
+                                                            {Tools.TableRowCalculator(10, pageStatus.current, rowIndex)}
+                                                        </td>
                                                     ) : (
                                                         <td key={column.id}>
                                                             {!column?.renderCell ? row[column.key] : column?.renderCell(row)}

@@ -46,16 +46,16 @@ const PERMISSION = {
     },
     //دسترسی پنل
     ACCESS: {
-        EDIT: 21,
-        DELETE: 22,
-        ADD_POST: 23,
-        ADD_PERSONNEL: 24
+        EDIT: 24,
+        DELETE: 25,
+        ADD_POST: 26,
+        ADD_PERSONNEL: 27
     },
     //تنظیمات سایت
     SETTING: {
-        RECEPTION: 25, // تنظیمات پذیرنده
-        REPRESENTATION: 26, //ساعت کار نمایندگی
-        EDIT_PROFILE: 27
+        RECEPTION: 28, // تنظیمات پذیرنده
+        REPRESENTATION: 29, //ساعت کار نمایندگی
+        EDIT_PROFILE: 30
     }
 };
 
