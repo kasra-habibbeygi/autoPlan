@@ -11,7 +11,6 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import { ActionCell } from '../deviation/deviation.style';
-import xlsx from '../../assets/example.xlsx';
 import PERMISSION from './../../utils/permission.ts';
 
 //Components
@@ -25,17 +24,22 @@ import DatePickerComponent from '../../components/form-groups/date-picker';
 import tools from '../../utils/tools';
 import { toast } from 'react-hot-toast';
 import ConfirmModal from '../../components/template/confirm-modal';
+import { Tab, Tabs } from '@mui/material';
 
 const Deficiency = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [deficiencyData, setDeficiencyData] = useState();
-    const [fileValue, setFileValue] = useState();
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
 
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
@@ -45,9 +49,10 @@ const Deficiency = () => {
         total: 1,
         current: 1
     });
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date' },
+        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date) },
         { id: 3, title: 'نام قطعه', key: 'title' },
         { id: 4, title: 'نوع خودرو', key: 'car_type' },
         {
@@ -122,54 +127,46 @@ const Deficiency = () => {
         }));
 
         if (modalStatus === 'add') {
-            if (fileValue) {
-                //
-            } else {
-                Axios.post('repository_mgmt/', {
-                    date: tools.changeTimeStampToIsoDate(data.date),
-                    code: data.partCode,
-                    title: data.partName,
-                    car_type: data.carType
+            Axios.post('repository_mgmt/', {
+                date: tools.changeTimeStampToIsoDate(data.date),
+                code: data.partCode,
+                title: data.partName,
+                car_type: data.carType
+            })
+                .then(() => {
+                    setReload(prev => !prev);
+                    toast.success('کسری قطعات با موفقیت ثبت شد');
+                    setIsModalOpen(false);
+                    reset();
                 })
-                    .then(() => {
-                        setReload(prev => !prev);
-                        toast.success('کسری قطعات با موفقیت ثبت شد');
-                        setIsModalOpen(false);
-                        reset();
-                    })
-                    .finally(() => {
-                        setButtonLoader(prev => ({
-                            ...prev,
-                            modalButton: false
-                        }));
-                        setSpecificDeviationId();
-                    });
-            }
+                .finally(() => {
+                    setButtonLoader(prev => ({
+                        ...prev,
+                        modalButton: false
+                    }));
+                    setSpecificDeviationId();
+                });
         } else {
-            if (fileValue) {
-                //
-            } else {
-                console.log(data);
-                Axios.put(`repository_mgmt/?id=${specificDeviationId}`, {
-                    date: tools.changeTimeStampToIsoDate(data.date),
-                    code: data.partCode,
-                    title: data.partName,
-                    car_type: data.carType
+            console.log(data);
+            Axios.put(`repository_mgmt/?id=${specificDeviationId}`, {
+                date: tools.changeTimeStampToIsoDate(data.date),
+                code: data.partCode,
+                title: data.partName,
+                car_type: data.carType
+            })
+                .then(() => {
+                    setReload(prev => !prev);
+                    toast.success('کسری قطعات با موفقیت ویرایش شد');
+                    setIsModalOpen(false);
+                    reset();
                 })
-                    .then(() => {
-                        setReload(prev => !prev);
-                        toast.success('کسری قطعات با موفقیت ویرایش شد');
-                        setIsModalOpen(false);
-                        reset();
-                    })
-                    .finally(() => {
-                        setButtonLoader(prev => ({
-                            ...prev,
-                            modalButton: false
-                        }));
-                        setSpecificDeviationId();
-                    });
-            }
+                .finally(() => {
+                    setButtonLoader(prev => ({
+                        ...prev,
+                        modalButton: false
+                    }));
+                    setSpecificDeviationId();
+                });
         }
     };
 
@@ -207,101 +204,88 @@ const Deficiency = () => {
                 maxWidth='sm'
                 handleClose={() => {
                     reset();
-                    setFileValue();
+                    setTabValue(0);
                 }}
             >
                 <h2> کسری قطعات </h2>
-                <form onSubmit={handleSubmit(formSubmit)}>
-                    <Controller
-                        control={control}
-                        name='date'
-                        rules={{
-                            required: {
-                                value: fileValue ? false : true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        }}
-                        render={({ field: { onChange, value } }) => {
-                            return (
-                                <DatePickerComponent
-                                    value={value}
-                                    onChange={onChange}
-                                    title='انتخاب تاریخ'
-                                    error={!fileValue && errors?.date}
-                                    disabled={fileValue && true}
-                                />
-                            );
-                        }}
-                    />
+                <Tabs value={tabValue} onChange={handleChange} sx={{ margin: '40px 0 60px 0' }}>
+                    <Tab label='ارسال تکی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
+                    <Tab label='ارسال گروهی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
+                </Tabs>
+                {tabValue === 0 ? (
+                    <form onSubmit={handleSubmit(formSubmit)}>
+                        <Controller
+                            control={control}
+                            name='date'
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            }}
+                            render={({ field: { onChange, value } }) => {
+                                return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
+                            }}
+                        />
 
-                    <InputComponent
-                        title='نام قطعه'
-                        placeHolder='نام قطعه'
-                        type='text'
-                        icon={ShockAbsorber}
-                        detail={{
-                            ...register('partName', {
-                                required: {
-                                    value: fileValue ? false : true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={!fileValue && errors?.partName}
-                        disabled={fileValue && true}
-                    />
-                    <InputComponent
-                        title='کد قطعه'
-                        placeHolder='کد قطعه'
-                        type='text'
-                        icon={Accumulator}
-                        detail={{
-                            ...register('partCode', {
-                                required: {
-                                    value: fileValue ? false : true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={!fileValue && errors?.partCode}
-                        disabled={fileValue && true}
-                    />
-                    <InputComponent
-                        title='نوع خودرو'
-                        placeHolder='نوع خودرو'
-                        type='text'
-                        icon={Bus}
-                        detail={{
-                            ...register('carType', {
-                                required: {
-                                    value: fileValue ? false : true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={!fileValue && errors?.carType}
-                        disabled={fileValue && true}
-                    />
-                    <UploadFile value={fileValue} setFileValue={setFileValue} />
-                    <a
-                        href={xlsx}
-                        target='_blank'
-                        download
-                        rel='noreferrer'
-                        style={{ marginBottom: '20px', color: '#1C274C', display: 'inline-block' }}
-                    >
-                        دانلود نمونه فایل اکسل
-                    </a>
+                        <InputComponent
+                            title='نام قطعه'
+                            placeHolder='نام قطعه'
+                            type='text'
+                            icon={ShockAbsorber}
+                            detail={{
+                                ...register('partName', {
+                                    required: {
+                                        value: true,
+                                        message: 'این فیلد اجباری است'
+                                    }
+                                })
+                            }}
+                            error={errors?.partName}
+                        />
+                        <InputComponent
+                            title='کد قطعه'
+                            placeHolder='کد قطعه'
+                            type='text'
+                            icon={Accumulator}
+                            detail={{
+                                ...register('partCode', {
+                                    required: {
+                                        value: true,
+                                        message: 'این فیلد اجباری است'
+                                    }
+                                })
+                            }}
+                            error={errors?.partCode}
+                        />
+                        <InputComponent
+                            title='نوع خودرو'
+                            placeHolder='نوع خودرو'
+                            type='text'
+                            icon={Bus}
+                            detail={{
+                                ...register('carType', {
+                                    required: {
+                                        value: true,
+                                        message: 'این فیلد اجباری است'
+                                    }
+                                })
+                            }}
+                            error={errors?.carType}
+                        />
 
-                    <FormButton
-                        text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
-                        loading={buttonLoader.modalButton}
-                        type='submit'
-                        backgroundColor={'#174787'}
-                        color={'white'}
-                        height={48}
-                    />
-                </form>
+                        <FormButton
+                            text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
+                            loading={buttonLoader.modalButton}
+                            type='submit'
+                            backgroundColor={'#174787'}
+                            color={'white'}
+                            height={48}
+                        />
+                    </form>
+                ) : (
+                    <UploadFile />
+                )}
             </Modal>
 
             <ConfirmModal
