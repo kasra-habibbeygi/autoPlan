@@ -36,7 +36,6 @@ const Accessibility = () => {
     const [specificAccessibilityId, setSpecificAccessibilityId] = useState();
     const [buttonLoader, setButtonLoader] = useState(false);
     const [editModalData, setEditModalData] = useState();
-    console.log(confirmModalStatus);
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -51,7 +50,7 @@ const Accessibility = () => {
     useEffect(() => {
         setLoader(true);
         setLoaderTable(true);
-        Axios.get(`personnelrole_mgmt/?pageSize=1&page=${pageStatus.current}`).then(res => {
+        Axios.get(`personnelrole_mgmt/?pageSize=10&page=${pageStatus.current}`).then(res => {
             setAccessibilityPost(res.data.data);
             setLoader(false);
             setPageStatus({
@@ -59,7 +58,7 @@ const Accessibility = () => {
                 total: res.data.total
             });
         });
-        Axios.get(`user_mgmt/?pageSize=1&page=${pageStatus.current}`).then(res => {
+        Axios.get(`user_mgmt/?pageSize=10&page=${pageStatus.current}`).then(res => {
             setAccessibilityPersonel(res.data.data);
             setLoaderTable(false);
             setPageStatusUser({
@@ -94,7 +93,6 @@ const Accessibility = () => {
                 </div>
             )
         },
-
         {
             id: 4,
             title: 'عملیات',
@@ -140,8 +138,10 @@ const Accessibility = () => {
         setSpecificAccessibilityId(item.id);
         setEditModalData(item);
     };
+
     const openModal = () => {
         setShowAddModal(true);
+        setModalStatus('add');
     };
 
     return (
