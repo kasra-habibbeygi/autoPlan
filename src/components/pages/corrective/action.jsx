@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import Axios from './../../../configs/axios';
 
@@ -12,10 +13,10 @@ import { ActionStyle } from './action.style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Action = ({ setStep, setAllDetail, allDetail }) => {
+const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             actionFields: [{ action: '' }]
         },
@@ -30,10 +31,39 @@ const Action = ({ setStep, setAllDetail, allDetail }) => {
         control
     });
 
+    useEffect(() => {
+        if (chosenEditItemDetails) {
+            const arr = JSON.parse(chosenEditItemDetails?.action).map(obj => {
+                const newObj = {};
+                Object.entries(obj).forEach(([k, v]) => {
+                    newObj[k] = JSON.parse(`"${v}"`);
+                });
+                return newObj;
+            });
+
+            setValue('actionFields', arr);
+            console.log(arr);
+        }
+    }, [chosenEditItemDetails]);
+
+    console.log(chosenEditItemDetails);
+
     const formSubmit = data => {
         setButtonLoading(true);
 
-        const mainString = data.actionFields.map(item => item.action).join('اقدام : ');
+        const mainString =
+            '[' +
+            data.actionFields
+                .map(
+                    obj =>
+                        '{' +
+                        Object.entries(obj)
+                            .map(([k, v]) => `"${k}": "${v}"`)
+                            .join(', ') +
+                        '}'
+                )
+                .join(', ') +
+            ']';
 
         Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
             action: mainString

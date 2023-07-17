@@ -11,7 +11,7 @@ import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
 
-const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
+const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setReload }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const { control, handleSubmit, formState } = useForm({
@@ -34,11 +34,13 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
 
         Axios.put(`reform_action/set_action_date/?id=${allDetail?.mainId}`, newData)
             .then(() => {
+                setIsModalOpen(false);
+                setReload(prev => !prev);
                 setAllDetail(prev => ({
                     ...prev,
                     execute_date: data
                 }));
-                setStep(6);
+                setStep(1);
             })
             .finally(() => setButtonLoading(false));
     };

@@ -35,6 +35,7 @@ const Corrective = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
     const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
@@ -60,7 +61,14 @@ const Corrective = () => {
             renderCell: data => (
                 <ActionCell>
                     <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
-                    <FormButton icon={pen} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => {
+                            setIsModalOpen(true);
+                            setChosenEditItemDetails(data);
+                        }}
+                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)}
+                    />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
@@ -111,21 +119,52 @@ const Corrective = () => {
                 disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.ADD)}
             />
             <Table columns={columns} rows={correctiveData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
-            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true' handleClose={() => setStep(1)}>
+            <Modal
+                state={isModalOpen}
+                setState={setIsModalOpen}
+                maxWidth='lg'
+                bgStatus='true'
+                handleClose={() => {
+                    setStep(1);
+                    setChosenEditItemDetails();
+                }}
+            >
                 {isModalOpen ? (
                     <ModalStyleBg>
                         <h2>اقدام اصلاحی</h2>
                         <ProgressBar step={step} />
                         {step === 1 ? (
-                            <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                            <Problem setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 2 ? (
-                            <Rootting setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <Rootting
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : step === 3 ? (
-                            <Action setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <Action
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : step === 4 ? (
-                            <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <ResponsibleForAction
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : step === 5 ? (
-                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <ExecuteDate
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                setIsModalOpen={setIsModalOpen}
+                                setReload={setReload}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : step === 6 ? (
                             <Result setStep={setStep} setAllDetail={setAllDetail} />
                         ) : (

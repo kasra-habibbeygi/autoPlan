@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from './../../../configs/axios';
 
@@ -11,10 +12,10 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Problem = ({ setStep, setAllDetail }) => {
+const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             problem: ''
         },
@@ -23,9 +24,27 @@ const Problem = ({ setStep, setAllDetail }) => {
 
     const { errors } = formState;
 
+    useEffect(() => {
+        if (chosenEditItemDetails) {
+            setValue('problem', chosenEditItemDetails?.problem);
+        }
+    }, [chosenEditItemDetails]);
+
     const formSubmit = data => {
         setButtonLoading(true);
 
+        // if (chosenEditItemDetails) {
+        //     Axios.put(`reform_action/problem/?id=${chosenEditItemDetails.id}`, data)
+        //         .then(res => {
+        //             setStep(2);
+        //             setAllDetail(prev => ({
+        //                 ...prev,
+        //                 problem: data.problem,
+        //                 mainId: res.data.id
+        //             }));
+        //         })
+        //         .finally(() => setButtonLoading(false));
+        // } else {
         Axios.post('reform_action/problem/', data)
             .then(res => {
                 setStep(2);
@@ -36,6 +55,7 @@ const Problem = ({ setStep, setAllDetail }) => {
                 }));
             })
             .finally(() => setButtonLoading(false));
+        // }
     };
 
     return (

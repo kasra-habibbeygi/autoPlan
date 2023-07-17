@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import Axios from './../../../configs/axios';
 
@@ -13,9 +13,16 @@ import { RootingStyle } from './rootting.style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Rootting = ({ setStep, setAllDetail, allDetail }) => {
+const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => {
     const [inputValues, setInputValues] = useState([[''], [''], [''], [''], ['']]);
     const [buttonLoading, setButtonLoading] = useState(false);
+
+    useEffect(() => {
+        if (chosenEditItemDetails) {
+            const arr = eval(chosenEditItemDetails?.troubleshooting.replace(/'/g, '"'));
+            setInputValues(arr);
+        }
+    }, [chosenEditItemDetails]);
 
     const inputValuehandler = (e, index, valueIndex) => {
         const updatedValues = [...inputValues];
@@ -52,21 +59,20 @@ const Rootting = ({ setStep, setAllDetail, allDetail }) => {
     };
 
     const sendDataHandler = () => {
-        const newArr = inputValues.map((str, index) => `${index + 1}چرا : ${str}`);
-        const result = newArr.join();
+        const str = '[' + inputValues.map(subArr => '[' + subArr.map(str => `'${str}'`).join(', ') + ']').join(', ') + ']';
 
         const allTruthy = inputValues.every(innerArr => innerArr.every(item => Boolean(item.trim())));
 
         if (allTruthy) {
             setButtonLoading(true);
             Axios.put(`reform_action/troubleshooting/?id=${allDetail?.mainId}`, {
-                troubleshooting: result
+                troubleshooting: str
             })
                 .then(res => {
                     setStep(3);
                     setAllDetail(prev => ({
                         ...prev,
-                        troubleshooting: result
+                        troubleshooting: str
                     }));
                 })
                 .finally(() => setButtonLoading(false));
@@ -82,9 +88,14 @@ const Rootting = ({ setStep, setAllDetail, allDetail }) => {
             <h3>ریشه یابی</h3>
             {inputValues.map((item, index) => (
                 <div className='input_group' key={`rooting_add_item_${index}`}>
-                    {item.map((_, valueIndex) => (
+                    {item.map((val, valueIndex) => (
                         <div className='inputField' key={`rooting_inputs_add_item_${valueIndex}`}>
-                            <input type='text' placeholder={`چرا-${index + 1}`} onChange={e => inputValuehandler(e, index, valueIndex)} />
+                            <input
+                                type='text'
+                                placeholder={`چرا-${index + 1}`}
+                                onChange={e => inputValuehandler(e, index, valueIndex)}
+                                defaultValue={val}
+                            />
                             <img src={Question} alt='' />
                         </div>
                     ))}
@@ -108,3 +119,5 @@ const Rootting = ({ setStep, setAllDetail, allDetail }) => {
 };
 
 export default Rootting;
+
+// ("[['سلام'], ['خوبی', 'چطوری'], ['چه خبر', 'چه میکنی'], ['حالت', 'سنت', 'قدت'], ['شغلت', 'اسمت', 'رنگت']]");
