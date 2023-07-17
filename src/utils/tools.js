@@ -12,6 +12,10 @@ class Tools {
     changeTimeStampToIsoDate(date) {
         return new Date(date).toISOString();
     }
+
+    TableRowCalculator(limit, page, index) {
+        return limit * page - (limit - 1) + index;
+    }
 }
 
 export default new Tools();
