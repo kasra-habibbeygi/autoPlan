@@ -33,8 +33,11 @@ const Accessibility = () => {
     const [accessbitilityPersonel, setAccessibilityPersonel] = useState([]);
     const [accessbitilityPost, setAccessibilityPost] = useState([]);
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [confirmUserModalStatus, setConfirmUserModalStatus] = useState(false);
     const [specificAccessibilityId, setSpecificAccessibilityId] = useState();
+    const [specificAccessibilityIdUser, setSpecificAccessibilityIdUser] = useState();
     const [buttonLoader, setButtonLoader] = useState(false);
+    const [buttonLoaderUser, setButtonLoaderUser] = useState(false);
     const [editModalData, setEditModalData] = useState();
 
     const [pageStatus, setPageStatus] = useState({
@@ -78,6 +81,16 @@ const Accessibility = () => {
         });
     };
 
+    const deleteHandlerUser = () => {
+        setButtonLoaderUser(true);
+        Axios.delete(`user_mgmt/?id=${specificAccessibilityIdUser}`).then(() => {
+            setButtonLoaderUser(false);
+            reloadUser(!reload);
+            toast.success('پرسنل  با موفقیت حذف شد');
+            setConfirmUserModalStatus(false);
+        });
+    };
+
     const columnsPosts = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'نام پست', key: 'title' },
@@ -117,10 +130,10 @@ const Accessibility = () => {
             id: 6,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: item => (
                 <ActionCell>
                     <FormButton icon={pen} />
-                    <FormButton icon={trashBin} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandlerUser(item.id)} />
                 </ActionCell>
             )
         }
@@ -129,6 +142,11 @@ const Accessibility = () => {
     const deleteModalHandler = id => {
         setConfirmModalStatus(true);
         setSpecificAccessibilityId(id);
+    };
+    const deleteModalHandlerUser = id => {
+        console.log(id);
+        setConfirmModalStatus(true);
+        setSpecificAccessibilityIdUser(id);
     };
 
     const editModalHandler = item => {
@@ -204,15 +222,20 @@ const Accessibility = () => {
             <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()} bgStatus={true} maxWidth='md'>
                 <ModalStyleBg>
                     {subModalStatus === 'post' ? (
-                        <AddPost />
+                        <AddPost
+                            setReload={setReloadUser}
+                            reload={reloadUser}
+                            setState={setShowSubModal}
+                            specificAccessibilityIdUser={specificAccessibilityIdUser}
+                        />
                     ) : subModalStatus === 'personnel' ? (
                         <AddPersonnel
                             setReload={setReload}
                             reload={reload}
                             setState={setShowSubModal}
-                            modalStatus={modalStatus}
                             specificAccessibilityId={specificAccessibilityId}
                             editModalData={editModalData}
+                            modalStatus={modalStatus}
                         />
                     ) : null}
                 </ModalStyleBg>
@@ -223,6 +246,14 @@ const Accessibility = () => {
                 title='آیا از حذف این ردیف مطمئن هستید ؟'
                 deleteHandler={deleteHandler}
                 loading={buttonLoader}
+            />
+
+            <ConfirmModal
+                status={confirmUserModalStatus}
+                setStatus={setConfirmUserModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandlerUser}
+                loading={buttonLoaderUser}
             />
         </AccessibilityWrapper>
     );
