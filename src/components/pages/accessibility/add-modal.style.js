@@ -4,6 +4,10 @@ export const AddModalWrapper = styled.div(props => ({
     width: '412px',
     margin: '0 auto',
 
+    '& .MuiChip-deleteIcon': {
+        margin: '0 5px 0 10px !important'
+    },
+
     '@media(max-width : 700px)': {
         width: '100%'
     },

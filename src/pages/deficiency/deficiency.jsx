@@ -110,7 +110,6 @@ const Deficiency = () => {
     };
 
     const deleteModalHandler = data => {
-        console.log(data);
         setConfirmModalStatus(true);
         setSpecificDeviationId(data.id);
     };
@@ -152,7 +151,6 @@ const Deficiency = () => {
                     setSpecificDeviationId();
                 });
         } else {
-            console.log(data);
             Axios.put(`repository_mgmt/?id=${specificDeviationId}`, {
                 date: tools.changeTimeStampToIsoDate(data.date),
                 code: data.partCode,

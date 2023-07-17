@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import Axios from '../../../configs/axios';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import { AddModalWrapper } from './add-modal.style';
-import addPhone from './../../../assets/images/login/addPhone.svg';
-import magnifier from './../../../assets/images/icons/magnifier.svg';
+import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
+import Medal from './../../../assets/images/icons/Medal.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AddPersonnel = () => {
-    const { register, handleSubmit, formState, control } = useForm({
+const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAccessibilityId, editModalData }) => {
+    console.log('test');
+    const [permissionList, setPermissionList] = useState([{ value: '', lable: '', id: '' }]);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             post_name: '',
             accesses: ''
@@ -22,7 +27,43 @@ const AddPersonnel = () => {
 
     const { errors } = formState;
 
-    const formSubmit = data => {};
+    useEffect(() => {
+        if (modalStatus === 'edit') {
+            setValue('title', editModalData.title);
+            setValue('permissions', editModalData.permissions);
+        }
+
+        Axios.get('permission-list/').then(res => {
+            let permission = res.data.results.map(item => ({
+                label: item.title,
+                value: item.title,
+                id: item.id
+            }));
+            setPermissionList(permission);
+        });
+    }, []);
+
+    const formSubmit = data => {
+        setButtonLoader(true);
+
+        if (modalStatus === 'add') {
+            Axios.post('personnelrole_mgmt/', data).then(() => {
+                setButtonLoader(false);
+                setReload(!reload);
+                setState(false);
+                toast.success('پست جدید با موفقیت ثبت شد');
+                reset();
+            });
+        } else {
+            Axios.put(`personnelrole_mgmt/?id=${setSpecificAccessibilityId}`, data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('انحراف  با موفقیت ویرایش شد');
+                setState(false);
+                reset();
+            });
+        }
+    };
 
     return (
         <AddModalWrapper error={errors?.accesses?.message}>
@@ -31,34 +72,34 @@ const AddPersonnel = () => {
                 <InputComponent
                     title='نام پست سازمانی جدید'
                     placeHolder='نام پست'
-                    icon={magnifier}
+                    icon={Medal}
                     type='text'
                     detail={{
-                        ...register('post_name', {
+                        ...register('title', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.post_name}
+                    error={errors?.title}
                 />
 
                 <div className='auto_complete_wrapper'>
-                    <p className='auto_complete_title'>پست سازمانی کاربر</p>
+                    <p className='auto_complete_title'>دسترسی</p>
                     <div className='auto_complete'>
                         <Controller
                             control={control}
-                            name='accesses'
+                            name='permissions'
                             rules={{ required: 'این فیلد اجباری است' }}
                             render={({ field: { onChange, value } }) => {
                                 return (
                                     <Autocomplete
                                         multiple
-                                        options={top100Films}
+                                        options={permissionList}
                                         value={value?.label}
                                         onChange={(event, newValue) => {
-                                            onChange(newValue.map(value => value?.label));
+                                            onChange(newValue.map(value => value?.id));
                                         }}
                                         sx={{ width: '100%' }}
                                         renderInput={params => <TextField {...params} />}
@@ -67,144 +108,15 @@ const AddPersonnel = () => {
                             }}
                         />
 
-                        <img src={addPhone} />
+                        <img src={UserHandUp} />
                     </div>
                     <p className='auto_complete_error'>{errors?.accesses?.message}</p>
                 </div>
 
-                <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} loading={buttonLoader} />
             </form>
         </AddModalWrapper>
     );
 };
 
 export default AddPersonnel;
-
-const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'علی ازقندی', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'نادیه نجم', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: 'Schindlers List', year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-    {
-        label: 'The Lord of the Rings: The Return of the King',
-        year: 2003
-    },
-    { label: 'The Good, the Bad and the Ugly', year: 1966 },
-    { label: 'Fight Club', year: 1999 },
-    {
-        label: 'The Lord of the Rings: The Fellowship of the Ring',
-        year: 2001
-    },
-    {
-        label: 'Star Wars: Episode V - The Empire Strikes Back',
-        year: 1980
-    },
-    { label: 'Forrest Gump', year: 1994 },
-    { label: 'Inception', year: 2010 },
-    {
-        label: 'The Lord of the Rings: The Two Towers',
-        year: 2002
-    },
-    { label: 'One Flew Over the Cuckoos Nest', year: 1975 },
-    { label: 'Goodfellas', year: 1990 },
-    { label: 'The Matrix', year: 1999 },
-    { label: 'Seven Samurai', year: 1954 },
-    {
-        label: 'Star Wars: Episode IV - A New Hope',
-        year: 1977
-    },
-    { label: 'City of God', year: 2002 },
-    { label: 'Se7en', year: 1995 },
-    { label: 'The Silence of the Lambs', year: 1991 },
-    { label: 'Its a Wonderful Life', year: 1946 },
-    { label: 'Life Is Beautiful', year: 1997 },
-    { label: 'The Usual Suspects', year: 1995 },
-    { label: 'Léon: The Professional', year: 1994 },
-    { label: 'Spirited Away', year: 2001 },
-    { label: 'Saving Private Ryan', year: 1998 },
-    { label: 'Once Upon a Time in the West', year: 1968 },
-    { label: 'American History X', year: 1998 },
-    { label: 'Interstellar', year: 2014 },
-    { label: 'Casablanca', year: 1942 },
-    { label: 'City Lights', year: 1931 },
-    { label: 'Psycho', year: 1960 },
-    { label: 'The Green Mile', year: 1999 },
-    { label: 'The Intouchables', year: 2011 },
-    { label: 'Modern Times', year: 1936 },
-    { label: 'Raiders of the Lost Ark', year: 1981 },
-    { label: 'Rear Window', year: 1954 },
-    { label: 'The Pianist', year: 2002 },
-    { label: 'The Departed', year: 2006 },
-    { label: 'Terminator 2: Judgment Day', year: 1991 },
-    { label: 'Back to the Future', year: 1985 },
-    { label: 'Whiplash', year: 2014 },
-    { label: 'Gladiator', year: 2000 },
-    { label: 'Memento', year: 2000 },
-    { label: 'The Prestige', year: 2006 },
-    { label: 'The Lion King', year: 1994 },
-    { label: 'Apocalypse Now', year: 1979 },
-    { label: 'Alien', year: 1979 },
-    { label: 'Sunset Boulevard', year: 1950 },
-    {
-        label: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
-        year: 1964
-    },
-    { label: 'The Great Dictator', year: 1940 },
-    { label: 'Cinema Paradiso', year: 1988 },
-    { label: 'The Lives of Others', year: 2006 },
-    { label: 'Grave of the Fireflies', year: 1988 },
-    { label: 'Paths of Glory', year: 1957 },
-    { label: 'Django Unchained', year: 2012 },
-    { label: 'The Shining', year: 1980 },
-    { label: 'WALL·E', year: 2008 },
-    { label: 'American Beauty', year: 1999 },
-    { label: 'The Dark Knight Rises', year: 2012 },
-    { label: 'Princess Mononoke', year: 1997 },
-    { label: 'Aliens', year: 1986 },
-    { label: 'Oldboy', year: 2003 },
-    { label: 'Once Upon a Time in America', year: 1984 },
-    { label: 'Witness for the Prosecution', year: 1957 },
-    { label: 'Das Boot', year: 1981 },
-    { label: 'Citizen Kane', year: 1941 },
-    { label: 'North by Northwest', year: 1959 },
-    { label: 'Vertigo', year: 1958 },
-    {
-        label: 'Star Wars: Episode VI - Return of the Jedi',
-        year: 1983
-    },
-    { label: 'Reservoir Dogs', year: 1992 },
-    { label: 'Braveheart', year: 1995 },
-    { label: 'M', year: 1931 },
-    { label: 'Requiem for a Dream', year: 2000 },
-    { label: 'Amélie', year: 2001 },
-    { label: 'A Clockwork Orange', year: 1971 },
-    { label: 'Like Stars on Earth', year: 2007 },
-    { label: 'Taxi Driver', year: 1976 },
-    { label: 'Lawrence of Arabia', year: 1962 },
-    { label: 'Double Indemnity', year: 1944 },
-    {
-        label: 'Eternal Sunshine of the Spotless Mind',
-        year: 2004
-    },
-    { label: 'Amadeus', year: 1984 },
-    { label: 'To Kill a Mockingbird', year: 1962 },
-    { label: 'Toy Story 3', year: 2010 },
-    { label: 'Logan', year: 2017 },
-    { label: 'Full Metal Jacket', year: 1987 },
-    { label: 'Dangal', year: 2016 },
-    { label: 'The Sting', year: 1973 },
-    { label: '2001: A Space Odyssey', year: 1968 },
-    { label: 'Singin in the Rain', year: 1952 },
-    { label: 'Toy Story', year: 1995 },
-    { label: 'Bicycle Thieves', year: 1948 },
-    { label: 'The Kid', year: 1921 },
-    { label: 'Inglourious Basterds', year: 2009 },
-    { label: 'Snatch', year: 2000 },
-    { label: '3 Idiots', year: 2009 },
-    { label: 'Monty Python and the Holy Grail', year: 1975 }
-];

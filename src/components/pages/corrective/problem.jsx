@@ -28,7 +28,6 @@ const Problem = ({ setStep, setAllDetail }) => {
 
         Axios.post('reform_action/problem/', data)
             .then(res => {
-                console.log(res);
                 setStep(2);
                 setAllDetail(prev => ({
                     ...prev,
