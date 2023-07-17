@@ -14,9 +14,21 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 
+// Tools
+import Tools from '../../utils/tools';
+
 const Login = ({ showModal, setShowModal }) => {
     const [loginStatus, setLoginStatus] = useState('addPhoneNumber');
     const [codeValue, setCodeValue] = useState();
+    const [loader, setLoader] = useState({
+        login: false,
+        otp: false
+    });
+
+    const [inputValues, setInputValues] = useState({
+        mobile: '',
+        code: ''
+    });
 
     const form = useForm({
         defaultValues: {
@@ -29,21 +41,39 @@ const Login = ({ showModal, setShowModal }) => {
     const { errors } = formState;
 
     const sendCodeHandler = data => {
+        setInputValues({
+            ...inputValues,
+            mobile: data.phoneNumber
+        });
         setLoginStatus('sendConfirmCode');
 
-        if (loginStatus === 'addPhoneNumber') {
-            setLoginStatus('sendConfirmCode');
-        } else {
-            Axios.get('validate_login_otp/?mobile=09338779212').then(res => {
-                localStorage.setItem('AutoPlaningToken', res.data.token);
-            });
-        }
+        setLoader({
+            ...loader,
+            otp: true
+        });
     };
 
     const closeModalHandler = () => {
         reset();
         setLoginStatus('addPhoneNumber');
         setCodeValue();
+    };
+
+    const loginHandler = () => {
+        setLoader({
+            ...loader,
+            login: true
+        });
+        Axios.get('validate_login_otp/?mobile=09021414866').then(res => {
+            console.log(res.data);
+            localStorage.setItem(
+                'AutoPlaningToken',
+                JSON.stringify({
+                    token: res.data.token,
+                    expireDate: Tools.changeIsoDateToTimeStamp(res.data.expire_date)
+                })
+            );
+        });
     };
 
     return (
@@ -86,7 +116,7 @@ const Login = ({ showModal, setShowModal }) => {
                             />
                             <FormButton
                                 text='ادامه'
-                                loading={false}
+                                loading={loader.otp}
                                 type='submit'
                                 backgroundColor='#174787'
                                 color='white'
@@ -106,7 +136,7 @@ const Login = ({ showModal, setShowModal }) => {
                                     onChange={value => setCodeValue(value)}
                                     validChars='0-9'
                                     placeholder='-'
-                                    onComplete={() => {}}
+                                    onComplete={loginHandler}
                                     classNames={{
                                         container: 'container',
                                         character: 'character'
@@ -115,8 +145,7 @@ const Login = ({ showModal, setShowModal }) => {
                             </div>
                             <FormButton
                                 text='ثبت'
-                                loading={false}
-                                type='submit'
+                                loading={loader.login}
                                 backgroundColor={'#174787'}
                                 color={'white'}
                                 height={48}

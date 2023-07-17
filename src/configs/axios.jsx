@@ -16,7 +16,7 @@ instance.interceptors.request.use(async config => {
     }
 
     if (typeof window !== 'undefined' && localStorage.getItem('AutoPlaningToken') !== null) {
-        config.headers.Authorization = `Bearer ${localStorage.getItem('AutoPlaningToken')}`;
+        config.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('AutoPlaningToken')).token}`;
     }
 
     return config;

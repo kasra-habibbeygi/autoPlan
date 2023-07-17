@@ -7,6 +7,7 @@ export const LoginStyle = styled.nav(props => ({
     margin: '0 auto',
     width: '420px',
     height: '500px',
+    flexDirection: 'column',
 
     '@media(max-width : 600px)': {
         width: '280px'
