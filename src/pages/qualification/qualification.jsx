@@ -47,8 +47,6 @@ const Qualification = () => {
         delete: false
     });
 
-    console.log(specificQualificationId);
-
     const [details, setDetails] = useState({
         blockingList: [],
         mechanicList: [],

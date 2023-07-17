@@ -21,7 +21,7 @@ const ReceptionForm = () => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        Axios.post('acceptation_setting/', data).then(res => {});
+        Axios.post('acceptation_setting/', data);
     };
 
     useEffect(() => {
