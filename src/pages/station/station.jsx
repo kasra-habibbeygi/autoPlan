@@ -240,7 +240,6 @@ const Station = () => {
                                                 value={selectValue?.filter(item => item.value === value)[0]}
                                                 onChange={(_, newValue) => {
                                                     onChange(newValue?.value);
-                                                    console.log(selectValue.filter(item => item.value === value));
                                                 }}
                                                 sx={{ width: '100%' }}
                                                 renderInput={params => <TextField {...params} />}

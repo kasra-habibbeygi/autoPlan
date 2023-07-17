@@ -23,9 +23,7 @@ const UploadFile = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {
-        console.log(data);
-    };
+    const formSubmit = data => {};
 
     return (
         <UploadFileStyle onSubmit={handleSubmit(formSubmit)} error={errors?.file?.message}>

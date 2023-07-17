@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
 
@@ -17,8 +18,11 @@ import Modal from '../../components/template/modal';
 import { AccessibilityWrapper, ModalStyleBg } from './accessibility.style';
 import AddPost from '../../components/pages/accessibility/add-post';
 import AddPersonnel from '../../components/pages/accessibility/add-personell';
+import ConfirmModal from '../../components/template/confirm-modal';
+import { toast } from 'react-hot-toast';
 
 const Accessibility = () => {
+    const [modalStatus, setModalStatus] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
     const [loader, setLoader] = useState(true);
@@ -26,8 +30,13 @@ const Accessibility = () => {
     const [reload, setReload] = useState(false);
     const [reloadUser, setReloadUser] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
-    const [accessbitilityPersonel, setAccessibilityPersonel] = useState();
-    const [accessbitilityPost, setAccessibilityPost] = useState();
+    const [accessbitilityPersonel, setAccessibilityPersonel] = useState([]);
+    const [accessbitilityPost, setAccessibilityPost] = useState([]);
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [specificAccessibilityId, setSpecificAccessibilityId] = useState();
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const [editModalData, setEditModalData] = useState();
+    console.log(confirmModalStatus);
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -38,21 +47,20 @@ const Accessibility = () => {
         total: 1,
         current: 1
     });
+
     useEffect(() => {
         setLoader(true);
         setLoaderTable(true);
-        Axios.get(`personnelrole_mgmt/?page=${pageStatus.current}`).then(res => {
+        Axios.get(`personnelrole_mgmt/?pageSize=1&page=${pageStatus.current}`).then(res => {
             setAccessibilityPost(res.data.data);
-            console.log(accessbitilityPost);
             setLoader(false);
             setPageStatus({
                 ...pageStatus,
                 total: res.data.total
             });
         });
-        Axios.get(`user_mgmt/?page=${pageStatus.current}`).then(res => {
+        Axios.get(`user_mgmt/?pageSize=1&page=${pageStatus.current}`).then(res => {
             setAccessibilityPersonel(res.data.data);
-            // console.log(accessbitilityPersonel);
             setLoaderTable(false);
             setPageStatusUser({
                 ...pageStatusUser,
@@ -60,6 +68,16 @@ const Accessibility = () => {
             });
         });
     }, [reloadUser, reload, pageStatusUser.current]);
+
+    const deleteHandler = () => {
+        setButtonLoader(true);
+        Axios.delete(`personnelrole_mgmt/?id=${specificAccessibilityId}`).then(() => {
+            setButtonLoader(false);
+            setReload(!reload);
+            toast.success('پست سازمانی  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
 
     const columnsPosts = [
         { id: 1, title: 'ردیف', key: 'index' },
@@ -81,11 +99,11 @@ const Accessibility = () => {
             id: 4,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: item => (
                 <ActionCell>
                     <FormButton icon={eye} />
-                    <FormButton icon={pen} />
-                    <FormButton icon={trashBin} />
+                    <FormButton icon={pen} onClick={() => editModalHandler(item)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(item.id)} />
                 </ActionCell>
             )
         }
@@ -93,10 +111,9 @@ const Accessibility = () => {
 
     const columnsPersonnel = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'موبایل', key: 'mobileNumber' },
-        { id: 3, title: 'نام کاربری', key: 'userName' },
-        { id: 4, title: 'نقش کاربر', key: 'userRole' },
-        { id: 5, title: 'نام و نام خانوادگی', key: 'fullName' },
+        { id: 2, title: 'موبایل', key: 'mobile' },
+        { id: 4, title: 'نقش کاربر', key: 'role__title' },
+        { id: 5, title: 'نام و نام خانوادگی', key: 'user__first_name' },
 
         {
             id: 6,
@@ -111,89 +128,18 @@ const Accessibility = () => {
         }
     ];
 
-    const rowsPost = [
-        {
-            id: 1,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 2,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 3,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 4,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 5,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 6,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        },
-        {
-            id: 7,
-            postName: 'ادمین',
-            accessibility: 'ظرفیت سنجی، انبارداری، پذیرش، گزارش گیری، اقدام اصلاحی'
-        }
-    ];
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificAccessibilityId(id);
+    };
 
-    const rowsPersonnel = [
-        {
-            id: 1,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        },
-        {
-            id: 2,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        },
-        {
-            id: 3,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        },
-        {
-            id: 4,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        },
-        {
-            id: 5,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        },
-        {
-            id: 6,
-            mobileNumber: '09383939515',
-            userName: 'aliSomeOne',
-            userRole: 'ادمین اصلی',
-            fullName: 'محسن چاووشی'
-        }
-    ];
-
+    const editModalHandler = item => {
+        setModalStatus('edit');
+        setShowSubModal(true);
+        setSubModalStatus('personnel');
+        setSpecificAccessibilityId(item.id);
+        setEditModalData(item);
+    };
     const openModal = () => {
         setShowAddModal(true);
     };
@@ -214,13 +160,12 @@ const Accessibility = () => {
 
             <br />
             <br />
-            <br />
 
             <div className='table_wrapper'>
                 <p className='table_header'>پرسنل</p>
                 <Table
                     columns={columnsPersonnel}
-                    rows={rowsPersonnel}
+                    rows={accessbitilityPersonel}
                     pageStatus={pageStatus}
                     setPageStatus={setPageStatus}
                     loading={loaderTable}
@@ -258,9 +203,27 @@ const Accessibility = () => {
 
             <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()} bgStatus={true} maxWidth='md'>
                 <ModalStyleBg>
-                    {subModalStatus === 'post' ? <AddPost /> : subModalStatus === 'personnel' ? <AddPersonnel /> : null}{' '}
+                    {subModalStatus === 'post' ? (
+                        <AddPost />
+                    ) : subModalStatus === 'personnel' ? (
+                        <AddPersonnel
+                            setReload={setReload}
+                            reload={reload}
+                            setState={setShowSubModal}
+                            modalStatus={modalStatus}
+                            specificAccessibilityId={specificAccessibilityId}
+                            editModalData={editModalData}
+                        />
+                    ) : null}
                 </ModalStyleBg>
             </Modal>
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader}
+            />
         </AccessibilityWrapper>
     );
 };
