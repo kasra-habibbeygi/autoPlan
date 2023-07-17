@@ -3,7 +3,7 @@ import { CircularProgress, Pagination, Tooltip } from '@mui/material';
 
 //Assets
 import { PaginationWrapper, TableComponent } from './Table.style';
-import emptyBox from './../../assets/images/global/emptyBox.png';
+import emptyBox from './../../assets/images/global/empty-box.svg';
 
 // Tools
 import Tools from '../../utils/tools';

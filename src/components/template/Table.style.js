@@ -42,6 +42,7 @@ export const TableComponent = styled.div(({ theme }) => ({
 
     '& .empty': {
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         gap: '10px',
@@ -50,9 +51,10 @@ export const TableComponent = styled.div(({ theme }) => ({
         borderRadius: '18px',
         margin: '10px 0',
         fontWeight: 700,
+        color: theme.colors.textColor,
         img: {
-            width: '40px',
-            height: '40px'
+            width: '80px',
+            height: '80px'
         }
     },
 
