@@ -27,12 +27,12 @@ const ReceptionForm = () => {
     useEffect(() => {
         Axios.get('acceptation_setting/').then(res => {
             if (res.data.status !== 'fail') {
-                setAddButtonStatus(false);
+                setAddButtonStatus(true);
                 setValue('internet_acceptation_percent', res.data.internet_acceptation_percent);
                 setValue('phone_acceptation_percent', res.data.phone_acceptation_percent);
                 setValue('appointment_acceptation_percent', res.data.appointment_acceptation_percent);
             } else {
-                setAddButtonStatus(true);
+                setAddButtonStatus(false);
             }
         });
     }, []);

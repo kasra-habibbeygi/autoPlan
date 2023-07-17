@@ -100,8 +100,8 @@ const Accessibility = () => {
             key: 'accessibility',
             renderCell: data => (
                 <div className='truncate_cell'>
-                    {data.permission.map((item, index) => (
-                        <span key={`permission_${index}`}>{item.title},</span>
+                    {data.permission_titles?.map((item, index) => (
+                        <span key={`permission_${index}`}>{item},</span>
                     ))}
                 </div>
             )
@@ -167,13 +167,13 @@ const Accessibility = () => {
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <div className='table_wrapper'>
                 <p className='table_header'>پست سازمانی</p>
-                {/* <Table
+                <Table
                     columns={columnsPosts}
                     rows={accessbitilityPost}
                     pageStatus={pageStatus}
                     setPageStatus={setPageStatus}
                     loading={loader}
-                /> */}
+                />
             </div>
 
             <br />

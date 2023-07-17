@@ -97,29 +97,27 @@ const AddPersonnel = ({ setReload, reload, setState, modalStatus, setSpecificAcc
                 <div className='auto_complete_wrapper'>
                     <p className='auto_complete_title'>دسترسی</p>
                     <div className='auto_complete'>
-                        {test?.length && (
-                            <Controller
-                                control={control}
-                                name='permissions'
-                                rules={{ required: 'این فیلد اجباری است' }}
-                                render={({ field: { onChange, value } }) => {
-                                    return (
-                                        <Autocomplete
-                                            multiple
-                                            options={permissionList}
-                                            value={value}
-                                            filterSelectedOptions
-                                            getOptionLabel={option => option.label}
-                                            onChange={(_, newValue) => {
-                                                onChange(newValue.map(value => value?.id));
-                                            }}
-                                            sx={{ width: '100%' }}
-                                            renderInput={params => <TextField {...params} />}
-                                        />
-                                    );
-                                }}
-                            />
-                        )}
+                        <Controller
+                            control={control}
+                            name='permissions'
+                            rules={{ required: 'این فیلد اجباری است' }}
+                            render={({ field: { onChange, value } }) => {
+                                return (
+                                    <Autocomplete
+                                        multiple
+                                        options={permissionList}
+                                        value={value}
+                                        filterSelectedOptions
+                                        getOptionLabel={option => option.label}
+                                        onChange={(_, newValue) => {
+                                            onChange(newValue.map(value => value?.id));
+                                        }}
+                                        sx={{ width: '100%' }}
+                                        renderInput={params => <TextField {...params} />}
+                                    />
+                                );
+                            }}
+                        />
                         <img src={UserHandUp} />
                     </div>
                     <p className='auto_complete_error'>{errors?.accesses?.message}</p>
