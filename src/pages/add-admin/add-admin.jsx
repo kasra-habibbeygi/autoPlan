@@ -94,13 +94,17 @@ const AddAdmin = () => {
         };
         setButtonLoader({ ...buttonLoader, modalButton: true });
         if (modalStatus === 'add') {
-            Axios.post('add_admin_user/', newData).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('ادمین جدید با موفقیت ثبت شد');
-                setModalOpen(false);
-                reset();
-            });
+            Axios.post('add_admin_user/', newData)
+                .then(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                    setReload(!reload);
+                    toast.success('ادمین جدید با موفقیت ثبت شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .finally(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                });
         }
     };
 

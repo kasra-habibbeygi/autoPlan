@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import Axios from '../../../configs/axios';
 
 //Assets
 import { FormWrapper } from './reception-form.style';
@@ -9,49 +11,50 @@ import chart from './../../../assets/images/icons/chart.svg';
 //Components
 import FormButton from '../../form-groups/form-button';
 import InputComponent from './../../form-groups/input-component';
-import DatePickerComponent from '../../form-groups/date-picker';
 
 const ReceptionForm = () => {
-    const { register, handleSubmit, formState, control } = useForm({
-        defaultValues: {
-            date: '',
-            internetReception: '',
-            phoneReception: '',
-            presentReception: ''
-        },
+    const [addButtonStatus, setAddButtonStatus] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         mode: 'onTouched'
     });
     const { errors } = formState;
 
-    const formSubmit = () => {};
+    const formSubmit = data => {
+        Axios.post('acceptation_setting/', data).then(res => {});
+    };
+
+    useEffect(() => {
+        Axios.get('acceptation_setting/').then(res => {
+            if (res.data.status !== 'fail') {
+                setAddButtonStatus(false);
+                setValue('internet_acceptation_percent', res.data.internet_acceptation_percent);
+                setValue('phone_acceptation_percent', res.data.phone_acceptation_percent);
+                setValue('appointment_acceptation_percent', res.data.appointment_acceptation_percent);
+            } else {
+                setAddButtonStatus(true);
+            }
+        });
+    }, []);
 
     return (
         <FormWrapper>
             <p className='title'>تنظیمات پذیرش</p>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <Controller
-                    control={control}
-                    name='date'
-                    rules={{ required: 'این فیلد اجباری است' }}
-                    render={({ field: { onChange, value } }) => {
-                        return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                    }}
-                />
-
                 <InputComponent
                     title='پذیرش اینترنتی'
                     placeHolder='اینترنتی'
                     icon={chart}
                     type='text'
                     detail={{
-                        ...register('internetReception', {
+                        ...register('internet_acceptation_percent', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.internetReception}
+                    error={errors?.internet_acceptation_percent}
                 />
                 <InputComponent
                     title='پذیرش تلفنی'
@@ -59,14 +62,14 @@ const ReceptionForm = () => {
                     icon={chart}
                     type='text'
                     detail={{
-                        ...register('phoneReception', {
+                        ...register('phone_acceptation_percent', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.phoneReception}
+                    error={errors?.phone_acceptation_percent}
                 />
                 <InputComponent
                     title='پذیرش حضوری'
@@ -74,23 +77,24 @@ const ReceptionForm = () => {
                     icon={chart}
                     type='text'
                     detail={{
-                        ...register('presentReception', {
+                        ...register('appointment_acceptation_percent', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.presentReception}
+                    error={errors?.appointment_acceptation_percent}
                 />
                 <FormButton
                     text='ثبت'
                     icon={brokenArrow}
-                    loading={false}
+                    loading={loading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}
                     height={48}
+                    disabled={addButtonStatus}
                 />
             </form>
         </FormWrapper>
