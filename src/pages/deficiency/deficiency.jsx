@@ -52,7 +52,7 @@ const Deficiency = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date) },
+        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date_created) },
         { id: 3, title: 'نام قطعه', key: 'title' },
         { id: 4, title: 'نوع خودرو', key: 'car_type' },
         {

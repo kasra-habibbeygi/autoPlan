@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
 
 //Assets
 import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
@@ -28,18 +29,25 @@ import ShowAll from '../../components/pages/qualification/show-all';
 // Tools
 import Tools from '../../utils/tools';
 import PERMISSION from '../../utils/permission.ts';
+import { toast } from 'react-hot-toast';
 
 const Qualification = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [specificQualificationId, setSpecificQualificationId] = useState();
     const [step, setStep] = useState(1);
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [qualificationList, setQualificationList] = useState();
+    const [buttonLoader, setButtonLoader] = useState({
+        modalButton: false,
+        delete: false
+    });
 
-    console.log(qualificationList);
+    console.log(specificQualificationId);
 
     const [details, setDetails] = useState({
         blockingList: [],
@@ -73,10 +81,18 @@ const Qualification = () => {
             id: 7,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
-                    <FormButton icon={trashBin} onClick={() => setConfirmModalStatus(true)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => setShowAddModal(true)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -109,9 +125,24 @@ const Qualification = () => {
         setShowSubModal(false);
     };
 
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificQualificationId(id);
+    };
+
+    const deleteHandler = () => {
+        setButtonLoader({ ...buttonLoader, delete: true });
+        Axios.delete(`workshop_capacity_mgmt/?id=${specificQualificationId}`).then(() => {
+            setButtonLoader({ ...buttonLoader, delete: false });
+            setReload(!reload);
+            toast.success('ظرفیت  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
+
     useEffect(() => {
         setLoader(true);
-        Axios.get(`workshop_capacity_mgmt/?page=${pageStatus.current}`).then(res => {
+        Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
             setQualificationList(res.data.data);
             setPageStatus({
                 ...pageStatus,
@@ -127,6 +158,7 @@ const Qualification = () => {
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
+                disabled={!userPermissions.includes(PERMISSION.CAPACITY.ADD)}
             />
             <Table columns={columns} rows={qualificationList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
@@ -205,11 +237,16 @@ const Qualification = () => {
                     )}
                 </div>
             </Modal>
-
             <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
                 <AddDetailModal subModalStatus={subModalStatus} setDetails={setDetails} closeSubModalHandler={closeSubModalHandler} />
             </Modal>
-            <ConfirmModal status={confirmModalStatus} setStatus={setConfirmModalStatus} title='آیا از حذف این ردیف مطمئن هستید ؟' />
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
         </QualificationWrapper>
     );
 };

@@ -76,13 +76,13 @@ const Home = () => {
                             </div>
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='برنامه ریزی تعمیرات' onClick={() => {}} buttonText='بیشتر' />
+                            <DetailBoxHeader title='برنامه ریزی تعمیرات' buttonText='مشاهده' link='/planning' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='کسری قطعات انبار' onClick={() => {}} buttonText='بیشتر' />
+                            <DetailBoxHeader title='کسری قطعات انبار' buttonText='مشاهده' link='/deficiency' />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='ظرفیت سنجی' onClick={() => {}} buttonText='بیشتر' />
+                            <DetailBoxHeader title='ظرفیت سنجی' buttonText='مشاهده' link='/qualification' />
                         </div>
                     </Grid>
                     <Grid item xs={12} xl={7} top={1.5}>
@@ -91,12 +91,12 @@ const Home = () => {
                             <HomeTable data={tableData} />
                         </div>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='تنظیمات سایت' onClick={() => {}} buttonText='بیشتر' />
+                            <DetailBoxHeader title='تنظیمات سایت' buttonText='مشاهده' link='/setting' />
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className='itemMore'>
-                            <DetailBoxHeader title='اقدام اصلاحی' onClick={() => {}} buttonText='بیشتر' />
+                            <DetailBoxHeader title='اقدام اصلاحی' buttonText='مشاهده' link='/corrective' />
                         </div>
                     </Grid>
                 </Grid>
