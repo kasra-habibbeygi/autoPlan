@@ -26,10 +26,10 @@ const Deviation = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
-    const [deviationData, setDeviationData] = useState([]);
+    const [deviationData, setDeviationData] = useState();
     const [modalStatus, setModalStatus] = useState('');
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,

@@ -40,8 +40,8 @@ const Station = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
-    const [stationData, setStationData] = useState([]);
-    const [loader, setLoader] = useState(false);
+    const [stationData, setStationData] = useState();
+    const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
     const [buttonLoader, setButtonLoader] = useState({
