@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
 
 //Assets
 import Bus from '../../assets/images/icons/Bus.svg';
@@ -10,6 +12,7 @@ import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import { ActionCell } from '../deviation/deviation.style';
 import xlsx from '../../assets/example.xlsx';
+import PERMISSION from './../../utils/permission.ts';
 
 //Components
 import Table from '../../components/template/Table';
@@ -21,13 +24,19 @@ import UploadFile from '../../components/form-groups/UploadFile';
 import DatePickerComponent from '../../components/form-groups/date-picker';
 import tools from '../../utils/tools';
 import { toast } from 'react-hot-toast';
+import ConfirmModal from '../../components/template/confirm-modal';
 
 const Deficiency = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [deficiencyData, setDeficiencyData] = useState();
     const [fileValue, setFileValue] = useState();
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
+    const [modalStatus, setModalStatus] = useState('');
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [specificDeviationId, setSpecificDeviationId] = useState();
+
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
@@ -45,16 +54,24 @@ const Deficiency = () => {
             id: 5,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setIsModalOpen(true)} />
-                    <FormButton icon={trashBin} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.DELETE)}
+                    />
                 </ActionCell>
             )
         }
     ];
 
-    const { register, handleSubmit, formState, control, reset } = useForm({
+    const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             date: '',
             partName: '',
@@ -77,8 +94,25 @@ const Deficiency = () => {
         });
     }, [reload, pageStatus.current]);
 
-    const openModal = () => {
+    const addModalHandler = () => {
+        setModalStatus('add');
         setIsModalOpen(true);
+    };
+
+    const deleteModalHandler = data => {
+        console.log(data);
+        setConfirmModalStatus(true);
+        setSpecificDeviationId(data.id);
+    };
+
+    const editModalHandler = data => {
+        setModalStatus('edit');
+        setIsModalOpen(true);
+        setValue('date', tools.changeIsoDateToTimeStamp(data.date));
+        setValue('partName', data.title);
+        setValue('partCode', data.code);
+        setValue('carType', data.car_type);
+        setSpecificDeviationId(data.id);
     };
 
     const formSubmit = data => {
@@ -87,35 +121,85 @@ const Deficiency = () => {
             modalButton: true
         }));
 
-        if (fileValue) {
-            //
-        } else {
-            Axios.post('repository_mgmt/', {
-                date: tools.changeTimeStampToIsoDate(data.date),
-                code: data.partCode,
-                title: data.partName,
-                car_type: data.carType
-            })
-                .then(() => {
-                    setReload(prev => !prev);
-                    toast.success('کسری قطعات با موفقیت ثبت شد');
-                    setIsModalOpen(false);
-                    reset();
+        if (modalStatus === 'add') {
+            if (fileValue) {
+                //
+            } else {
+                Axios.post('repository_mgmt/', {
+                    date: tools.changeTimeStampToIsoDate(data.date),
+                    code: data.partCode,
+                    title: data.partName,
+                    car_type: data.carType
                 })
-                .finally(() =>
-                    setButtonLoader(prev => ({
-                        ...prev,
-                        modalButton: false
-                    }))
-                );
+                    .then(() => {
+                        setReload(prev => !prev);
+                        toast.success('کسری قطعات با موفقیت ثبت شد');
+                        setIsModalOpen(false);
+                        reset();
+                    })
+                    .finally(() => {
+                        setButtonLoader(prev => ({
+                            ...prev,
+                            modalButton: false
+                        }));
+                        setSpecificDeviationId();
+                    });
+            }
+        } else {
+            if (fileValue) {
+                //
+            } else {
+                console.log(data);
+                Axios.put(`repository_mgmt/?id=${specificDeviationId}`, {
+                    date: tools.changeTimeStampToIsoDate(data.date),
+                    code: data.partCode,
+                    title: data.partName,
+                    car_type: data.carType
+                })
+                    .then(() => {
+                        setReload(prev => !prev);
+                        toast.success('کسری قطعات با موفقیت ویرایش شد');
+                        setIsModalOpen(false);
+                        reset();
+                    })
+                    .finally(() => {
+                        setButtonLoader(prev => ({
+                            ...prev,
+                            modalButton: false
+                        }));
+                        setSpecificDeviationId();
+                    });
+            }
         }
     };
 
-    console.log(deficiencyData);
+    const deleteHandler = () => {
+        setButtonLoader(prev => ({
+            ...prev,
+            delete: true
+        }));
+        Axios.delete(`deviation_type_mgmt/?id=${specificDeviationId}`)
+            .then(() => {
+                setReload(!reload);
+                toast.success('کسری قطعه  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .finally(() => {
+                setButtonLoader(prev => ({
+                    ...prev,
+                    delete: false
+                }));
+                setSpecificDeviationId();
+            });
+    };
 
     return (
         <>
-            <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={openModal} />
+            <PagesHeader
+                buttonTitle='اضافه کردن کسری قطعات'
+                onButtonClick={addModalHandler}
+                disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.ADD)}
+            />
             <Table columns={columns} rows={deficiencyData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal
                 state={modalIsOpen}
@@ -210,7 +294,7 @@ const Deficiency = () => {
                     </a>
 
                     <FormButton
-                        text='ثبت'
+                        text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
                         loading={buttonLoader.modalButton}
                         type='submit'
                         backgroundColor={'#174787'}
@@ -219,6 +303,14 @@ const Deficiency = () => {
                     />
                 </form>
             </Modal>
+
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
         </>
     );
 };
