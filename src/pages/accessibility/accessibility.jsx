@@ -144,9 +144,9 @@ const Accessibility = () => {
         setSpecificAccessibilityId(id);
     };
     const deleteModalHandlerUser = id => {
-        console.log(id);
         setConfirmModalStatus(true);
         setSpecificAccessibilityIdUser(id);
+        console.log(specificAccessibilityIdUser, id);
     };
 
     const editModalHandler = item => {
@@ -222,12 +222,7 @@ const Accessibility = () => {
             <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()} bgStatus={true} maxWidth='md'>
                 <ModalStyleBg>
                     {subModalStatus === 'post' ? (
-                        <AddPost
-                            setReload={setReloadUser}
-                            reload={reloadUser}
-                            setState={setShowSubModal}
-                            specificAccessibilityIdUser={specificAccessibilityIdUser}
-                        />
+                        <AddPost setReload={setReloadUser} reload={reloadUser} setState={setShowSubModal} />
                     ) : subModalStatus === 'personnel' ? (
                         <AddPersonnel
                             setReload={setReload}
