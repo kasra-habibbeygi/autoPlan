@@ -24,12 +24,10 @@ instance.interceptors.request.use(async config => {
 
 instance.interceptors.response.use(
     res => {
-        if (res?.data?.detail && res?.status === 200) {
-            toast.success(res?.data?.detail, { style: { zIndex: 2000 } });
-        }
         return res;
     },
     error => {
+        console.log(error);
         return Promise.reject(error);
     }
 );

@@ -225,7 +225,6 @@ const Station = () => {
                             error={errors?.code}
                             placeHolder='کد'
                         />
-
                         <div className='auto_complete_wrapper'>
                             <p className='auto_complete_title'>نوع</p>
                             <div className='auto_complete'>

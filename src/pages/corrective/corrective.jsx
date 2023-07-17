@@ -25,6 +25,8 @@ import ExecuteDate from '../../components/pages/corrective/execute-date';
 import Result from '../../components/pages/corrective/result';
 import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
+import ConfirmModal from '../../components/template/confirm-modal';
+import { toast } from 'react-hot-toast';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -32,9 +34,15 @@ const Corrective = () => {
     const [allDetail, setAllDetail] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
+    const [specificDeviationId, setSpecificDeviationId] = useState();
+
+    const [buttonLoader, setButtonLoader] = useState({
+        delete: false
+    });
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -49,11 +57,15 @@ const Corrective = () => {
             id: 4,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
                     <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
                     <FormButton icon={pen} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)} />
-                    <FormButton icon={trashBin} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.DELETE)} />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -74,6 +86,21 @@ const Corrective = () => {
 
     const openModal = () => {
         setIsModalOpen(true);
+    };
+
+    const deleteHandler = () => {
+        setButtonLoader({ ...buttonLoader, delete: true });
+        Axios.delete(`reform_action/?id=${specificDeviationId}`).then(() => {
+            setButtonLoader({ ...buttonLoader, delete: false });
+            setReload(!reload);
+            toast.success('اقدام اصلاحی  با موفقیت حذف شد');
+            setConfirmModalStatus(false);
+        });
+    };
+
+    const deleteModalHandler = id => {
+        setConfirmModalStatus(true);
+        setSpecificDeviationId(id);
     };
 
     return (
@@ -107,6 +134,13 @@ const Corrective = () => {
                     </ModalStyleBg>
                 ) : null}
             </Modal>
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                deleteHandler={deleteHandler}
+                loading={buttonLoader.delete}
+            />
             <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
                 <ShowAll allDetail={allDetail} />
             </Modal>
