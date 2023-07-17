@@ -94,11 +94,11 @@ const Corrective = () => {
                         ) : step === 2 ? (
                             <Rootting setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                         ) : step === 3 ? (
-                            <Action setStep={setStep} setAllDetail={setAllDetail} />
+                            <Action setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                         ) : step === 4 ? (
                             <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                         ) : step === 5 ? (
-                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} />
+                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                         ) : step === 6 ? (
                             <Result setStep={setStep} setAllDetail={setAllDetail} />
                         ) : (

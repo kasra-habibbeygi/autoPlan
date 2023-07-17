@@ -1,29 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import Axios from './../../../configs/axios';
 
 //Assets
-import clock from '../../../assets/images/icons/ClockSquare.svg';
 import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
 
 //Components
-import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
+import tools from '../../../utils/tools';
 
-const ExecuteDate = ({ setStep, setAllDetail }) => {
+const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const { control, handleSubmit, formState } = useForm({
+        defaultValues: {
+            started_time: '',
+            finished_time: ''
+        },
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
     const formSubmit = data => {
-        setAllDetail(prev => ({
-            ...prev,
-            execute_date: data
-        }));
-        setStep(6);
+        setButtonLoading(true);
+
+        const newData = {
+            start_action_date: tools.changeTimeStampToIsoDate(data.started_time),
+            end_action_date: tools.changeTimeStampToIsoDate(data.finished_time)
+        };
+
+        Axios.put(`reform_action/set_action_date/?id=${allDetail?.mainId}`, newData)
+            .then(() => {
+                setAllDetail(prev => ({
+                    ...prev,
+                    execute_date: data
+                }));
+                setStep(6);
+            })
+            .finally(() => setButtonLoading(false));
     };
 
     return (
@@ -67,7 +84,7 @@ const ExecuteDate = ({ setStep, setAllDetail }) => {
 
                 <FormButton
                     text='بعدی'
-                    loading={false}
+                    loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}

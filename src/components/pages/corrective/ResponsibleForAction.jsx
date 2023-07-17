@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Axios from './../../../configs/axios';
 
 //Assets
 import check from '../../../assets/images/icons/check.svg';
@@ -11,6 +12,8 @@ import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
 const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const { register, handleSubmit, formState } = useForm({
         mode: 'onTouched'
     });
@@ -18,17 +21,27 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        const newDate = Object.keys(data).map(key => {
+        setButtonLoading(true);
+
+        const newData = Object.keys(data).map(key => {
             const newObj = {};
             newObj[key] = data[key];
             return newObj;
         });
 
-        setAllDetail(prev => ({
-            ...prev,
-            actionPerson: newDate
-        }));
-        setStep(5);
+        const mainString = newData.map((item, index) => `${index + 1} : ${item[`correction_${index + 1}`]}`).join();
+
+        Axios.put(`reform_action/set_action_agent/?id=${allDetail?.mainId}`, {
+            action_agent: mainString
+        })
+            .then(() => {
+                setAllDetail(prev => ({
+                    ...prev,
+                    actionPerson: mainString
+                }));
+                setStep(5);
+            })
+            .finally(() => setButtonLoading(false));
     };
 
     return (
@@ -55,7 +68,7 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
                 ))}
                 <FormButton
                     text='بعدی'
-                    loading={false}
+                    loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}

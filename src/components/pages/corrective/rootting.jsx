@@ -51,8 +51,6 @@ const Rootting = ({ setStep, setAllDetail, allDetail }) => {
         setInputValues(updatedValues);
     };
 
-    console.log(inputValues);
-
     const sendDataHandler = () => {
         const newArr = inputValues.map((str, index) => `${index + 1}چرا : ${str}`);
         const result = newArr.join();
@@ -65,7 +63,6 @@ const Rootting = ({ setStep, setAllDetail, allDetail }) => {
                 troubleshooting: result
             })
                 .then(res => {
-                    console.log(res);
                     setStep(3);
                     setAllDetail(prev => ({
                         ...prev,

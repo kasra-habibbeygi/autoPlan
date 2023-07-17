@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import Axios from './../../../configs/axios';
 
 //Assets
 import check from '../../../assets/images/icons/check.svg';
 import add from '../../../assets/images/corrective/Add.svg';
 import arrow from './../../../assets/images/global/arrow.svg';
+import { ActionStyle } from './action.style';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
-import { ActionStyle } from './action.style';
 
-const Action = ({ setStep, setAllDetail }) => {
+const Action = ({ setStep, setAllDetail, allDetail }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             actionFields: [{ action: '' }]
@@ -28,11 +31,21 @@ const Action = ({ setStep, setAllDetail }) => {
     });
 
     const formSubmit = data => {
-        setAllDetail(prev => ({
-            ...prev,
-            actions: data.actionFields
-        }));
-        setStep(4);
+        setButtonLoading(true);
+
+        const mainString = data.actionFields.map(item => item.action).join('اقدام : ');
+
+        Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
+            action: mainString
+        })
+            .then(() => {
+                setAllDetail(prev => ({
+                    ...prev,
+                    actions: data.actionFields
+                }));
+                setStep(4);
+            })
+            .finally(() => setButtonLoading(false));
     };
 
     const handleAddInput = () => {
@@ -70,7 +83,7 @@ const Action = ({ setStep, setAllDetail }) => {
                 </div>
                 <FormButton
                     text='بعدی'
-                    loading={false}
+                    loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}
