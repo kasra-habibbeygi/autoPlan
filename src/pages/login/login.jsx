@@ -64,8 +64,7 @@ const Login = ({ showModal, setShowModal }) => {
             ...loader,
             login: true
         });
-        Axios.get('validate_login_otp/?mobile=09021414866').then(res => {
-            console.log(res.data);
+        Axios.get('validate_login_otp/?mobile=09338779212').then(res => {
             localStorage.setItem(
                 'AutoPlaningToken',
                 JSON.stringify({
