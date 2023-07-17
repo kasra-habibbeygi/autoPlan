@@ -72,12 +72,12 @@ const Deviation = () => {
                     <FormButton
                         icon={pen}
                         onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.EDIT)}
+                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_REASON.EDIT)}
                     />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.DELETE)}
+                        disabled={!userPermissions.includes(PERMISSION.DEVIATION_REASON.DELETE)}
                     />
                 </ActionCell>
             )
@@ -138,7 +138,7 @@ const Deviation = () => {
             <PagesHeader
                 buttonTitle='ثبت انحراف جدید'
                 onButtonClick={addModalHandler}
-                disabled={!userPermissions.includes(PERMISSION.DEVIATION_RESON.ADD)}
+                disabled={!userPermissions.includes(PERMISSION.DEVIATION_REASON.ADD)}
             />
             <Table columns={columns} rows={deviationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} maxWidth='sm' handleClose={reset}>

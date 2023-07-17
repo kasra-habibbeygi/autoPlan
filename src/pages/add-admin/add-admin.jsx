@@ -24,11 +24,7 @@ import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
 import FormButton from '../../components/form-groups/form-button';
 
-// Tools
-import PERMISSION from '../../utils/permission.ts';
-
 const AddAdmin = () => {
-    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
