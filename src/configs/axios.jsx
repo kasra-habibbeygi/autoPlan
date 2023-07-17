@@ -14,6 +14,11 @@ instance.interceptors.request.use(async config => {
             }
         }
     }
+
+    if (typeof window !== 'undefined' && localStorage.getItem('AutoPlaningToken') !== null) {
+        config.headers.Authorization = `Bearer ${localStorage.getItem('AutoPlaningToken')}`;
+    }
+
     return config;
 });
 

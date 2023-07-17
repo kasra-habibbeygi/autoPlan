@@ -24,11 +24,20 @@ const Login = ({ showModal, setShowModal }) => {
         },
         mode: 'onTouched'
     });
+
     const { register, formState, handleSubmit, reset } = form;
     const { errors } = formState;
 
     const sendCodeHandler = data => {
         setLoginStatus('sendConfirmCode');
+
+        if (loginStatus === 'addPhoneNumber') {
+            setLoginStatus('sendConfirmCode');
+        } else {
+            Axios.get('validate_login_otp/?mobile=09338779212').then(res => {
+                localStorage.setItem('AutoPlaningToken', res.data.token);
+            });
+        }
     };
 
     const closeModalHandler = () => {
@@ -36,10 +45,6 @@ const Login = ({ showModal, setShowModal }) => {
         setLoginStatus('addPhoneNumber');
         setCodeValue();
     };
-
-    useEffect(() => {
-        Axios.get('validate_login_otp/?mobile=09338779212');
-    }, []);
 
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
@@ -111,7 +116,7 @@ const Login = ({ showModal, setShowModal }) => {
                             <FormButton
                                 text='ثبت'
                                 loading={false}
-                                type='button'
+                                type='submit'
                                 backgroundColor={'#174787'}
                                 color={'white'}
                                 height={48}
