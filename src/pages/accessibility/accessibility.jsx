@@ -149,13 +149,13 @@ const Accessibility = () => {
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <div className='table_wrapper'>
                 <p className='table_header'>پست سازمانی</p>
-                <Table
+                {/* <Table
                     columns={columnsPosts}
                     rows={accessbitilityPost}
                     pageStatus={pageStatus}
                     setPageStatus={setPageStatus}
                     loading={loader}
-                />
+                /> */}
             </div>
 
             <br />
