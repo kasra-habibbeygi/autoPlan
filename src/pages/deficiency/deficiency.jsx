@@ -49,9 +49,10 @@ const Deficiency = () => {
         total: 1,
         current: 1
     });
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date' },
+        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date) },
         { id: 3, title: 'نام قطعه', key: 'title' },
         { id: 4, title: 'نوع خودرو', key: 'car_type' },
         {
@@ -197,7 +198,15 @@ const Deficiency = () => {
                 disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.ADD)}
             />
             <Table columns={columns} rows={deficiencyData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
-            <Modal state={modalIsOpen} setState={setIsModalOpen} maxWidth='sm' handleClose={reset}>
+            <Modal
+                state={modalIsOpen}
+                setState={setIsModalOpen}
+                maxWidth='sm'
+                handleClose={() => {
+                    reset();
+                    setTabValue(0);
+                }}
+            >
                 <h2> کسری قطعات </h2>
                 <Tabs value={tabValue} onChange={handleChange} sx={{ margin: '40px 0 60px 0' }}>
                     <Tab label='ارسال تکی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
