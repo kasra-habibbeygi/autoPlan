@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Axios from './../../../configs/axios';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
@@ -11,18 +12,31 @@ import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
 const Problem = ({ setStep, setAllDetail }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const { register, handleSubmit, formState } = useForm({
+        defaultValues: {
+            problem: ''
+        },
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
     const formSubmit = data => {
-        setStep(2);
-        setAllDetail(prev => ({
-            ...prev,
-            problem: data.problem
-        }));
+        setButtonLoading(true);
+
+        Axios.post('reform_action/problem/', data)
+            .then(res => {
+                console.log(res);
+                setStep(2);
+                setAllDetail(prev => ({
+                    ...prev,
+                    problem: data.problem,
+                    mainId: res.data.id
+                }));
+            })
+            .finally(() => setButtonLoading(false));
     };
 
     return (
@@ -45,7 +59,7 @@ const Problem = ({ setStep, setAllDetail }) => {
                 />
                 <FormButton
                     text='بعدی'
-                    loading={false}
+                    loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}

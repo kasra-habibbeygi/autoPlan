@@ -89,14 +89,15 @@ const Deficiency = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`repository_mgmt/?page=${pageStatus.current}`).then(res => {
-            setDeficiencyData(res.data.data);
-            setLoader(false);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-        });
+        Axios.get(`repository_mgmt/?page=${pageStatus.current}`)
+            .then(res => {
+                setDeficiencyData(res.data.data);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .finally(() => setLoader(false));
     }, [reload, pageStatus.current]);
 
     const addModalHandler = () => {

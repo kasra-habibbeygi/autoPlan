@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import eye from './../../assets/images/global/Eye.svg';
-import arrow from './../../assets/images/global/arrowUpChart.svg';
-import { PercentWrapper, ModalStyleBg } from './corrective.style';
+import { ModalStyleBg } from './corrective.style';
 import { ActionCell } from '../deviation/deviation.style';
+import PERMISSION from '../../utils/permission.ts';
 
 //Components
 import Table from '../../components/template/Table';
@@ -24,11 +27,15 @@ import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 
 const Corrective = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [step, setStep] = useState(1);
     const [allDetail, setAllDetail] = useState({});
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [correctiveData, setCorrectiveData] = useState();
     const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
+    const [reload, setReload] = useState(false);
+    const [loader, setLoader] = useState(true);
+
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -36,17 +43,8 @@ const Corrective = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'اقدام اصلاحی', key: 'correctiveAction' },
-        {
-            id: 3,
-            title: 'درصد انحراف به کل',
-            renderCell: row => (
-                <PercentWrapper>
-                    %<p>{row.correctivePercent}</p>
-                    <img src={arrow} alt='' />
-                </PercentWrapper>
-            )
-        },
+        { id: 2, title: 'مشکل', key: 'problem' },
+        { id: 3, title: 'مسئول', key: 'action_agent' },
         {
             id: 4,
             title: 'عملیات',
@@ -54,92 +52,25 @@ const Corrective = () => {
             renderCell: () => (
                 <ActionCell>
                     <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
-                    <FormButton icon={pen} />
-                    <FormButton icon={trashBin} />
+                    <FormButton icon={pen} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)} />
+                    <FormButton icon={trashBin} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.DELETE)} />
                 </ActionCell>
             )
         }
     ];
 
-    const rows = [
-        {
-            id: 1,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 2,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 3,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 4,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 5,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 6,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        },
-        {
-            id: 7,
-            correctiveAction: 'خواب ماندن تعمیر کار شماره ۸',
-            correctivePercent: '۴۰',
-            model: 1350,
-            license: '66 985 ص 42',
-            mechanicCode: 23,
-            position: 23,
-            mobileNumber: '093851813529',
-            pyramid: 23
-        }
-    ];
+    useEffect(() => {
+        setLoader(true);
+        Axios.get(`reform_action/?page=${pageStatus.current}`)
+            .then(res => {
+                setCorrectiveData(res.data.data);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .finally(() => setLoader(false));
+    }, [reload, pageStatus.current]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -147,8 +78,12 @@ const Corrective = () => {
 
     return (
         <>
-            <PagesHeader buttonTitle='اقدام اصلاحی' onButtonClick={openModal} />
-            <Table columns={columns} rows={rows} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <PagesHeader
+                buttonTitle='اقدام اصلاحی'
+                onButtonClick={openModal}
+                disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.ADD)}
+            />
+            <Table columns={columns} rows={correctiveData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true' handleClose={() => setStep(1)}>
                 {isModalOpen ? (
                     <ModalStyleBg>
@@ -157,7 +92,7 @@ const Corrective = () => {
                         {step === 1 ? (
                             <Problem setStep={setStep} setAllDetail={setAllDetail} />
                         ) : step === 2 ? (
-                            <Rootting setStep={setStep} setAllDetail={setAllDetail} />
+                            <Rootting setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
                         ) : step === 3 ? (
                             <Action setStep={setStep} setAllDetail={setAllDetail} />
                         ) : step === 4 ? (
