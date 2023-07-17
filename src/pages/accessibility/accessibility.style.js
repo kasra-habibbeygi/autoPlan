@@ -22,6 +22,14 @@ export const AccessibilityWrapper = styled.div(() => ({
             fontWeight: 700,
             textAlign: 'center'
         }
+    },
+
+    '& .truncate_cell': {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        width: '400px',
+        margin: '0 auto'
     }
 }));
 

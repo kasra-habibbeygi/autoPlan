@@ -24,7 +24,7 @@ import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 
 const Corrective = () => {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(5);
     const [allDetail, setAllDetail] = useState({});
 
     const [isModalOpen, setIsModalOpen] = useState(false);

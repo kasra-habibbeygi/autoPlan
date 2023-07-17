@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Axios from '../../configs/axios';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -20,16 +21,61 @@ import AddPersonnel from '../../components/pages/accessibility/add-personell';
 const Accessibility = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
+    const [loader, setLoader] = useState(true);
+    const [loaderTable, setLoaderTable] = useState(true);
+    const [reload, setReload] = useState(false);
+    const [reloadUser, setReloadUser] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
+    const [accessbitilityPersonel, setAccessibilityPersonel] = useState();
+    const [accessbitilityPost, setAccessibilityPost] = useState();
+
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
 
+    const [pageStatusUser, setPageStatusUser] = useState({
+        total: 1,
+        current: 1
+    });
+    useEffect(() => {
+        setLoader(true);
+        setLoaderTable(true);
+        Axios.get(`personnelrole_mgmt/?page=${pageStatus.current}`).then(res => {
+            setAccessibilityPost(res.data.data);
+            console.log(accessbitilityPost);
+            setLoader(false);
+            setPageStatus({
+                ...pageStatus,
+                total: res.data.total
+            });
+        });
+        Axios.get(`user_mgmt/?page=${pageStatus.current}`).then(res => {
+            setAccessibilityPersonel(res.data.data);
+            // console.log(accessbitilityPersonel);
+            setLoaderTable(false);
+            setPageStatusUser({
+                ...pageStatusUser,
+                total: res.data.total
+            });
+        });
+    }, [reloadUser, reload, pageStatusUser.current]);
+
     const columnsPosts = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'نام پست', key: 'postName' },
-        { id: 3, title: 'دسترسی ها', key: 'accessibility' },
+        { id: 2, title: 'نام پست', key: 'title' },
+        {
+            id: 3,
+            title: 'دسترسی ها',
+            key: 'accessibility',
+            renderCell: data => (
+                <div className='truncate_cell'>
+                    {data.permission.map((item, index) => (
+                        <span key={`permission_${index}`}>{item.title},</span>
+                    ))}
+                </div>
+            )
+        },
 
         {
             id: 4,
@@ -157,7 +203,13 @@ const Accessibility = () => {
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <div className='table_wrapper'>
                 <p className='table_header'>پست سازمانی</p>
-                <Table columns={columnsPosts} rows={rowsPost} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+                <Table
+                    columns={columnsPosts}
+                    rows={accessbitilityPost}
+                    pageStatus={pageStatus}
+                    setPageStatus={setPageStatus}
+                    loading={loader}
+                />
             </div>
 
             <br />
@@ -166,7 +218,13 @@ const Accessibility = () => {
 
             <div className='table_wrapper'>
                 <p className='table_header'>پرسنل</p>
-                <Table columns={columnsPersonnel} rows={rowsPersonnel} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+                <Table
+                    columns={columnsPersonnel}
+                    rows={rowsPersonnel}
+                    pageStatus={pageStatus}
+                    setPageStatus={setPageStatus}
+                    loading={loaderTable}
+                />
             </div>
 
             <Modal state={showAddModal} setState={setShowAddModal} maxWidth='sm'>
