@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import VerificationInput from 'react-verification-input';
+import Axios from '../../configs/axios';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -35,6 +36,10 @@ const Login = ({ showModal, setShowModal }) => {
         setLoginStatus('addPhoneNumber');
         setCodeValue();
     };
+
+    useEffect(() => {
+        Axios.get('validate_login_otp/?mobile=09338779212');
+    }, []);
 
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>

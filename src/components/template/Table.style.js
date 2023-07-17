@@ -95,9 +95,14 @@ export const PaginationWrapper = styled.div(props => ({
     },
 
     '& .MuiPaginationItem-page': {
-        background: `${props.theme.colors.white} !important`,
-        color: `${props.theme.colors.textColor}  !important`,
+        background: '#ffffff24 !important',
+        color: '#fff  !important',
         fontSize: '1rem'
+    },
+
+    '& .Mui-selected': {
+        backgroundColor: '#ffffffc7 !important',
+        color: 'black  !important'
     },
 
     '& *': {

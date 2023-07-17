@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import Bus from '../../assets/images/icons/Bus.svg';
@@ -11,7 +12,6 @@ import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
 import { ActionCell } from '../deviation/deviation.style';
-import PERMISSION from './../../utils/permission.ts';
 
 //Components
 import Table from '../../components/template/Table';
@@ -21,9 +21,13 @@ import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 import UploadFile from '../../components/form-groups/UploadFile';
 import DatePickerComponent from '../../components/form-groups/date-picker';
-import tools from '../../utils/tools';
-import { toast } from 'react-hot-toast';
 import ConfirmModal from '../../components/template/confirm-modal';
+
+// Tools
+import tools from '../../utils/tools';
+import PERMISSION from './../../utils/permission.ts';
+
+// MUI
 import { Tab, Tabs } from '@mui/material';
 
 const Deficiency = () => {
