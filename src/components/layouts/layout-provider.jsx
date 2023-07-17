@@ -4,7 +4,7 @@ import { Drawer, useMediaQuery, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeSideBar } from '../../store/reducers/sideBar';
 import { useEffect } from 'react';
-import Axios from '../../configs/axios';
+// import Axios from '../../configs/axios';
 
 //assets
 import { LayoutProviderStyle } from './layout-provider.style';
@@ -22,7 +22,7 @@ const LayoutProvider = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        Axios.get('profile/');
+        // Axios.get('profile/');
     }, []);
 
     return (
