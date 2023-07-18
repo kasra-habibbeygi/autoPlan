@@ -5,6 +5,10 @@ class Tools {
         return Date.parse(date);
     }
 
+    changeRawDateToIsoDate(date) {
+        return new Date(date).toISOString();
+    }
+
     changeDateToJalali(date, needTime = true) {
         if (needTime) {
             return jMoment.unix(parseInt(Date.parse(date) / 1000)).format('jYYYY/jMM/jDD - HH:mm:ss');
