@@ -60,7 +60,13 @@ const Corrective = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
+                    <FormButton
+                        icon={eye}
+                        onClick={() => {
+                            setDetailsIsModalOpen(true);
+                            setChosenEditItemDetails(data);
+                        }}
+                    />
                     <FormButton
                         icon={pen}
                         onClick={() => {
@@ -197,7 +203,7 @@ const Corrective = () => {
                     setChosenEditItemDetails();
                 }}
             >
-                <ShowAll allDetail={allDetail} />
+                <ShowAll chosenEditItemDetails={chosenEditItemDetails} />
             </Modal>
         </>
     );
