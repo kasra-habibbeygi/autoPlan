@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Axios from './../../../configs/axios';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
@@ -9,22 +11,46 @@ import { Style } from './style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Result = ({ setStep, setAllDetail }) => {
-    const { register, handleSubmit, formState } = useForm({
+const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+
+    const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             action_result: ''
         },
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    console.log(chosenEditItemDetails);
+    useEffect(() => {
+        if (chosenEditItemDetails?.action_result) {
+            setValue('action_result', chosenEditItemDetails?.action_result);
+        }
+    }, [chosenEditItemDetails]);
+
+    const { errors, isDirty } = formState;
 
     const formSubmit = data => {
-        setAllDetail(prev => ({
-            ...prev,
-            action_result: data.action_result
-        }));
-        setStep(7);
+        setButtonLoading(true);
+
+        if (isDirty) {
+            Axios.put(`reform_action/set_action_result/?id=${allDetail?.mainId}`, data)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        action_result: data.action_result
+                    }));
+                    setStep(7);
+                })
+                .finally(() => setButtonLoading(false));
+        } else {
+            setAllDetail(prev => ({
+                ...prev,
+                action_result: data.action_result
+            }));
+            setStep(7);
+        }
     };
 
     return (
@@ -50,7 +76,7 @@ const Result = ({ setStep, setAllDetail }) => {
 
                 <FormButton
                     text='بعدی'
-                    loading={false}
+                    loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}

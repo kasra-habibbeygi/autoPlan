@@ -22,7 +22,7 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) =>
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    const { errors, isDirty } = formState;
 
     useEffect(() => {
         if (chosenEditItemDetails) {
@@ -32,31 +32,39 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) =>
 
     const formSubmit = data => {
         setButtonLoading(true);
-
-        // if (chosenEditItemDetails) {
-        //     Axios.put(`reform_action/problem/?id=${chosenEditItemDetails.id}`, data)
-        //         .then(res => {
-        //             setStep(2);
-        //             setAllDetail(prev => ({
-        //                 ...prev,
-        //                 problem: data.problem,
-        //                 mainId: res.data.id
-        //             }));
-        //         })
-        //         .finally(() => setButtonLoading(false));
-        // } else {
-        Axios.post('reform_action/problem/', data)
-            .then(res => {
-                setStep(2);
-                setAllDetail(prev => ({
-                    ...prev,
-                    problem: data.problem,
-                    mainId: res.data.id
-                }));
-                setReload(prev => !prev);
-            })
-            .finally(() => setButtonLoading(false));
-        // }
+        if (isDirty) {
+            // if (chosenEditItemDetails) {
+            //     Axios.put(`reform_action/problem/?id=${chosenEditItemDetails.id}`, data)
+            //         .then(res => {
+            //             setStep(2);
+            //             setAllDetail(prev => ({
+            //                 ...prev,
+            //                 problem: data.problem,
+            //                 mainId: res.data.id
+            //             }));
+            //         })
+            //         .finally(() => setButtonLoading(false));
+            // } else {
+            Axios.post('reform_action/problem/', data)
+                .then(res => {
+                    setStep(2);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        problem: data.problem,
+                        mainId: res.data.id
+                    }));
+                    setReload(prev => !prev);
+                })
+                .finally(() => setButtonLoading(false));
+            // }
+        } else {
+            setAllDetail(prev => ({
+                ...prev,
+                problem: data.problem,
+                mainId: chosenEditItemDetails.id
+            }));
+            setStep(2);
+        }
     };
 
     return (

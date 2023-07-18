@@ -41,7 +41,8 @@ export const Style = styled.div(props => ({
 
         '& .error': {
             fontSize: '12px',
-            color: '#830000'
+            color: '#830000',
+            marginTop: '10px'
         }
     },
 
