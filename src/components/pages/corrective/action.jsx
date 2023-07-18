@@ -42,11 +42,8 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => 
             });
 
             setValue('actionFields', arr);
-            console.log(arr);
         }
     }, [chosenEditItemDetails]);
-
-    console.log(chosenEditItemDetails);
 
     const formSubmit = data => {
         setButtonLoading(true);
