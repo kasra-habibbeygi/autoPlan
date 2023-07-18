@@ -36,7 +36,7 @@ const Corrective = () => {
     const [correctiveData, setCorrectiveData] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
-    const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
+    const [DetailsIsModalOpen, setDetailsIsModalOpen] = useState(false);
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
     const [specificDeviationId, setSpecificDeviationId] = useState();
@@ -60,7 +60,13 @@ const Corrective = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
+                    <FormButton
+                        icon={eye}
+                        onClick={() => {
+                            setDetailsIsModalOpen(true);
+                            setChosenEditItemDetails(data);
+                        }}
+                    />
                     <FormButton
                         icon={pen}
                         onClick={() => {
@@ -127,6 +133,7 @@ const Corrective = () => {
                 handleClose={() => {
                     setStep(1);
                     setChosenEditItemDetails();
+                    setAllDetail();
                 }}
             >
                 {isModalOpen ? (
@@ -134,13 +141,19 @@ const Corrective = () => {
                         <h2>اقدام اصلاحی</h2>
                         <ProgressBar step={step} />
                         {step === 1 ? (
-                            <Problem setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
+                            <Problem
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                            />
                         ) : step === 2 ? (
                             <Rootting
                                 setStep={setStep}
                                 setAllDetail={setAllDetail}
                                 allDetail={allDetail}
                                 chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
                             />
                         ) : step === 3 ? (
                             <Action
@@ -148,6 +161,7 @@ const Corrective = () => {
                                 setAllDetail={setAllDetail}
                                 allDetail={allDetail}
                                 chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
                             />
                         ) : step === 4 ? (
                             <ResponsibleForAction
@@ -155,6 +169,7 @@ const Corrective = () => {
                                 setAllDetail={setAllDetail}
                                 allDetail={allDetail}
                                 chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
                             />
                         ) : step === 5 ? (
                             <ExecuteDate
@@ -180,8 +195,15 @@ const Corrective = () => {
                 deleteHandler={deleteHandler}
                 loading={buttonLoader.delete}
             />
-            <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
-                <ShowAll allDetail={allDetail} />
+            <Modal
+                state={DetailsIsModalOpen}
+                setState={setDetailsIsModalOpen}
+                maxWidth='lg'
+                handleClose={() => {
+                    setChosenEditItemDetails();
+                }}
+            >
+                <ShowAll chosenEditItemDetails={chosenEditItemDetails} />
             </Modal>
         </>
     );

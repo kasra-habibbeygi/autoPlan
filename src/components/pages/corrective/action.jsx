@@ -13,7 +13,7 @@ import { ActionStyle } from './action.style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => {
+const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setReload }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const { register, handleSubmit, formState, control, setValue } = useForm({
@@ -70,6 +70,7 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => 
                     ...prev,
                     actions: data.actionFields
                 }));
+                setReload(prev => !prev);
                 setStep(4);
             })
             .finally(() => setButtonLoading(false));

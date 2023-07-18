@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from './../../../configs/axios';
 
@@ -11,34 +12,37 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
+const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setReload }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, setValue } = useForm({
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
+    useEffect(() => {
+        if (chosenEditItemDetails) {
+            const obj = JSON.parse(chosenEditItemDetails.action_agent);
+            const arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
+
+            arrayValues.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+        }
+    }, [chosenEditItemDetails]);
+
     const formSubmit = data => {
         setButtonLoading(true);
-
-        const newData = Object.keys(data).map(key => {
-            const newObj = {};
-            newObj[key] = data[key];
-            return newObj;
-        });
-
-        const mainString = newData.map((item, index) => `${index + 1} : ${item[`correction_${index + 1}`]}`).join();
+        const jsonString = JSON.stringify(data);
 
         Axios.put(`reform_action/set_action_agent/?id=${allDetail?.mainId}`, {
-            action_agent: mainString
+            action_agent: jsonString
         })
             .then(() => {
                 setAllDetail(prev => ({
                     ...prev,
-                    actionPerson: mainString
+                    actionPerson: jsonString
                 }));
+                setReload(prev => !prev);
                 setStep(5);
             })
             .finally(() => setButtonLoading(false));
@@ -66,6 +70,7 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
                         />
                     </div>
                 ))}
+
                 <FormButton
                     text='بعدی'
                     loading={buttonLoading}
@@ -81,3 +86,14 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail }) => {
 };
 
 export default ResponsibleForAction;
+
+// {
+//     correction_1: "بیل",
+//     correction_2: "یبسلبی",
+//     correction_3: "یبسللیب"
+// }
+// [
+//     {correction_1: "بیل",},
+//     {correction_2: "یبسلبی",},
+//     {correction_3: "یبسللیب"}
+// ]

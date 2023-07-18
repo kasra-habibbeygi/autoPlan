@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from './../../../configs/axios';
 
@@ -11,10 +12,10 @@ import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
 
-const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setReload }) => {
+const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setReload, chosenEditItemDetails }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const { control, handleSubmit, formState } = useForm({
+    const { control, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             started_time: '',
             finished_time: ''
@@ -23,6 +24,13 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     });
 
     const { errors } = formState;
+
+    useEffect(() => {
+        if (chosenEditItemDetails) {
+            setValue('started_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails.start_action_date));
+            setValue('finished_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails.end_action_date));
+        }
+    }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
         setButtonLoading(true);
@@ -44,6 +52,8 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
             })
             .finally(() => setButtonLoading(false));
     };
+
+    console.log(chosenEditItemDetails);
 
     return (
         <Style>

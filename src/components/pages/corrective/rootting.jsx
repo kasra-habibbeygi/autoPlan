@@ -13,7 +13,7 @@ import { RootingStyle } from './rootting.style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) => {
+const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setReload }) => {
     const [inputValues, setInputValues] = useState([[''], [''], [''], [''], ['']]);
     const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -74,6 +74,7 @@ const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails }) =
                         ...prev,
                         troubleshooting: str
                     }));
+                    setReload(prev => !prev);
                 })
                 .finally(() => setButtonLoading(false));
         } else {

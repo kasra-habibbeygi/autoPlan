@@ -28,14 +28,19 @@ export const ShowAllStyle = styled.div(props => ({
         '& .questions': {
             display: 'flex',
             gap: '5px',
-            marginTop: '10px',
+            marginTop: '20px',
 
             '& .quest': {
                 fontWeight: 700,
                 whiteSpace: 'nowrap'
             },
 
-            '& .answer': {}
+            '& .answers_wrapper': {
+                display: 'flex',
+                flexDirection: 'column',
+
+                '& .answer': {}
+            }
         }
     }
 }));

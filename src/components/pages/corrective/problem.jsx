@@ -12,7 +12,7 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const { register, handleSubmit, formState, setValue } = useForm({
@@ -53,6 +53,7 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
                     problem: data.problem,
                     mainId: res.data.id
                 }));
+                setReload(prev => !prev);
             })
             .finally(() => setButtonLoading(false));
         // }
