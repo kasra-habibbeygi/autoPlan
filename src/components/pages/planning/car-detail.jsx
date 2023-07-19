@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import Axios from '../../../configs/axios';
 
 //Assets
 import Bus from './../../../assets/images/icons/Bus.svg';
@@ -13,6 +15,7 @@ import InputComponent from '../../form-groups/input-component';
 import { Autocomplete, TextField } from '@mui/material';
 
 const CarDetail = ({ setStep }) => {
+    const [loader, setLoader] = useState(false);
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             alphabet: Alphabet[0]
@@ -22,8 +25,24 @@ const CarDetail = ({ setStep }) => {
     const { errors } = formState;
 
     const formSubmit = data => {
-        setStep(2);
+        setLoader(true);
+
+        const { plaque1, plaque2, plaque3, alphabet, ...newData1 } = data;
+
+        const newData2 = {
+            ...newData1,
+            plate_number: [data.plaque1, data.alphabet.value, data.plaque2, data.plaque3]
+        };
+
+        Axios.post('admission_car_info/', newData2)
+            .then(() => {
+                setStep(2);
+            })
+            .finally(() => {
+                setLoader(false);
+            });
     };
+
     return (
         <StepsStyle>
             <form onSubmit={handleSubmit(formSubmit)}>
@@ -33,7 +52,7 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={Bus}
                     detail={{
-                        ...register('brand', {
+                        ...register('car_title', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
@@ -48,7 +67,7 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={Bus}
                     detail={{
-                        ...register('model', {
+                        ...register('car_model', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
@@ -63,7 +82,7 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={Bus}
                     detail={{
-                        ...register('owner', {
+                        ...register('car_admissioner', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
@@ -78,7 +97,7 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={PhoneIcon}
                     detail={{
-                        ...register('phone_number', {
+                        ...register('mobile_number', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
@@ -95,12 +114,7 @@ const CarDetail = ({ setStep }) => {
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                                ...register('plaque1')
                             }}
                         />
                         <InputComponent
@@ -108,12 +122,7 @@ const CarDetail = ({ setStep }) => {
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                                ...register('plaque2')
                             }}
                         />
                         <div className='auto_complete'>
@@ -130,7 +139,7 @@ const CarDetail = ({ setStep }) => {
                                             filterSelectedOptions
                                             getOptionLabel={option => option.label}
                                             onChange={(_, newValue) => {
-                                                onChange(newValue.map(value => value?.id));
+                                                onChange(newValue);
                                             }}
                                             sx={{ width: '100%' }}
                                             renderInput={params => <TextField {...params} />}
@@ -145,12 +154,7 @@ const CarDetail = ({ setStep }) => {
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
+                                ...register('plaque3')
                             }}
                         />
                         <div className='flag'>
@@ -163,7 +167,7 @@ const CarDetail = ({ setStep }) => {
                 <FormButton
                     text='بعدی'
                     icon={Arrow}
-                    loading={false}
+                    loading={loader}
                     className='login'
                     backgroundColor={'#174787'}
                     onClick={() => {}}

@@ -24,9 +24,9 @@ import Tools from '../../utils/tools';
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [planningList, PlanningList] = useState();
-    const [realod, setRealod] = useState(false);
+    const [reload, setReload] = useState(false);
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -38,14 +38,15 @@ const Planning = () => {
     };
 
     useEffect(() => {
-        Axios.get('admission/').then(res => {data.data);
+        Axios.get('admission/').then(res => {
+            PlanningList(res.data.data);
 
             setPageStatus({
                 ...pageStatus,
                 total: res.data.total
             });
         });
-    }, [realod, pageStatus.current]);
+    }, [reload, pageStatus.current]);
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
