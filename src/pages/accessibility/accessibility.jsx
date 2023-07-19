@@ -73,22 +73,28 @@ const Accessibility = () => {
 
     const deleteHandler = () => {
         setButtonLoader(true);
-        Axios.delete(`personnelrole_mgmt/?id=${specificAccessibilityId}`).then(() => {
-            setButtonLoader(false);
-            setReload(!reload);
-            toast.success('پست سازمانی  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`personnelrole_mgmt/?id=${specificAccessibilityId}`)
+            .then(() => {
+                setReload(!reload);
+                toast.success('پست سازمانی  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .finally(() => {
+                setButtonLoader(false);
+            });
     };
 
     const deleteHandlerUser = () => {
         setButtonLoaderUser(true);
-        Axios.delete(`user_mgmt/?id=${specificAccessibilityIdUser}`).then(() => {
-            setButtonLoaderUser(false);
-            reloadUser(!reload);
-            toast.success('پرسنل  با موفقیت حذف شد');
-            setConfirmUserModalStatus(false);
-        });
+        Axios.delete(`user_mgmt/?id=${specificAccessibilityIdUser}`)
+            .then(() => {
+                setReloadUser(!reload);
+                toast.success('پرسنل  با موفقیت حذف شد');
+                setConfirmUserModalStatus(false);
+            })
+            .finally(() => {
+                setButtonLoaderUser(false);
+            });
     };
 
     const columnsPosts = [
@@ -143,10 +149,10 @@ const Accessibility = () => {
         setConfirmModalStatus(true);
         setSpecificAccessibilityId(id);
     };
+
     const deleteModalHandlerUser = id => {
-        setConfirmModalStatus(true);
+        setConfirmUserModalStatus(true);
         setSpecificAccessibilityIdUser(id);
-        console.log(specificAccessibilityIdUser, id);
     };
 
     const editModalHandler = item => {
@@ -246,7 +252,7 @@ const Accessibility = () => {
             <ConfirmModal
                 status={confirmUserModalStatus}
                 setStatus={setConfirmUserModalStatus}
-                title='آیا از حذف این ردیف مطمئن هستید ؟'
+                title='آیا از 11111 این ردیف مطمئن هستید ؟'
                 deleteHandler={deleteHandlerUser}
                 loading={buttonLoaderUser}
             />

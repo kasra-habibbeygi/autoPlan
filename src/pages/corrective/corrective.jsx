@@ -27,6 +27,7 @@ import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 import ConfirmModal from '../../components/template/confirm-modal';
 import { toast } from 'react-hot-toast';
+import tools from '../../utils/tools';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -35,7 +36,8 @@ const Corrective = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
-    const [DetailsisModalOpen, setDetailsIsModalOpen] = useState(false);
+    const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
+    const [DetailsIsModalOpen, setDetailsIsModalOpen] = useState(false);
     const [reload, setReload] = useState(false);
     const [loader, setLoader] = useState(true);
     const [specificDeviationId, setSpecificDeviationId] = useState();
@@ -49,18 +51,58 @@ const Corrective = () => {
         current: 1
     });
 
+    const date = new Date();
+    const today = tools.changeDateToJalali(date, false);
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'مشکل', key: 'problem' },
-        { id: 3, title: 'مسئول', key: 'action_agent' },
+        {
+            id: 3,
+            title: 'مسئول',
+            key: 'action_agent',
+            renderCell: data => {
+                let arrayValues = null;
+
+                if (data?.action_agent) {
+                    const obj = JSON.parse(data.action_agent);
+                    arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
+
+                    return (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                            {arrayValues?.map((item, index) => (
+                                <p key={`correction_${index + 1}`}>
+                                    {index + 1}. {item?.[`correction_${index + 1}`]}
+                                </p>
+                            ))}
+                        </div>
+                    );
+                }
+
+                return arrayValues;
+            }
+        },
         {
             id: 4,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={eye} onClick={() => setDetailsIsModalOpen(true)} />
-                    <FormButton icon={pen} disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)} />
+                    <FormButton
+                        icon={eye}
+                        onClick={() => {
+                            setDetailsIsModalOpen(true);
+                            setChosenEditItemDetails(data);
+                        }}
+                    />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => {
+                            setIsModalOpen(true);
+                            setChosenEditItemDetails(data);
+                        }}
+                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)}
+                    />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
@@ -111,25 +153,81 @@ const Corrective = () => {
                 disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.ADD)}
             />
             <Table columns={columns} rows={correctiveData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
-            <Modal state={isModalOpen} setState={setIsModalOpen} maxWidth='lg' bgStatus='true' handleClose={() => setStep(1)}>
+            <Modal
+                state={isModalOpen}
+                setState={setIsModalOpen}
+                maxWidth='lg'
+                bgStatus='true'
+                handleClose={() => {
+                    setStep(1);
+                    setChosenEditItemDetails();
+                    setAllDetail();
+                }}
+            >
                 {isModalOpen ? (
                     <ModalStyleBg>
                         <h2>اقدام اصلاحی</h2>
-                        <ProgressBar step={step} />
+                        <ProgressBar step={step} chosenEditItemDetails={chosenEditItemDetails} today={today} />
                         {step === 1 ? (
-                            <Problem setStep={setStep} setAllDetail={setAllDetail} />
+                            <Problem
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                            />
                         ) : step === 2 ? (
-                            <Rootting setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <Rootting
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                            />
                         ) : step === 3 ? (
-                            <Action setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <Action
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                            />
                         ) : step === 4 ? (
-                            <ResponsibleForAction setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <ResponsibleForAction
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                            />
                         ) : step === 5 ? (
-                            <ExecuteDate setStep={setStep} setAllDetail={setAllDetail} allDetail={allDetail} />
+                            <ExecuteDate
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                setIsModalOpen={setIsModalOpen}
+                                setReload={setReload}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                today={today}
+                            />
                         ) : step === 6 ? (
-                            <Result setStep={setStep} setAllDetail={setAllDetail} />
+                            <Result
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                setReload={setReload}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : (
-                            step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                            step === 7 && (
+                                <Effective
+                                    setStep={setStep}
+                                    setAllDetail={setAllDetail}
+                                    allDetail={allDetail}
+                                    setReload={setReload}
+                                    chosenEditItemDetails={chosenEditItemDetails}
+                                    setIsModalOpen={setIsModalOpen}
+                                />
+                            )
                         )}
                     </ModalStyleBg>
                 ) : null}
@@ -141,8 +239,15 @@ const Corrective = () => {
                 deleteHandler={deleteHandler}
                 loading={buttonLoader.delete}
             />
-            <Modal state={DetailsisModalOpen} setState={setDetailsIsModalOpen} maxWidth='lg'>
-                <ShowAll allDetail={allDetail} />
+            <Modal
+                state={DetailsIsModalOpen}
+                setState={setDetailsIsModalOpen}
+                maxWidth='lg'
+                handleClose={() => {
+                    setChosenEditItemDetails();
+                }}
+            >
+                <ShowAll chosenEditItemDetails={chosenEditItemDetails} today={today} />
             </Modal>
         </>
     );

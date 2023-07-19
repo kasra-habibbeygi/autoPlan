@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from './../../../configs/axios';
 
@@ -11,10 +12,13 @@ import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
 
-const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
+const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setReload, chosenEditItemDetails, today }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const { control, handleSubmit, formState } = useForm({
+    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
+    const isTime = finishedDate === today;
+
+    const { control, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             started_time: '',
             finished_time: ''
@@ -22,25 +26,51 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    const { errors, isDirty } = formState;
+
+    useEffect(() => {
+        if (chosenEditItemDetails?.start_action_date && chosenEditItemDetails?.end_action_date) {
+            setValue('started_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.start_action_date));
+            setValue('finished_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.end_action_date));
+        }
+    }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
         setButtonLoading(true);
 
         const newData = {
-            start_action_date: tools.changeTimeStampToIsoDate(data.started_time),
-            end_action_date: tools.changeTimeStampToIsoDate(data.finished_time)
+            start_action_date: tools.changeTimeStampToIsoDate(data?.started_time),
+            end_action_date: tools.changeTimeStampToIsoDate(data?.finished_time)
         };
 
-        Axios.put(`reform_action/set_action_date/?id=${allDetail?.mainId}`, newData)
-            .then(() => {
-                setAllDetail(prev => ({
-                    ...prev,
-                    execute_date: data
-                }));
+        if (isDirty) {
+            Axios.put(`reform_action/set_action_date/?id=${allDetail?.mainId}`, newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        execute_date: data
+                    }));
+                    if (isTime) {
+                        setStep(6);
+                    } else {
+                        setIsModalOpen(false);
+                        setStep(1);
+                    }
+                })
+                .finally(() => setButtonLoading(false));
+        } else {
+            setAllDetail(prev => ({
+                ...prev,
+                execute_date: data
+            }));
+            if (isTime) {
                 setStep(6);
-            })
-            .finally(() => setButtonLoading(false));
+            } else {
+                setIsModalOpen(false);
+                setStep(1);
+            }
+        }
     };
 
     return (
@@ -83,13 +113,13 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail }) => {
                 </div>
 
                 <FormButton
-                    text='بعدی'
+                    text={isTime ? 'بعدی' : 'ثبت'}
                     loading={buttonLoading}
                     type='submit'
                     backgroundColor={'#174787'}
                     color={'white'}
                     height={48}
-                    icon={arrow}
+                    icon={isTime && arrow}
                 />
             </form>
         </Style>
