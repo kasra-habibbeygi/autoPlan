@@ -7,12 +7,13 @@ import tools from '../../../utils/tools';
 
 //Components
 
-const ShowAll = ({ chosenEditItemDetails }) => {
+const ShowAll = ({ chosenEditItemDetails, today }) => {
     const [actions, setActions] = useState();
     const [agents, setAgents] = useState();
     const [questions, setQuestions] = useState();
 
-    // console.log(chosenEditItemDetails);
+    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
+    const isTime = finishedDate === today;
 
     useEffect(() => {
         if (chosenEditItemDetails) {
@@ -144,15 +145,21 @@ const ShowAll = ({ chosenEditItemDetails }) => {
                                 <span>{tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false)}</span>
                             </p>
                         </div>
-
-                        <div className='item'>
-                            <p className='title'>7. نتیجه</p>
-                            <p className='text'>{chosenEditItemDetails?.action_result}</p>
-                        </div>
-                        <div className='item'>
-                            <p className='title'>8. تاریخ کنترل اثر بخشی </p>
-                            <p className='text'>{chosenEditItemDetails?.effective_detail?.effective_date}</p>
-                        </div>
+                        {isTime && (
+                            <>
+                                <div className='item'>
+                                    <p className='title'>7. نتیجه</p>
+                                    <p className='text'>{chosenEditItemDetails?.action_result}</p>
+                                </div>
+                                <div className='item'>
+                                    <p className='title'>8. تاریخ کنترل اثر بخشی </p>
+                                    <p className='text'>
+                                        {chosenEditItemDetails?.effective_control_date &&
+                                            tools.changeDateToJalali(chosenEditItemDetails?.effective_control_date, false)}
+                                    </p>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </Grid>
             </Grid>

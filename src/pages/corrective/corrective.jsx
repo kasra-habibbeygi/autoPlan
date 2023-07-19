@@ -27,6 +27,7 @@ import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 import ConfirmModal from '../../components/template/confirm-modal';
 import { toast } from 'react-hot-toast';
+import tools from '../../utils/tools';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -50,10 +51,37 @@ const Corrective = () => {
         current: 1
     });
 
+    const date = new Date();
+    const today = tools.changeDateToJalali(date, false);
+
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'مشکل', key: 'problem' },
-        { id: 3, title: 'مسئول', key: 'action_agent' },
+        {
+            id: 3,
+            title: 'مسئول',
+            key: 'action_agent',
+            renderCell: data => {
+                let arrayValues = null;
+
+                if (data?.action_agent) {
+                    const obj = JSON.parse(data.action_agent);
+                    arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
+
+                    return (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                            {arrayValues?.map((item, index) => (
+                                <p key={`correction_${index + 1}`}>
+                                    {index + 1}. {item?.[`correction_${index + 1}`]}
+                                </p>
+                            ))}
+                        </div>
+                    );
+                }
+
+                return arrayValues;
+            }
+        },
         {
             id: 4,
             title: 'عملیات',
@@ -139,7 +167,7 @@ const Corrective = () => {
                 {isModalOpen ? (
                     <ModalStyleBg>
                         <h2>اقدام اصلاحی</h2>
-                        <ProgressBar step={step} />
+                        <ProgressBar step={step} chosenEditItemDetails={chosenEditItemDetails} today={today} />
                         {step === 1 ? (
                             <Problem
                                 setStep={setStep}
@@ -179,11 +207,27 @@ const Corrective = () => {
                                 setIsModalOpen={setIsModalOpen}
                                 setReload={setReload}
                                 chosenEditItemDetails={chosenEditItemDetails}
+                                today={today}
                             />
                         ) : step === 6 ? (
-                            <Result setStep={setStep} setAllDetail={setAllDetail} />
+                            <Result
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                setReload={setReload}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                            />
                         ) : (
-                            step === 7 && <Effective setStep={setStep} setAllDetail={setAllDetail} />
+                            step === 7 && (
+                                <Effective
+                                    setStep={setStep}
+                                    setAllDetail={setAllDetail}
+                                    allDetail={allDetail}
+                                    setReload={setReload}
+                                    chosenEditItemDetails={chosenEditItemDetails}
+                                    setIsModalOpen={setIsModalOpen}
+                                />
+                            )
                         )}
                     </ModalStyleBg>
                 ) : null}
@@ -203,7 +247,7 @@ const Corrective = () => {
                     setChosenEditItemDetails();
                 }}
             >
-                <ShowAll chosenEditItemDetails={chosenEditItemDetails} />
+                <ShowAll chosenEditItemDetails={chosenEditItemDetails} today={today} />
             </Modal>
         </>
     );

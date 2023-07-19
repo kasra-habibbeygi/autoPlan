@@ -24,7 +24,7 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    const { errors, isDirty } = formState;
 
     const { fields, append } = useFieldArray({
         name: 'actionFields',
@@ -32,7 +32,7 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
     });
 
     useEffect(() => {
-        if (chosenEditItemDetails) {
+        if (chosenEditItemDetails?.action) {
             const arr = JSON.parse(chosenEditItemDetails?.action).map(obj => {
                 const newObj = {};
                 Object.entries(obj).forEach(([k, v]) => {
@@ -62,18 +62,26 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
                 .join(', ') +
             ']';
 
-        Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
-            action: mainString
-        })
-            .then(() => {
-                setAllDetail(prev => ({
-                    ...prev,
-                    actions: data.actionFields
-                }));
-                setReload(prev => !prev);
-                setStep(4);
+        if (isDirty) {
+            Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
+                action: mainString
             })
-            .finally(() => setButtonLoading(false));
+                .then(() => {
+                    setAllDetail(prev => ({
+                        ...prev,
+                        actions: data.actionFields
+                    }));
+                    setReload(prev => !prev);
+                    setStep(4);
+                })
+                .finally(() => setButtonLoading(false));
+        } else {
+            setAllDetail(prev => ({
+                ...prev,
+                actions: data.actionFields
+            }));
+            setStep(4);
+        }
     };
 
     const handleAddInput = () => {

@@ -212,10 +212,12 @@ const Deficiency = () => {
                 }}
             >
                 <h2> کسری قطعات </h2>
-                <Tabs value={tabValue} onChange={handleChange} sx={{ margin: '40px 0 60px 0' }}>
-                    <Tab label='ارسال تکی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
-                    <Tab label='ارسال گروهی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
-                </Tabs>
+                {modalStatus === 'add' && (
+                    <Tabs value={tabValue} onChange={handleChange} sx={{ margin: '40px 0 60px 0' }}>
+                        <Tab label='ارسال تکی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
+                        <Tab label='ارسال گروهی' sx={{ flexGrow: 1, fontWeight: 700, fontSize: 16 }} />
+                    </Tabs>
+                )}
                 {tabValue === 0 ? (
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <Controller
@@ -298,7 +300,12 @@ const Deficiency = () => {
                         >
                             دانلود نمونه فایل اکسل
                         </a>
-                        <UploadFile />
+                        <UploadFile
+                            setReload={setReload}
+                            setIsModalOpen={setIsModalOpen}
+                            setSpecificDeviationId={setSpecificDeviationId}
+                            setTabValue={setTabValue}
+                        />
                     </>
                 )}
             </Modal>

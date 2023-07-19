@@ -19,10 +19,10 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
         mode: 'onTouched'
     });
 
-    const { errors } = formState;
+    const { errors, isDirty } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails) {
+        if (chosenEditItemDetails?.action_agent) {
             const obj = JSON.parse(chosenEditItemDetails.action_agent);
             const arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
 
@@ -34,18 +34,26 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
         setButtonLoading(true);
         const jsonString = JSON.stringify(data);
 
-        Axios.put(`reform_action/set_action_agent/?id=${allDetail?.mainId}`, {
-            action_agent: jsonString
-        })
-            .then(() => {
-                setAllDetail(prev => ({
-                    ...prev,
-                    actionPerson: jsonString
-                }));
-                setReload(prev => !prev);
-                setStep(5);
+        if (isDirty) {
+            Axios.put(`reform_action/set_action_agent/?id=${allDetail?.mainId}`, {
+                action_agent: jsonString
             })
-            .finally(() => setButtonLoading(false));
+                .then(() => {
+                    setAllDetail(prev => ({
+                        ...prev,
+                        actionPerson: jsonString
+                    }));
+                    setReload(prev => !prev);
+                    setStep(5);
+                })
+                .finally(() => setButtonLoading(false));
+        } else {
+            setAllDetail(prev => ({
+                ...prev,
+                actionPerson: jsonString
+            }));
+            setStep(5);
+        }
     };
 
     return (

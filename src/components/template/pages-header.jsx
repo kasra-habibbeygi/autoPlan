@@ -7,17 +7,15 @@ import { PagesHeaderStyle } from './pages-header.style';
 
 //components
 import FormButton from '../form-groups/form-button';
+import tools from '../../utils/tools';
 
 const today = new Date();
-const date = String(today.getDate()).padStart(2, '0');
-const month = String(today.getMonth() + 1).padStart(2, '0');
-const year = today.getFullYear();
 
 const PagesHeader = ({
     buttonTitle,
     onButtonClick,
     adminName = 'نیاز شکوری',
-    secondFiled = `تاریخ امروز : ${date}/${month}/${year}`,
+    secondFiled = `تاریخ امروز : ${tools.changeDateToJalali(today, false)}`,
     representationCode = 123475,
     hasFilter,
     onFilterClick,

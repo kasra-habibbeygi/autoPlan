@@ -18,7 +18,7 @@ const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, set
     const [buttonLoading, setButtonLoading] = useState(false);
 
     useEffect(() => {
-        if (chosenEditItemDetails) {
+        if (chosenEditItemDetails?.troubleshooting) {
             const arr = eval(chosenEditItemDetails?.troubleshooting.replace(/'/g, '"'));
             setInputValues(arr);
         }
