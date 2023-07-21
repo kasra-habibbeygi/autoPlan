@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -16,10 +17,10 @@ import PagesHeader from '../../components/template/pages-header';
 import FormButton from '../../components/form-groups/form-button';
 import Modal from '../../components/template/modal';
 import { AccessibilityWrapper, ModalStyleBg } from './accessibility.style';
-import AddPost from '../../components/pages/accessibility/add-post';
-import AddPersonnel from '../../components/pages/accessibility/add-personell';
 import ConfirmModal from '../../components/template/confirm-modal';
-import { toast } from 'react-hot-toast';
+import AddPost from './../../components/pages/accessibility/add-post';
+import AddPersonnel from './../../components/pages/accessibility/add-personell';
+import { Tab, Tabs } from '@mui/material';
 
 const Accessibility = () => {
     const [modalStatus, setModalStatus] = useState('');
@@ -39,6 +40,11 @@ const Accessibility = () => {
     const [buttonLoader, setButtonLoader] = useState(false);
     const [buttonLoaderUser, setButtonLoaderUser] = useState(false);
     const [editModalData, setEditModalData] = useState();
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -158,7 +164,7 @@ const Accessibility = () => {
     const editModalHandler = item => {
         setModalStatus('edit');
         setShowSubModal(true);
-        setSubModalStatus('personnel');
+        setSubModalStatus('post');
         setSpecificAccessibilityId(item.id);
         setEditModalData(item);
     };
@@ -171,30 +177,35 @@ const Accessibility = () => {
     return (
         <AccessibilityWrapper>
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
-            <div className='table_wrapper'>
-                <p className='table_header'>پست سازمانی</p>
-                <Table
-                    columns={columnsPosts}
-                    rows={accessbitilityPost}
-                    pageStatus={pageStatus}
-                    setPageStatus={setPageStatus}
-                    loading={loader}
-                />
+            <p className='header'>دسترسی ها</p>
+            <div className='tabs_wrapper'>
+                <Tabs value={tabValue} onChange={handleChange} textColor='black'>
+                    <Tab label='پست سازمانی' sx={{ fontWeight: 700, fontSize: 16, color: 'black' }} />
+                    <Tab label='پرسنل' sx={{ fontWeight: 700, fontSize: 16, color: 'black' }} />
+                </Tabs>
             </div>
 
-            <br />
-            <br />
-
-            <div className='table_wrapper'>
-                <p className='table_header'>پرسنل</p>
-                <Table
-                    columns={columnsPersonnel}
-                    rows={accessbitilityPersonel}
-                    pageStatus={pageStatus}
-                    setPageStatus={setPageStatus}
-                    loading={loaderTable}
-                />
-            </div>
+            {tabValue === 0 ? (
+                <div className='table_wrapper'>
+                    <Table
+                        columns={columnsPosts}
+                        rows={accessbitilityPost}
+                        pageStatus={pageStatus}
+                        setPageStatus={setPageStatus}
+                        loading={loader}
+                    />
+                </div>
+            ) : (
+                <div className='table_wrapper'>
+                    <Table
+                        columns={columnsPersonnel}
+                        rows={accessbitilityPersonel}
+                        pageStatus={pageStatus}
+                        setPageStatus={setPageStatus}
+                        loading={loaderTable}
+                    />
+                </div>
+            )}
 
             <Modal state={showAddModal} setState={setShowAddModal} maxWidth='sm'>
                 <div className='button_wrapper'>
@@ -207,7 +218,7 @@ const Accessibility = () => {
                         borderRadius={20}
                         onClick={() => {
                             setShowSubModal(true);
-                            setSubModalStatus('personnel');
+                            setSubModalStatus('post');
                         }}
                     />
                     <FormButton
@@ -219,7 +230,7 @@ const Accessibility = () => {
                         borderRadius={20}
                         onClick={() => {
                             setShowSubModal(true);
-                            setSubModalStatus('post');
+                            setSubModalStatus('personnel');
                         }}
                     />
                 </div>
@@ -229,16 +240,18 @@ const Accessibility = () => {
                 <ModalStyleBg>
                     {subModalStatus === 'post' ? (
                         <AddPost setReload={setReloadUser} reload={reloadUser} setState={setShowSubModal} />
-                    ) : subModalStatus === 'personnel' ? (
-                        <AddPersonnel
-                            setReload={setReload}
-                            reload={reload}
-                            setState={setShowSubModal}
-                            specificAccessibilityId={specificAccessibilityId}
-                            editModalData={editModalData}
-                            modalStatus={modalStatus}
-                        />
-                    ) : null}
+                    ) : (
+                        subModalStatus === 'personnel' && (
+                            <AddPersonnel
+                                setReload={setReload}
+                                reload={reload}
+                                setState={setShowSubModal}
+                                specificAccessibilityId={specificAccessibilityId}
+                                editModalData={editModalData}
+                                modalStatus={modalStatus}
+                            />
+                        )
+                    )}
                 </ModalStyleBg>
             </Modal>
             <ConfirmModal
