@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-console.log(localStorage.getItem('AutoPlaningToken'));
-
 const User = createSlice({
     name: 'User',
     initialState: {

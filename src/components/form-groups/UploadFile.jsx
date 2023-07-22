@@ -2,7 +2,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as XLSX from 'xlsx';
 import Axios from './../../configs/axios';
 
 //style
@@ -13,7 +12,6 @@ import Excel from '../../assets/images/global/Excel.svg';
 import IconButton from '@mui/material/IconButton';
 import FormButton from './form-button';
 import { toast } from 'react-hot-toast';
-import tools from '../../utils/tools';
 
 const UploadFile = ({ setReload, setIsModalOpen, setSpecificDeviationId, setTabValue }) => {
     const [buttonLoader, setButtonLoader] = useState(false);
@@ -29,52 +27,21 @@ const UploadFile = ({ setReload, setIsModalOpen, setSpecificDeviationId, setTabV
 
     const formSubmit = data => {
         setButtonLoader(true);
+        const formData = new FormData();
+        formData.append('file', data.file[0]);
 
-        const promise = new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsArrayBuffer(data.file[0]);
-
-            fileReader.onload = e => {
-                const bufferArray = e.target.result;
-
-                const wb = XLSX.read(bufferArray, { type: 'buffer' });
-
-                const wsname = wb.SheetNames[0];
-
-                const ws = wb.Sheets[wsname];
-
-                const data = XLSX.utils.sheet_to_json(ws);
-
-                resolve(data);
-            };
-
-            fileReader.onerror = error => {
-                reject(error);
-            };
-        });
-
-        promise.then(newData => {
-            const convertedData = newData.map(item => {
-                return {
-                    ...item,
-                    date: tools.changeTimeStampToIsoDate(item.date)
-                };
+        Axios.post('repository_bulk_inserting/', formData)
+            .then(() => {
+                setReload(prev => !prev);
+                toast.success('کسری قطعات با موفقیت ثبت شد');
+                setIsModalOpen(false);
+                reset();
+                setSpecificDeviationId();
+                setTabValue(0);
+            })
+            .finally(() => {
+                setButtonLoader(false);
             });
-
-            Axios.post('repository_bulk_inserting/', convertedData)
-                .then(res => {
-                    console.log(res);
-                    setReload(prev => !prev);
-                    toast.success('کسری قطعات با موفقیت ثبت شد');
-                    setIsModalOpen(false);
-                    reset();
-                    setSpecificDeviationId();
-                    setTabValue(0);
-                })
-                .finally(() => {
-                    setButtonLoader(false);
-                });
-        });
     };
 
     return (
@@ -93,7 +60,7 @@ const UploadFile = ({ setReload, setIsModalOpen, setSpecificDeviationId, setTabV
                     })}
                 />
                 <div className='content'>
-                    <img alt='uplpload file' src={Excel} />
+                    <img alt='upload file' src={Excel} />
                     <div>
                         <h3>لیست کسری قطعات</h3>
                         <p>

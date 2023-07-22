@@ -26,13 +26,11 @@ import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
 import tools from '../../utils/tools';
-import PERMISSION from './../../utils/permission.ts';
 
 // MUI
 import { Tab, Tabs } from '@mui/material';
 
 const Deficiency = () => {
-    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [deficiencyData, setDeficiencyData] = useState();
     const [reload, setReload] = useState(false);
@@ -66,16 +64,8 @@ const Deficiency = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton
-                        icon={pen}
-                        onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.EDIT)}
-                    />
-                    <FormButton
-                        icon={trashBin}
-                        onClick={() => deleteModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.DELETE)}
-                    />
+                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data)} />
                 </ActionCell>
             )
         }
@@ -84,9 +74,9 @@ const Deficiency = () => {
     const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             date: '',
-            partName: '',
-            partCode: '',
-            carType: ''
+            title: '',
+            code: '',
+            car_type: ''
         },
         mode: 'onTouched'
     });
@@ -94,14 +84,15 @@ const Deficiency = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`repository_mgmt/?page=${pageStatus.current}`)
+        Axios.get(`worker/admin/lack-parts/list_create/?page=${pageStatus.current}`)
             .then(res => {
-                setDeficiencyData(res.data.data);
+                setDeficiencyData(res.data.results);
                 setPageStatus({
                     ...pageStatus,
                     total: res.data.total
                 });
             })
+            .catch(() => {})
             .finally(() => setLoader(false));
     }, [reload, pageStatus.current]);
 
@@ -132,18 +123,14 @@ const Deficiency = () => {
         }));
 
         if (modalStatus === 'add') {
-            Axios.post('repository_mgmt/', {
-                date: tools.changeTimeStampToIsoDate(data.date),
-                code: data.partCode,
-                title: data.partName,
-                car_type: data.carType
-            })
+            Axios.post('worker/admin/lack-parts/list_create/', data)
                 .then(() => {
                     setReload(prev => !prev);
                     toast.success('کسری قطعات با موفقیت ثبت شد');
                     setIsModalOpen(false);
                     reset();
                 })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader(prev => ({
                         ...prev,
@@ -152,18 +139,14 @@ const Deficiency = () => {
                     setSpecificDeviationId();
                 });
         } else {
-            Axios.put(`repository_mgmt/?id=${specificDeviationId}`, {
-                date: tools.changeTimeStampToIsoDate(data.date),
-                code: data.partCode,
-                title: data.partName,
-                car_type: data.carType
-            })
+            Axios.put(`worker/admin/lack-parts/retrieve_update_destroy/?id=${specificDeviationId}`, data)
                 .then(() => {
                     setReload(prev => !prev);
                     toast.success('کسری قطعات با موفقیت ویرایش شد');
                     setIsModalOpen(false);
                     reset();
                 })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader(prev => ({
                         ...prev,
@@ -179,7 +162,7 @@ const Deficiency = () => {
             ...prev,
             delete: true
         }));
-        Axios.delete(`repository_mgmt/?id=${specificDeviationId}`)
+        Axios.delete(`worker/admin/lack-parts/retrieve_update_destroy/?pk=${specificDeviationId}`)
             .then(() => {
                 setReload(!reload);
                 toast.success('کسری قطعه  با موفقیت حذف شد');
@@ -196,11 +179,7 @@ const Deficiency = () => {
 
     return (
         <>
-            <PagesHeader
-                buttonTitle='اضافه کردن کسری قطعات'
-                onButtonClick={addModalHandler}
-                disabled={!userPermissions.includes(PERMISSION.LACK_PARTS.ADD)}
-            />
+            <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={addModalHandler} />
             <Table columns={columns} rows={deficiencyData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal
                 state={modalIsOpen}
@@ -233,21 +212,20 @@ const Deficiency = () => {
                                 return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
                             }}
                         />
-
                         <InputComponent
                             title='نام قطعه'
                             placeHolder='نام قطعه'
                             type='text'
                             icon={ShockAbsorber}
                             detail={{
-                                ...register('partName', {
+                                ...register('title', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.partName}
+                            error={errors?.title}
                         />
                         <InputComponent
                             title='کد قطعه'
@@ -255,14 +233,14 @@ const Deficiency = () => {
                             type='text'
                             icon={Accumulator}
                             detail={{
-                                ...register('partCode', {
+                                ...register('code', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.partCode}
+                            error={errors?.code}
                         />
                         <InputComponent
                             title='نوع خودرو'
@@ -270,14 +248,14 @@ const Deficiency = () => {
                             type='text'
                             icon={Bus}
                             detail={{
-                                ...register('carType', {
+                                ...register('car_type', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.carType}
+                            error={errors?.car_type}
                         />
 
                         <FormButton

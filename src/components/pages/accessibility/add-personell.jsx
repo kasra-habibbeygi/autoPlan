@@ -25,17 +25,14 @@ const AddPersonnel = ({ reload, setReload, setState }) => {
 
     useEffect(() => {
         Axios.get('personnelrole_mgmt/').then(res => {
-            console.log(res);
             let permission = res.data.data.map(item => ({
                 label: item.title,
                 value: item.id
             }));
 
-            console.log(permission);
             setPermissionList(permission);
         });
     }, []);
-    console.log('personnel');
 
     const formSubmit = data => {
         const newData = {
