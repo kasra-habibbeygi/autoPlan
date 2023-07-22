@@ -31,7 +31,7 @@ import tools from '../../utils/tools';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
     const [allDetail, setAllDetail] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
