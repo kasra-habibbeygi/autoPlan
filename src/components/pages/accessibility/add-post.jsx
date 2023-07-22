@@ -5,97 +5,111 @@ import { toast } from 'react-hot-toast';
 
 //Assets
 import { AddModalWrapper } from './add-modal.style';
-import addPhone from './../../../assets/images/login/addPhone.svg';
-import magnifier from './../../../assets/images/icons/magnifier.svg';
-import medal from './../../../assets/images/icons/Medal.svg';
+import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
+import Medal from './../../../assets/images/icons/Medal.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AddPost = ({ reload, setReload, setState }) => {
+const AddPost = ({ setReload, reload, setState, modalStatus, setSpecificAccessibilityId, editModalData }) => {
     const [permissionList, setPermissionList] = useState([{ value: '', lable: '', id: '' }]);
     const [buttonLoader, setButtonLoader] = useState(false);
-    const { register, handleSubmit, formState, control, reset } = useForm({
+    const [test, setTest] = useState([]);
+    const { register, handleSubmit, formState, control, reset, setValue } = useForm({
+        defaultValues: {
+            title: ''
+        },
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('personnelrole_mgmt/').then(res => {
-            let permission = res.data.data.map(item => ({
+        Axios.get('permission-list/').then(res => {
+            let permission = res.data.results.map(item => ({
                 label: item.title,
-                value: item.id
+                value: item.title,
+                id: item.id
             }));
             setPermissionList(permission);
+
+            if (modalStatus === 'edit') {
+                setValue('title', editModalData.title);
+
+                let equals = [];
+
+                for (let obj1 of permission) {
+                    for (let obj2 of editModalData.permission) {
+                        if (obj1.id === obj2.id) {
+                            equals.push(obj1);
+                        }
+                    }
+                }
+
+                setTest(equals);
+            }
         });
     }, []);
 
     const formSubmit = data => {
-        const newData = {
-            ...data,
-            username: new Date().getTime()
-        };
-        Axios.post('user_mgmt/', newData).then(() => {
-            setButtonLoader(false);
-            setReload(!reload);
-            setState(false);
-            toast.success('پرسنل جدید با موفقیت ثبت شد');
-            reset();
-        });
+        setButtonLoader(true);
+        if (modalStatus === 'add') {
+            Axios.post('personnelrole_mgmt/', data).then(() => {
+                setButtonLoader(false);
+                setReload(!reload);
+                setState(false);
+                toast.success('پست جدید با موفقیت ثبت شد');
+                reset();
+            });
+        } else {
+            Axios.put(`personnelrole_mgmt/?id=${setSpecificAccessibilityId}`, data).then(() => {
+                setButtonLoader({ ...buttonLoader, modalButton: false });
+                setReload(!reload);
+                toast.success('انحراف  با موفقیت ویرایش شد');
+                setState(false);
+                reset();
+            });
+        }
     };
 
     return (
-        <AddModalWrapper error={errors?.post?.message}>
-            <h3>دسترسی پنل</h3>
+        <AddModalWrapper error={errors?.accesses?.message}>
+            <h3>اضافه کردن پست سازمانی جدید</h3>
             <form onSubmit={handleSubmit(formSubmit)}>
                 <InputComponent
-                    title='کاربر'
-                    placeHolder='نام کاربر'
-                    icon={magnifier}
+                    title='نام پست سازمانی جدید'
+                    placeHolder='نام پست'
+                    icon={Medal}
                     type='text'
                     detail={{
-                        ...register('full_name', {
+                        ...register('title', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.full_name}
+                    error={errors?.title}
                 />
-                <InputComponent
-                    title='شماره موبایل'
-                    icon={addPhone}
-                    placeHolder='---------۰۹'
-                    type='text'
-                    detail={{
-                        ...register('mobile', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
-                    }}
-                    error={errors?.mobile}
-                />
-
                 <div className='auto_complete_wrapper'>
-                    <p className='auto_complete_title'>پست سازمانی کاربر</p>
+                    <p className='auto_complete_title'>دسترسی</p>
                     <div className='auto_complete'>
                         <Controller
                             control={control}
-                            name='role'
+                            name='permissions'
                             rules={{ required: 'این فیلد اجباری است' }}
                             render={({ field: { onChange, value } }) => {
                                 return (
                                     <Autocomplete
+                                        multiple
                                         options={permissionList}
-                                        value={value?.label}
-                                        onChange={(event, newValue) => {
-                                            onChange(newValue?.value);
+                                        value={value}
+                                        filterSelectedOptions
+                                        getOptionLabel={option => option.label}
+                                        onChange={(_, newValue) => {
+                                            onChange(newValue.map(value => value?.id));
                                         }}
                                         sx={{ width: '100%' }}
                                         renderInput={params => <TextField {...params} />}
@@ -103,12 +117,11 @@ const AddPost = ({ reload, setReload, setState }) => {
                                 );
                             }}
                         />
-
-                        <img src={medal} />
+                        <img src={UserHandUp} />
                     </div>
-                    <p className='auto_complete_error'>{errors?.post?.message}</p>
+                    <p className='auto_complete_error'>{errors?.accesses?.message}</p>
                 </div>
-                <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} loading={buttonLoader} />
+                <FormButton text='ثبت' type='submit' backgroundColor='#174787' color='white' height={48} loading={buttonLoader} />
             </form>
         </AddModalWrapper>
     );

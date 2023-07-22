@@ -3,11 +3,11 @@ import React, { useRef } from 'react';
 //Assets
 import { InputWrapper } from './input-component.style';
 
-const InputComponent = ({ title, icon, type, detail, error, placeHolder, disabled = false }) => {
+const InputComponent = ({ title, icon, type, detail, error, placeHolder, disabled = false, className = '' }) => {
     const inputRef = useRef();
 
     return (
-        <InputWrapper error={error}>
+        <InputWrapper error={error} className={className}>
             {title && <p>{title}</p>}
 
             <div className='container'>

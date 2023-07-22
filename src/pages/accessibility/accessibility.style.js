@@ -12,16 +12,24 @@ export const AccessibilityWrapper = styled.div(() => ({
         }
     },
 
-    '& .table_wrapper': {
-        '& .table_header': {
-            marginTop: '20px',
-            backgroundColor: 'white',
-            borderRadius: '18px',
-            padding: '15px 23px',
-            fontSize: '22px',
-            fontWeight: 700,
-            textAlign: 'center'
-        }
+    '& .header': {
+        marginTop: '10px',
+        backgroundColor: 'white',
+        borderRadius: '18px',
+        padding: '15px 23px',
+        fontSize: '22px',
+        fontWeight: 700,
+        textAlign: 'center'
+    },
+
+    '& .tabs_wrapper': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: '20px 0',
+        backgroundColor: 'white',
+        borderRadius: '18px',
+        padding: '15px 23px'
     },
 
     '& .truncate_cell': {

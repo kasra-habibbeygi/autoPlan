@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import VerificationInput from 'react-verification-input';
 import Axios from '../../configs/axios';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -14,10 +16,8 @@ import Modal from '../../components/template/modal';
 import InputComponent from '../../components/form-groups/input-component';
 import FormButton from '../../components/form-groups/form-button';
 
-// Tools
-import Tools from '../../utils/tools';
-
 const Login = ({ showModal, setShowModal }) => {
+    const navigate = useNavigate();
     const [loginStatus, setLoginStatus] = useState('addPhoneNumber');
     const [codeValue, setCodeValue] = useState();
     const [loader, setLoader] = useState({
@@ -26,13 +26,13 @@ const Login = ({ showModal, setShowModal }) => {
     });
 
     const [inputValues, setInputValues] = useState({
-        mobile: '',
+        mobile_number: '',
         code: ''
     });
 
     const form = useForm({
         defaultValues: {
-            phoneNumber: ''
+            mobile_number: ''
         },
         mode: 'onTouched'
     });
@@ -43,14 +43,25 @@ const Login = ({ showModal, setShowModal }) => {
     const sendCodeHandler = data => {
         setInputValues({
             ...inputValues,
-            mobile: data.phoneNumber
+            mobile_number: data.mobile_number
         });
-        setLoginStatus('sendConfirmCode');
 
         setLoader({
             ...loader,
             otp: true
         });
+
+        Axios.post('user/send-otp/', data)
+            .then(() => {
+                setLoginStatus('sendConfirmCode');
+            })
+            .catch(() => {})
+            .finally(() => {
+                setLoader({
+                    ...loader,
+                    otp: false
+                });
+            });
     };
 
     const closeModalHandler = () => {
@@ -59,20 +70,32 @@ const Login = ({ showModal, setShowModal }) => {
         setCodeValue();
     };
 
-    const loginHandler = () => {
+    const loginHandler = data => {
         setLoader({
             ...loader,
             login: true
         });
-        Axios.get('validate_login_otp/?mobile=09338779212').then(res => {
-            localStorage.setItem(
-                'AutoPlaningToken',
-                JSON.stringify({
-                    token: res.data.token,
-                    expireDate: Tools.changeIsoDateToTimeStamp(res.data.expire_date)
-                })
-            );
-        });
+        Axios.post('user/login/', {
+            mobile_number: inputValues.mobile_number,
+            code: data
+        })
+            .then(res => {
+                localStorage.setItem(
+                    'AutoPlaningToken',
+                    JSON.stringify({
+                        token: res.data.token
+                    })
+                );
+                toast.success('ورود شما با موفقیت انجام شد');
+                navigate('/dashboard');
+            })
+            .catch(() => {})
+            .finally(() => {
+                setLoader({
+                    ...loader,
+                    login: false
+                });
+            });
     };
 
     return (
@@ -95,7 +118,7 @@ const Login = ({ showModal, setShowModal }) => {
                                 type='number'
                                 icon={addPhone}
                                 detail={{
-                                    ...register('phoneNumber', {
+                                    ...register('mobile_number', {
                                         required: {
                                             value: true,
                                             message: 'این فیلد اجباری است'
@@ -110,7 +133,7 @@ const Login = ({ showModal, setShowModal }) => {
                                         }
                                     })
                                 }}
-                                error={errors?.phoneNumber}
+                                error={errors?.mobile_number}
                                 placeHolder='---------۰۹'
                             />
                             <FormButton
@@ -132,10 +155,10 @@ const Login = ({ showModal, setShowModal }) => {
                             <div className='codeInput'>
                                 <VerificationInput
                                     value={codeValue}
-                                    onChange={value => setCodeValue(value)}
+                                    length={4}
                                     validChars='0-9'
                                     placeholder='-'
-                                    onComplete={loginHandler}
+                                    onComplete={e => loginHandler(e)}
                                     classNames={{
                                         container: 'container',
                                         character: 'character'

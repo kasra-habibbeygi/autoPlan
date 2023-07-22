@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
-import { useSelector } from 'react-redux';
 
 //Assets
 import { AddAdminWrapper } from './add-admin.style';
