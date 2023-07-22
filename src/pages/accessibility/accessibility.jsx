@@ -59,7 +59,7 @@ const Accessibility = () => {
     useEffect(() => {
         setLoader(true);
         setLoaderTable(true);
-        Axios.get(`personnelrole_mgmt/?pageSize=10&page=${pageStatus.current}`).then(res => {
+        Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`).then(res => {
             setAccessibilityPost(res.data.data);
             setLoader(false);
             setPageStatus({
@@ -67,7 +67,7 @@ const Accessibility = () => {
                 total: res.data.total
             });
         });
-        Axios.get(`user_mgmt/?pageSize=10&page=${pageStatus.current}`).then(res => {
+        Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`).then(res => {
             setAccessibilityPersonel(res.data.data);
             setLoaderTable(false);
             setPageStatusUser({
@@ -179,7 +179,7 @@ const Accessibility = () => {
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
             <p className='header'>دسترسی ها</p>
             <div className='tabs_wrapper'>
-                <Tabs value={tabValue} onChange={handleChange} textColor='black'>
+                <Tabs value={tabValue} onChange={handleChange} textColor='inherit'>
                     <Tab label='پست سازمانی' sx={{ fontWeight: 700, fontSize: 16, color: 'black' }} />
                     <Tab label='پرسنل' sx={{ fontWeight: 700, fontSize: 16, color: 'black' }} />
                 </Tabs>
