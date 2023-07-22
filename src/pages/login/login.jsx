@@ -4,6 +4,8 @@ import VerificationInput from 'react-verification-input';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginStatusHandler } from '../../store/reducers/user';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -18,6 +20,7 @@ import FormButton from '../../components/form-groups/form-button';
 
 const Login = ({ showModal, setShowModal }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [loginStatus, setLoginStatus] = useState('addPhoneNumber');
     const [codeValue, setCodeValue] = useState();
     const [loader, setLoader] = useState({
@@ -86,6 +89,7 @@ const Login = ({ showModal, setShowModal }) => {
                         token: res.data.token
                     })
                 );
+                dispatch(loginStatusHandler(true));
                 toast.success('ورود شما با موفقیت انجام شد');
                 navigate('/dashboard');
             })

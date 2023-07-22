@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 //assets
 import { LandingWrapper } from './landing.style';
@@ -15,6 +17,7 @@ import { useLocation } from 'react-router-dom';
 
 const Landing = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (location.hash) {
@@ -24,6 +27,12 @@ const Landing = () => {
             }
         }
     }, [location.hash]);
+
+    useEffect(() => {
+        if (localStorage.getItem('AutoPlaningToken') !== null) {
+            navigate('/dashboard');
+        }
+    }, []);
 
     return (
         <LandingWrapper>
