@@ -5,9 +5,9 @@ import { ProgressBarStyle } from './progress-bar.style';
 import tools from '../../../utils/tools';
 
 const ProgressBar = ({ step, chosenEditItemDetails, today }) => {
-    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
+    // const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
 
-    const isTime = finishedDate === today;
+    // const isTime = finishedDate === today;
 
     return (
         <ProgressBarStyle>
@@ -39,22 +39,24 @@ const ProgressBar = ({ step, chosenEditItemDetails, today }) => {
                 <p>تاریخ اجرا</p>
                 <span className='number'>5</span>
             </div>
-            {isTime && (
-                <>
-                    <span className={`divider ${step >= 6 ? 'active' : ''}`}></span>
+            <span className={`divider ${step >= 6 ? 'active' : ''}`}></span>
 
-                    <div className={`progress ${step >= 6 ? 'active' : ''}`}>
-                        <p>نتیجه</p>
-                        <span className='number'>6</span>
-                    </div>
-                    <span className={`divider ${step >= 7 ? 'active' : ''}`}></span>
+            <div className={`progress ${step >= 6 ? 'active' : ''}`}>
+                <p>نتیجه</p>
+                <span className='number'>6</span>
+            </div>
+            <span className={`divider ${step >= 7 ? 'active' : ''}`}></span>
 
-                    <div className={`progress ${step >= 7 ? 'active' : ''}`}>
-                        <p>اثربخشی</p>
-                        <span className='number'>7</span>
-                    </div>
-                </>
-            )}
+            <div className={`progress ${step >= 7 ? 'active' : ''}`}>
+                <p>اثربخشی</p>
+                <span className='number'>7</span>
+            </div>
+            <span className={`divider ${step >= 8 ? 'active' : ''}`}></span>
+
+            <div className={`progress ${step >= 8 ? 'active' : ''}`}>
+                <p>اثربخشی</p>
+                <span className='number'>8</span>
+            </div>
         </ProgressBarStyle>
     );
 };

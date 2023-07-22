@@ -18,7 +18,6 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
         defaultValues: {
             name: '',
             station: '',
-            time: 'partTime',
             workTime: 1
         },
         mode: 'onTouched'
@@ -61,7 +60,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
 
     return (
         <FormWrapper onSubmit={handleSubmit(sendForm)} error={errors?.name?.message}>
-            <p>{`کد ${subModalStatus}`}</p>
+            <p>{`نام نیروی ${subModalStatus}`}</p>
             <div className='auto_complete'>
                 <Controller
                     control={control}
@@ -86,7 +85,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
             </div>
             <p className='auto_error'>{errors?.name?.message}</p>
 
-            <p>جایگاه</p>
+            <p>جایگاه نیرو</p>
             <div className='auto_complete'>
                 <Controller
                     control={control}
@@ -110,51 +109,18 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                 <img src={blocking} />
             </div>
             <p className='auto_error'>{errors?.station?.message}</p>
-            <Controller
-                control={control}
-                name='time'
-                defaultValue='partTime'
-                render={({ field: { onChange, value } }) => (
-                    <RadioGroup row name='radio-buttons-group' value={value} onChange={event => onChange(event.target.value)}>
-                        <FormControlLabel
-                            value='partTime'
-                            control={
-                                <Radio
-                                    sx={{
-                                        '&.Mui-checked': {
-                                            color: '#0A7900'
-                                        }
-                                    }}
-                                />
-                            }
-                            label='پاره وقت'
-                            sx={{ backgroundColor: 'transparent' }}
-                        />
-                        <FormControlLabel
-                            value='fullTime'
-                            control={
-                                <Radio
-                                    sx={{
-                                        '&.Mui-checked': {
-                                            color: '#0A7900'
-                                        }
-                                    }}
-                                />
-                            }
-                            label='تمام وقت'
-                            sx={{ backgroundColor: 'transparent' }}
-                        />
-                    </RadioGroup>
-                )}
-            />
 
+            <p style={{ marginBottom: '10px' }}>ساعت کاری نیرو</p>
             <div className='work_hour'>
                 <div>
                     <p>تعداد ساعت کار {subModalStatus} : </p>
                     <p> {getValues().workTime} ساعت کاری</p>
                 </div>
                 <div className='input_wrapper'>
-                    <FormButton icon={increaseArrow} onClick={() => setValue('workTime', getValues().workTime + 1)} />
+                    <FormButton
+                        icon={increaseArrow}
+                        onClick={() => getValues().workTime < 24 && setValue('workTime', getValues().workTime + 1)}
+                    />
                     <input {...register('workTime')} readOnly />
                     <FormButton
                         icon={decreesArrow}

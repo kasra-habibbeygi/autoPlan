@@ -28,10 +28,11 @@ import ShowAll from '../../components/pages/corrective/show-all';
 import ConfirmModal from '../../components/template/confirm-modal';
 import { toast } from 'react-hot-toast';
 import tools from '../../utils/tools';
+import ResultResponsibleForAction from '../../components/pages/corrective/resultResponsibleForAction';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(8);
     const [allDetail, setAllDetail] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
@@ -217,9 +218,18 @@ const Corrective = () => {
                                 setReload={setReload}
                                 chosenEditItemDetails={chosenEditItemDetails}
                             />
+                        ) : step === 7 ? (
+                            <Effective
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                allDetail={allDetail}
+                                setReload={setReload}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setIsModalOpen={setIsModalOpen}
+                            />
                         ) : (
-                            step === 7 && (
-                                <Effective
+                            step === 8 && (
+                                <ResultResponsibleForAction
                                     setStep={setStep}
                                     setAllDetail={setAllDetail}
                                     allDetail={allDetail}

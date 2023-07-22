@@ -23,6 +23,12 @@ import { closeSideBar } from '../../store/reducers/sideBar';
 
 const SideBar = () => {
     const dispatch = useDispatch();
+
+    const logoutHandler = () => {
+        localStorage.removeItem('AutoPlaningToken');
+        window.location.href = '/';
+    };
+
     return (
         <SidebarStyle>
             <ul>
@@ -117,7 +123,7 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <FormButton text='خروج' icon={Exit} className='item' justify_content='start' padding='10px 0' />
+                <FormButton text='خروج' icon={Exit} className='item' justify_content='start' padding='10px 0' onClick={logoutHandler} />
             </div>
         </SidebarStyle>
     );

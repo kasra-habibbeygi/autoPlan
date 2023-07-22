@@ -18,13 +18,11 @@ import pen from './../../assets/images/global/pen.svg';
 import Table from '../../components/template/Table';
 import PagesHeader from '../../components/template/pages-header';
 import Modal from '../../components/template/modal';
-import ProgressBar from '../../components/pages/qualification/progress-bar';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import FormButton from '../../components/form-groups/form-button';
 import DatePickerComponent from '../../components/form-groups/date-picker';
 import ConfirmModal from '../../components/template/confirm-modal';
-import ShowAll from '../../components/pages/qualification/show-all';
 
 // Tools
 import Tools from '../../utils/tools';
@@ -38,7 +36,7 @@ const Qualification = () => {
     const [subModalStatus, setSubModalStatus] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [specificQualificationId, setSpecificQualificationId] = useState();
-    const [step, setStep] = useState(1);
+    const [modalStep, setModalStep] = useState(1);
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [qualificationList, setQualificationList] = useState();
@@ -59,7 +57,7 @@ const Qualification = () => {
         current: 1
     });
 
-    const { control, handleSubmit, formState, reset, getValues } = useForm({
+    const { control, handleSubmit, formState, reset } = useForm({
         defaultValues: {
             date: ''
         },
@@ -96,19 +94,11 @@ const Qualification = () => {
         }
     ];
 
-    const formSubmit = data => {
-        if (
-            details.blockingList.length > 0 &&
-            details.electricList.length > 0 &&
-            details.gasList.length > 0 &&
-            details.mechanicList.length > 0
-        ) {
-            setStep(2);
-        }
+    const formSubmit = () => {
+        details.blockingList.length > 0 && details.electricList.length > 0 && details.gasList.length > 0 && details.mechanicList.length > 0;
     };
 
     const closeModalHandler = () => {
-        setStep(1);
         reset();
         setDetails({
             blockingList: [],
@@ -137,7 +127,7 @@ const Qualification = () => {
             setConfirmModalStatus(false);
         });
     };
-
+    console.log(specificQualificationId);
     useEffect(() => {
         setLoader(true);
         Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
@@ -162,77 +152,85 @@ const Qualification = () => {
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
-                    <ProgressBar step={step} />
-                    {step === 1 ? (
-                        <form onSubmit={handleSubmit(formSubmit)}>
-                            <div className='date_wrapper'>
-                                <Controller
-                                    control={control}
-                                    name='date'
-                                    rules={{ required: 'این فیلد اجباری است' }}
-                                    render={({ field: { onChange, value } }) => {
-                                        return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                                    }}
-                                />
-                            </div>
-
-                            <SelectInput
-                                title='جلوبندی'
-                                icon={blocking}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('جلوبندی');
+                    <form onSubmit={handleSubmit(formSubmit)}>
+                        <div className='date_wrapper'>
+                            <Controller
+                                control={control}
+                                name='date'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
                                 }}
-                                items={details.blockingList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی جلوبندی'
                             />
+                        </div>
 
-                            <SelectInput
-                                title='مکانیک'
-                                icon={ShockAbsorber}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('مکانیک');
-                                }}
-                                items={details.mechanicList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی مکانیکی'
-                            />
+                        <SelectInput
+                            title='جلوبندی'
+                            icon={blocking}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('جلوبندی');
+                            }}
+                            items={details.blockingList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی جلوبندی'
+                        />
 
-                            <SelectInput
-                                title='برق'
-                                icon={Accumulator}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('برق');
-                                }}
-                                items={details.electricList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی برق کار'
-                            />
+                        <SelectInput
+                            title='مکانیک'
+                            icon={ShockAbsorber}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('مکانیک');
+                            }}
+                            items={details.mechanicList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی مکانیکی'
+                        />
 
-                            <SelectInput
-                                title='گاز'
-                                icon={GasStation}
-                                onClick={() => {
-                                    setShowSubModal(true);
-                                    setSubModalStatus('گاز');
-                                }}
-                                items={details.gasList}
-                                submitCount={submitCount}
-                                setDetails={setDetails}
-                                placeHolder='ظرفیت سنجی گاز کار'
-                            />
+                        <SelectInput
+                            title='برق'
+                            icon={Accumulator}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('برق');
+                            }}
+                            items={details.electricList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی برق کار'
+                        />
 
-                            <FormButton text='ادامه' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
-                        </form>
-                    ) : (
-                        <ShowAll details={details} date={getValues('date')} />
-                    )}
+                        <SelectInput
+                            title='گاز'
+                            icon={GasStation}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('گاز');
+                            }}
+                            items={details.gasList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی گاز کار'
+                        />
+
+                        <SelectInput
+                            title='هیبرید'
+                            icon={GasStation}
+                            onClick={() => {
+                                setShowSubModal(true);
+                                setSubModalStatus('هیبرید');
+                            }}
+                            items={details.gasList}
+                            submitCount={submitCount}
+                            setDetails={setDetails}
+                            placeHolder='ظرفیت سنجی هیبرید'
+                        />
+
+                        <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                    </form>
                 </div>
             </Modal>
             <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
