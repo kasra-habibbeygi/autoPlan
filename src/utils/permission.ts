@@ -54,42 +54,6 @@ const PERMISSION = {
         ADD: 24,
         EDIT: 25,
         LIST: 26
-    },
-
-    // تعریف جایگاه
-    STATION_DEFINITION: {
-        EDIT: 4,
-        DELETE: 5,
-        ADD: 6
-    },
-
-    //برنامه ریزی تعمیرات
-    REPAIR_PLANNING: {
-        EDIT: 10,
-        VEHICLE_SPECIFICATIONS: 11, // مشخصات خودرو
-        DIAGNOSIS: 12, //عیب یابی
-        TIME: 13
-    },
-
-    //گزارش گیری
-    REPORTS: {
-        LAST_MONTH: 17,
-        DEVIATION_AMOUNT: 18, //میزان انحراف در هر بخشی نمایندگی
-        REPORT: 19, // گزارش میزان انحراف در هر بخش
-        UPDATE: 20 // میزان بروز انحراف در شش ماه گذشته
-    },
-    //اقدام اصلاحی
-    CORRECTIVE_ACTION: {
-        EDIT: 21,
-        DELETE: 22,
-        ADD: 23
-    },
-
-    //تنظیمات سایت
-    SETTING: {
-        RECEPTION: 28, // تنظیمات پذیرنده
-        REPRESENTATION: 29, //ساعت کار نمایندگی
-        EDIT_PROFILE: 30
     }
 };
 
