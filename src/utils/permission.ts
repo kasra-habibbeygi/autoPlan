@@ -1,23 +1,68 @@
 const PERMISSION = {
-    DASHBOARD: 0, //داشبورد
+    //داشبورد
+    DASHBOARD: 0,
+
+    //دسترسی پرسنل
+    ACCESS_PERSONNEL: {
+        ADD: 1,
+        EDIT: 2,
+        DELETE: 3,
+        LIST: 4
+    },
+
+    //دسترسی پست
+    ACCESS_POST: {
+        ADD: 5,
+        EDIT: 6,
+        DELETE: 7,
+        LIST: 8
+    },
+
+    //علت انحراف
+    DEVIATION_REASON: {
+        ADD: 9,
+        EDIT: 10,
+        DELETE: 11,
+        LIST: 12
+    },
+
     //ظرفیت سنجی
     CAPACITY: {
-        EDIT: 1,
-        DELETE: 2,
-        ADD: 3
+        ADD: 13,
+        EDIT: 14,
+        DELETE: 15,
+        LIST: 16
     },
+
+    //کسری قطعات
+    LACK_PARTS: {
+        ADD: 17,
+        EDIT: 18,
+        DELETE: 19,
+        LIST: 20
+    },
+
+    //تنظیمات پذیرش
+    SETTING_RECEPTION: {
+        ADD: 21,
+        EDIT: 22,
+        LIST: 23
+    },
+
+    //تنظیمات ساعت کاری نمایندگی
+    REPRESENTATION_WORKING_TIME: {
+        ADD: 24,
+        EDIT: 25,
+        LIST: 26
+    },
+
     // تعریف جایگاه
     STATION_DEFINITION: {
         EDIT: 4,
         DELETE: 5,
         ADD: 6
     },
-    //کسری قطعات
-    LACK_PARTS: {
-        EDIT: 7,
-        DELETE: 8,
-        ADD: 9
-    },
+
     //برنامه ریزی تعمیرات
     REPAIR_PLANNING: {
         EDIT: 10,
@@ -25,12 +70,7 @@ const PERMISSION = {
         DIAGNOSIS: 12, //عیب یابی
         TIME: 13
     },
-    //علت انحراف
-    DEVIATION_REASON: {
-        EDIT: 14,
-        DELETE: 15,
-        ADD: 16
-    },
+
     //گزارش گیری
     REPORTS: {
         LAST_MONTH: 17,
@@ -44,13 +84,7 @@ const PERMISSION = {
         DELETE: 22,
         ADD: 23
     },
-    //دسترسی پنل
-    ACCESS: {
-        EDIT: 24,
-        DELETE: 25,
-        ADD_POST: 26,
-        ADD_PERSONNEL: 27
-    },
+
     //تنظیمات سایت
     SETTING: {
         RECEPTION: 28, // تنظیمات پذیرنده
