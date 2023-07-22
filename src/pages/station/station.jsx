@@ -197,34 +197,6 @@ const Station = () => {
                 <div className='formControl'>
                     {modalStatus === 'add' ? <h2>فرم ثبت جایگاه</h2> : <h2>ویرایش جایگاه</h2>}
                     <form onSubmit={handleSubmit(formSubmit)}>
-                        <InputComponent
-                            title='عنوان'
-                            icon={notes}
-                            detail={{
-                                ...register('title', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.title}
-                            placeHolder='عنوان'
-                        />
-                        <InputComponent
-                            title='کد'
-                            icon={document}
-                            detail={{
-                                ...register('code', {
-                                    required: {
-                                        value: true,
-                                        message: 'این فیلد اجباری است'
-                                    }
-                                })
-                            }}
-                            error={errors?.code}
-                            placeHolder='کد'
-                        />
                         <div className='auto_complete_wrapper'>
                             <p className='auto_complete_title'>نوع</p>
                             <div className='auto_complete'>
@@ -250,6 +222,20 @@ const Station = () => {
                             </div>
                             <p className='auto_complete_error'>{errors?.type?.message}</p>
                         </div>
+                        <InputComponent
+                            title='کد'
+                            icon={document}
+                            detail={{
+                                ...register('code', {
+                                    required: {
+                                        value: true,
+                                        message: 'این فیلد اجباری است'
+                                    }
+                                })
+                            }}
+                            error={errors?.code}
+                            placeHolder='کد'
+                        />
 
                         <div className='radios'>
                             <p className='title'>وضعیت قطعات</p>
@@ -299,7 +285,6 @@ const Station = () => {
                             />
                             <p className='error'>{errors?.equipmentStatus?.message}</p>
                         </div>
-
                         <FormButton
                             text='ادامه'
                             type='submit'
