@@ -4,17 +4,17 @@ const PERMISSION = {
 
     //دسترسی پرسنل
     ACCESS_PERSONNEL: {
-        ADD: 1,
-        EDIT: 2,
-        DELETE: 3,
+        ADD: 200,
+        EDIT: 222,
+        DELETE: 123,
         LIST: 4
     },
 
     //دسترسی پست
     ACCESS_POST: {
-        ADD: 5,
-        EDIT: 6,
-        DELETE: 7,
+        ADD: 222,
+        EDIT: 222,
+        DELETE: 222,
         LIST: 8
     },
 

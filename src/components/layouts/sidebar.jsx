@@ -1,5 +1,8 @@
+/* eslint-disable max-len */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { closeSideBar } from '../../store/reducers/sideBar';
 
 //Assets
 import Bill from './../../assets/images/sideBar/Bill.svg';
@@ -19,54 +22,82 @@ import { SidebarStyle } from './sidebar.style';
 //Components
 import FormButton from '../form-groups/form-button';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeSideBar } from '../../store/reducers/sideBar';
+
+// Tools
+import PERMISSION from '../../utils/permission.ts';
 
 const SideBar = () => {
     const dispatch = useDispatch();
-    const userRole = useSelector(state => state.User.info.role);
+    const userRole = useSelector(state => state.User.info);
 
     const logoutHandler = () => {
         localStorage.removeItem('AutoPlaningToken');
         window.location.href = '/';
     };
 
+    const permissionHandler = permissionArray => {
+        let flag = false;
+
+        permissionArray.forEach(item => {
+            if(item.split('.').length > 1){
+                if(userRole.permission.includes(PERMISSION[item.split('.')[0]][item.split('.')[1]])){
+                    flag = true;
+                } 
+            }else{
+                if(userRole.permission.includes(PERMISSION[item])){
+                    flag = true;
+                }
+            }
+        });
+
+        return flag;
+    };
+
     return (
         <SidebarStyle>
             <ul>
-                {userRole !== 'SuperAdmin' && (
+                {userRole.role !== 'SuperAdmin' && (
                     <>
-                        <li>
-                            <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Home} />
-                                    <p>داشبورد</p>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/qualification' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={User} />
-                                    <p>ظرفیت سنجی</p>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={blocking} />
-                                    <p>تعریف جایگاه</p>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/deficiency' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Box} />
-                                    <p>کسری قطعات انبار</p>
-                                </div>
-                            </NavLink>
-                        </li>
+                        {permissionHandler(['DASHBOARD']) && (
+                            <li>
+                                <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Home} />
+                                        <p>داشبورد</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {permissionHandler(['CAPACITY.ADD', 'CAPACITY.EDIT', 'CAPACITY.DELETE']) && (
+                            <li>
+                                <NavLink to='/qualification' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={User} />
+                                        <p>ظرفیت سنجی</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {permissionHandler(['SEAT_CAPACITY.ADD', 'SEAT_CAPACITY.EDIT', 'SEAT_CAPACITY.DELETE']) && (
+                            <li>
+                                <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={blocking} />
+                                        <p>تعریف جایگاه</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {permissionHandler(['LACK_PARTS.ADD', 'LACK_PARTS.EDIT', 'LACK_PARTS.DELETE']) && (
+                            <li>
+                                <NavLink to='/deficiency' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Box} />
+                                        <p>کسری قطعات انبار</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
                         <li>
                             <NavLink to='/planning' onClick={() => dispatch(closeSideBar())}>
                                 <div className='item'>
@@ -75,14 +106,16 @@ const SideBar = () => {
                                 </div>
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Bill} />
-                                    <p>علت انحرافات</p>
-                                </div>
-                            </NavLink>
-                        </li>
+                        {permissionHandler(['DEVIATION_REASON.ADD', 'DEVIATION_REASON.EDIT', 'DEVIATION_REASON.DELETE']) && (
+                            <li>
+                                <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Bill} />
+                                        <p>علت انحرافات</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}                       
                         <li>
                             <NavLink to='/reporting' onClick={() => dispatch(closeSideBar())}>
                                 <div className='item'>
@@ -99,25 +132,29 @@ const SideBar = () => {
                                 </div>
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={UserId} />
-                                    <p>اضافه کردن دسترسی</p>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Group} />
-                                    <p>تنظیمات سایت</p>
-                                </div>
-                            </NavLink>
-                        </li>
+                        {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
+                            <li>
+                                <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={UserId} />
+                                        <p>اضافه کردن دسترسی</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {permissionHandler(['SETTING_RECEPTION.ADD', 'SETTING_RECEPTION.EDIT', 'REPRESENTATION_WORKING_TIME.ADD', 'REPRESENTATION_WORKING_TIME.EDIT']) && (
+                            <li>
+                                <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Group} />
+                                        <p>تنظیمات سایت</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
                     </>
                 )}
-                {userRole === 'SuperAdmin' && (
+                {userRole.role === 'SuperAdmin' && (
                     <li>
                         <NavLink to='/addAdmin' onClick={() => dispatch(closeSideBar())}>
                             <div className='item'>

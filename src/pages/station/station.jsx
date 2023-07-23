@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
-import notes from './../../assets/images/sideBar/Notes.svg';
 import document from './../../assets/images/sideBar/DocumentAdd.svg';
 import widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import { ActionCell } from '../deviation/deviation.style';
@@ -24,7 +23,6 @@ import InputComponent from '../../components/form-groups/input-component';
 import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
-import Tools from '../../utils/tools';
 import PERMISSION from '../../utils/permission.ts';
 
 const Station = () => {
