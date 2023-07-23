@@ -38,14 +38,16 @@ const Planning = () => {
     };
 
     useEffect(() => {
-        Axios.get('admission/').then(res => {
-            PlanningList(res.data.data);
+        Axios.get('admission/')
+            .then(res => {
+                PlanningList(res.data.data);
 
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-        });
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .catch(() => {});
     }, [reload, pageStatus.current]);
 
     const columns = [

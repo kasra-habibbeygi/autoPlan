@@ -10,6 +10,7 @@ import eye from './../../assets/images/global/Eye.svg';
 import UserPlusRounded from './../../assets/images/corrective/UserPlusRounded.svg';
 import RoundGraph from './../../assets/images/corrective/RoundGraph.svg';
 import { ActionCell } from '../deviation/deviation.style';
+import PERMISSION from '../../utils/permission.ts';
 
 //Components
 import Table from '../../components/template/Table';
@@ -21,8 +22,10 @@ import ConfirmModal from '../../components/template/confirm-modal';
 import AddPost from './../../components/pages/accessibility/add-post';
 import AddPersonnel from './../../components/pages/accessibility/add-personell';
 import { Tab, Tabs } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const Accessibility = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalStatus, setModalStatus] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
@@ -60,22 +63,26 @@ const Accessibility = () => {
     useEffect(() => {
         setLoader(true);
         setLoaderTable(true);
-        Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`).then(res => {
-            setAccessibilityPost(res.data.results);
-            setLoader(false);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-        });
-        Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`).then(res => {
-            setAccessibilityPersonel(res.data.results);
-            setLoaderTable(false);
-            setPageStatusUser({
-                ...pageStatusUser,
-                total: res.data.total
-            });
-        });
+        Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`)
+            .then(res => {
+                setAccessibilityPost(res.data.results);
+                setLoader(false);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .catch(() => {});
+        Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`)
+            .then(res => {
+                setAccessibilityPersonel(res.data.results);
+                setLoaderTable(false);
+                setPageStatusUser({
+                    ...pageStatusUser,
+                    total: res.data.total
+                });
+            })
+            .catch(() => {});
     }, [reloadUser, reload, pageStatusUser.current]);
 
     const deleteHandler = () => {
@@ -86,6 +93,7 @@ const Accessibility = () => {
                 toast.success('پست سازمانی  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoader(false);
             });
@@ -99,6 +107,7 @@ const Accessibility = () => {
                 toast.success('پرسنل  با موفقیت حذف شد');
                 setConfirmUserModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoaderUser(false);
             });
@@ -131,8 +140,16 @@ const Accessibility = () => {
                             setEditModalData(item);
                         }}
                     />
-                    <FormButton icon={pen} onClick={() => postsEditModalHandler(item)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(item.id)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => postsEditModalHandler(item)}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_POST.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(item.id)}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_POST.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -149,8 +166,16 @@ const Accessibility = () => {
             key: 'actions',
             renderCell: item => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => personnelEditModalHandler(item)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandlerUser(item?.id)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => personnelEditModalHandler(item)}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_PERSONNEL.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandlerUser(item?.id)}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_PERSONNEL.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -240,6 +265,7 @@ const Accessibility = () => {
                             setShowSubModal(true);
                             setSubModalStatus('post');
                         }}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_POST.ADD)}
                     />
                     <FormButton
                         text='اضافه کردن پرسنل'
@@ -252,6 +278,7 @@ const Accessibility = () => {
                             setShowSubModal(true);
                             setSubModalStatus('personnel');
                         }}
+                        disabled={!userPermissions.includes(PERMISSION.ACCESS_PERSONNEL.ADD)}
                     />
                 </div>
             </Modal>

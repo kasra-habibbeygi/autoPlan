@@ -76,6 +76,7 @@ const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, set
                     }));
                     setReload(prev => !prev);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             toast.error('لطفا تمام مقادیر را پر کنید', {

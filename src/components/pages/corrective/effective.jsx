@@ -54,6 +54,7 @@ const Effective = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItem
                     setStep(1);
                     toast.success('با موفقیت ثبت گردید');
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

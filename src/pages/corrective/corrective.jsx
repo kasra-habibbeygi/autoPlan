@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -10,6 +11,7 @@ import eye from './../../assets/images/global/Eye.svg';
 import { ModalStyleBg } from './corrective.style';
 import { ActionCell } from '../deviation/deviation.style';
 import PERMISSION from '../../utils/permission.ts';
+import tools from '../../utils/tools';
 
 //Components
 import Table from '../../components/template/Table';
@@ -26,8 +28,6 @@ import Result from '../../components/pages/corrective/result';
 import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 import ConfirmModal from '../../components/template/confirm-modal';
-import { toast } from 'react-hot-toast';
-import tools from '../../utils/tools';
 import ResultResponsibleForAction from '../../components/pages/corrective/resultResponsibleForAction';
 
 const Corrective = () => {
@@ -124,6 +124,7 @@ const Corrective = () => {
                     total: res.data.total
                 });
             })
+            .catch(() => {})
             .finally(() => setLoader(false));
     }, [reload, pageStatus.current]);
 
@@ -133,12 +134,14 @@ const Corrective = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`reform_action/?id=${specificDeviationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('اقدام اصلاحی  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`reform_action/?id=${specificDeviationId}`)
+            .then(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+                setReload(!reload);
+                toast.success('اقدام اصلاحی  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {});
     };
 
     const deleteModalHandler = id => {

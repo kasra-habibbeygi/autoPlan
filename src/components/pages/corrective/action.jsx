@@ -74,6 +74,7 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
                     setReload(prev => !prev);
                     setStep(4);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

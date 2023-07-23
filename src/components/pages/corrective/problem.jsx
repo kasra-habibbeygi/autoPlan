@@ -43,6 +43,7 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) =>
             //                 mainId: res.data.id
             //             }));
             //         })
+            // .catch(() => {})
             //         .finally(() => setButtonLoading(false));
             // } else {
             Axios.post('reform_action/problem/', data)
@@ -55,6 +56,7 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) =>
                     }));
                     setReload(prev => !prev);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
             // }
         } else {

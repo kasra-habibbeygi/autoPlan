@@ -38,6 +38,7 @@ const CarDetail = ({ setStep }) => {
             .then(() => {
                 setStep(2);
             })
+            .catch(() => {})
             .finally(() => {
                 setLoader(false);
             });

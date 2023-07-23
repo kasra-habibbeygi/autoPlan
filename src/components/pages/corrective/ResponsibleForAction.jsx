@@ -46,6 +46,7 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
                     setReload(prev => !prev);
                     setStep(5);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

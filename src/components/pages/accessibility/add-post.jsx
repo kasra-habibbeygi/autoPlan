@@ -57,6 +57,7 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
                     setState(false);
                     reset();
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoader(false));
         } else {
             Axios.post('/worker/admin/organizational-position/list_create/', data)
@@ -67,6 +68,7 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
                     reset();
                     subModalCloseHandler();
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoader(false));
         }
     };

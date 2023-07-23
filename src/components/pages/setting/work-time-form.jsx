@@ -28,8 +28,9 @@ const WorkTimeForm = () => {
     const formSubmit = e => {
         e.preventDefault();
         setButtonLoader(true);
+        const sendTimeStructure = timeMaker(time);
 
-        Axios.post('/worker/admin/representation-working-hours/list_create/', time)
+        Axios.post('/worker/admin/representation-working-hours/list_create/', sendTimeStructure)
             .then(() => {
                 toast.success('ساعتی کاری شما با موفقیت ثبت شد');
                 setReload(!reload);
@@ -41,8 +42,9 @@ const WorkTimeForm = () => {
     const EditFormSubmit = e => {
         e.preventDefault();
         setButtonLoader(true);
+        const sendTimeStructure = timeMaker(time);
 
-        Axios.put(`worker/admin/representation-working-hours/update/?pk=${getTime[0].id}`, time)
+        Axios.put(`worker/admin/representation-working-hours/update/?pk=${getTime[0].id}`, sendTimeStructure)
             .then(() => {
                 toast.success('ساعتی کاری شما با موفقیت ثبت شد');
                 setReload(!reload);
@@ -52,11 +54,17 @@ const WorkTimeForm = () => {
                 setButtonLoader(false);
             });
     };
+    const timeMaker = time => {
+        const startHours = time.start_time?.$H;
+        const startMinutes = time.start_time?.$m;
+        const finishHours = time.end_time?.$H;
+        const finishMinutes = time.end_time?.$m;
 
-    const timeOnChange = (value, name) => {
-        const hours = value?.$H;
-        const minutes = value?.$m;
-        setTime({ ...time, [name]: `${hours}:${minutes}` });
+        const realTime = {
+            start_time: `${startHours}:${startMinutes}`,
+            end_time: `${finishHours}:${finishMinutes}`
+        };
+        return realTime;
     };
 
     useEffect(() => {
@@ -65,6 +73,8 @@ const WorkTimeForm = () => {
         });
     }, [reload]);
 
+    console.log(getTime);
+
     return (
         <FormWrapper>
             <p className='title'>ساعت کار نمایندگی</p>
@@ -72,10 +82,13 @@ const WorkTimeForm = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['TimePicker', 'MobileTimePicker', 'DesktopTimePicker', 'StaticTimePicker']}>
                         <DemoItem label='ساعت شروع کار نمایندگی'>
-                            <MobileTimePicker onChange={newValue => timeOnChange(newValue, 'start_time')} />
+                            <MobileTimePicker
+                                value={time.start_time}
+                                onChange={newValue => setTime(prev => ({ ...prev, start_time: newValue }))}
+                            />
                         </DemoItem>
                         <DemoItem label='ساعت پایان کار نمایندگی'>
-                            <MobileTimePicker onChange={newValue => timeOnChange(newValue, 'end_time')} />
+                            <MobileTimePicker value={time.en} onChange={newValue => setTime(prev => ({ ...prev, end_time: newValue }))} />
                         </DemoItem>
                     </DemoContainer>
                 </LocalizationProvider>
