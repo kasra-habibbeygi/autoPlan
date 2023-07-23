@@ -56,14 +56,12 @@ const ReceptionForm = () => {
 
     useEffect(() => {
         Axios.get('worker/admin/acceptance-settings/list_create/').then(res => {
-            if (res.data.status !== 'fail') {
+            if (res.data.results.length) {
                 setAddButtonStatus(true);
                 setValue('in_person', res.data.results[0].in_person);
                 setValue('online', res.data.results[0].online);
                 setValue('by_phone', res.data.results[0].by_phone);
                 setSpecificId(res.data.results[0].id);
-            } else {
-                setAddButtonStatus(false);
             }
         });
     }, [reload]);
