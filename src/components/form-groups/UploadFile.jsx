@@ -30,7 +30,7 @@ const UploadFile = ({ setReload, setIsModalOpen, setSpecificDeviationId, setTabV
         const formData = new FormData();
         formData.append('file', data.file[0]);
 
-        Axios.post('repository_bulk_inserting/', formData)
+        Axios.post('worker/admin/lack-parts-excel/create/', formData)
             .then(() => {
                 setReload(prev => !prev);
                 toast.success('کسری قطعات با موفقیت ثبت شد');

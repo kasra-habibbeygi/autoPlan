@@ -1,33 +1,36 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 //Assets
 import plus from './../../assets/images/pagesHeader/plus.svg';
 import filter from './../../assets/images/pagesHeader/Filter.svg';
 import { PagesHeaderStyle } from './pages-header.style';
 
-//components
+//Components
 import FormButton from '../form-groups/form-button';
-import tools from '../../utils/tools';
 
-const today = new Date();
+// Tools
+import tools from '../../utils/tools';
 
 const PagesHeader = ({
     buttonTitle,
     onButtonClick,
-    adminName = 'نیاز شکوری',
-    secondFiled = `تاریخ امروز : ${tools.changeDateToJalali(today, false)}`,
+    secondFiled = `تاریخ امروز : ${tools.changeDateToJalali(new Date(), false)}`,
     representationCode = 123475,
     hasFilter,
     onFilterClick,
     disabled = false
 }) => {
+    const userInfo = useSelector(state => state.User.info);
+
     return (
         <PagesHeaderStyle>
-            <p>ادمین اصلی ، {adminName} ، خوش آمدید !</p>
-            <p>{secondFiled}</p>
-            <p>کد نمایندگی : {representationCode}</p>
+            <p>
+                {userInfo.role === 'SuperAdmin' ? 'سوپر ادمین' : 'ادمین'} ، {userInfo.fullname} ، خوش آمدید !
+            </p>
+            {userInfo.role !== 'SuperAdmin' && <p>{secondFiled}</p>}
+            {userInfo.role !== 'SuperAdmin' && <p>کد نمایندگی : {representationCode}</p>}
             {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
-
             {onButtonClick ? (
                 <FormButton
                     onClick={onButtonClick}

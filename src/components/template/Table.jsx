@@ -37,7 +37,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                                     <div>
                                                         <p style={{ color: '#174787', fontWeight: 900, fontSize: '16px' }}>زمان ثبت :</p>
                                                         <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
-                                                            {Tools.changeDateToJalali(row.date_created ?? 0)}
+                                                            {row.create_at}
                                                         </p>
                                                     </div>
                                                     <br />
@@ -46,7 +46,7 @@ const Table = ({ columns, rows, pageStatus, setPageStatus, loading = false }) =>
                                                             آخرین ویرایش :
                                                         </p>
                                                         <p style={{ color: 'black', fontSize: '12px', marginTop: '10px' }}>
-                                                            {Tools.changeDateToJalali(row.date_modified ?? 0)}
+                                                            {row.update_at}
                                                         </p>
                                                     </div>
                                                 </div>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Drawer, useMediaQuery, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeSideBar } from '../../store/reducers/sideBar';
@@ -18,11 +18,12 @@ import SideBar from './sidebar';
 
 const LayoutProvider = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const theme = useTheme();
     const dispatch = useDispatch();
     const isLaptop = useMediaQuery(theme.breakpoints.up('lg'));
-
     const sideBarStatus = useSelector(state => state.sideBar);
+    const userRole = useSelector(state => state.User.info.role);
 
     useEffect(() => {
         if (localStorage.getItem('AutoPlaningToken') !== null) {
@@ -33,6 +34,12 @@ const LayoutProvider = () => {
             navigate('/');
         }
     }, []);
+
+    useEffect(() => {
+        if (userRole === 'SuperAdmin') {
+            navigate('/addAdmin');
+        }
+    }, [userRole, location.pathname]);
 
     return (
         <>

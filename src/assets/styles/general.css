@@ -130,6 +130,10 @@ textarea {
     font-family: 'main' !important;
 }
 
-.Toastify *{
-    font-family: 'main' !important;
+.MuiTimePickerToolbar-hourMinuteLabel{
+   direction: ltr !important
+}
+
+.MuiTypography-overline{
+    display: none;
 }

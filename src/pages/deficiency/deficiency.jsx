@@ -25,12 +25,14 @@ import DatePickerComponent from '../../components/form-groups/date-picker';
 import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
-import tools from '../../utils/tools';
+import Tools from '../../utils/tools';
+import PERMISSION from '../../utils/permission.ts';
 
 // MUI
 import { Tab, Tabs } from '@mui/material';
 
 const Deficiency = () => {
+    const userPermission = useSelector(state => state.User.info.permission);
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [deficiencyData, setDeficiencyData] = useState();
     const [reload, setReload] = useState(false);
@@ -40,7 +42,7 @@ const Deficiency = () => {
     const [specificDeviationId, setSpecificDeviationId] = useState();
     const [tabValue, setTabValue] = useState(0);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (_, newValue) => {
         setTabValue(newValue);
     };
 
@@ -55,7 +57,7 @@ const Deficiency = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'date', renderCell: data => tools.changeDateToJalali(data.date, false) },
+        { id: 2, title: 'تاریخ', key: 'date' },
         { id: 3, title: 'نام قطعه', key: 'title' },
         { id: 4, title: 'نوع خودرو', key: 'car_type' },
         {
@@ -64,8 +66,16 @@ const Deficiency = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermission.includes(PERMISSION.LACK_PARTS.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data)}
+                        disabled={!userPermission.includes(PERMISSION.LACK_PARTS.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -109,10 +119,10 @@ const Deficiency = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setIsModalOpen(true);
-        setValue('date', tools.changeIsoDateToTimeStamp(data.date));
-        setValue('partName', data.title);
-        setValue('partCode', data.code);
-        setValue('carType', data.car_type);
+        setValue('date', Tools.changeDateToTimeStamp(data.date));
+        setValue('title', data.title);
+        setValue('code', data.code);
+        setValue('car_type', data.car_type);
         setSpecificDeviationId(data.id);
     };
 
@@ -122,8 +132,13 @@ const Deficiency = () => {
             modalButton: true
         }));
 
+        const newDate = {
+            ...data,
+            date: Tools.changeTimeStampToDate(data.date)
+        };
+
         if (modalStatus === 'add') {
-            Axios.post('worker/admin/lack-parts/list_create/', data)
+            Axios.post('worker/admin/lack-parts/list_create/', newDate)
                 .then(() => {
                     setReload(prev => !prev);
                     toast.success('کسری قطعات با موفقیت ثبت شد');
@@ -136,10 +151,9 @@ const Deficiency = () => {
                         ...prev,
                         modalButton: false
                     }));
-                    setSpecificDeviationId();
                 });
         } else {
-            Axios.put(`worker/admin/lack-parts/retrieve_update_destroy/?id=${specificDeviationId}`, data)
+            Axios.put(`worker/admin/lack-parts/retrieve_update_destroy/?pk=${specificDeviationId}`, newDate)
                 .then(() => {
                     setReload(prev => !prev);
                     toast.success('کسری قطعات با موفقیت ویرایش شد');
@@ -152,7 +166,6 @@ const Deficiency = () => {
                         ...prev,
                         modalButton: false
                     }));
-                    setSpecificDeviationId();
                 });
         }
     };
@@ -179,7 +192,11 @@ const Deficiency = () => {
 
     return (
         <>
-            <PagesHeader buttonTitle='اضافه کردن کسری قطعات' onButtonClick={addModalHandler} />
+            <PagesHeader
+                buttonTitle='اضافه کردن کسری قطعات'
+                onButtonClick={addModalHandler}
+                disabled={!userPermission.includes(PERMISSION.LACK_PARTS.ADD)}
+            />
             <Table columns={columns} rows={deficiencyData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal
                 state={modalIsOpen}
