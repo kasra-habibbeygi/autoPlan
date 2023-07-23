@@ -1,6 +1,7 @@
 import jMoment from 'moment-jalaali';
 
 class Tools {
+    // most remove at end of project
     changeIsoDateToTimeStamp(date) {
         return Date.parse(date);
     }
@@ -18,6 +19,19 @@ class Tools {
 
     changeTimeStampToIsoDate(date) {
         return new Date(date).toISOString();
+    }
+
+    // New
+    changeDateToTimeStamp(data) {
+        const jalaliDate = jMoment(data, 'jYYYY-jMM-jDD');
+        const gregorianDate = jalaliDate.toDate();
+        const timestamp = gregorianDate.getTime();
+
+        return timestamp;
+    }
+
+    changeTimeStampToDate(date) {
+        return jMoment.unix(parseInt(date / 1000)).format('jYYYY-jMM-jDD');
     }
 
     TableRowCalculator(limit, page, index) {

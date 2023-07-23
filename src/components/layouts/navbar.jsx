@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Drawer, useMediaQuery, useTheme } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSideBar } from '../../store/reducers/sideBar';
 
 //Assets
@@ -17,13 +17,13 @@ import FormButton from '../../components/form-groups/form-button';
 import MobileNavbar from './mobile-navbar';
 
 const Navbar = () => {
+    const theme = useTheme();
+    const dispatch = useDispatch();
+    const userInfo = useSelector(state => state.User.isLoggedIn);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showNavbarMenuModal, setShowNavbarMenuModal] = useState(false);
-
-    const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
     const showSideBarIcon = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-    const dispatch = useDispatch();
 
     return (
         <>
@@ -32,7 +32,6 @@ const Navbar = () => {
                     <>
                         <div className='rightItems'>
                             <FormButton icon={menuIcon} onClick={() => dispatch(openSideBar())} />
-
                             <Link to='/dashboard' className='logoHeader'>
                                 <img src={logo} alt='logo' className='logoStyle' />
                                 <h2>اوتوپلن</h2>
@@ -45,15 +44,14 @@ const Navbar = () => {
                         <div className='rightItems'>
                             {showSideBarIcon && <FormButton icon={menuIcon} onClick={() => dispatch(openSideBar())} />}
 
-                            <Link to='/dashboard' className='logoHeader'>
+                            <Link to='/' className='logoHeader'>
                                 <img src={logo} alt='logo' className='logoStyle' />
                                 <h2>اوتوپلن</h2>
                             </Link>
                         </div>
-
                         <ul className='menuList'>
                             <li>
-                                <NavLink to='/dashboard'>صفحه اصلی</NavLink>
+                                <NavLink to='/'>صفحه اصلی</NavLink>
                             </li>
                             <li>
                                 <a href='/#services'>خدمات</a>
@@ -65,14 +63,20 @@ const Navbar = () => {
                                 <a href='/#contact'>تماس با ما</a>
                             </li>
                         </ul>
-                        <FormButton
-                            text='ورود به سیستم'
-                            icon={loginIcon}
-                            loading={false}
-                            width={'fit-content'}
-                            className='login'
-                            onClick={() => setShowLoginModal(true)}
-                        />
+                        {!userInfo ? (
+                            <FormButton
+                                text='ورود به سیستم'
+                                icon={loginIcon}
+                                loading={false}
+                                width={'fit-content'}
+                                className='login'
+                                onClick={() => setShowLoginModal(true)}
+                            />
+                        ) : (
+                            <Link to='/dashboard' className='dashboard_btn'>
+                                داشبورد
+                            </Link>
+                        )}
                     </>
                 )}
             </NavbarStyle>
