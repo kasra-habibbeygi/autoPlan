@@ -55,8 +55,6 @@ const Deficiency = () => {
         current: 1
     });
 
-    console.log(userPermission.includes(PERMISSION.LACK_PARTS.EDIT));
-
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
