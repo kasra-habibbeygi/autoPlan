@@ -52,7 +52,24 @@ export const AddModalWrapper = styled.div(props => ({
 
             '& .auto_complete_error': {
                 color: '#830000',
-                fontSize: '12px'
+                fontSize: '12px',
+                marginTop: '10px'
+            }
+        },
+
+        '& .checkbox_wrapper': {
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            margin: '30px 0',
+
+            p: {
+                fontWeight: 700
+            },
+
+            input: {
+                width: '15px',
+                height: '15px'
             }
         }
     }

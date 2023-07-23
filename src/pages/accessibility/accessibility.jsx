@@ -39,6 +39,7 @@ const Accessibility = () => {
     const [specificAccessibilityIdUser, setSpecificAccessibilityIdUser] = useState();
     const [buttonLoader, setButtonLoader] = useState(false);
     const [buttonLoaderUser, setButtonLoaderUser] = useState(false);
+    const [showAllDetailsModal, setShowAllDetailsModal] = useState(false);
     const [editModalData, setEditModalData] = useState();
     const [tabValue, setTabValue] = useState(0);
 
@@ -60,7 +61,8 @@ const Accessibility = () => {
         setLoader(true);
         setLoaderTable(true);
         Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`).then(res => {
-            setAccessibilityPost(res.data.data);
+            console.log(res);
+            setAccessibilityPost(res.data.results);
             setLoader(false);
             setPageStatus({
                 ...pageStatus,
@@ -68,7 +70,7 @@ const Accessibility = () => {
             });
         });
         Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`).then(res => {
-            setAccessibilityPersonel(res.data.data);
+            setAccessibilityPersonel(res.data.results);
             setLoaderTable(false);
             setPageStatusUser({
                 ...pageStatusUser,
@@ -79,7 +81,7 @@ const Accessibility = () => {
 
     const deleteHandler = () => {
         setButtonLoader(true);
-        Axios.delete(`personnelrole_mgmt/?id=${specificAccessibilityId}`)
+        Axios.delete(`/worker/admin/organizational-position/retrieve_update_destroy/?pk=${specificAccessibilityId}`)
             .then(() => {
                 setReload(!reload);
                 toast.success('پست سازمانی  با موفقیت حذف شد');
@@ -92,9 +94,9 @@ const Accessibility = () => {
 
     const deleteHandlerUser = () => {
         setButtonLoaderUser(true);
-        Axios.delete(`user_mgmt/?id=${specificAccessibilityIdUser}`)
+        Axios.delete(`/worker/admin/personnel/retrieve_update_destroy/?pk=${specificAccessibilityIdUser}`)
             .then(() => {
-                setReloadUser(!reload);
+                setReloadUser(prev => !prev);
                 toast.success('پرسنل  با موفقیت حذف شد');
                 setConfirmUserModalStatus(false);
             })
@@ -109,11 +111,10 @@ const Accessibility = () => {
         {
             id: 3,
             title: 'دسترسی ها',
-            key: 'accessibility',
             renderCell: data => (
                 <div className='truncate_cell'>
-                    {data.permission_titles?.map((item, index) => (
-                        <span key={`permission_${index}`}>{item},</span>
+                    {data.permissions_info?.map((item, index) => (
+                        <span key={`permission_${index}`}>{item.title},</span>
                     ))}
                 </div>
             )
@@ -124,8 +125,14 @@ const Accessibility = () => {
             key: 'actions',
             renderCell: item => (
                 <ActionCell>
-                    <FormButton icon={eye} />
-                    <FormButton icon={pen} onClick={() => editModalHandler(item)} />
+                    <FormButton
+                        icon={eye}
+                        onClick={() => {
+                            setShowAllDetailsModal(true);
+                            setEditModalData(item);
+                        }}
+                    />
+                    <FormButton icon={pen} onClick={() => postsEditModalHandler(item)} />
                     <FormButton icon={trashBin} onClick={() => deleteModalHandler(item.id)} />
                 </ActionCell>
             )
@@ -134,18 +141,17 @@ const Accessibility = () => {
 
     const columnsPersonnel = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'موبایل', key: 'mobile' },
-        { id: 4, title: 'نقش کاربر', key: 'role__title' },
-        { id: 5, title: 'نام و نام خانوادگی', key: 'user__first_name' },
-
+        { id: 2, title: 'موبایل', renderCell: item => item?.personnel?.mobile_number },
+        { id: 4, title: 'نقش کاربر', renderCell: item => item?.organizational_position_info?.title },
+        { id: 5, title: 'نام و نام خانوادگی', renderCell: item => item?.personnel?.fullname },
         {
             id: 6,
             title: 'عملیات',
             key: 'actions',
             renderCell: item => (
                 <ActionCell>
-                    <FormButton icon={pen} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandlerUser(item.id)} />
+                    <FormButton icon={pen} onClick={() => personnelEditModalHandler(item)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandlerUser(item?.id)} />
                 </ActionCell>
             )
         }
@@ -161,7 +167,7 @@ const Accessibility = () => {
         setSpecificAccessibilityIdUser(id);
     };
 
-    const editModalHandler = item => {
+    const postsEditModalHandler = item => {
         setModalStatus('edit');
         setShowSubModal(true);
         setSubModalStatus('post');
@@ -169,9 +175,24 @@ const Accessibility = () => {
         setEditModalData(item);
     };
 
+    const personnelEditModalHandler = item => {
+        setModalStatus('edit');
+        setShowSubModal(true);
+        setSubModalStatus('personnel');
+        setEditModalData(item);
+    };
+
     const openModal = () => {
         setShowAddModal(true);
         setModalStatus('add');
+    };
+
+    const subModalCloseHandler = () => {
+        setSubModalStatus();
+        setModalStatus();
+        setSubModalStatus();
+        setSpecificAccessibilityId();
+        setEditModalData();
     };
 
     return (
@@ -236,23 +257,47 @@ const Accessibility = () => {
                 </div>
             </Modal>
 
-            <Modal state={showSubModal} setState={setShowSubModal} handleClose={() => setSubModalStatus()} bgStatus={true} maxWidth='md'>
+            <Modal state={showSubModal} setState={setShowSubModal} handleClose={subModalCloseHandler} bgStatus={true} maxWidth='md'>
                 <ModalStyleBg>
                     {subModalStatus === 'post' ? (
-                        <AddPost setReload={setReloadUser} reload={reloadUser} setState={setShowSubModal} />
+                        <AddPost
+                            setReload={setReloadUser}
+                            setState={setShowSubModal}
+                            editModalData={editModalData}
+                            modalStatus={modalStatus}
+                            subModalCloseHandler={subModalCloseHandler}
+                        />
                     ) : (
                         subModalStatus === 'personnel' && (
                             <AddPersonnel
                                 setReload={setReload}
-                                reload={reload}
                                 setState={setShowSubModal}
-                                specificAccessibilityId={specificAccessibilityId}
                                 editModalData={editModalData}
                                 modalStatus={modalStatus}
+                                subModalCloseHandler={subModalCloseHandler}
                             />
                         )
                     )}
                 </ModalStyleBg>
+            </Modal>
+
+            <Modal state={showAllDetailsModal} setState={setShowAllDetailsModal} handleClose={subModalCloseHandler} maxWidth='sm'>
+                <div className='showAll_container'>
+                    <div className='item'>
+                        <p className='title'>1. نام پست</p>
+                        <p className='text'>
+                            <span>{editModalData?.title}</span>
+                        </p>
+                    </div>
+                    <div className='item'>
+                        <p className='title'>2. دسترسی ها</p>
+                        {editModalData?.permissions_info?.map(item => (
+                            <p className='text' key={item.id}>
+                                {item.title}
+                            </p>
+                        ))}
+                    </div>
+                </div>
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}

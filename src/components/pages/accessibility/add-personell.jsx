@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
@@ -14,42 +15,72 @@ import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AddPersonnel = ({ reload, setReload, setState }) => {
-    const [permissionList, setPermissionList] = useState([{ value: '', lable: '', id: '' }]);
+const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModalCloseHandler }) => {
+    const [postsList, setPostsList] = useState([{ value: '', label: '', id: '' }]);
     const [buttonLoader, setButtonLoader] = useState(false);
-    const { register, handleSubmit, formState, control, reset } = useForm({
+    const { register, handleSubmit, formState, control, reset, setValue } = useForm({
+        defaultValues: {
+            full_name: '',
+            mobile: '',
+            role: ''
+        },
+
         mode: 'onTouched'
     });
 
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('personnelrole_mgmt/').then(res => {
-            let permission = res.data.data.map(item => ({
+        if (modalStatus === 'edit') {
+            setValue('full_name', editModalData?.personnel?.fullname);
+            setValue('mobile', editModalData?.personnel?.mobile_number);
+            setValue('role', editModalData?.organizational_position_info?.id);
+        }
+
+        Axios.get('/worker/admin/organizational-position/list_create/').then(res => {
+            let posts = res.data.results.map(item => ({
                 label: item.title,
                 value: item.id
             }));
 
-            setPermissionList(permission);
+            setPostsList(posts);
         });
-    }, []);
+    }, [modalStatus]);
 
     const formSubmit = data => {
+        setButtonLoader(true);
+
         const newData = {
-            ...data,
-            username: new Date().getTime()
+            fullname: data.full_name,
+            mobile_number: data.mobile,
+            organizational_position: data.role
         };
-        Axios.post('user_mgmt/', newData).then(() => {
-            setButtonLoader(false);
-            setReload(!reload);
-            setState(false);
-            toast.success('پرسنل جدید با موفقیت ثبت شد');
-            reset();
-        });
+
+        if (modalStatus === 'edit') {
+            Axios.put(`/worker/admin/personnel/retrieve_update_destroy/?pk=${editModalData.id}`, newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setState(false);
+                    toast.success('پرسنل با موفقیت ویرایش شد');
+                    reset();
+                    subModalCloseHandler();
+                })
+                .finally(() => setButtonLoader(false));
+        } else {
+            Axios.post('/worker/admin/personnel/list_create/', newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setState(false);
+                    toast.success('پرسنل جدید با موفقیت ثبت شد');
+                    reset();
+                    subModalCloseHandler();
+                })
+                .finally(() => setButtonLoader(false));
+        }
     };
 
     return (
-        <AddModalWrapper error={errors?.post?.message}>
+        <AddModalWrapper error={errors?.role?.message}>
             <h3>دسترسی پنل</h3>
             <form onSubmit={handleSubmit(formSubmit)}>
                 <InputComponent
@@ -71,12 +102,20 @@ const AddPersonnel = ({ reload, setReload, setState }) => {
                     title='شماره موبایل'
                     icon={addPhone}
                     placeHolder='---------۰۹'
-                    type='text'
+                    type='number'
                     detail={{
                         ...register('mobile', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
+                            },
+                            maxLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
+                            },
+                            minLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
                             }
                         })
                     }}
@@ -93,7 +132,7 @@ const AddPersonnel = ({ reload, setReload, setState }) => {
                             render={({ field: { onChange, value } }) => {
                                 return (
                                     <Autocomplete
-                                        options={permissionList}
+                                        options={postsList}
                                         value={value?.label}
                                         onChange={(event, newValue) => {
                                             onChange(newValue?.value);
@@ -107,9 +146,16 @@ const AddPersonnel = ({ reload, setReload, setState }) => {
 
                         <img src={medal} />
                     </div>
-                    <p className='auto_complete_error'>{errors?.post?.message}</p>
+                    <p className='auto_complete_error'>{errors?.role?.message}</p>
                 </div>
-                <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} loading={buttonLoader} />
+                <FormButton
+                    text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
+                    type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
+                    loading={buttonLoader}
+                />
             </form>
         </AddModalWrapper>
     );

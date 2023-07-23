@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const AccessibilityWrapper = styled.div(() => ({
+export const AccessibilityWrapper = styled.div(props => ({
     '& .button_wrapper': {
         display: 'flex',
         gap: '10px',
@@ -38,6 +38,22 @@ export const AccessibilityWrapper = styled.div(() => ({
         whiteSpace: 'nowrap',
         width: '400px',
         margin: '0 auto'
+    },
+
+    '& .showAll_container': {
+        '& .title': {
+            color: props.theme.colors.mainColor,
+            fontWeight: 600,
+            fontSize: '18px',
+            marginTop: '20px'
+        },
+
+        '& .text': {
+            marginTop: '10px',
+            span: {
+                marginLeft: '30px'
+            }
+        }
     }
 }));
 
