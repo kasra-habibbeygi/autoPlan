@@ -103,7 +103,7 @@ const SideBar = () => {
                             <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
                                 <div className='item'>
                                     <img src={UserId} />
-                                    <p>دسترسی پنل</p>
+                                    <p>اضافه کردن دسترسی</p>
                                 </div>
                             </NavLink>
                         </li>
@@ -122,7 +122,7 @@ const SideBar = () => {
                         <NavLink to='/addAdmin' onClick={() => dispatch(closeSideBar())}>
                             <div className='item'>
                                 <img src={user} />
-                                <p>افزودن ادمین</p>
+                                <p>افزودن نمایندگی</p>
                             </div>
                         </NavLink>
                     </li>

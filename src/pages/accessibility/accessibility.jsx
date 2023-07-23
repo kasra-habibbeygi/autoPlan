@@ -61,7 +61,6 @@ const Accessibility = () => {
         setLoader(true);
         setLoaderTable(true);
         Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`).then(res => {
-            console.log(res);
             setAccessibilityPost(res.data.results);
             setLoader(false);
             setPageStatus({
