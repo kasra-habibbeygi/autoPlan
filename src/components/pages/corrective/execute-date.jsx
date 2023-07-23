@@ -58,6 +58,7 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
                         setStep(1);
                     }
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

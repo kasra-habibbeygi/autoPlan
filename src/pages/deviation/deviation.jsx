@@ -58,6 +58,7 @@ const Deviation = () => {
                     total: res.data.total
                 });
             })
+            .catch(() => {})
             .finally(() => {
                 setLoader(false);
             });
@@ -115,6 +116,7 @@ const Deviation = () => {
                     setModalOpen(false);
                     reset();
                 })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                 });
@@ -126,6 +128,7 @@ const Deviation = () => {
                     setModalOpen(false);
                     reset();
                 })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                 });
@@ -140,6 +143,7 @@ const Deviation = () => {
                 toast.success('انحراف  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoader({ ...buttonLoader, delete: false });
             });

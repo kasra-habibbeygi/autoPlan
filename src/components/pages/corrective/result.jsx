@@ -42,6 +42,7 @@ const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDet
                     }));
                     setStep(7);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

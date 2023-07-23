@@ -42,6 +42,7 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                     }));
                     setStep(7);
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoading(false));
         } else {
             setAllDetail(prev => ({

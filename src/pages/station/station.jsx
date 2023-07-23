@@ -61,15 +61,19 @@ const Station = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`worker/admin/seat-capacity/list_create/?page=${pageStatus.current}`).then(res => {
-            setStationData(res.data.results);
-            setPageStatus({
-                ...pageStatus,
-                total: res?.data?.total
-            });
-            setLoader(false);
-        });
-        Axios.get('/worker/admin/organizational-position/list_create/?page_size=100').then(res => {});
+        Axios.get(`worker/admin/seat-capacity/list_create/?page=${pageStatus.current}`)
+            .then(res => {
+                setStationData(res.data.results);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res?.data?.total
+                });
+                setLoader(false);
+            })
+            .catch(() => {});
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=100')
+            .then(res => {})
+            .catch(() => {});
     }, [pageStatus.current, reload]);
 
     const columns = [
@@ -150,12 +154,14 @@ const Station = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('ادمین  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`)
+            .then(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+                setReload(!reload);
+                toast.success('ادمین  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {});
     };
 
     return (

@@ -60,22 +60,26 @@ const Accessibility = () => {
     useEffect(() => {
         setLoader(true);
         setLoaderTable(true);
-        Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`).then(res => {
-            setAccessibilityPost(res.data.results);
-            setLoader(false);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-        });
-        Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`).then(res => {
-            setAccessibilityPersonel(res.data.results);
-            setLoaderTable(false);
-            setPageStatusUser({
-                ...pageStatusUser,
-                total: res.data.total
-            });
-        });
+        Axios.get(`/worker/admin/organizational-position/list_create/?pageSize=10&page=${pageStatus.current}`)
+            .then(res => {
+                setAccessibilityPost(res.data.results);
+                setLoader(false);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .catch(() => {});
+        Axios.get(`/worker/admin/personnel/list_create/?pageSize=10&page=${pageStatusUser.current}`)
+            .then(res => {
+                setAccessibilityPersonel(res.data.results);
+                setLoaderTable(false);
+                setPageStatusUser({
+                    ...pageStatusUser,
+                    total: res.data.total
+                });
+            })
+            .catch(() => {});
     }, [reloadUser, reload, pageStatusUser.current]);
 
     const deleteHandler = () => {
@@ -86,6 +90,7 @@ const Accessibility = () => {
                 toast.success('پست سازمانی  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoader(false);
             });
@@ -99,6 +104,7 @@ const Accessibility = () => {
                 toast.success('پرسنل  با موفقیت حذف شد');
                 setConfirmUserModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoaderUser(false);
             });

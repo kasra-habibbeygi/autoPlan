@@ -39,6 +39,7 @@ const UploadFile = ({ setReload, setIsModalOpen, setSpecificDeviationId, setTabV
                 setSpecificDeviationId();
                 setTabValue(0);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoader(false);
             });

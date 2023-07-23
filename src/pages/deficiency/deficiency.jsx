@@ -181,6 +181,7 @@ const Deficiency = () => {
                 toast.success('کسری قطعه  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
             })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoader(prev => ({
                     ...prev,

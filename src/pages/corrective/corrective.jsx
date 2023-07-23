@@ -124,6 +124,7 @@ const Corrective = () => {
                     total: res.data.total
                 });
             })
+            .catch(() => {})
             .finally(() => setLoader(false));
     }, [reload, pageStatus.current]);
 
@@ -133,12 +134,14 @@ const Corrective = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`reform_action/?id=${specificDeviationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('اقدام اصلاحی  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`reform_action/?id=${specificDeviationId}`)
+            .then(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+                setReload(!reload);
+                toast.success('اقدام اصلاحی  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {});
     };
 
     const deleteModalHandler = id => {

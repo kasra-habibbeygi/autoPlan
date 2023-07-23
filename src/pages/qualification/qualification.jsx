@@ -120,24 +120,28 @@ const Qualification = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`workshop_capacity_mgmt/?id=${specificQualificationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('ظرفیت  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`workshop_capacity_mgmt/?id=${specificQualificationId}`)
+            .then(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+                setReload(!reload);
+                toast.success('ظرفیت  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {});
     };
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
-            setQualificationList(res.data.data);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
-            });
-            setLoader(false);
-        });
+        Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`)
+            .then(res => {
+                setQualificationList(res.data.data);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+                setLoader(false);
+            })
+            .catch(() => {});
     }, [pageStatus.current, reload]);
 
     return (
