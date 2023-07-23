@@ -37,7 +37,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
             setValue('role', editModalData?.organizational_position_info?.id);
         }
 
-        Axios.get('/worker/admin/organizational-position/list_create/').then(res => {
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500').then(res => {
             let posts = res.data.results.map(item => ({
                 label: item.title,
                 value: item.id
@@ -65,6 +65,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                     reset();
                     subModalCloseHandler();
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoader(false));
         } else {
             Axios.post('/worker/admin/personnel/list_create/', newData)
@@ -75,6 +76,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                     reset();
                     subModalCloseHandler();
                 })
+                .catch(() => {})
                 .finally(() => setButtonLoader(false));
         }
     };

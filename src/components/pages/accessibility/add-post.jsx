@@ -47,7 +47,6 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
     }, [editModalData]);
 
     const formSubmit = data => {
-        // console.log(data);
         setButtonLoader(true);
         if (modalStatus === 'edit') {
             Axios.put(`/worker/admin/organizational-position/retrieve_update_destroy/?pk=${editModalData?.id}`, data)

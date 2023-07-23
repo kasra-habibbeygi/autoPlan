@@ -103,21 +103,25 @@ const Station = () => {
     const formSubmit = data => {
         setButtonLoader({ ...buttonLoader, modalButton: true });
         if (modalStatus === 'add') {
-            Axios.post('station_mgmt/', data).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('ادمین جدید با موفقیت ثبت شد');
-                setModalOpen(false);
-                reset();
-            });
+            Axios.post('station_mgmt/', data)
+                .then(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                    setReload(!reload);
+                    toast.success('ادمین جدید با موفقیت ثبت شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .catch(() => {});
         } else {
-            Axios.put(`station_mgmt/?id=${specificDeviationId}`, data).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('ادمین با موفقیت ویرایش شد');
-                setModalOpen(false);
-                reset();
-            });
+            Axios.put(`station_mgmt/?id=${specificDeviationId}`, data)
+                .then(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                    setReload(!reload);
+                    toast.success('ادمین با موفقیت ویرایش شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .catch(() => {});
         }
     };
 
