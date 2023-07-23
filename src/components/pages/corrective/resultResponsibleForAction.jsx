@@ -21,7 +21,6 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
         mode: 'onTouched'
     });
 
-    console.log(chosenEditItemDetails);
     useEffect(() => {
         if (chosenEditItemDetails?.action_result) {
             setValue('action_result', chosenEditItemDetails?.action_result);

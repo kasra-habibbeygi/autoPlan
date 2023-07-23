@@ -34,8 +34,6 @@ const Effective = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItem
         }
     }, [chosenEditItemDetails]);
 
-    console.log(chosenEditItemDetails);
-
     const formSubmit = data => {
         setButtonLoading(true);
 

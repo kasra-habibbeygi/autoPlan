@@ -21,7 +21,6 @@ const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDet
         mode: 'onTouched'
     });
 
-    console.log(chosenEditItemDetails);
     useEffect(() => {
         if (chosenEditItemDetails?.action_result) {
             setValue('action_result', chosenEditItemDetails?.action_result);

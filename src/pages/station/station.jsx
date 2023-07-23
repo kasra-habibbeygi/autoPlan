@@ -55,59 +55,36 @@ const Station = () => {
     });
 
     const { register, control, handleSubmit, formState, reset, setValue } = useForm({
-        defaultValues: {
-            title: '',
-            code: '',
-            type: '',
-            partsStatus: '',
-            equipmentStatus: ''
-        },
         mode: 'onTouched'
     });
     const { errors } = formState;
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`station_mgmt/?page=${pageStatus.current}`).then(res => {
-            setStationData(res.data.data);
+        Axios.get(`worker/admin/seat-capacity/list_create/?page=${pageStatus.current}`).then(res => {
+            setStationData(res.data.results);
             setPageStatus({
                 ...pageStatus,
-                total: res.data.total
+                total: res?.data?.total
             });
             setLoader(false);
         });
     }, [pageStatus.current, reload]);
-
-    const stationTypeNameChanger = item => {
-        if (item === 'gas') {
-            return 'گاز کار';
-        } else if (item === 'mechanic') {
-            return 'مکانیک';
-        } else if (item === 'elec') {
-            return 'برق کار';
-        } else if (item === 'blocking') {
-            return 'جلوبندی';
-        }
-        return 'هیبرید';
-    };
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         {
             id: 2,
             title: 'تاریخ',
-            key: 'date_created',
-            renderCell: data => Tools.changeDateToJalali(data.date_created)
+            key: 'create_at'
         },
-        { id: 3, title: 'عنوان', key: 'title' },
         { id: 4, title: 'کد', key: 'code' },
         { id: 5, title: 'وضعیت قطعات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
         { id: 6, title: 'وضعیت تجهیزات', key: 'tools_status', renderCell: data => (data.tools_status ? 'کامل' : 'ناقص') },
         {
             id: 7,
             title: 'نوع',
-            key: 'station_type',
-            renderCell: data => stationTypeNameChanger(data.station_type)
+            key: 'type'
         },
         {
             id: 8,
@@ -115,16 +92,8 @@ const Station = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton
-                        icon={pen}
-                        onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.EDIT)}
-                    />
-                    <FormButton
-                        icon={trashBin}
-                        onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.DELETE)}
-                    />
+                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
                 </ActionCell>
             )
         }
@@ -176,7 +145,7 @@ const Station = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`station_mgmt/?id=${specificDeviationId}`).then(() => {
+        Axios.delete(`worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`).then(() => {
             setButtonLoader({ ...buttonLoader, delete: false });
             setReload(!reload);
             toast.success('ادمین  با موفقیت حذف شد');
@@ -186,12 +155,7 @@ const Station = () => {
 
     return (
         <StationWrapper error={errors?.type?.message}>
-            <PagesHeader
-                buttonTitle='ثبت جایگاه جدید'
-                secondFiled='ساعت کاری مجموعه : ۸ ساعت'
-                onButtonClick={addModalHandler}
-                disabled={!userPermissions.includes(PERMISSION.STATION_DEFINITION.ADD)}
-            />
+            <PagesHeader buttonTitle='ثبت جایگاه جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
@@ -202,7 +166,7 @@ const Station = () => {
                             <div className='auto_complete'>
                                 <Controller
                                     control={control}
-                                    name='station_type'
+                                    name='Type '
                                     rules={{ required: 'این فیلد اجباری است' }}
                                     render={({ field: { onChange, value } }) => {
                                         return (
@@ -241,7 +205,7 @@ const Station = () => {
                             <p className='title'>وضعیت قطعات</p>
                             <Controller
                                 control={control}
-                                name='equipment_status'
+                                name='condition_of_parts'
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
@@ -265,7 +229,7 @@ const Station = () => {
                             <p className='title'>وضعیت تجهیزات</p>
                             <Controller
                                 control={control}
-                                name='tools_status'
+                                name='equipment_status'
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel

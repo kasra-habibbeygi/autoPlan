@@ -127,7 +127,7 @@ const Qualification = () => {
             setConfirmModalStatus(false);
         });
     };
-    console.log(specificQualificationId);
+
     useEffect(() => {
         setLoader(true);
         Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`).then(res => {
