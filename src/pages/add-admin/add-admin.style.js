@@ -14,6 +14,14 @@ export const AddAdminWrapper = styled.div(props => ({
         }
     },
 
+    '& .truncate_field': {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        width: '300px',
+        margin: '0 auto'
+    },
+
     form: {
         marginTop: '30px',
 

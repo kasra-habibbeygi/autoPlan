@@ -28,12 +28,6 @@ const Landing = () => {
         }
     }, [location.hash]);
 
-    useEffect(() => {
-        if (localStorage.getItem('AutoPlaningToken') !== null) {
-            navigate('/dashboard');
-        }
-    }, []);
-
     return (
         <LandingWrapper>
             <Navbar />

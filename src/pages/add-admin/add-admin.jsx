@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 import { AddAdminWrapper } from './add-admin.style';
 import { ActionCell } from '../deviation/deviation.style';
 import trashBin from './../../assets/images/global/TrashBin.svg';
-// import pen from './../../assets/images/global/pen.svg';
+import pen from './../../assets/images/global/pen.svg';
 import document from './../../assets/images/sideBar/DocumentAdd.svg';
 import notes from './../../assets/images/sideBar/Notes.svg';
 import bill from './../../assets/images/sideBar/Bill.svg';
@@ -41,7 +41,7 @@ const AddAdmin = () => {
         current: 1
     });
 
-    const { register, handleSubmit, formState, reset } = useForm({
+    const { register, handleSubmit, formState, reset, setValue } = useForm({
         defaultValues: {
             company_address: '',
             company_code: '',
@@ -56,8 +56,8 @@ const AddAdmin = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`add_admin_user/?page=${pageStatus.current}`).then(res => {
-            setAdminList(res.data.data);
+        Axios.get(`user/super-admin/representation/list_create/?page=${pageStatus.current}`).then(res => {
+            setAdminList(res.data.results);
             setPageStatus({
                 ...pageStatus,
                 total: res.data.total
@@ -68,39 +68,68 @@ const AddAdmin = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'نام کامل', key: 'company_owner' },
-        { id: 3, title: 'کد نمایندگی', key: 'company_code' },
-        { id: 4, title: 'نام نمایندگی', key: 'company_owner' },
-        { id: 5, title: 'شماره موبایل', key: 'mobile' },
-        { id: 6, title: 'آدرس نمایندگی', key: 'company_address' },
+        {
+            id: 2,
+            title: 'نام کامل',
+            key: 'admin',
+            renderCell: data => <>{data.admin.fullname}</>
+        },
+        { id: 3, title: 'کد نمایندگی', key: 'code' },
+        { id: 4, title: 'نام نمایندگی', key: 'title' },
+        { id: 5, title: 'شماره موبایل', key: 'phone' },
+        {
+            id: 6,
+            title: 'آدرس نمایندگی',
+            key: 'address',
+            renderCell: data => <div className='truncate_field'>{data.address}</div>
+        },
         {
             id: 7,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    {/* <FormButton icon={pen} onClick={() => setShowAddModal(true)} /> */}
+                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
                     <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
                 </ActionCell>
             )
         }
     ];
 
+    const editModalHandler = data => {
+        setModalStatus('edit');
+        setModalOpen(true);
+        setSpecificDeviationId(data.id);
+        setValue('fullname', data.admin.fullname);
+        setValue('code', data.code);
+        setValue('title', data.title);
+        setValue('phone', data.phone);
+        setValue('address', data.address);
+    };
+
     const formSubmit = data => {
-        const newData = {
-            ...data,
-            username: new Date().getTime()
-        };
         setButtonLoader({ ...buttonLoader, modalButton: true });
         if (modalStatus === 'add') {
-            Axios.post('add_admin_user/', newData)
+            Axios.post('user/super-admin/representation/list_create/', data)
                 .then(() => {
-                    setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(!reload);
                     toast.success('ادمین جدید با موفقیت ثبت شد');
                     setModalOpen(false);
                     reset();
                 })
+                .catch(() => {})
+                .finally(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                });
+        } else {
+            Axios.put(`user/super-admin/representation/retrieve_update_destroy/?pk=${specificDeviationId}`, data)
+                .then(() => {
+                    setReload(!reload);
+                    toast.success('اطلاعات ادمین با موفقیت ویرایش شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                 });
@@ -109,12 +138,16 @@ const AddAdmin = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`add_admin_user/?id=${specificDeviationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('انحراف  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`user/super-admin/representation/retrieve_update_destroy/?pk=${specificDeviationId}`)
+            .then(() => {
+                setReload(!reload);
+                toast.success('انحراف  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {})
+            .finally(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+            });
     };
 
     const deleteModalHandler = id => {
@@ -134,20 +167,19 @@ const AddAdmin = () => {
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
                     {modalStatus === 'add' ? <h2>فرم ثبت ادمین</h2> : <h2>ویرایش ادمین</h2>}
-
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <InputComponent
                             title='نام کامل'
                             icon={document}
                             detail={{
-                                ...register('company_owner', {
+                                ...register('fullname', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.company_owner}
+                            error={errors?.fullname}
                             placeHolder='نام کامل'
                         />
 
@@ -155,14 +187,14 @@ const AddAdmin = () => {
                             title='کد نمایندگی'
                             icon={notes}
                             detail={{
-                                ...register('company_code', {
+                                ...register('code', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.company_code}
+                            error={errors?.code}
                             placeHolder='کد نمایندگی'
                         />
 
@@ -170,14 +202,14 @@ const AddAdmin = () => {
                             title='نام نمایندگی'
                             icon={bill}
                             detail={{
-                                ...register('company_name', {
+                                ...register('title', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
                                     }
                                 })
                             }}
-                            error={errors?.company_name}
+                            error={errors?.title}
                             placeHolder='نام نمایندگی'
                         />
 
@@ -186,7 +218,7 @@ const AddAdmin = () => {
                             type='number'
                             icon={addPhone}
                             detail={{
-                                ...register('mobile', {
+                                ...register('phone', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
@@ -201,17 +233,17 @@ const AddAdmin = () => {
                                     }
                                 })
                             }}
-                            error={errors?.mobile}
+                            error={errors?.phone}
                             placeHolder='---------۰۹'
                         />
 
-                        <div className={errors?.company_address ? 'text_area text_area_error' : 'text_area'}>
+                        <div className={errors?.address ? 'text_area text_area_error' : 'text_area'}>
                             <p className='title'>آدرس نمایندگی</p>
                             <div>
                                 <textarea
                                     rows='5'
                                     placeholder='آدرس نمایندگی'
-                                    {...register('company_address', {
+                                    {...register('address', {
                                         required: {
                                             value: true,
                                             message: 'این فیلد اجباری است'
@@ -220,7 +252,7 @@ const AddAdmin = () => {
                                 ></textarea>
                                 <img src={homeSmile} />
                             </div>
-                            <p className='error'>{errors?.company_address?.message}</p>
+                            <p className='error'>{errors?.address?.message}</p>
                         </div>
 
                         <FormButton

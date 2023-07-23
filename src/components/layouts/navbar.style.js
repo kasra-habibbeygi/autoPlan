@@ -46,6 +46,15 @@ export const NavbarStyle = styled.nav(props => ({
             color: props.theme.colors.mainColor
         }
     },
+
+    '& .dashboard_btn': {
+        color: props.theme.colors.textColor,
+
+        '&:hover': {
+            color: props.theme.colors.mainColor
+        }
+    },
+
     '& .menuList': {
         display: 'flex',
         alignItems: 'center',
