@@ -27,19 +27,12 @@ import ConfirmModal from '../../components/template/confirm-modal';
 import Tools from '../../utils/tools';
 import PERMISSION from '../../utils/permission.ts';
 
-const selectValue = [
-    { label: 'مکانیک', value: 'mechanic' },
-    { label: 'هیبرید', value: 'hybrid' },
-    { label: 'برق کار', value: 'elec' },
-    { label: 'گاز کار', value: 'gas' },
-    { label: 'جلو بندی', value: 'blocking' }
-];
-
 const Station = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
+    const [typeList, setTypeList] = useState([]);
     const [stationData, setStationData] = useState();
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
@@ -69,7 +62,14 @@ const Station = () => {
             });
             setLoader(false);
         });
-        Axios.get('/worker/admin/organizational-position/list_create/?page_size=100').then(res => {});
+        Axios.get('worker/admin/organizational-position/list_create/?page_size=500').then(res => {
+            let posts = res.data.results.map(item => ({
+                label: item.title,
+                value: item.id
+            }));
+
+            setTypeList(posts);
+        });
     }, [pageStatus.current, reload]);
 
     const columns = [
@@ -81,11 +81,12 @@ const Station = () => {
         },
         { id: 4, title: 'کد', key: 'code' },
         { id: 5, title: 'وضعیت قطعات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
-        { id: 6, title: 'وضعیت تجهیزات', key: 'tools_status', renderCell: data => (data.tools_status ? 'کامل' : 'ناقص') },
+        { id: 6, title: 'وضعیت تجهیزات', key: 'condition_of_parts', renderCell: data => (data.condition_of_parts ? 'کامل' : 'ناقص') },
         {
             id: 7,
             title: 'نوع',
-            key: 'type'
+            key: 'type',
+            renderCell: data => typeList.filter(item => item.value === data.type)[0]?.label
         },
         {
             id: 8,
@@ -93,8 +94,16 @@ const Station = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => editModalHandler(data)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.SEAT_CAPACITY.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.SEAT_CAPACITY.DELETE)}
+                    />
                 </ActionCell>
             )
         }
@@ -103,21 +112,21 @@ const Station = () => {
     const formSubmit = data => {
         setButtonLoader({ ...buttonLoader, modalButton: true });
         if (modalStatus === 'add') {
-            Axios.post('station_mgmt/', data)
+            Axios.post('/worker/admin/seat-capacity/list_create/', data)
                 .then(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(!reload);
-                    toast.success('ادمین جدید با موفقیت ثبت شد');
+                    toast.success('جایگاه جدید با موفقیت ثبت شد');
                     setModalOpen(false);
                     reset();
                 })
                 .catch(() => {});
         } else {
-            Axios.put(`station_mgmt/?id=${specificDeviationId}`, data)
+            Axios.put(`/worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`, data)
                 .then(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(!reload);
-                    toast.success('ادمین با موفقیت ویرایش شد');
+                    toast.success('جایگاه با موفقیت ویرایش شد');
                     setModalOpen(false);
                     reset();
                 })
@@ -130,9 +139,9 @@ const Station = () => {
         setModalOpen(true);
         setValue('title', data.title);
         setValue('code', data.code);
-        setValue('station_type', data.station_type);
+        setValue('type', data.type);
+        setValue('condition_of_parts', data.condition_of_parts);
         setValue('equipment_status', data.equipment_status);
-        setValue('tools_status', data.tools_status);
         setSpecificDeviationId(data.id);
     };
 
@@ -144,7 +153,7 @@ const Station = () => {
     const addModalHandler = () => {
         setModalStatus('add');
         setModalOpen(true);
-        setValue('tools_status', false);
+        setValue('condition_of_parts', false);
         setValue('equipment_status', false);
     };
 
@@ -153,14 +162,19 @@ const Station = () => {
         Axios.delete(`worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`).then(() => {
             setButtonLoader({ ...buttonLoader, delete: false });
             setReload(!reload);
-            toast.success('ادمین  با موفقیت حذف شد');
+            toast.success('جایگاه  با موفقیت حذف شد');
             setConfirmModalStatus(false);
         });
     };
 
     return (
         <StationWrapper error={errors?.type?.message}>
-            <PagesHeader buttonTitle='ثبت جایگاه جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
+            <PagesHeader
+                buttonTitle='ثبت جایگاه جدید'
+                secondFiled='ساعت کاری مجموعه : ۸ ساعت'
+                onButtonClick={addModalHandler}
+                disabled={!userPermissions.includes(PERMISSION.SEAT_CAPACITY.ADD)}
+            />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
@@ -171,13 +185,13 @@ const Station = () => {
                             <div className='auto_complete'>
                                 <Controller
                                     control={control}
-                                    name='Type '
+                                    name='type'
                                     rules={{ required: 'این فیلد اجباری است' }}
                                     render={({ field: { onChange, value } }) => {
                                         return (
                                             <Autocomplete
-                                                options={selectValue}
-                                                value={selectValue?.filter(item => item.value === value)[0]}
+                                                options={typeList}
+                                                value={typeList?.filter(item => item.value === value)[0]}
                                                 onChange={(_, newValue) => {
                                                     onChange(newValue?.value);
                                                 }}

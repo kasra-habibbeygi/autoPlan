@@ -54,6 +54,14 @@ const PERMISSION = {
         ADD: 24,
         EDIT: 25,
         LIST: 26
+    },
+
+    // تعریف جایگاه
+    SEAT_CAPACITY: {
+        ADD: 27,
+        EDIT: 28,
+        DELETE: 29,
+        LIST: 30
     }
 };
 
