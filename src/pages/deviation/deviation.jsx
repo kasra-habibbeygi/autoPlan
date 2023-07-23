@@ -42,7 +42,7 @@ const Deviation = () => {
 
     const { register, handleSubmit, formState, reset, setValue } = useForm({
         defaultValues: {
-            title: ''
+            reason: ''
         },
         mode: 'onTouched'
     });
@@ -50,19 +50,22 @@ const Deviation = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`deviation_type_mgmt/?page=${pageStatus.current}`).then(res => {
-            setDeviationData(res.data.data);
-            setLoader(false);
-            setPageStatus({
-                ...pageStatus,
-                total: res.data.total
+        Axios.get(`/worker/admin/reason-for-deviation/list_create/?page=${pageStatus.current}`)
+            .then(res => {
+                setDeviationData(res.data.results);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .finally(() => {
+                setLoader(false);
             });
-        });
     }, [reload, pageStatus.current]);
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'علت انحراف', key: 'title' },
+        { id: 2, title: 'علت انحراف', key: 'reason' },
         {
             id: 3,
             title: 'عملیات',
@@ -97,7 +100,7 @@ const Deviation = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        setValue('title', data.title);
+        setValue('reason', data.reason);
         setSpecificDeviationId(data.id);
     };
 
@@ -105,32 +108,41 @@ const Deviation = () => {
         setButtonLoader({ ...buttonLoader, modalButton: true });
 
         if (modalStatus === 'add') {
-            Axios.post('deviation_type_mgmt/', data).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('انحراف جدید با موفقیت ثبت شد');
-                setModalOpen(false);
-                reset();
-            });
+            Axios.post('/worker/admin/reason-for-deviation/list_create/', data)
+                .then(() => {
+                    setReload(!reload);
+                    toast.success('انحراف جدید با موفقیت ثبت شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .finally(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                });
         } else {
-            Axios.put(`deviation_type_mgmt/?id=${specificDeviationId}`, data).then(() => {
-                setButtonLoader({ ...buttonLoader, modalButton: false });
-                setReload(!reload);
-                toast.success('انحراف  با موفقیت ویرایش شد');
-                setModalOpen(false);
-                reset();
-            });
+            Axios.put(`/worker/admin/reason-for-deviation/retrieve_update_destroy/?pk=${specificDeviationId}`, data)
+                .then(() => {
+                    setReload(!reload);
+                    toast.success('انحراف  با موفقیت ویرایش شد');
+                    setModalOpen(false);
+                    reset();
+                })
+                .finally(() => {
+                    setButtonLoader({ ...buttonLoader, modalButton: false });
+                });
         }
     };
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`deviation_type_mgmt/?id=${specificDeviationId}`).then(() => {
-            setButtonLoader({ ...buttonLoader, delete: false });
-            setReload(!reload);
-            toast.success('انحراف  با موفقیت حذف شد');
-            setConfirmModalStatus(false);
-        });
+        Axios.delete(`worker/admin/reason-for-deviation/retrieve_update_destroy/?pk=${specificDeviationId}`)
+            .then(() => {
+                setReload(!reload);
+                toast.success('انحراف  با موفقیت حذف شد');
+                setConfirmModalStatus(false);
+            })
+            .finally(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+            });
     };
 
     return (
@@ -150,14 +162,14 @@ const Deviation = () => {
                         type='text'
                         icon={enheraf}
                         detail={{
-                            ...register('title', {
+                            ...register('reason', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.title}
+                        error={errors?.reason}
                     />
                     <FormButton
                         text='ثبت'
