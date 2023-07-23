@@ -28,7 +28,7 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('user/permissions/').then(res => {
+        Axios.get('user/permissions/?page_size=500').then(res => {
             let permission = res.data.results.map(item => ({
                 label: item.title,
                 value: item.id

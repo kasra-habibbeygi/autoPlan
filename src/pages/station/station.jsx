@@ -69,6 +69,7 @@ const Station = () => {
             });
             setLoader(false);
         });
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=100').then(res => {});
     }, [pageStatus.current, reload]);
 
     const columns = [
