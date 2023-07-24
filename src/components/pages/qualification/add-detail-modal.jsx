@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { Autocomplete, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 

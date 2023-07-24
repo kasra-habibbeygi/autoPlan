@@ -131,7 +131,7 @@ const Qualification = () => {
 
     const closeModalHandler = () => {
         reset();
-        setDetails();
+        setDetails({});
     };
 
     const closeSubModalHandler = () => {
@@ -173,17 +173,17 @@ const Qualification = () => {
                     <form onSubmit={handleSubmit(formSubmit)}>
                         {typesList.map(item => (
                             <SelectInput
-                                key={item.value}
-                                title={item.label}
+                                key={item?.value}
+                                title={item?.label}
                                 icon={blocking}
                                 onClick={() => {
                                     setShowSubModal(true);
-                                    setSubModalStatus(item.label);
+                                    setSubModalStatus(item?.label);
                                 }}
-                                items={details[item.label]}
+                                items={details[item?.label]}
                                 submitCount={submitCount}
                                 setDetails={setDetails}
-                                placeHolder={`ظرفیت سنجی ${item.label}`}
+                                placeHolder={`ظرفیت سنجی ${item?.label}`}
                             />
                         ))}
                         <FormButton text='ثبت' type='submit' backgroundColor='#174787' color='white' height={48} />
