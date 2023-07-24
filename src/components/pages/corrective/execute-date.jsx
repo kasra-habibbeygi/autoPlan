@@ -45,15 +45,6 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
             changedActionPersonsData.push(allDetail.actionPerson[some].value);
         }
 
-        // const newData = {
-        //     problem: allDetail.problem,
-        //     whys_data: allDetail.troubleshooting,
-        //     action_officials: '7',
-        //     actions_data: allDetail.actions.map(item => item.action),
-        //     start_time: tools.changeTimeStampToDate(data?.started_time),
-        //     end_time: tools.changeTimeStampToDate(data?.finished_time)
-        // };
-
         var formData = new FormData();
         changedActionPersonsData.map(item => {
             formData.append('action_officials', item);
@@ -63,10 +54,6 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
         formData.append('problem', 'problem');
         formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
         formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
-
-        // changedActionPersonsData.map(item => {
-        //     newData.action_officials = JSON.stringify(item);
-        // });
 
         Axios.post('/worker/admin/corrective-action/list_create/', formData)
             .then(() => {
