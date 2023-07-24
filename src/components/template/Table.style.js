@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 export const TableComponent = styled.div(({ theme }) => ({
     maxWidth: '100%',
     overflow: 'auto',
+
     table: {
         width: '100%',
         borderCollapse: 'separate',
@@ -52,6 +53,7 @@ export const TableComponent = styled.div(({ theme }) => ({
         margin: '10px 0',
         fontWeight: 700,
         color: theme.colors.textColor,
+
         img: {
             width: '80px',
             height: '80px'
@@ -82,6 +84,15 @@ export const TableComponent = styled.div(({ theme }) => ({
                 fontSize: '11px'
             }
         }
+    },
+
+    '& .action_officials_field': {
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '500px',
+        margin: '0 auto',
+        gap: '5px',
+        justifyContent: 'center'
     }
 }));
 

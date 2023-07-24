@@ -57,7 +57,7 @@ const PERMISSION = {
     },
 
     // ظرفیت سنجی
-    capacity_measurement: {
+    CAPACITY_MEASUREMENT: {
         ADD: 27,
         EDIT: 28,
         DELETE: 29,
@@ -65,7 +65,7 @@ const PERMISSION = {
     },
 
     //اقدام اصلاحی
-    corrective_action: {
+    CORRECTIVE_ACTION: {
         ADD: 31,
         EDIT: 32,
         DELETE: 33,

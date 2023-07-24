@@ -5,8 +5,6 @@ import { Grid } from '@mui/material';
 import { ShowAllStyle } from './show-all.style';
 import tools from '../../../utils/tools';
 
-//Components
-
 const ShowAll = ({ chosenEditItemDetails, today }) => {
     const [actions, setActions] = useState();
     const [agents, setAgents] = useState();
