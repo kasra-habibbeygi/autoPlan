@@ -16,29 +16,29 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
     useEffect(() => {
         if (chosenEditItemDetails) {
             if (chosenEditItemDetails?.action) {
-                const actionsArray = JSON.parse(chosenEditItemDetails?.action)?.map(obj => {
-                    const newObj = {};
-                    Object.entries(obj).forEach(([k, v]) => {
-                        newObj[k] = JSON.parse(`"${v}"`);
-                    });
-                    return newObj;
-                });
-                setActions(actionsArray);
-            }
-
-            if (chosenEditItemDetails?.action_agent) {
-                const obj = JSON.parse(chosenEditItemDetails?.action_agent);
-                const agentValues = Object.entries(obj)?.map(([key, value]) => ({ [key]: value }));
-
-                setAgents(agentValues);
-            }
-
-            if (chosenEditItemDetails?.troubleshooting) {
-                const questionsArray = eval(chosenEditItemDetails?.troubleshooting.replace(/'/g, '"'));
-                setQuestions(questionsArray);
+                //     const actionsArray = JSON.parse(chosenEditItemDetails?.action)?.map(obj => {
+                //         const newObj = {};
+                //         Object.entries(obj).forEach(([k, v]) => {
+                //             newObj[k] = JSON.parse(`"${v}"`);
+                //         });
+                //         return newObj;
+                //     });
+                //     setActions(actionsArray);
+                // }
+                // if (chosenEditItemDetails?.action_agent) {
+                //     const obj = JSON.parse(chosenEditItemDetails?.action_agent);
+                //     const agentValues = Object.entries(obj)?.map(([key, value]) => ({ [key]: value }));
+                //     setAgents(agentValues);
+                // }
+                if (chosenEditItemDetails?.troubleshooting) {
+                    // const questionsArray = eval(chosenEditItemDetails?.troubleshooting.replace(/'/g, '"'));
+                    // setQuestions(questionsArray);
+                }
             }
         }
     }, [chosenEditItemDetails]);
+
+    console.log(chosenEditItemDetails);
 
     return (
         <ShowAllStyle>
@@ -50,7 +50,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                         <div className='item'>
                             <p className='title'>1. تاریخ صدور اقدام اصلاحی</p>
                             <p className='text'>
-                                <span>{tools.changeDateToJalali(chosenEditItemDetails?.date_created, false)}</span>
+                                <span>{chosenEditItemDetails?.create_at}</span>
                             </p>
                         </div>
                         <div className='item'>
@@ -62,54 +62,70 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                             <div className='questions'>
                                 <span className='quest'>چرا 1 :</span>
                                 <div className='answers_wrapper'>
-                                    {questions?.[0].map((item, index) => (
-                                        <span className='answer' key={`0${item}_${index}`}>
-                                            {item}
-                                        </span>
-                                    ))}
+                                    {chosenEditItemDetails?.whys.map(
+                                        item =>
+                                            item.type === 'why1' && (
+                                                <span className='answer' key={item.id}>
+                                                    {item.title}
+                                                </span>
+                                            )
+                                    )}
                                 </div>
                             </div>
                             <div className='questions'>
                                 <span className='quest'>چرا 2 :</span>
                                 <div className='answers_wrapper'>
-                                    {questions?.[1].map((item, index) => (
-                                        <span className='answer' key={`${item}_${index}`}>
-                                            {item}
-                                        </span>
-                                    ))}
+                                    {chosenEditItemDetails?.whys.map(
+                                        item =>
+                                            item.type === 'why2' && (
+                                                <span className='answer' key={item.id}>
+                                                    {item.title}
+                                                </span>
+                                            )
+                                    )}
                                 </div>
                             </div>
                             <div className='questions'>
                                 <span className='quest'>چرا 3 :</span>
                                 <div className='answers_wrapper'>
-                                    {questions?.[2].map((item, index) => (
-                                        <span className='answer' key={`${item}_${index}`}>
-                                            {item}
-                                        </span>
-                                    ))}
+                                    {chosenEditItemDetails?.whys.map(
+                                        item =>
+                                            item.type === 'why3' && (
+                                                <span className='answer' key={item.id}>
+                                                    {item.title}
+                                                </span>
+                                            )
+                                    )}
                                 </div>
                             </div>
                             <div className='questions'>
                                 <span className='quest'>چرا 4 :</span>
                                 <div className='answers_wrapper'>
-                                    {questions?.[3].map((item, index) => (
-                                        <span className='answer' key={`${item}_${index}`}>
-                                            {item}
-                                        </span>
-                                    ))}
+                                    {chosenEditItemDetails?.whys.map(
+                                        item =>
+                                            item.type === 'why4' && (
+                                                <span className='answer' key={item.id}>
+                                                    {item.title}
+                                                </span>
+                                            )
+                                    )}
                                 </div>
                             </div>
                             <div className='questions'>
                                 <span className='quest'>چرا 5 :</span>
                                 <div className='answers_wrapper'>
-                                    {questions?.[4].map((item, index) => (
-                                        <span className='answer' key={`${item}_${index}`}>
-                                            {item}
-                                        </span>
-                                    ))}
+                                    {chosenEditItemDetails?.whys.map(
+                                        item =>
+                                            item.type === 'why5' && (
+                                                <span className='answer' key={item.id}>
+                                                    {item.title}
+                                                </span>
+                                            )
+                                    )}
                                 </div>
                             </div>
                         </div>
+                        {/* 
                         <div className='item'>
                             <p className='title'>4. اقدام یا اقدامات اصلاحی</p>
                             {actions?.map((item, index) => (
@@ -118,10 +134,10 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                                     <span className='answer'>{item.action}</span>
                                 </p>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                {/* <Grid item xs={12} md={6}>
                     <div className='container'>
                         <div className='item'>
                             <p className='title'>5. مسئول اقدامات اصلاحی</p>
@@ -159,7 +175,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                             </>
                         )}
                     </div>
-                </Grid>
+                </Grid> */}
             </Grid>
         </ShowAllStyle>
     );

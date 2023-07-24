@@ -26,7 +26,7 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
         mode: 'onTouched'
     });
 
-    const { errors, isDirty } = formState;
+    const { errors } = formState;
 
     useEffect(() => {
         if (chosenEditItemDetails?.start_action_date && chosenEditItemDetails?.end_action_date) {
@@ -38,40 +38,37 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     const formSubmit = data => {
         setButtonLoading(true);
 
+        const changedActionPersonsData = [];
+
+        for (const some in allDetail.actionPerson) {
+            changedActionPersonsData.push(allDetail.actionPerson[some].value);
+        }
+
         const newData = {
-            start_action_date: tools.changeTimeStampToIsoDate(data?.started_time),
-            end_action_date: tools.changeTimeStampToIsoDate(data?.finished_time)
+            problem: allDetail.problem,
+            whys_data: allDetail.troubleshooting,
+            actions_data: allDetail.actions.map(item => item.action),
+            action_officials: changedActionPersonsData,
+            start_time: tools.changeTimeStampToDate(data?.started_time),
+            end_time: tools.changeTimeStampToDate(data?.finished_time)
         };
 
-        if (isDirty) {
-            Axios.put(`reform_action/set_action_date/?id=${allDetail?.mainId}`, newData)
-                .then(() => {
-                    setReload(prev => !prev);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        execute_date: data
-                    }));
-                    if (isTime) {
-                        setStep(6);
-                    } else {
-                        setIsModalOpen(false);
-                        setStep(1);
-                    }
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
-        } else {
-            setAllDetail(prev => ({
-                ...prev,
-                execute_date: data
-            }));
-            if (isTime) {
-                setStep(6);
-            } else {
-                setIsModalOpen(false);
-                setStep(1);
-            }
-        }
+        Axios.post('/worker/admin/corrective-action/list_create/', newData)
+            .then(() => {
+                setReload(prev => !prev);
+                setAllDetail(prev => ({
+                    ...prev,
+                    execute_date: data
+                }));
+                if (isTime) {
+                    setStep(6);
+                } else {
+                    setIsModalOpen(false);
+                    setStep(1);
+                }
+            })
+            .catch(() => {})
+            .finally(() => setButtonLoading(false));
     };
 
     return (
@@ -122,6 +119,8 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
                     height={48}
                     icon={isTime && arrow}
                 />
+
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(4)} margin={'20px 0'} />
             </form>
         </Style>
     );

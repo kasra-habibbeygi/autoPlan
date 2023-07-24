@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import Axios from './../../../configs/axios';
 
 //Assets
 import check from '../../../assets/images/icons/check.svg';
@@ -13,9 +12,7 @@ import { ActionStyle } from './action.style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setReload }) => {
-    const [buttonLoading, setButtonLoading] = useState(false);
-
+const Action = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             actionFields: [{ action: '' }]
@@ -24,7 +21,7 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
         mode: 'onTouched'
     });
 
-    const { errors, isDirty } = formState;
+    const { errors } = formState;
 
     const { fields, append } = useFieldArray({
         name: 'actionFields',
@@ -46,43 +43,34 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        setButtonLoading(true);
+        setAllDetail(prev => ({
+            ...prev,
+            actions: data.actionFields
+        }));
+        setStep(4);
 
-        const mainString =
-            '[' +
-            data.actionFields
-                .map(
-                    obj =>
-                        '{' +
-                        Object.entries(obj)
-                            .map(([k, v]) => `"${k}": "${v}"`)
-                            .join(', ') +
-                        '}'
-                )
-                .join(', ') +
-            ']';
-
-        if (isDirty) {
-            Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
-                action: mainString
-            })
-                .then(() => {
-                    setAllDetail(prev => ({
-                        ...prev,
-                        actions: data.actionFields
-                    }));
-                    setReload(prev => !prev);
-                    setStep(4);
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
-        } else {
-            setAllDetail(prev => ({
-                ...prev,
-                actions: data.actionFields
-            }));
-            setStep(4);
-        }
+        // setButtonLoading(true);
+        // if (isDirty) {
+        //     Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
+        //         action: mainString
+        //     })
+        //         .then(() => {
+        //             setAllDetail(prev => ({
+        //                 ...prev,
+        //                 actions: data.actionFields
+        //             }));
+        //             setReload(prev => !prev);
+        //             setStep(4);
+        //         })
+        //         .catch(() => {})
+        //         .finally(() => setButtonLoading(false));
+        // } else {
+        //     setAllDetail(prev => ({
+        //         ...prev,
+        //         actions: data.actionFields
+        //     }));
+        //     setStep(4);
+        // }
     };
 
     const handleAddInput = () => {
@@ -118,15 +106,8 @@ const Action = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setRe
                         </div>
                     ))}
                 </div>
-                <FormButton
-                    text='بعدی'
-                    loading={buttonLoading}
-                    type='submit'
-                    backgroundColor={'#174787'}
-                    color={'white'}
-                    height={48}
-                    icon={arrow}
-                />
+                <FormButton text='بعدی' type='submit' backgroundColor={'#174787'} color={'white'} height={48} icon={arrow} />
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(2)} margin={'20px 0'} />
             </form>
         </ActionStyle>
     );

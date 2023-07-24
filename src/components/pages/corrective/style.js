@@ -50,5 +50,41 @@ export const Style = styled.div(props => ({
         div: {
             border: '1px solid #830000'
         }
+    },
+
+    '& .auto_error': {
+        fontSize: '12px',
+        color: '#830000',
+        marginTop: '8px',
+        marginBottom: '15px'
+    },
+
+    '& .auto_title': {
+        fontWeight: 700
+    },
+
+    '& .auto_complete': {
+        marginTop: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '30px',
+        background: props.theme.colors.white,
+        boxShadow: '0px 4px 14px 0px #0000000D',
+        padding: '0 20px',
+        borderRadius: '8px',
+
+        '& *': {
+            border: 'none',
+            fontFamily: 'main !important'
+        },
+
+        button: {
+            marginTop: '0 !important',
+            width: 'auto '
+        }
+    },
+
+    '& .auto_complete_error': {
+        border: '1px solid #830000'
     }
 }));
