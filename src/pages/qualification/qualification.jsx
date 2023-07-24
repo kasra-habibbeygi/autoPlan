@@ -6,10 +6,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 
 //Assets
-import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
-import Accumulator from '../../assets/images/icons/Accumulator.svg';
 import blocking from '../../assets/images/icons/blocking.svg';
-import GasStation from '../../assets/images/icons/GasStation.svg';
 import { QualificationWrapper } from './qualification.style';
 import { ActionCell } from '../deviation/deviation.style';
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -30,6 +27,7 @@ import PERMISSION from '../../utils/permission.ts';
 
 const Qualification = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
+    const [details, setDetails] = useState({});
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
@@ -38,17 +36,12 @@ const Qualification = () => {
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [qualificationList, setQualificationList] = useState();
+    const [typesList, setTypesList] = useState([]);
+    const [seatList, setSeatList] = useState([]);
+    const [personnelList, setPersonnelList] = useState([]);
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
-    });
-
-    const [details, setDetails] = useState({
-        blockingList: [],
-        mechanicList: [],
-        electricList: [],
-        gasList: [],
-        hybridList: []
     });
 
     const [pageStatus, setPageStatus] = useState({
@@ -92,9 +85,9 @@ const Qualification = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`/worker/admin/capacity-measurement/list_create/?page_size=10&page=${pageStatus.current}`)
+        Axios.get(`/worker/admin/capacity-measurement/list_create/?page=${pageStatus.current}`)
             .then(res => {
-                setQualificationList(res.data.data);
+                setQualificationList(res.data.results);
                 setPageStatus({
                     ...pageStatus,
                     total: res.data.total
@@ -102,18 +95,35 @@ const Qualification = () => {
             })
             .finally(() => setLoader(false))
             .catch(() => {});
+
+        Axios.get('worker/admin/organizational-position/list_create/?page_size=500').then(res => {
+            let temp = [];
+
+            res.data.results.map(item => {
+                if (item.technical_force) {
+                    temp.push({
+                        label: item.title,
+                        value: item.id
+                    });
+                }
+
+                return;
+            });
+
+            setTypesList(temp);
+        });
+
+        Axios.get('worker/admin/personnel/list_create/?page_size=500').then(res => {
+            setPersonnelList(res.data.results);
+        });
+
+        Axios.get('worker/admin/seat-capacity/list_create/?page_size=500').then(res => {
+            setSeatList(res.data.results);
+        });
     }, [pageStatus.current, reload]);
 
     const formSubmit = () => {
-        if (
-            details.blockingList.length > 0 &&
-            details.electricList.length > 0 &&
-            details.gasList.length > 0 &&
-            details.mechanicList.length > 0 &&
-            details.hybridList.length > 0
-        ) {
-            //
-        }
+        Axios.post('worker/admin/capacity-measurement/list_create/', details);
     };
 
     const closeModalHandler = () => {
@@ -139,14 +149,16 @@ const Qualification = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`workshop_capacity_mgmt/?id=${specificQualificationId}`)
+        Axios.delete(`worker/admin/capacity-measurement/retrieve_update_destroy/?pk=${specificQualificationId}`)
             .then(() => {
-                setButtonLoader({ ...buttonLoader, delete: false });
                 setReload(!reload);
                 toast.success('ظرفیت  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
             })
-            .catch(() => {});
+            .catch(() => {})
+            .finally(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+            });
     };
 
     return (
@@ -162,77 +174,33 @@ const Qualification = () => {
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
                     <form onSubmit={handleSubmit(formSubmit)}>
-                        <SelectInput
-                            title='جلوبندی'
-                            icon={blocking}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('جلوبندی');
-                            }}
-                            items={details.blockingList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی جلوبندی'
-                        />
-
-                        <SelectInput
-                            title='مکانیک'
-                            icon={ShockAbsorber}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('مکانیک');
-                            }}
-                            items={details.mechanicList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی مکانیکی'
-                        />
-
-                        <SelectInput
-                            title='برق'
-                            icon={Accumulator}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('برق');
-                            }}
-                            items={details.electricList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی برق کار'
-                        />
-
-                        <SelectInput
-                            title='گاز'
-                            icon={GasStation}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('گاز');
-                            }}
-                            items={details.gasList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی گاز کار'
-                        />
-
-                        <SelectInput
-                            title='هیبرید'
-                            icon={GasStation}
-                            onClick={() => {
-                                setShowSubModal(true);
-                                setSubModalStatus('هیبرید');
-                            }}
-                            items={details.hybridList}
-                            submitCount={submitCount}
-                            setDetails={setDetails}
-                            placeHolder='ظرفیت سنجی هیبرید'
-                        />
-
-                        <FormButton text='ثبت' type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                        {typesList.map(item => (
+                            <SelectInput
+                                key={item.value}
+                                title={item.label}
+                                icon={blocking}
+                                onClick={() => {
+                                    setShowSubModal(true);
+                                    setSubModalStatus(item.label);
+                                }}
+                                items={details[item.label]}
+                                submitCount={submitCount}
+                                setDetails={setDetails}
+                                placeHolder={`ظرفیت سنجی ${item.label}`}
+                            />
+                        ))}
+                        <FormButton text='ثبت' type='submit' backgroundColor='#174787' color='white' height={48} />
                     </form>
                 </div>
             </Modal>
             <Modal state={showSubModal} setState={setShowSubModal} maxWidth='sm' handleClose={closeSubModalHandler}>
-                <AddDetailModal subModalStatus={subModalStatus} setDetails={setDetails} closeSubModalHandler={closeSubModalHandler} />
+                <AddDetailModal
+                    subModalStatus={subModalStatus}
+                    setDetails={setDetails}
+                    closeSubModalHandler={closeSubModalHandler}
+                    personnelList={personnelList}
+                    seatList={seatList}
+                />
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}

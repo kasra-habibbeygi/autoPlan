@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -61,12 +62,20 @@ const Station = () => {
             setLoader(false);
         });
         Axios.get('worker/admin/organizational-position/list_create/?page_size=500').then(res => {
-            let posts = res.data.results.map(item => ({
-                label: item.title,
-                value: item.id
-            }));
+            let temp = [];
 
-            setTypeList(posts);
+            res.data.results.map(item => {
+                if (item.technical_force) {
+                    temp.push({
+                        label: item.title,
+                        value: item.id
+                    });
+                }
+
+                return;
+            });
+
+            setTypeList(temp);
         });
     }, [pageStatus.current, reload]);
 
