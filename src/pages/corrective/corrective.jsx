@@ -121,7 +121,7 @@ const Corrective = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        Axios.delete(`reform_action/?id=${specificDeviationId}`)
+        Axios.delete(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${specificDeviationId}`)
             .then(() => {
                 setButtonLoader({ ...buttonLoader, delete: false });
                 setReload(!reload);
