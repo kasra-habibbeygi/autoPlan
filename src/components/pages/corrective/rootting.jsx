@@ -15,7 +15,6 @@ import FormButton from '../../form-groups/form-button';
 
 const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, setReload }) => {
     const [inputValues, setInputValues] = useState([[''], [''], [''], [''], ['']]);
-    const [buttonLoading, setButtonLoading] = useState(false);
 
     useEffect(() => {
         if (chosenEditItemDetails?.troubleshooting) {
@@ -59,25 +58,29 @@ const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, set
     };
 
     const sendDataHandler = () => {
-        const str = '[' + inputValues.map(subArr => '[' + subArr.map(str => `'${str}'`).join(', ') + ']').join(', ') + ']';
-
         const allTruthy = inputValues.every(innerArr => innerArr.every(item => Boolean(item.trim())));
 
         if (allTruthy) {
-            setButtonLoading(true);
-            Axios.put(`reform_action/troubleshooting/?id=${allDetail?.mainId}`, {
-                troubleshooting: str
-            })
-                .then(res => {
-                    setStep(3);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        troubleshooting: str
-                    }));
-                    setReload(prev => !prev);
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
+            setStep(3);
+            setAllDetail(prev => ({
+                ...prev,
+                troubleshooting: inputValues
+            }));
+
+            // setButtonLoading(true);
+            // Axios.put(`reform_action/troubleshooting/?id=${allDetail?.mainId}`, {
+            //     troubleshooting: str
+            // })
+            //     .then(res => {
+            //         setStep(3);
+            //         setAllDetail(prev => ({
+            //             ...prev,
+            //             troubleshooting: str
+            //         }));
+            //         setReload(prev => !prev);
+            //     })
+            //     .catch(() => {})
+            // .finally(() => setButtonLoading(false));
         } else {
             toast.error('لطفا تمام مقادیر را پر کنید', {
                 position: 'top-left'
@@ -107,15 +110,8 @@ const Rootting = ({ setStep, setAllDetail, allDetail, chosenEditItemDetails, set
                     </div>
                 </div>
             ))}
-            <FormButton
-                text='بعدی'
-                loading={buttonLoading}
-                backgroundColor='#174787'
-                color='white'
-                height={48}
-                icon={arrow}
-                onClick={sendDataHandler}
-            />
+            <FormButton text='بعدی' backgroundColor='#174787' color='white' height={48} icon={arrow} onClick={sendDataHandler} />
+            <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(1)} margin={'20px 0'} />
         </RootingStyle>
     );
 };
