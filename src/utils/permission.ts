@@ -4,17 +4,17 @@ const PERMISSION = {
 
     //دسترسی پرسنل
     ACCESS_PERSONNEL: {
-        ADD: 200,
-        EDIT: 222,
-        DELETE: 123,
+        ADD: 1,
+        EDIT: 2,
+        DELETE: 3,
         LIST: 4
     },
 
     //دسترسی پست
     ACCESS_POST: {
-        ADD: 222,
-        EDIT: 222,
-        DELETE: 222,
+        ADD: 5,
+        EDIT: 6,
+        DELETE: 7,
         LIST: 8
     },
 
@@ -26,8 +26,8 @@ const PERMISSION = {
         LIST: 12
     },
 
-    //ظرفیت سنجی
-    CAPACITY: {
+    //تعریف جایگاه
+    SEAT_CAPACITY: {
         ADD: 13,
         EDIT: 14,
         DELETE: 15,
@@ -56,12 +56,20 @@ const PERMISSION = {
         LIST: 26
     },
 
-    // تعریف جایگاه
-    SEAT_CAPACITY: {
+    // ظرفیت سنجی
+    capacity_measurement: {
         ADD: 27,
         EDIT: 28,
         DELETE: 29,
         LIST: 30
+    },
+
+    //اقدام اصلاحی
+    corrective_action: {
+        ADD: 31,
+        EDIT: 32,
+        DELETE: 33,
+        LIST: 34
     }
 };
 
