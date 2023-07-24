@@ -123,18 +123,15 @@ const Qualification = () => {
     }, [pageStatus.current, reload]);
 
     const formSubmit = () => {
-        Axios.post('worker/admin/capacity-measurement/list_create/', details);
+        var formdata = new FormData();
+        formdata.append('data', '{"tt": [{"type": 1,"user": 1,"time": 29}, {"type": 1,"user": 1,"time": 444}]}');
+
+        Axios.post('worker/admin/capacity-measurement/list_create/', formdata);
     };
 
     const closeModalHandler = () => {
         reset();
-        setDetails({
-            blockingList: [],
-            mechanicList: [],
-            electricList: [],
-            gasList: [],
-            hybridList: []
-        });
+        setDetails();
     };
 
     const closeSubModalHandler = () => {

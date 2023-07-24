@@ -35,7 +35,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                     [subModalStatus]: [
                         ...prev[subModalStatus],
                         {
-                            name: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
+                            user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
                             time: data.workTime,
                             type: filteredSeatList.filter(item => item.label === data.station)[0].value,
                             fullText: `${data.name} : ${data.workTime} ساعت کاری-در جایگاه ${data.station}`
@@ -47,7 +47,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                 ...prev,
                 [subModalStatus]: [
                     {
-                        name: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
+                        user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
                         time: data.workTime,
                         type: filteredSeatList.filter(item => item.label === data.station)[0].value,
                         fullText: `${data.name} : ${data.workTime} ساعت کاری-در جایگاه ${data.station}`
