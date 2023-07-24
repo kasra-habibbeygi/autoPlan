@@ -32,7 +32,7 @@ import ResultResponsibleForAction from '../../components/pages/corrective/result
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
-    const [step, setStep] = useState(8);
+    const [step, setStep] = useState(1);
     const [allDetail, setAllDetail] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [correctiveData, setCorrectiveData] = useState();
@@ -102,12 +102,12 @@ const Corrective = () => {
                             setIsModalOpen(true);
                             setChosenEditItemDetails(data);
                         }}
-                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)}
+                        disabled={!userPermissions.includes(PERMISSION.corrective_action.EDIT)}
                     />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.DELETE)}
+                        disabled={!userPermissions.includes(PERMISSION.corrective_action.DELETE)}
                     />
                 </ActionCell>
             )
@@ -154,7 +154,7 @@ const Corrective = () => {
             <PagesHeader
                 buttonTitle='اقدام اصلاحی'
                 onButtonClick={openModal}
-                disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.ADD)}
+                disabled={!userPermissions.includes(PERMISSION.corrective_action.ADD)}
             />
             <Table columns={columns} rows={correctiveData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal

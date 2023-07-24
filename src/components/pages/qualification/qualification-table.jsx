@@ -13,7 +13,7 @@ const QualificationTable = () => {
     });
     const { errors } = formState;
 
-    const formSubmit = data => {};
+    const formSubmit = () => {};
 
     return (
         <TableWrapper>

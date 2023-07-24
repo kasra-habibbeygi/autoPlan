@@ -68,7 +68,7 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        {permissionHandler(['CAPACITY.ADD', 'CAPACITY.EDIT', 'CAPACITY.DELETE']) && (
+                        {permissionHandler(['capacity_measurement.ADD', 'capacity_measurement.EDIT', 'capacity_measurement.DELETE']) && (
                             <li>
                                 <NavLink to='/qualification' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>

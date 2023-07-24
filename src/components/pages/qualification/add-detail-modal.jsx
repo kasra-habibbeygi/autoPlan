@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 
 //assets
@@ -35,6 +35,8 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
             modalRelated = 'electricList';
         } else if (subModalStatus === 'گاز') {
             modalRelated = 'gasList';
+        } else if (subModalStatus === 'هیبرید') {
+            modalRelated = 'hybridList';
         }
 
         setDetails(prev => ({
@@ -44,12 +46,9 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
                 {
                     id: uuidv4(),
                     name: data.name,
-                    time: data.time,
                     workTime: data.workTime,
                     station: data.station,
-                    fullText: `${data.name}-${data.time === 'partTime' ? 'پاره وقت' : data.time === 'fullTime' ? 'تمام وقت' : null} : ${
-                        data.workTime
-                    } ساعت کاری-در جایگاه ${data.station}`
+                    fullText: `${data.name} : ${data.workTime} ساعت کاری-در جایگاه ${data.station}`
                 }
             ]
         }));
@@ -59,9 +58,9 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
     };
 
     return (
-        <FormWrapper onSubmit={handleSubmit(sendForm)} error={errors?.name?.message}>
+        <FormWrapper onSubmit={handleSubmit(sendForm)}>
             <p>{`نام نیروی ${subModalStatus}`}</p>
-            <div className='auto_complete'>
+            <div className={errors?.name?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
                 <Controller
                     control={control}
                     name='name'
@@ -86,7 +85,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler }) =>
             <p className='auto_error'>{errors?.name?.message}</p>
 
             <p>جایگاه نیرو</p>
-            <div className='auto_complete'>
+            <div className={errors?.station?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
                 <Controller
                     control={control}
                     name='station'
