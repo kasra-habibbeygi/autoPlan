@@ -73,8 +73,6 @@ const WorkTimeForm = () => {
         });
     }, [reload]);
 
-    console.log(getTime);
-
     return (
         <FormWrapper>
             <p className='title'>ساعت کار نمایندگی</p>

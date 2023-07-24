@@ -33,19 +33,6 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, setReload }) =>
     const formSubmit = data => {
         setButtonLoading(true);
         if (isDirty) {
-            // if (chosenEditItemDetails) {
-            //     Axios.put(`reform_action/problem/?id=${chosenEditItemDetails.id}`, data)
-            //         .then(res => {
-            //             setStep(2);
-            //             setAllDetail(prev => ({
-            //                 ...prev,
-            //                 problem: data.problem,
-            //                 mainId: res.data.id
-            //             }));
-            //         })
-            // .catch(() => {})
-            //         .finally(() => setButtonLoading(false));
-            // } else {
             Axios.post('reform_action/problem/', data)
                 .then(res => {
                     setStep(2);

@@ -68,7 +68,7 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        {permissionHandler(['capacity_measurement.ADD', 'capacity_measurement.EDIT', 'capacity_measurement.DELETE']) && (
+                        {permissionHandler(['CAPACITY_MEASUREMENT.ADD', 'CAPACITY_MEASUREMENT.EDIT', 'CAPACITY_MEASUREMENT.DELETE']) && (
                             <li>
                                 <NavLink to='/qualification' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>
@@ -123,15 +123,17 @@ const SideBar = () => {
                                     <p>گزارش گیری</p>
                                 </div>
                             </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/corrective' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Document} />
-                                    <p>اقدام اصلاحی</p>
-                                </div>
-                            </NavLink>
-                        </li>
+                        </li>                        
+                        {permissionHandler(['CORRECTIVE_ACTION.ADD , CORRECTIVE_ACTION.DELETE', 'CORRECTIVE_ACTION.EDIT']) && (
+                            <li>
+                                <NavLink to='/corrective' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Document} />
+                                        <p>اقدام اصلاحی</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
                         {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
                             <li>
                                 <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>

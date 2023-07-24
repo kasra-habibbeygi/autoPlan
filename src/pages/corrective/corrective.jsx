@@ -61,27 +61,14 @@ const Corrective = () => {
         {
             id: 3,
             title: 'مسئول',
-            key: 'action_agent',
-            renderCell: data => {
-                let arrayValues = null;
-
-                if (data?.action_agent) {
-                    const obj = JSON.parse(data.action_agent);
-                    arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
-
-                    return (
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                            {arrayValues?.map((item, index) => (
-                                <p key={`correction_${index + 1}`}>
-                                    {index + 1}. {item?.[`correction_${index + 1}`]}
-                                </p>
-                            ))}
-                        </div>
-                    );
-                }
-
-                return arrayValues;
-            }
+            key: 'action_officials',
+            renderCell: data => (
+                <div className='action_officials_field'>
+                    {data.action_officials.map((item, index) => (
+                        <p key={`action_officials_${index}`}>{item.fullname} ,</p>
+                    ))}
+                </div>
+            )
         },
         {
             id: 4,
@@ -102,12 +89,12 @@ const Corrective = () => {
                             setIsModalOpen(true);
                             setChosenEditItemDetails(data);
                         }}
-                        disabled={!userPermissions.includes(PERMISSION.corrective_action.EDIT)}
+                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.EDIT)}
                     />
                     <FormButton
                         icon={trashBin}
                         onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.corrective_action.DELETE)}
+                        disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.DELETE)}
                     />
                 </ActionCell>
             )
@@ -116,9 +103,9 @@ const Corrective = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`reform_action/?page=${pageStatus.current}`)
+        Axios.get(`worker/admin/corrective-action/list_create/?page=${pageStatus.current}`)
             .then(res => {
-                setCorrectiveData(res.data.data);
+                setCorrectiveData(res.data.results);
                 setPageStatus({
                     ...pageStatus,
                     total: res.data.total
@@ -154,7 +141,7 @@ const Corrective = () => {
             <PagesHeader
                 buttonTitle='اقدام اصلاحی'
                 onButtonClick={openModal}
-                disabled={!userPermissions.includes(PERMISSION.corrective_action.ADD)}
+                disabled={!userPermissions.includes(PERMISSION.CORRECTIVE_ACTION.ADD)}
             />
             <Table columns={columns} rows={correctiveData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal
