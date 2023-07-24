@@ -123,10 +123,10 @@ const Qualification = () => {
     }, [pageStatus.current, reload]);
 
     const formSubmit = () => {
-        var formdata = new FormData();
-        formdata.append('data', '{"tt": [{"type": 1,"user": 1,"time": 29}, {"type": 1,"user": 1,"time": 444}]}');
+        var formData = new FormData();
+        formData.append('data', JSON.stringify(details));
 
-        Axios.post('worker/admin/capacity-measurement/list_create/', formdata);
+        Axios.post('worker/admin/capacity-measurement/list_create/', formData);
     };
 
     const closeModalHandler = () => {

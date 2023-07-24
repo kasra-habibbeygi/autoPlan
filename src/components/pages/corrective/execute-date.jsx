@@ -1,3 +1,4 @@
+/* eslint-disable vars-on-top */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -44,16 +45,30 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
             changedActionPersonsData.push(allDetail.actionPerson[some].value);
         }
 
-        const newData = {
-            problem: allDetail.problem,
-            whys_data: allDetail.troubleshooting,
-            actions_data: allDetail.actions.map(item => item.action),
-            action_officials: changedActionPersonsData,
-            start_time: tools.changeTimeStampToDate(data?.started_time),
-            end_time: tools.changeTimeStampToDate(data?.finished_time)
-        };
+        // const newData = {
+        //     problem: allDetail.problem,
+        //     whys_data: allDetail.troubleshooting,
+        //     action_officials: '7',
+        //     actions_data: allDetail.actions.map(item => item.action),
+        //     start_time: tools.changeTimeStampToDate(data?.started_time),
+        //     end_time: tools.changeTimeStampToDate(data?.finished_time)
+        // };
 
-        Axios.post('/worker/admin/corrective-action/list_create/', newData)
+        var formData = new FormData();
+        changedActionPersonsData.map(item => {
+            formData.append('action_officials', item);
+        });
+        formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
+        formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
+        formData.append('problem', 'problem');
+        formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
+        formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
+
+        // changedActionPersonsData.map(item => {
+        //     newData.action_officials = JSON.stringify(item);
+        // });
+
+        Axios.post('/worker/admin/corrective-action/list_create/', formData)
             .then(() => {
                 setReload(prev => !prev);
                 setAllDetail(prev => ({
