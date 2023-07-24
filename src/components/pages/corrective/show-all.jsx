@@ -6,7 +6,7 @@ import { ShowAllStyle } from './show-all.style';
 import tools from '../../../utils/tools';
 
 const ShowAll = ({ chosenEditItemDetails, today }) => {
-    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
+    const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
     const isTime = finishedDate === today;
 
     return (
@@ -110,7 +110,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                     <div className='container'>
                         <div className='item'>
                             <p className='title'>5. مسئول اقدامات اصلاحی</p>
-                            {chosenEditItemDetails?.action_officials?.map((person, index) => (
+                            {chosenEditItemDetails?.action_officials_info?.map((person, index) => (
                                 <p className='questions' key={person.id}>
                                     <span className='quest'>مسئول اقدام اصلاحی {index + 1} :</span>
                                     <span className='answer'>{person.fullname}</span>
@@ -121,9 +121,9 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                         <div className='item'>
                             <p className='title'>6. تاریخ اجرا</p>
                             <p className='text'>
-                                <span>{tools.changeDateToJalali(chosenEditItemDetails?.start_time, false)}</span>
+                                <span>{chosenEditItemDetails?.start_time}</span>
                                 <span>الی</span>
-                                <span>{tools.changeDateToJalali(chosenEditItemDetails?.end_time, false)}</span>
+                                <span>{chosenEditItemDetails?.end_time}</span>
                             </p>
                         </div>
                         {isTime && (
