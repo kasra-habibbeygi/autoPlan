@@ -79,16 +79,8 @@ const Qualification = () => {
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton
-                        icon={pen}
-                        onClick={() => setShowAddModal(true)}
-                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.EDIT)}
-                    />
-                    <FormButton
-                        icon={trashBin}
-                        onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.CAPACITY.DELETE)}
-                    />
+                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
+                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
                 </ActionCell>
             )
         }
@@ -150,7 +142,6 @@ const Qualification = () => {
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
-                disabled={!userPermissions.includes(PERMISSION.CAPACITY.ADD)}
             />
             <Table columns={columns} rows={qualificationList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
