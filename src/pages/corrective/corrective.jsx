@@ -64,7 +64,7 @@ const Corrective = () => {
             key: 'action_officials',
             renderCell: data => (
                 <div className='action_officials_field'>
-                    {data.action_officials.map((item, index) => (
+                    {data?.action_officials?.map((item, index) => (
                         <p key={`action_officials_${index}`}>{item.fullname} ,</p>
                     ))}
                 </div>
