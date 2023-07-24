@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 
 //Assets
 import ShockAbsorber from '../../assets/images/icons/ShockAbsorber.svg';
@@ -21,13 +22,11 @@ import Modal from '../../components/template/modal';
 import SelectInput from '../../components/form-groups/select-input';
 import AddDetailModal from '../../components/pages/qualification/add-detail-modal';
 import FormButton from '../../components/form-groups/form-button';
-import DatePickerComponent from '../../components/form-groups/date-picker';
 import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
 import Tools from '../../utils/tools';
 import PERMISSION from '../../utils/permission.ts';
-import { toast } from 'react-hot-toast';
 
 const Qualification = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -36,7 +35,6 @@ const Qualification = () => {
     const [subModalStatus, setSubModalStatus] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [specificQualificationId, setSpecificQualificationId] = useState();
-    const [modalStep, setModalStep] = useState(1);
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [qualificationList, setQualificationList] = useState();
@@ -49,7 +47,8 @@ const Qualification = () => {
         blockingList: [],
         mechanicList: [],
         electricList: [],
-        gasList: []
+        gasList: [],
+        hybridList: []
     });
 
     const [pageStatus, setPageStatus] = useState({
@@ -57,37 +56,64 @@ const Qualification = () => {
         current: 1
     });
 
-    const { control, handleSubmit, formState, reset } = useForm({
-        defaultValues: {
-            date: ''
-        },
+    const { handleSubmit, formState, reset } = useForm({
         mode: 'onTouched'
     });
-    const { errors, submitCount } = formState;
+    const { submitCount } = formState;
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date', renderCell: data => Tools.changeDateToJalali(data.date_created) },
         { id: 3, title: 'جلوبندی', key: 'blocking_number' },
         { id: 4, title: 'مکانیک', key: 'mechanic_number' },
-        { id: 4, title: 'گاز', key: 'gas_number' },
-        { id: 5, title: 'برق', key: 'elec_number' },
-        { id: 5, title: 'هیبرید', key: 'hybrid_number' },
+        { id: 5, title: 'گاز', key: 'gas_number' },
+        { id: 6, title: 'برق', key: 'elec_number' },
+        { id: 7, title: 'هیبرید', key: 'hybrid_number' },
         {
-            id: 7,
+            id: 8,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} onClick={() => setShowAddModal(true)} />
-                    <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.id)} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => setShowAddModal(true)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE)}
+                    />
                 </ActionCell>
             )
         }
     ];
 
+    useEffect(() => {
+        setLoader(true);
+        Axios.get(`/worker/admin/capacity-measurement/list_create/?page_size=10&page=${pageStatus.current}`)
+            .then(res => {
+                setQualificationList(res.data.data);
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
+            })
+            .finally(() => setLoader(false))
+            .catch(() => {});
+    }, [pageStatus.current, reload]);
+
     const formSubmit = () => {
-        details.blockingList.length > 0 && details.electricList.length > 0 && details.gasList.length > 0 && details.mechanicList.length > 0;
+        if (
+            details.blockingList.length > 0 &&
+            details.electricList.length > 0 &&
+            details.gasList.length > 0 &&
+            details.mechanicList.length > 0 &&
+            details.hybridList.length > 0
+        ) {
+            //
+        }
     };
 
     const closeModalHandler = () => {
@@ -96,7 +122,8 @@ const Qualification = () => {
             blockingList: [],
             mechanicList: [],
             electricList: [],
-            gasList: []
+            gasList: [],
+            hybridList: []
         });
     };
 
@@ -122,43 +149,19 @@ const Qualification = () => {
             .catch(() => {});
     };
 
-    useEffect(() => {
-        setLoader(true);
-        Axios.get(`workshop_capacity_mgmt/?page_size=10&page=${pageStatus.current}`)
-            .then(res => {
-                setQualificationList(res.data.data);
-                setPageStatus({
-                    ...pageStatus,
-                    total: res.data.total
-                });
-                setLoader(false);
-            })
-            .catch(() => {});
-    }, [pageStatus.current, reload]);
-
     return (
         <QualificationWrapper>
             <PagesHeader
                 buttonTitle='ثبت ظرفیت سنجی جدید'
                 secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
+                disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.ADD)}
             />
             <Table columns={columns} rows={qualificationList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={showAddModal} setState={setShowAddModal} bgStatus={true} handleClose={closeModalHandler}>
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
                     <form onSubmit={handleSubmit(formSubmit)}>
-                        <div className='date_wrapper'>
-                            <Controller
-                                control={control}
-                                name='date'
-                                rules={{ required: 'این فیلد اجباری است' }}
-                                render={({ field: { onChange, value } }) => {
-                                    return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                                }}
-                            />
-                        </div>
-
                         <SelectInput
                             title='جلوبندی'
                             icon={blocking}
@@ -218,7 +221,7 @@ const Qualification = () => {
                                 setShowSubModal(true);
                                 setSubModalStatus('هیبرید');
                             }}
-                            items={details.gasList}
+                            items={details.hybridList}
                             submitCount={submitCount}
                             setDetails={setDetails}
                             placeHolder='ظرفیت سنجی هیبرید'

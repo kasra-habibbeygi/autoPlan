@@ -28,9 +28,6 @@ export const FormWrapper = styled.form(props => {
             boxShadow: '0px 4px 14px 0px #0000000D',
             padding: '0 20px',
             borderRadius: '8px',
-            ...(props.error && {
-                border: '1px solid #830000'
-            }),
 
             '& *': {
                 border: 'none',
@@ -41,6 +38,10 @@ export const FormWrapper = styled.form(props => {
                 marginTop: '0 !important',
                 width: 'auto '
             }
+        },
+
+        '& .auto_complete_error': {
+            border: '1px solid #830000'
         },
 
         '& .radios': {
