@@ -5,7 +5,6 @@ import Axios from '../../../configs/axios';
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
 import ShockAbsorber from './../../../assets/images/icons/ShockAbsorber.svg';
-import UserHeart from './../../../assets/images/icons/UserHeart.svg';
 import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
 import ClockSquare from './../../../assets/images/icons/ClockSquare.svg';
 import clockDot from './../../../assets/images/icons/clockDot.svg';
@@ -13,22 +12,17 @@ import clockDot from './../../../assets/images/icons/clockDot.svg';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
-import { Autocomplete, Grid, TextField } from '@mui/material';
 
-const Diagnosis = ({ setStep, Step1Id }) => {
+//Mui
+import { Autocomplete, Grid, TextField } from '@mui/material';
+import TimePicker from '../../form-groups/time-picker';
+
+const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
     const [loader, setLoader] = useState(false);
 
     const [postsList, SetPostsList] = useState();
 
     const { register, handleSubmit, formState, control } = useForm({
-        defaultValues: {
-            type_of_repair: '',
-            repairman: '',
-            pyramid_number: '',
-            approximate_start_time: '',
-            approximate_end_time: '',
-            required_pieces: ''
-        },
         mode: 'onTouched'
     });
     const { errors } = formState;
@@ -37,7 +31,7 @@ const Diagnosis = ({ setStep, Step1Id }) => {
         Axios.get('/worker/admin/capacity-measurement/list_create/').then(res => {
             let posts = res.data.results.map(item => ({
                 label: item?.user?.fullname,
-                value: item?.user?.fullname,
+                value: item?.user?.id,
                 station: item?.type?.code
             }));
 
@@ -46,20 +40,24 @@ const Diagnosis = ({ setStep, Step1Id }) => {
     }, []);
     const formSubmit = data => {
         const newData = {
-            ...data,
-            vehicle_specifications: Step1Id
+            pyramid_number: data.pyramid_number,
+            repairman: data.repairman,
+            required_pieces: data.required_pieces,
+            type_of_repair: data.type_of_repair,
+            vehicle_specifications: Step1Id,
+            approximate_start_time: `${data.approximate_start_time_hour}:${data.approximate_start_time_min}`,
+            approximate_end_time: `${data.approximate_end_time_hour}:${data.approximate_end_time_min}`
         };
 
-        console.log(newData);
-
-        // Axios.post('admission_car_info/', newData)
-        //     .then(() => {
-        //         setStep(3);
-        //     })
-        //     .catch(() => {})
-        //     .finally(() => {
-        //         setLoader(false);
-        //     });
+        Axios.post('/worker/admin/diagnosis/list_create/', newData)
+            .then(res => {
+                setStep(3);
+                setStep2Id(res.data.id);
+            })
+            .catch(() => {})
+            .finally(() => {
+                setLoader(false);
+            });
     };
 
     return (
@@ -123,35 +121,44 @@ const Diagnosis = ({ setStep, Step1Id }) => {
                 </Grid>
 
                 <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-                    <InputComponent
+                    <TimePicker
                         title='زمان تقریبی شروع'
-                        placeHolder='زمان تقریبی شروع تعمیر خودرو'
-                        type='text'
-                        icon={ClockSquare}
-                        detail={{
-                            ...register('approximate_start_time', {
+                        hourDetail={{
+                            ...register('approximate_start_time_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.approximate_start_time}
+                        minDetail={{
+                            ...register('approximate_start_time_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
-                    <InputComponent
+
+                    <TimePicker
                         title='زمان تقریبی پایان'
-                        placeHolder='زمان تقریبی پایان تعمیر خودرو'
-                        type='text'
-                        icon={clockDot}
-                        detail={{
-                            ...register('approximate_end_time', {
+                        hourDetail={{
+                            ...register('approximate_end_time_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.approximate_end_time}
+                        minDetail={{
+                            ...register('approximate_end_time_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
                     <InputComponent
                         title='قطعات مورد نیاز تعمیرات'

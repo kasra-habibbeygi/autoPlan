@@ -24,8 +24,9 @@ import Tools from '../../utils/tools';
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [Step1Id, setStep1Id] = useState();
+    const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [planningList, PlanningList] = useState();
     const [reload, setReload] = useState(false);
 
@@ -131,9 +132,9 @@ const Planning = () => {
                     <ProgressBar step={step} />
                     {step === 1 && <CarDetail setStep={setStep} setStep1Id={setStep1Id} />}
 
-                    {step === 2 && <Diagnosis setStep={setStep} Step1Id={Step1Id} />}
+                    {step === 2 && <Diagnosis setStep={setStep} Step1Id={Step1Id} setStep2Id={setStep2Id} />}
 
-                    {step === 3 && <Time setStep={setStep} />}
+                    {step === 3 && <Time setStep={setStep} Step2Id={Step2Id} />}
                 </div>
             </Modal>
         </PlanningField>
