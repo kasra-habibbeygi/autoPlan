@@ -70,6 +70,27 @@ const PERMISSION = {
         EDIT: 32,
         DELETE: 33,
         LIST: 34
+    },
+
+    //اطلاعات خودرو
+    VEHICLE_SPECIFICATIONS: {
+        ADD: 35,
+        EDIT: 36,
+        LIST: 37
+    },
+
+    //عیب یابی
+    DIAGNOSIS: {
+        ADD: 38,
+        EDIT: 39,
+        LIST: 40
+    },
+
+    //زمان کار
+    TIME_TO_TROUBLESHOOT: {
+        ADD: 41,
+        EDIT: 42,
+        LIST: 43
     }
 };
 
