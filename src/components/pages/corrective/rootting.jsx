@@ -80,21 +80,6 @@ const Rootting = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
                 ...prev,
                 troubleshooting: inputValues
             }));
-
-            // setButtonLoading(true);
-            // Axios.put(`reform_action/troubleshooting/?id=${allDetail?.mainId}`, {
-            //     troubleshooting: str
-            // })
-            //     .then(res => {
-            //         setStep(3);
-            //         setAllDetail(prev => ({
-            //             ...prev,
-            //             troubleshooting: str
-            //         }));
-            //         setReload(prev => !prev);
-            //     })
-            //     .catch(() => {})
-            // .finally(() => setButtonLoading(false));
         } else {
             toast.error('لطفا تمام مقادیر را پر کنید', {
                 position: 'top-left'

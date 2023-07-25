@@ -60,7 +60,7 @@ const CarDetail = ({ setStep }) => {
                             }
                         })
                     }}
-                    error={errors?.brand}
+                    error={errors?.car_title}
                 />
                 <InputComponent
                     title='مدل'
@@ -75,7 +75,7 @@ const CarDetail = ({ setStep }) => {
                             }
                         })
                     }}
-                    error={errors?.model}
+                    error={errors?.car_model}
                 />
                 <InputComponent
                     title='نام آورنده'
@@ -90,41 +90,59 @@ const CarDetail = ({ setStep }) => {
                             }
                         })
                     }}
-                    error={errors?.owner}
+                    error={errors?.car_admissioner}
                 />
                 <InputComponent
                     title='شماره موبایل'
                     placeHolder='09----------'
-                    type='text'
+                    type='number'
                     icon={PhoneIcon}
                     detail={{
                         ...register('mobile_number', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
+                            },
+                            maxLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
+                            },
+                            minLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
                             }
                         })
                     }}
-                    error={errors?.phone_number}
+                    error={errors?.mobile_number}
                 />
                 <div className='Plaque_Field'>
                     <label>پلاک خودرو</label>
                     <div className='input_field'>
                         <InputComponent
                             placeHolder='--'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque1')
+                                ...register('plaque1', {
+                                    required: {
+                                        value: true
+                                    }
+                                })
                             }}
+                            error={errors?.plaque1}
                         />
                         <InputComponent
                             placeHolder='---'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque2')
+                                ...register('plaque2', {
+                                    required: {
+                                        value: true
+                                    }
+                                })
                             }}
+                            error={errors?.plaque2}
                         />
                         <div className='auto_complete'>
                             <Controller
@@ -152,11 +170,16 @@ const CarDetail = ({ setStep }) => {
 
                         <InputComponent
                             placeHolder='--'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque3')
+                                ...register('plaque3', {
+                                    required: {
+                                        value: true
+                                    }
+                                })
                             }}
+                            error={errors?.plaque3}
                         />
                         <div className='flag'>
                             <span className='green'></span>

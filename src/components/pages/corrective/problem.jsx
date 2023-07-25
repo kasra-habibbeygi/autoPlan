@@ -33,29 +33,6 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
             ...prev,
             problem: data.problem
         }));
-
-        // setButtonLoading(true);
-        // if (isDirty) {
-        //     Axios.post('reform_action/problem/', data)
-        //         .then(res => {
-        //             setStep(2);
-        //             setAllDetail(prev => ({
-        //                 ...prev,
-        //                 problem: data.problem,
-        //                 mainId: res.data.id
-        //             }));
-        //             setReload(prev => !prev);
-        //         })
-        //         .catch(() => {})
-        //         .finally(() => setButtonLoading(false));
-        // } else {
-        //     setAllDetail(prev => ({
-        //         ...prev,
-        //         problem: data.problem,
-        //         mainId: chosenEditItemDetails.id
-        //     }));
-        //     setStep(2);
-        // }
     };
 
     return (

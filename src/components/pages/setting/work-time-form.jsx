@@ -25,20 +25,35 @@ const WorkTimeForm = () => {
     const [reload, setReload] = useState(false);
     const [getTime, setGetTime] = useState();
 
+    useEffect(() => {
+        Axios.get('worker/admin/representation-working-hours/list_create/').then(res => {
+            console.log(res.data.results[0]);
+            res.data.results.length &&
+                setTime({
+                    start_time: new Date(`1970-01-01T${res.data.results[0].start_time}Z`),
+                    end_time: new Date(`1970-01-01T${res.data.results[0].end_time}Z`)
+                });
+            setGetTime(res.data.results);
+        });
+    }, [reload]);
+
     const formSubmit = e => {
         e.preventDefault();
-        setButtonLoader(true);
-        const sendTimeStructure = timeMaker(time);
+        if (time.start_time && time.end_time) {
+            setButtonLoader(true);
+            const sendTimeStructure = timeMaker(time);
 
-        Axios.post('/worker/admin/representation-working-hours/list_create/', sendTimeStructure)
-            .then(() => {
-                toast.success('ساعتی کاری شما با موفقیت ثبت شد');
-                setReload(!reload);
-            })
-            .finally(() => {
-                setButtonLoader(false);
-            });
+            Axios.post('/worker/admin/representation-working-hours/list_create/', sendTimeStructure)
+                .then(() => {
+                    toast.success('ساعتی کاری شما با موفقیت ثبت شد');
+                    setReload(!reload);
+                })
+                .finally(() => {
+                    setButtonLoader(false);
+                });
+        }
     };
+
     const EditFormSubmit = e => {
         e.preventDefault();
         setButtonLoader(true);
@@ -54,6 +69,7 @@ const WorkTimeForm = () => {
                 setButtonLoader(false);
             });
     };
+
     const timeMaker = time => {
         const startHours = time.start_time?.$H;
         const startMinutes = time.start_time?.$m;
@@ -66,12 +82,6 @@ const WorkTimeForm = () => {
         };
         return realTime;
     };
-
-    useEffect(() => {
-        Axios.get('worker/admin/representation-working-hours/list_create/').then(res => {
-            setGetTime(res.data.results);
-        });
-    }, [reload]);
 
     return (
         <FormWrapper>
@@ -86,7 +96,10 @@ const WorkTimeForm = () => {
                             />
                         </DemoItem>
                         <DemoItem label='ساعت پایان کار نمایندگی'>
-                            <MobileTimePicker value={time.en} onChange={newValue => setTime(prev => ({ ...prev, end_time: newValue }))} />
+                            <MobileTimePicker
+                                value={time.end_time}
+                                onChange={newValue => setTime(prev => ({ ...prev, end_time: newValue }))}
+                            />
                         </DemoItem>
                     </DemoContainer>
                 </LocalizationProvider>
