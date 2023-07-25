@@ -30,7 +30,6 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     const { errors } = formState;
 
     useEffect(() => {
-        console.log(chosenEditItemDetails);
         if (chosenEditItemDetails?.start_time && chosenEditItemDetails?.end_time) {
             setValue('started_time', tools.changeDateToTimeStamp(chosenEditItemDetails?.start_time));
             setValue('finished_time', tools.changeDateToTimeStamp(chosenEditItemDetails?.end_time));

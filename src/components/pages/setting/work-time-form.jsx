@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from '../../../configs/axios';
 import { toast } from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
 
 //Assets
 import { FormWrapper } from './work-time-form.style';
@@ -8,42 +9,36 @@ import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
 
 //Components
 import FormButton from '../../form-groups/form-button';
-
-//Mui
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
+import TimePicker from '../../form-groups/time-picker';
 
 const WorkTimeForm = () => {
-    const [time, setTime] = useState({
-        start_time: '',
-        end_time: ''
+    const { register, handleSubmit, formState, control, setValue } = useForm({
+        mode: 'onTouched'
     });
 
     const [buttonLoader, setButtonLoader] = useState(false);
     const [reload, setReload] = useState(false);
     const [getTime, setGetTime] = useState();
 
-    useEffect(() => {
-        Axios.get('worker/admin/representation-working-hours/list_create/').then(res => {
-            console.log(res.data.results[0]);
-            res.data.results.length &&
-                setTime({
-                    start_time: new Date(`1970-01-01T${res.data.results[0].start_time}Z`),
-                    end_time: new Date(`1970-01-01T${res.data.results[0].end_time}Z`)
+    const formSubmit = data => {
+        setButtonLoader(true);
+        const newData = {
+            start_time: `${data.approximate_start_time_hour}:${data.approximate_start_time_min}`,
+            end_time: `${data.approximate_end_time_hour}:${data.approximate_end_time_min}`
+        };
+
+        if (getTime?.length > 0) {
+            Axios.put(`worker/admin/representation-working-hours/update/?pk=${getTime[0].id}`, newData)
+                .then(() => {
+                    toast.success('ساعتی کاری شما با موفقیت ثبت شد');
+                    setReload(!reload);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setButtonLoader(false);
                 });
-            setGetTime(res.data.results);
-        });
-    }, [reload]);
-
-    const formSubmit = e => {
-        e.preventDefault();
-        if (time.start_time && time.end_time) {
-            setButtonLoader(true);
-            const sendTimeStructure = timeMaker(time);
-
-            Axios.post('/worker/admin/representation-working-hours/list_create/', sendTimeStructure)
+        } else {
+            Axios.post('/worker/admin/representation-working-hours/list_create/', newData)
                 .then(() => {
                     toast.success('ساعتی کاری شما با موفقیت ثبت شد');
                     setReload(!reload);
@@ -54,55 +49,63 @@ const WorkTimeForm = () => {
         }
     };
 
-    const EditFormSubmit = e => {
-        e.preventDefault();
-        setButtonLoader(true);
-        const sendTimeStructure = timeMaker(time);
+    useEffect(() => {
+        Axios.get('worker/admin/representation-working-hours/list_create/').then(res => {
+            setGetTime(res.data.results);
+            if (res.data.results.length) {
+                const start_time = res.data.results[0].start_time.split(':');
+                const end_time = res.data.results[0].end_time.split(':');
 
-        Axios.put(`worker/admin/representation-working-hours/update/?pk=${getTime[0].id}`, sendTimeStructure)
-            .then(() => {
-                toast.success('ساعتی کاری شما با موفقیت ثبت شد');
-                setReload(!reload);
-            })
-            .catch(() => {})
-            .finally(() => {
-                setButtonLoader(false);
-            });
-    };
-
-    const timeMaker = time => {
-        const startHours = time.start_time?.$H;
-        const startMinutes = time.start_time?.$m;
-        const finishHours = time.end_time?.$H;
-        const finishMinutes = time.end_time?.$m;
-
-        const realTime = {
-            start_time: `${startHours}:${startMinutes}`,
-            end_time: `${finishHours}:${finishMinutes}`
-        };
-        return realTime;
-    };
+                setValue('approximate_start_time_hour', start_time[0]);
+                setValue('approximate_start_time_min', start_time[1]);
+                setValue('approximate_end_time_hour', end_time[0]);
+                setValue('approximate_end_time_min', end_time[1]);
+            }
+        });
+    }, [reload]);
 
     return (
         <FormWrapper>
             <p className='title'>ساعت کار نمایندگی</p>
-            <form>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['TimePicker', 'MobileTimePicker', 'DesktopTimePicker', 'StaticTimePicker']}>
-                        <DemoItem label='ساعت شروع کار نمایندگی'>
-                            <MobileTimePicker
-                                value={time.start_time}
-                                onChange={newValue => setTime(prev => ({ ...prev, start_time: newValue }))}
-                            />
-                        </DemoItem>
-                        <DemoItem label='ساعت پایان کار نمایندگی'>
-                            <MobileTimePicker
-                                value={time.end_time}
-                                onChange={newValue => setTime(prev => ({ ...prev, end_time: newValue }))}
-                            />
-                        </DemoItem>
-                    </DemoContainer>
-                </LocalizationProvider>
+            <form onSubmit={handleSubmit(formSubmit)}>
+                <TimePicker
+                    title='زمان شروع کار نمایندگی'
+                    hourDetail={{
+                        ...register('approximate_start_time_hour', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                    minDetail={{
+                        ...register('approximate_start_time_min', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                />
+                <TimePicker
+                    title='زمان پایان کار نمایندگی'
+                    hourDetail={{
+                        ...register('approximate_end_time_hour', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                    minDetail={{
+                        ...register('approximate_end_time_min', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                />
                 <FormButton
                     text={getTime?.length > 0 ? 'ویرایش' : 'ثبت'}
                     icon={brokenArrow}
@@ -110,7 +113,6 @@ const WorkTimeForm = () => {
                     backgroundColor='#174787'
                     color='white'
                     height={48}
-                    onClick={getTime?.length > 0 ? EditFormSubmit : formSubmit}
                     loading={buttonLoader}
                 />
             </form>

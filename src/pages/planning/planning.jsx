@@ -23,8 +23,10 @@ import Tools from '../../utils/tools';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
+    const [Step1Id, setStep1Id] = useState();
+    const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [planningList, PlanningList] = useState();
     const [reload, setReload] = useState(false);
 
@@ -33,14 +35,16 @@ const Planning = () => {
         current: 1
     });
 
+    console.log(Step1Id);
+
     const openModal = () => {
         setIsModalOpen(true);
     };
 
     useEffect(() => {
-        Axios.get('admission/')
+        Axios.get('/worker/admin/vehicle-specifications/list_create/')
             .then(res => {
-                PlanningList(res.data.data);
+                PlanningList(res.data.results);
 
                 setPageStatus({
                     ...pageStatus,
@@ -52,39 +56,54 @@ const Planning = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'نوع تعمیر', key: 'repair_type' },
-        { id: 3, title: 'خودرو', key: 'car_title' },
-        { id: 4, title: 'مدل', key: 'car_model' },
-        { id: 5, title: 'پلاک خودرو', key: 'plate_number' },
-        { id: 6, title: 'کد تعمیرکار', key: 'mechanic_code' },
-        { id: 7, title: 'جایگاه', key: 'station' },
-        { id: 8, title: 'موبایل', key: 'mobile_number' },
+        { id: 2, title: 'برند خودرو', key: 'car_brand' },
+        { id: 3, title: 'مدل خودرو', key: 'car_model' },
+        { id: 4, title: 'نام آورنده', key: 'customer_name' },
+        { id: 5, title: 'موبایل', key: 'customer_mobile_number' },
         {
-            id: 8,
+            id: 6,
+            title: 'پلاک خودرو',
+            key: 'plate_number',
+            renderCell: data => (
+                <div className='plaque'>
+                    <span>{data.plaque_1}</span>
+                    <span>{data.plaque_2}</span>
+                    <span>{data.plaque_3}</span>
+                    <span>-</span>
+                    <span>{data.plaque_4}</span>
+                </div>
+            )
+        },
+        { id: 7, title: 'کد تعمیرکار', key: 'mechanic_code' },
+        { id: 8, title: 'جایگاه', key: 'station' },
+        { id: 9, title: 'نوع تعمیر', key: 'repair_type' },
+
+        {
+            id: 10,
             title: 'زمان شروع واقعی',
             key: 'actual_start_repair_time',
             renderCell: data => Tools.changeDateToJalali(data.actual_start_repair_time)
         },
         {
-            id: 8,
+            id: 11,
             title: 'زمان پایان واقعی',
             key: 'actual_end_repair_time',
             renderCell: data => Tools.changeDateToJalali(data.actual_end_repair_time)
         },
         {
-            id: 8,
+            id: 12,
             title: 'زمان شروع تقریبی',
             key: 'estimated_start_repair_time',
             renderCell: data => Tools.changeDateToJalali(data.estimated_start_repair_time)
         },
         {
-            id: 8,
+            id: 13,
             title: 'زمان پایان تقریبی',
             key: 'estimated_end_repair_time',
             renderCell: data => Tools.changeDateToJalali(data.estimated_end_repair_time)
         },
         {
-            id: 7,
+            id: 14,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
@@ -111,11 +130,11 @@ const Planning = () => {
                 <div className='formControl'>
                     <h2>برنامه ریزی تعمیرات</h2>
                     <ProgressBar step={step} />
-                    {step === 1 && <CarDetail setStep={setStep} />}
+                    {step === 1 && <CarDetail setStep={setStep} setStep1Id={setStep1Id} />}
 
-                    {step === 2 && <Diagnosis setStep={setStep} />}
+                    {step === 2 && <Diagnosis setStep={setStep} Step1Id={Step1Id} setStep2Id={setStep2Id} />}
 
-                    {step === 3 && <Time setStep={setStep} />}
+                    {step === 3 && <Time setStep={setStep} Step2Id={Step2Id} />}
                 </div>
             </Modal>
         </PlanningField>
