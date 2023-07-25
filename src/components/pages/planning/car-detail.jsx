@@ -14,11 +14,11 @@ import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
 import { Autocomplete, TextField } from '@mui/material';
 
-const CarDetail = ({ setStep }) => {
+const CarDetail = ({ setStep, setStep1Id }) => {
     const [loader, setLoader] = useState(false);
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
-            alphabet: Alphabet[0]
+            plaque_2: Alphabet[0]
         },
         mode: 'onTouched'
     });
@@ -27,16 +27,15 @@ const CarDetail = ({ setStep }) => {
     const formSubmit = data => {
         setLoader(true);
 
-        const { plaque1, plaque2, plaque3, alphabet, ...newData1 } = data;
-
-        const newData2 = {
-            ...newData1,
-            plate_number: [data.plaque1, data.alphabet.value, data.plaque2, data.plaque3]
+        const newData = {
+            ...data,
+            plaque_2: data.plaque_2.label
         };
 
-        Axios.post('admission_car_info/', newData2)
-            .then(() => {
+        Axios.post('/worker/admin/vehicle-specifications/list_create/', newData)
+            .then(res => {
                 setStep(2);
+                setStep1Id(res.data.id);
             })
             .catch(() => {})
             .finally(() => {
@@ -53,14 +52,14 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={Bus}
                     detail={{
-                        ...register('car_title', {
+                        ...register('car_brand', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.brand}
+                    error={errors?.car_brand}
                 />
                 <InputComponent
                     title='مدل'
@@ -75,7 +74,7 @@ const CarDetail = ({ setStep }) => {
                             }
                         })
                     }}
-                    error={errors?.model}
+                    error={errors?.car_model}
                 />
                 <InputComponent
                     title='نام آورنده'
@@ -83,14 +82,14 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={Bus}
                     detail={{
-                        ...register('car_admissioner', {
+                        ...register('customer_name', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.owner}
+                    error={errors?.customer_name}
                 />
                 <InputComponent
                     title='شماره موبایل'
@@ -98,38 +97,40 @@ const CarDetail = ({ setStep }) => {
                     type='text'
                     icon={PhoneIcon}
                     detail={{
-                        ...register('mobile_number', {
+                        ...register('customer_mobile_number', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
                             }
                         })
                     }}
-                    error={errors?.phone_number}
+                    error={errors?.customer_mobile_number}
                 />
                 <div className='Plaque_Field'>
                     <label>پلاک خودرو</label>
                     <div className='input_field'>
                         <InputComponent
+                            maxLength='2'
                             placeHolder='--'
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque1')
+                                ...register('plaque_4')
                             }}
                         />
                         <InputComponent
                             placeHolder='---'
+                            maxLength='3'
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque2')
+                                ...register('plaque_3')
                             }}
                         />
                         <div className='auto_complete'>
                             <Controller
                                 control={control}
-                                name='alphabet'
+                                name='plaque_2'
                                 rules={{ required: 'این فیلد اجباری است' }}
                                 render={({ field: { onChange, value } }) => {
                                     return (
@@ -152,10 +153,11 @@ const CarDetail = ({ setStep }) => {
 
                         <InputComponent
                             placeHolder='--'
+                            maxLength='2'
                             type='text'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque3')
+                                ...register('plaque_1')
                             }}
                         />
                         <div className='flag'>
@@ -165,16 +167,18 @@ const CarDetail = ({ setStep }) => {
                         </div>
                     </div>
                 </div>
-                <FormButton
-                    text='بعدی'
-                    icon={Arrow}
-                    loading={loader}
-                    className='login'
-                    backgroundColor={'#174787'}
-                    onClick={() => {}}
-                    height='48px'
-                    type='submit'
-                />
+                <div className='button_box'>
+                    <FormButton
+                        text='بعدی'
+                        icon={Arrow}
+                        loading={loader}
+                        className='login'
+                        backgroundColor={'#174787'}
+                        onClick={() => {}}
+                        height='48px'
+                        type='submit'
+                    />
+                </div>
             </form>
         </StepsStyle>
     );

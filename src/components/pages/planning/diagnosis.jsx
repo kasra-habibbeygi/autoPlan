@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import Axios from '../../../configs/axios';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
-import CalendarDate from './../../../assets/images/icons/CalendarDate.svg';
 import ShockAbsorber from './../../../assets/images/icons/ShockAbsorber.svg';
 import UserHeart from './../../../assets/images/icons/UserHeart.svg';
 import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
@@ -13,27 +13,53 @@ import clockDot from './../../../assets/images/icons/clockDot.svg';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
-import { Grid } from '@mui/material';
-import DatePickerComponent from '../../form-groups/date-picker';
+import { Autocomplete, Grid, TextField } from '@mui/material';
 
-const Diagnosis = ({ setStep }) => {
+const Diagnosis = ({ setStep, Step1Id }) => {
+    const [loader, setLoader] = useState(false);
+
+    const [postsList, SetPostsList] = useState();
+
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
-            repair_type: '',
-            position: '',
-            mechanic_code: '',
+            type_of_repair: '',
+            repairman: '',
             pyramid_number: '',
-            date: '',
-            start_time: '',
-            finish_time: '',
-            requirement: ''
+            approximate_start_time: '',
+            approximate_end_time: '',
+            required_pieces: ''
         },
         mode: 'onTouched'
     });
     const { errors } = formState;
 
+    useEffect(() => {
+        Axios.get('/worker/admin/capacity-measurement/list_create/').then(res => {
+            let posts = res.data.results.map(item => ({
+                label: item?.user?.fullname,
+                value: item?.user?.fullname,
+                station: item?.type?.code
+            }));
+
+            SetPostsList(posts);
+        });
+    }, []);
     const formSubmit = data => {
-        setStep(3);
+        const newData = {
+            ...data,
+            vehicle_specifications: Step1Id
+        };
+
+        console.log(newData);
+
+        // Axios.post('admission_car_info/', newData)
+        //     .then(() => {
+        //         setStep(3);
+        //     })
+        //     .catch(() => {})
+        //     .finally(() => {
+        //         setLoader(false);
+        //     });
     };
 
     return (
@@ -46,45 +72,39 @@ const Diagnosis = ({ setStep }) => {
                         type='text'
                         icon={ShockAbsorber}
                         detail={{
-                            ...register('repair_type', {
+                            ...register('type_of_repair', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.repair_type}
+                        error={errors?.type_of_repair}
                     />
-                    <InputComponent
-                        title='جایگاه'
-                        placeHolder='جایگاه تعمیر خودرو'
-                        type='text'
-                        icon={UserHeart}
-                        detail={{
-                            ...register('position', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={errors?.position}
-                    />
-                    <InputComponent
-                        title='کد تعمیر کار | نام تعمیر کار'
-                        placeHolder='کد | نام تعمیر کار خودرو'
-                        type='text'
-                        icon={UserHeart}
-                        detail={{
-                            ...register('mechanic_code', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={errors?.mechanic_code}
-                    />
+                    <div className='auto_complete_wrapper'>
+                        <p className='auto_complete_title'>نام تعمیرکار</p>
+                        <div className='auto_complete'>
+                            <Controller
+                                control={control}
+                                name='repairman'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return (
+                                        <Autocomplete
+                                            options={postsList}
+                                            value={value?.label}
+                                            onChange={(event, newValue) => {
+                                                onChange(newValue?.value);
+                                            }}
+                                            sx={{ width: '100%' }}
+                                            renderInput={params => <TextField {...params} />}
+                                        />
+                                    );
+                                }}
+                            />
+                        </div>
+                    </div>
+
                     <InputComponent
                         title='شماره هرم'
                         placeHolder='شماره هرم'
@@ -103,29 +123,20 @@ const Diagnosis = ({ setStep }) => {
                 </Grid>
 
                 <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-                    <Controller
-                        control={control}
-                        name='date'
-                        rules={{ required: 'این فیلد اجباری است' }}
-                        render={({ field: { onChange, value } }) => {
-                            return <DatePickerComponent value={value} onChange={onChange} title='تاریخ' error={errors?.date} />;
-                        }}
-                    />
-
                     <InputComponent
                         title='زمان تقریبی شروع'
                         placeHolder='زمان تقریبی شروع تعمیر خودرو'
                         type='text'
                         icon={ClockSquare}
                         detail={{
-                            ...register('start_time', {
+                            ...register('approximate_start_time', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.start_time}
+                        error={errors?.approximate_start_time}
                     />
                     <InputComponent
                         title='زمان تقریبی پایان'
@@ -133,28 +144,28 @@ const Diagnosis = ({ setStep }) => {
                         type='text'
                         icon={clockDot}
                         detail={{
-                            ...register('finish_time', {
+                            ...register('approximate_end_time', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.finish_time}
+                        error={errors?.approximate_end_time}
                     />
                     <InputComponent
                         title='قطعات مورد نیاز تعمیرات'
-                        placeHolder=''
+                        placeHolder='قطعات مورد نیاز تعمیرات برای تعمیر'
                         type='text'
                         detail={{
-                            ...register('requirement', {
+                            ...register('required_pieces', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.requirement}
+                        error={errors?.required_pieces}
                     />
                 </Grid>
             </Grid>
@@ -162,7 +173,7 @@ const Diagnosis = ({ setStep }) => {
             <FormButton
                 text='بعدی'
                 icon={Arrow}
-                loading={false}
+                loading={loader}
                 width='fit-content'
                 className='submit'
                 backgroundColor={'#174787'}

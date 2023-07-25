@@ -4,6 +4,10 @@ export const StepsStyle = styled.div(props => ({
     maxWidth: '400px',
     margin: '0 auto',
 
+    '& .button_box': {
+        display: 'flex',
+        gap: '10px'
+    },
     '& .Plaque_Field': {
         '& .Plaque_inputs': {
             input: {
