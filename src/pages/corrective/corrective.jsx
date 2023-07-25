@@ -136,8 +136,6 @@ const Corrective = () => {
         setSpecificDeviationId(id);
     };
 
-    console.log(chosenEditItemDetails);
-
     return (
         <>
             <PagesHeader
@@ -162,35 +160,17 @@ const Corrective = () => {
                         <h2>اقدام اصلاحی</h2>
                         <ProgressBar step={step} chosenEditItemDetails={chosenEditItemDetails} today={today} />
                         {step === 1 ? (
-                            <Problem
-                                setStep={setStep}
-                                setAllDetail={setAllDetail}
-                                chosenEditItemDetails={chosenEditItemDetails}
-                                setReload={setReload}
-                            />
+                            <Problem setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 2 ? (
-                            <Rootting
-                                setStep={setStep}
-                                setAllDetail={setAllDetail}
-                                allDetail={allDetail}
-                                chosenEditItemDetails={chosenEditItemDetails}
-                                setReload={setReload}
-                            />
+                            <Rootting setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 3 ? (
-                            <Action
-                                setStep={setStep}
-                                setAllDetail={setAllDetail}
-                                allDetail={allDetail}
-                                chosenEditItemDetails={chosenEditItemDetails}
-                                setReload={setReload}
-                            />
+                            <Action setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 4 ? (
                             <ResponsibleForAction
                                 setStep={setStep}
                                 setAllDetail={setAllDetail}
                                 allDetail={allDetail}
                                 chosenEditItemDetails={chosenEditItemDetails}
-                                setReload={setReload}
                             />
                         ) : step === 5 ? (
                             <ExecuteDate
@@ -198,9 +178,9 @@ const Corrective = () => {
                                 setAllDetail={setAllDetail}
                                 allDetail={allDetail}
                                 setIsModalOpen={setIsModalOpen}
-                                setReload={setReload}
                                 chosenEditItemDetails={chosenEditItemDetails}
                                 today={today}
+                                setReload={setReload}
                             />
                         ) : step === 6 ? (
                             <Result

@@ -28,14 +28,14 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
             }));
 
             setPersonnel(personnelArray);
+            if (chosenEditItemDetails?.action_officials_info) {
+                const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => ({
+                    [`correction_${index + 1}`]: { label: item.fullname, value: item.id }
+                }));
+
+                newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+            }
         });
-
-        if (chosenEditItemDetails?.action_agent) {
-            const obj = JSON.parse(chosenEditItemDetails.action_agent);
-            const arrayValues = Object.entries(obj).map(([key, value]) => ({ [key]: value }));
-
-            arrayValues.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
-        }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {

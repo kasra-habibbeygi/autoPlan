@@ -2,11 +2,9 @@ import React from 'react';
 
 //Assets
 import { ProgressBarStyle } from './progress-bar.style';
-import tools from '../../../utils/tools';
 
 const ProgressBar = ({ step, chosenEditItemDetails, today }) => {
-    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
-
+    const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
     const isTime = finishedDate === today;
 
     return (

@@ -30,15 +30,8 @@ const Action = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
 
     useEffect(() => {
         if (chosenEditItemDetails?.action) {
-            const arr = JSON.parse(chosenEditItemDetails?.action).map(obj => {
-                const newObj = {};
-                Object.entries(obj).forEach(([k, v]) => {
-                    newObj[k] = JSON.parse(`"${v}"`);
-                });
-                return newObj;
-            });
-
-            setValue('actionFields', arr);
+            const newArray = chosenEditItemDetails?.action?.map(item => ({ action: item.title }));
+            setValue('actionFields', newArray);
         }
     }, [chosenEditItemDetails]);
 

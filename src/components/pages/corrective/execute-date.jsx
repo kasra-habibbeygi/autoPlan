@@ -16,7 +16,7 @@ import tools from '../../../utils/tools';
 const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setReload, chosenEditItemDetails, today }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const finishedDate = tools.changeDateToJalali(chosenEditItemDetails?.end_action_date, false);
+    const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
     const isTime = finishedDate === today;
 
     const { control, handleSubmit, formState, setValue } = useForm({
@@ -30,48 +30,62 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     const { errors } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails?.start_action_date && chosenEditItemDetails?.end_action_date) {
-            setValue('started_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.start_action_date));
-            setValue('finished_time', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.end_action_date));
+        console.log(chosenEditItemDetails);
+        if (chosenEditItemDetails?.start_time && chosenEditItemDetails?.end_time) {
+            setValue('started_time', tools.changeDateToTimeStamp(chosenEditItemDetails?.start_time));
+            setValue('finished_time', tools.changeDateToTimeStamp(chosenEditItemDetails?.end_time));
         }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        setButtonLoading(true);
+        if (chosenEditItemDetails) {
+            setAllDetail(prev => ({
+                ...prev,
+                execute_date: data
+            }));
+            if (isTime) {
+                setStep(6);
+            } else {
+                setIsModalOpen(false);
+                setStep(1);
+            }
+        } else {
+            setButtonLoading(true);
 
-        const changedActionPersonsData = [];
+            const changedActionPersonsData = [];
 
-        for (const some in allDetail.actionPerson) {
-            changedActionPersonsData.push(allDetail.actionPerson[some].value);
+            for (const some in allDetail.actionPerson) {
+                changedActionPersonsData.push(allDetail.actionPerson[some].value);
+            }
+
+            var formData = new FormData();
+            changedActionPersonsData.map(item => {
+                formData.append('action_officials', item);
+            });
+
+            formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
+            formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
+            formData.append('problem', allDetail.problem);
+            formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
+            formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
+
+            Axios.post('/worker/admin/corrective-action/list_create/', formData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        execute_date: data
+                    }));
+                    if (isTime) {
+                        setStep(6);
+                    } else {
+                        setIsModalOpen(false);
+                        setStep(1);
+                    }
+                })
+                .catch(() => {})
+                .finally(() => setButtonLoading(false));
         }
-
-        var formData = new FormData();
-        changedActionPersonsData.map(item => {
-            formData.append('action_officials', item);
-        });
-
-        formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
-        formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
-        formData.append('problem', allDetail.problem);
-        formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
-        formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
-
-        Axios.post('/worker/admin/corrective-action/list_create/', formData)
-            .then(() => {
-                setReload(prev => !prev);
-                setAllDetail(prev => ({
-                    ...prev,
-                    execute_date: data
-                }));
-                if (isTime) {
-                    setStep(6);
-                } else {
-                    setIsModalOpen(false);
-                    setStep(1);
-                }
-            })
-            .catch(() => {})
-            .finally(() => setButtonLoading(false));
     };
 
     return (

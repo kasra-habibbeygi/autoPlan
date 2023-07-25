@@ -27,30 +27,29 @@ const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDet
         }
     }, [chosenEditItemDetails]);
 
-    const { errors, isDirty } = formState;
+    const { errors } = formState;
 
     const formSubmit = data => {
-        setButtonLoading(true);
-
-        if (isDirty) {
-            Axios.put(`reform_action/set_action_result/?id=${allDetail?.mainId}`, data)
-                .then(() => {
-                    setReload(prev => !prev);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        action_result: data.action_result
-                    }));
-                    setStep(7);
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
-        } else {
-            setAllDetail(prev => ({
-                ...prev,
-                action_result: data.action_result
-            }));
-            setStep(7);
-        }
+        // setButtonLoading(true);
+        // if (isDirty) {
+        //     Axios.put(`reform_action/set_action_result/?id=${allDetail?.mainId}`, data)
+        //         .then(() => {
+        //             setReload(prev => !prev);
+        //             setAllDetail(prev => ({
+        //                 ...prev,
+        //                 action_result: data.action_result
+        //             }));
+        //             setStep(7);
+        //         })
+        //         .catch(() => {})
+        //         .finally(() => setButtonLoading(false));
+        // } else {
+        //     setAllDetail(prev => ({
+        //         ...prev,
+        //         action_result: data.action_result
+        //     }));
+        //     setStep(7);
+        // }
     };
 
     return (
