@@ -123,25 +123,29 @@ const CarDetail = ({ setStep, setStep1Id }) => {
                             type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_4')
+                                ...register('plaque_4', {
+                                    required: true
+                                })
                             }}
-                            error={errors?.plaque1}
+                            error={errors?.plaque_4}
                         />
                         <InputComponent
                             placeHolder='---'
                             maxLength='3'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_3')
+                                ...register('plaque_3', {
+                                    required: true
+                                })
                             }}
-                            error={errors?.plaque2}
+                            error={errors?.plaque_3}
                         />
                         <div className='auto_complete'>
                             <Controller
                                 control={control}
                                 name='plaque_2'
-                                rules={{ required: 'این فیلد اجباری است' }}
+                                rules={{ required: true }}
                                 render={({ field: { onChange, value } }) => {
                                     return (
                                         <Autocomplete
@@ -164,12 +168,14 @@ const CarDetail = ({ setStep, setStep1Id }) => {
                         <InputComponent
                             placeHolder='--'
                             maxLength='2'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_1')
+                                ...register('plaque_1', {
+                                    required: true
+                                })
                             }}
-                            error={errors?.plaque3}
+                            error={errors?.plaque_1}
                         />
                         <div className='flag'>
                             <span className='green'></span>
