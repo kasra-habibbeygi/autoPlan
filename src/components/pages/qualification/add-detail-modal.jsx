@@ -20,7 +20,8 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
         defaultValues: {
             name: '',
             station: '',
-            workTime: 1
+            hour: 1,
+            min: 0
         },
         mode: 'onTouched'
     });
@@ -35,9 +36,9 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                         ...prev[subModalStatus],
                         {
                             user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
-                            time: data.workTime,
+                            time: `${data.hour}:${data.min}:00`,
                             type: filteredSeatList.filter(item => item.label === data.station)[0].value,
-                            fullText: `${data.name} : ${data.workTime} ساعت کاری-در جایگاه ${data.station}`
+                            fullText: `${data.name} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station}`
                         }
                     ]
                 };
@@ -47,9 +48,9 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                 [subModalStatus]: [
                     {
                         user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
-                        time: data.workTime,
+                        time: `${data.hour}:${data.min}:00`,
                         type: filteredSeatList.filter(item => item.label === data.station)[0].value,
-                        fullText: `${data.name} : ${data.workTime} ساعت کاری-در جایگاه ${data.station}`
+                        fullText: `${data.name} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station}`
                     }
                 ]
             };
@@ -140,18 +141,24 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
             <div className='work_hour'>
                 <div>
                     <p>تعداد ساعت کار {subModalStatus} : </p>
-                    <p> {getValues().workTime} ساعت کاری</p>
+                    <p> {getValues().hour} ساعت کاری</p>
                 </div>
                 <div className='input_wrapper'>
-                    <FormButton
-                        icon={increaseArrow}
-                        onClick={() => getValues().workTime < 24 && setValue('workTime', getValues().workTime + 1)}
-                    />
-                    <input {...register('workTime')} readOnly />
-                    <FormButton
-                        icon={decreesArrow}
-                        onClick={() => getValues().workTime > 1 && setValue('workTime', getValues().workTime - 1)}
-                    />
+                    <FormButton icon={increaseArrow} onClick={() => getValues().hour < 24 && setValue('hour', getValues().hour + 1)} />
+                    <input {...register('hour')} readOnly />
+                    <FormButton icon={decreesArrow} onClick={() => getValues().hour > 1 && setValue('hour', getValues().hour - 1)} />
+                </div>
+            </div>
+            <p style={{ marginBottom: '10px' }}>دقیقه کاری نیرو</p>
+            <div className='work_hour'>
+                <div>
+                    <p>تعداد دقیقه کار {subModalStatus} : </p>
+                    <p> {getValues().min} دقیقه کاری</p>
+                </div>
+                <div className='input_wrapper'>
+                    <FormButton icon={increaseArrow} onClick={() => getValues().min < 50 && setValue('min', getValues().min + 10)} />
+                    <input {...register('min')} readOnly />
+                    <FormButton icon={decreesArrow} onClick={() => getValues().min > 1 && setValue('min', getValues().min - 10)} />
                 </div>
             </div>
 
