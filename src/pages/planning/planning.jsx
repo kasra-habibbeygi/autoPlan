@@ -72,33 +72,91 @@ const Planning = () => {
                 </div>
             )
         },
-        { id: 7, title: 'کد تعمیرکار', key: 'mechanic_code' },
-        { id: 8, title: 'جایگاه', key: 'station' },
-        { id: 9, title: 'نوع تعمیر', key: 'repair_type' },
         {
-            id: 10,
-            title: 'زمان شروع واقعی',
-            key: 'actual_start_repair_time',
-            renderCell: data => data.actual_start_repair_time
+            id: 7,
+            title: 'نام تعمیرکار',
+            key: 'repairman',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.repairman}
+                </div>
+            )
         },
         {
-            id: 11,
-            title: 'زمان پایان واقعی',
-            key: 'actual_end_repair_time',
-            renderCell: data => data.actual_end_repair_time
+            id: 8,
+            title: 'جایگاه',
+            key: 'station',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.repairman}
+                </div>
+            )
+        },
+        {
+            id: 9,
+            title: 'نوع تعمیر',
+            key: 'type_of_repair',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.type_of_repair === null || data.diagnosis_info.type_of_repair === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.type_of_repair}
+                </div>
+            )
         },
         {
             id: 12,
             title: 'زمان شروع تقریبی',
             key: 'estimated_start_repair_time',
-            renderCell: data => data.estimated_start_repair_time
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.approximate_start_time === null || data.diagnosis_info.approximate_start_time === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.approximate_start_time}
+                </div>
+            )
         },
         {
             id: 13,
             title: 'زمان پایان تقریبی',
             key: 'estimated_end_repair_time',
-            renderCell: data => data.estimated_end_repair_time
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.approximate_end_time === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.approximate_end_time}
+                </div>
+            )
         },
+        {
+            id: 10,
+            title: 'زمان شروع واقعی',
+            key: 'exact_start_time',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.exact_start_time === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.exact_start_time}
+                </div>
+            )
+        },
+        {
+            id: 11,
+            title: 'زمان پایان واقعی',
+            key: 'exact_end_time',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.exact_end_time === null || data.diagnosis_info.exact_end_time === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.exact_end_time}
+                </div>
+            )
+        },
+
         {
             id: 14,
             title: 'عملیات',
