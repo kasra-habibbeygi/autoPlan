@@ -27,7 +27,11 @@ const PagesHeader = ({
             <p>
                 {userInfo.role === 'SuperAdmin' ? 'سوپر ادمین' : 'ادمین'} ، {userInfo.fullname} ، خوش آمدید !
             </p>
-            {userInfo.role !== 'SuperAdmin' && <p>{userInfo?.calculate_hours}ساعت کاری نمایندگی:</p>}
+            {userInfo.role !== 'SuperAdmin' && (
+                <p>
+                    ساعت کاری نمایندگی : {userInfo?.calculate_hours.hours} ساعت {userInfo?.calculate_hours.minutes} دقیقه
+                </p>
+            )}
             {userInfo.role !== 'SuperAdmin' && <p>کد نمایندگی : {userInfo?.company_code}</p>}
             {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
             {onButtonClick ? (
