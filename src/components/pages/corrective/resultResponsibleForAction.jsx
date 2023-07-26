@@ -10,13 +10,14 @@ import { Style } from './style';
 
 //Components
 import FormButton from '../../form-groups/form-button';
+import { toast } from 'react-hot-toast';
 
-const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails }) => {
+const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails, setIsModalOpen }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
-            action_result: ''
+            effective_result: ''
         },
         mode: 'onTouched'
     });
@@ -27,42 +28,47 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
         }
     }, [chosenEditItemDetails]);
 
-    const { errors, isDirty } = formState;
+    const { errors } = formState;
 
     const formSubmit = data => {
-        setButtonLoading(true);
+        console.log(chosenEditItemDetails);
+        console.log(data);
+        console.log(allDetail);
 
-        if (isDirty) {
-            Axios.put(`reform_action/set_action_result/?id=${allDetail?.mainId}`, data)
-                .then(() => {
-                    setReload(prev => !prev);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        action_result: data.action_result
-                    }));
-                    setStep(7);
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
-        } else {
-            setAllDetail(prev => ({
-                ...prev,
-                action_result: data.action_result
-            }));
-            setStep(8);
-        }
+        const newData = {
+            // result: chosenEditItemDetails?.result,
+            // control_completion_date: chosenEditItemDetails?.control_completion_date,
+            // result: chosenEditItemDetails?.result
+        };
+        setButtonLoading(true);
+        Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
+            .then(() => {
+                setReload(prev => !prev);
+                setAllDetail(prev => ({
+                    ...prev,
+                    effective_result: data.effective_result
+                }));
+                setStep(1);
+
+                setIsModalOpen(false);
+                toast.success('با موفقیت ثبت گردید');
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => setButtonLoading(false));
     };
 
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <div className={errors?.action_result ? 'text_area text_area_error' : 'text_area'}>
+                <div className={errors?.effective_result ? 'text_area text_area_error' : 'text_area'}>
                     <p className='title'>نتیجه</p>
                     <div>
                         <textarea
                             rows='8'
                             placeholder='نتیجه اثربخشی'
-                            {...register('action_result', {
+                            {...register('effective_result', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
@@ -71,7 +77,7 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                         ></textarea>
                         <img src={Question} />
                     </div>
-                    <p className='error'>{errors?.action_result?.message}</p>
+                    <p className='error'>{errors?.effective_result?.message}</p>
                 </div>
 
                 <FormButton

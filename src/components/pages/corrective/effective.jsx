@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import Axios from './../../../configs/axios';
 
 //Assets
 import user from '../../../assets/images/icons/User.svg';
+import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
+import Axios from './../../../configs/axios';
 
 //Components
-import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
-import { toast } from 'react-hot-toast';
+import { Autocomplete, TextField } from '@mui/material';
 
-const Effective = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails, setIsModalOpen }) => {
-    const [buttonLoading, setButtonLoading] = useState(false);
+const Effective = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+    const [personnel, setPersonnel] = useState([{ value: '', label: '', id: '' }]);
 
-    const { register, handleSubmit, formState, control, setValue } = useForm({
+    const { handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             effective_date: '',
             inCharge_person: ''
@@ -25,45 +25,37 @@ const Effective = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItem
         mode: 'onTouched'
     });
 
-    const { errors, isDirty } = formState;
+    const { errors } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails?.effective_control_agent && chosenEditItemDetails?.effective_control_date) {
-            setValue('effective_date', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.effective_control_date));
-            setValue('inCharge_person', chosenEditItemDetails?.effective_control_agent);
-        }
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500').then(res => {
+            let personnelArray = res.data.results.map(item => ({
+                label: item.title,
+                value: item.id
+            }));
+
+            setPersonnel(personnelArray);
+            // if (chosenEditItemDetails?.action_officials_info) {
+            //     const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => ({
+            //         [`correction_${index + 1}`]: { label: item.fullname, value: item.id }
+            //     }));
+
+            //     newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+            // }
+        });
+
+        // if (chosenEditItemDetails?.effective_control_agent && chosenEditItemDetails?.effective_control_date) {
+        //     setValue('effective_date', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.effective_control_date));
+        //     setValue('inCharge_person', chosenEditItemDetails?.effective_control_agent);
+        // }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        setButtonLoading(true);
-
-        const newData = {
-            effective_control_agent: data?.inCharge_person,
-            effective_control_date: tools.changeTimeStampToIsoDate(data?.effective_date)
-        };
-
-        if (isDirty) {
-            Axios.put(`reform_action/set_action_effective/?id=${allDetail?.mainId}`, newData)
-                .then(() => {
-                    setReload(prev => !prev);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        effective_detail: data
-                    }));
-                    setIsModalOpen(false);
-                    setStep(1);
-                    toast.success('با موفقیت ثبت گردید');
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoading(false));
-        } else {
-            setAllDetail(prev => ({
-                ...prev,
-                effective_detail: data
-            }));
-            setIsModalOpen(false);
-            setStep(1);
-        }
+        setAllDetail(prev => ({
+            ...prev,
+            effective_detail: data
+        }));
+        setStep(8);
     };
 
     return (
@@ -85,22 +77,34 @@ const Effective = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItem
                     }}
                 />
 
-                <InputComponent
-                    title='مسئول کنترل اثر بخشی'
-                    icon={user}
-                    type='text'
-                    placeHolder='نام مسئول'
-                    detail={{
-                        ...register('inCharge_person', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
-                    }}
-                    error={errors?.inCharge_person}
-                />
-                <FormButton text='ثبت' loading={buttonLoading} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <div className='auto_complete_wrapper'>
+                    <p className='auto_title'>مسئول کنترل اثر بخشی</p>
+                    <div className={errors?.inCharge_person?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
+                        <Controller
+                            control={control}
+                            name={'inCharge_person'}
+                            rules={{ required: 'این فیلد اجباری است' }}
+                            render={({ field: { onChange, value } }) => {
+                                return (
+                                    <Autocomplete
+                                        options={personnel}
+                                        value={value}
+                                        onChange={(event, newValue) => {
+                                            onChange(newValue);
+                                        }}
+                                        sx={{ width: '100%' }}
+                                        renderInput={params => <TextField {...params} />}
+                                    />
+                                );
+                            }}
+                        />
+
+                        <img src={user} />
+                    </div>
+                    <p className='auto_error'>{errors?.inCharge_person?.message}</p>
+                </div>
+
+                <FormButton text='بعدی' icon={arrow} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
             </form>
         </Style>
     );

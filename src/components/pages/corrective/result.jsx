@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import Axios from './../../../configs/axios';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
@@ -11,9 +10,7 @@ import { Style } from './style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails }) => {
-    const [buttonLoading, setButtonLoading] = useState(false);
-
+const Result = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             action_result: ''
@@ -30,26 +27,11 @@ const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDet
     const { errors } = formState;
 
     const formSubmit = data => {
-        // setButtonLoading(true);
-        // if (isDirty) {
-        //     Axios.put(`reform_action/set_action_result/?id=${allDetail?.mainId}`, data)
-        //         .then(() => {
-        //             setReload(prev => !prev);
-        //             setAllDetail(prev => ({
-        //                 ...prev,
-        //                 action_result: data.action_result
-        //             }));
-        //             setStep(7);
-        //         })
-        //         .catch(() => {})
-        //         .finally(() => setButtonLoading(false));
-        // } else {
-        //     setAllDetail(prev => ({
-        //         ...prev,
-        //         action_result: data.action_result
-        //     }));
-        //     setStep(7);
-        // }
+        setAllDetail(prev => ({
+            ...prev,
+            action_result: data.action_result
+        }));
+        setStep(7);
     };
 
     return (
@@ -73,15 +55,7 @@ const Result = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDet
                     <p className='error'>{errors?.action_result?.message}</p>
                 </div>
 
-                <FormButton
-                    text='بعدی'
-                    loading={buttonLoading}
-                    type='submit'
-                    backgroundColor={'#174787'}
-                    color={'white'}
-                    height={48}
-                    icon={arrow}
-                />
+                <FormButton text='بعدی' type='submit' backgroundColor={'#174787'} color={'white'} height={48} icon={arrow} />
             </form>
         </Style>
     );

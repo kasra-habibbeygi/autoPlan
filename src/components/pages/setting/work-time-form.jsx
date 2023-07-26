@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Axios from '../../../configs/axios';
 import { toast } from 'react-hot-toast';
@@ -12,7 +13,7 @@ import FormButton from '../../form-groups/form-button';
 import TimePicker from '../../form-groups/time-picker';
 
 const WorkTimeForm = () => {
-    const { register, handleSubmit, formState, control, setValue } = useForm({
+    const { register, handleSubmit, setValue } = useForm({
         mode: 'onTouched'
     });
 

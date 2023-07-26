@@ -37,37 +37,43 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
+        setButtonLoading(true);
+
+        const changedActionPersonsData = [];
+
+        for (const some in allDetail.actionPerson) {
+            changedActionPersonsData.push(allDetail.actionPerson[some].value);
+        }
+
+        var formData = new FormData();
+        changedActionPersonsData.map(item => {
+            formData.append('action_officials', item);
+        });
+
+        formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
+        formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
+        formData.append('problem', allDetail.problem);
+        formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
+        formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
+
         if (chosenEditItemDetails) {
-            setAllDetail(prev => ({
-                ...prev,
-                execute_date: data
-            }));
-            if (isTime) {
-                setStep(6);
-            } else {
-                setIsModalOpen(false);
-                setStep(1);
-            }
+            Axios.put(`/worker/admin/corrective-action/update/?pk=${chosenEditItemDetails.id}`, formData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        execute_date: data
+                    }));
+                    if (isTime) {
+                        setStep(6);
+                    } else {
+                        setIsModalOpen(false);
+                        setStep(1);
+                    }
+                })
+                .catch(() => {})
+                .finally(() => setButtonLoading(false));
         } else {
-            setButtonLoading(true);
-
-            const changedActionPersonsData = [];
-
-            for (const some in allDetail.actionPerson) {
-                changedActionPersonsData.push(allDetail.actionPerson[some].value);
-            }
-
-            var formData = new FormData();
-            changedActionPersonsData.map(item => {
-                formData.append('action_officials', item);
-            });
-
-            formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
-            formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
-            formData.append('problem', allDetail.problem);
-            formData.append('start_time', tools.changeTimeStampToDate(data?.started_time));
-            formData.append('whys_data', JSON.stringify(allDetail.troubleshooting));
-
             Axios.post('/worker/admin/corrective-action/list_create/', formData)
                 .then(() => {
                     setReload(prev => !prev);

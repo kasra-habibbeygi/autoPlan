@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 //Assets
 import pen from './../../assets/images/global/pen.svg';
 import { SettingWrapper } from './setting.style';
-import trashBin from './../../assets/images/global/TrashBin.svg';
 import document from './../../assets/images/sideBar/DocumentAdd.svg';
 import notes from './../../assets/images/sideBar/Notes.svg';
 import bill from './../../assets/images/sideBar/Bill.svg';

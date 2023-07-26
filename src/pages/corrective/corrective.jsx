@@ -158,7 +158,7 @@ const Corrective = () => {
                 {isModalOpen ? (
                     <ModalStyleBg>
                         <h2>اقدام اصلاحی</h2>
-                        <ProgressBar step={step} chosenEditItemDetails={chosenEditItemDetails} today={today} />
+                        <ProgressBar step={step} />
                         {step === 1 ? (
                             <Problem setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 2 ? (
@@ -183,22 +183,9 @@ const Corrective = () => {
                                 setReload={setReload}
                             />
                         ) : step === 6 ? (
-                            <Result
-                                setStep={setStep}
-                                setAllDetail={setAllDetail}
-                                allDetail={allDetail}
-                                setReload={setReload}
-                                chosenEditItemDetails={chosenEditItemDetails}
-                            />
+                            <Result setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 7 ? (
-                            <Effective
-                                setStep={setStep}
-                                setAllDetail={setAllDetail}
-                                allDetail={allDetail}
-                                setReload={setReload}
-                                chosenEditItemDetails={chosenEditItemDetails}
-                                setIsModalOpen={setIsModalOpen}
-                            />
+                            <Effective setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : (
                             step === 8 && (
                                 <ResultResponsibleForAction
