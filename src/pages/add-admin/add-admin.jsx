@@ -113,7 +113,7 @@ const AddAdmin = () => {
             Axios.post('user/super-admin/representation/list_create/', data)
                 .then(() => {
                     setReload(!reload);
-                    toast.success('ادمین جدید با موفقیت ثبت شد');
+                    toast.success('نمایندگی جدید با موفقیت ثبت شد');
                     setModalOpen(false);
                     reset();
                 })
@@ -125,7 +125,7 @@ const AddAdmin = () => {
             Axios.put(`user/super-admin/representation/retrieve_update_destroy/?pk=${specificDeviationId}`, data)
                 .then(() => {
                     setReload(!reload);
-                    toast.success('اطلاعات ادمین با موفقیت ویرایش شد');
+                    toast.success('اطلاعات نمایندگی با موفقیت ویرایش شد');
                     setModalOpen(false);
                     reset();
                 })
@@ -162,11 +162,11 @@ const AddAdmin = () => {
 
     return (
         <AddAdminWrapper textareaError={errors?.representation_address?.message}>
-            <PagesHeader buttonTitle='افزودن ادمین جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
+            <PagesHeader buttonTitle='افزودن نمایندگی جدید' secondFiled='ساعت کاری مجموعه : ۸ ساعت' onButtonClick={addModalHandler} />
             <Table columns={columns} rows={adminList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
             <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
                 <div className='formControl'>
-                    {modalStatus === 'add' ? <h2>فرم ثبت ادمین</h2> : <h2>ویرایش ادمین</h2>}
+                    {modalStatus === 'add' ? <h2>فرم ثبت نمایندگی</h2> : <h2>ویرایش نمایندگی</h2>}
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <InputComponent
                             title='نام کامل'
