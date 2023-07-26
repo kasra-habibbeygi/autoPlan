@@ -35,6 +35,7 @@ const Qualification = () => {
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [reload, setReload] = useState(false);
     const [detailModal, setDetailModal] = useState(false);
+    const [dateFilterCheckboxValue, setDateFilterCheckboxValue] = useState(false);
     const [subModalStatus, setSubModalStatus] = useState();
     const [specificQualificationId, setSpecificQualificationId] = useState();
     const [specificData, setSpecificData] = useState();
@@ -45,6 +46,7 @@ const Qualification = () => {
     const [seatList, setSeatList] = useState([]);
     const [personnelList, setPersonnelList] = useState([]);
     const [tableCol, setTableCol] = useState([]);
+    const [reportList, setReportList] = useState([]);
     const [loader, setLoader] = useState({
         table: false,
         add: false
@@ -63,6 +65,39 @@ const Qualification = () => {
         mode: 'onTouched'
     });
     const { submitCount } = formState;
+
+    var columns = [
+        { id: 1, title: 'ردیف', key: 'index' },
+        { id: 2, title: 'تاریخ', key: 'create_at' },
+        { id: 2, title: 'نام', key: 'name', renderCell: data => data.user_info.personnel.fullname },
+        {
+            id: 2,
+            title: 'زمان کاری',
+            key: 'time',
+            renderCell: data => `${data.time.split(':')[0]} ساعت و ${data.time.split(':')[1]} دقیقه`
+        },
+        { id: 2, title: 'کد جایگاه', key: 'code', renderCell: data => data.type.code },
+        { id: 2, title: 'اسم جایگاه', key: 'code', renderCell: data => data.type.type_info.title },
+        {
+            id: 100,
+            title: 'عملیات',
+            key: 'actions',
+            renderCell: data => (
+                <ActionCell>
+                    <FormButton
+                        icon={pen}
+                        onClick={() => editModalHandler(data)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT)}
+                    />
+                    <FormButton
+                        icon={trashBin}
+                        onClick={() => deleteModalHandler(data.id)}
+                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE)}
+                    />
+                </ActionCell>
+            )
+        }
+    ];
 
     const formSubmit = () => {
         var formData = new FormData();
@@ -132,13 +167,18 @@ const Qualification = () => {
                 setButtonLoader({ ...buttonLoader, delete: false });
             });
     };
-
     useEffect(() => {
+        let query = '';
         setLoader({
             ...loader,
             table: true
         });
-        Axios.get(`/worker/admin/capacity-measurement/list_create/?page=${pageStatus.current}`)
+
+        if (dateFilterCheckboxValue) {
+            query += '&date_now=true';
+        }
+
+        Axios.get(`worker/admin/capacity-measurement/list_create/?page=${pageStatus.current}${query}`)
             .then(res => {
                 setPageStatus({
                     ...pageStatus,
@@ -154,7 +194,13 @@ const Qualification = () => {
                 })
             )
             .catch(() => {});
-    }, [pageStatus.current, reload]);
+
+        Axios.get('worker/admin/capacity-measurement/report/')
+            .then(res => {
+                setReportList(res.data.result);
+            })
+            .catch(() => {});
+    }, [pageStatus.current, reload, dateFilterCheckboxValue]);
 
     const editModalHandler = data => {
         setModalActionType('edit');
@@ -175,39 +221,6 @@ const Qualification = () => {
     };
 
     useEffect(() => {
-        var columns = [
-            { id: 1, title: 'ردیف', key: 'index' },
-            { id: 2, title: 'تاریخ', key: 'create_at' },
-            { id: 2, title: 'نام', key: 'name', renderCell: data => data.user.fullname },
-            {
-                id: 2,
-                title: 'زمان کاری',
-                key: 'time',
-                renderCell: data => `${data.time.split(':')[0]} ساعت و ${data.time.split(':')[1]} دقیقه`
-            },
-            { id: 2, title: 'کد جایگاه', key: 'code', renderCell: data => data.type.code },
-            { id: 2, title: 'اسم جایگاه', key: 'code', renderCell: data => data.type.type_info.title },
-            {
-                id: 100,
-                title: 'عملیات',
-                key: 'actions',
-                renderCell: data => (
-                    <ActionCell>
-                        <FormButton
-                            icon={pen}
-                            onClick={() => editModalHandler(data)}
-                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT)}
-                        />
-                        <FormButton
-                            icon={trashBin}
-                            onClick={() => deleteModalHandler(data.id)}
-                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE)}
-                        />
-                    </ActionCell>
-                )
-            }
-        ];
-
         Axios.get('worker/admin/organizational-position/list_create/?page_size=500').then(res => {
             let temp = [];
 
@@ -233,6 +246,8 @@ const Qualification = () => {
         });
     }, []);
 
+    console.log(reportList);
+
     return (
         <QualificationWrapper>
             <PagesHeader
@@ -241,7 +256,10 @@ const Qualification = () => {
                 disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.ADD)}
             />
             <div className='filter_field'>
-                <FormControlLabel control={<Checkbox />} label='فیلتر بر اساس تاریخ امروز' />
+                <FormControlLabel
+                    control={<Checkbox value={dateFilterCheckboxValue} onChange={e => setDateFilterCheckboxValue(e.target.checked)} />}
+                    label='فیلتر بر اساس تاریخ امروز'
+                />
                 <FormButton text='نمایش گزارش مجموع ظرفیت های امروز' onClick={() => setDetailModal(true)} />
             </div>
             <Table
@@ -287,7 +305,17 @@ const Qualification = () => {
                 />
             </Modal>
             <Modal state={detailModal} setState={setDetailModal} maxWidth='sm' handleClose={() => setDetailModal(false)}>
-                <div className='details_main_field'>asdasd</div>
+                <div className='details_main_field'>
+                    {reportList?.map(item => (
+                        <div key={`details_modal_item${item.id}`} className='item_field'>
+                            <h4>{item.type}</h4>
+                            <p>تعداد نفرات : {item.number_of_staff}</p>
+                            <p>
+                                مجموع ساعت کاری : {item.total_hours.hours}:{item.total_hours.minutes}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}

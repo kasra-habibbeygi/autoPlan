@@ -38,6 +38,22 @@ export const QualificationWrapper = styled.div(props => ({
         }
     },
 
+    '& .details_main_field': {
+        display: 'flex',
+        gap: '20px',
+        flexWrap: 'wrap',
+
+        '& .item_field': {
+            flex: '1 0 45%',
+            padding: '20px'
+        },
+
+        h4: {
+            color: '#1976D2',
+            fontSize: '1.2rem'
+        }
+    },
+
     '@media(max-width : 700px)': {
         '& .filter_field': {
             backgroundColor: 'white',
