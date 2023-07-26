@@ -20,12 +20,12 @@ const Home = () => {
             .then(res => {
                 setManagementList(() =>
                     res.data.results.map(item => ({
-                        id: item.id,
-                        car: item.car_brand,
-                        license: `${item.plaque_4} ${item.plaque_3} ${item.plaque_2} ${item.plaque_1}`,
-                        mechanicCode: item.diagnosis_info.repairman || '---',
+                        id: item?.id,
+                        car: item?.car_brand,
+                        license: `${item?.plaque_4} ${item?.plaque_3} ${item?.plaque_2} ${item?.plaque_1}`,
+                        mechanicCode: item?.diagnosis_info?.repairman || '---',
                         position: '---',
-                        pyramid: item.diagnosis_info.pyramid_number || '---'
+                        pyramid: item?.diagnosis_info?.pyramid_number || '---'
                     }))
                 );
             })
