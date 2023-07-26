@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
@@ -5,23 +6,51 @@ import Axios from '../../../configs/axios';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
-import CalendarDate from './../../../assets/images/icons/CalendarDate.svg';
-import ClockSquare from './../../../assets/images/icons/ClockSquare.svg';
 import clockDot from './../../../assets/images/icons/clockDot.svg';
 
 //Components
-import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
+import TimePicker from '../../form-groups/time-picker';
 
-const Time = () => {
+// Helpers
+function secondsToTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}`;
+}
+
+function timeToSeconds(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const totalSeconds = hours * 3600 + minutes * 60;
+    return totalSeconds;
+}
+
+const Time = ({ Step2Id }) => {
     const [deviationList, setDeviationList] = useState([]);
+    const [finalResults, setFinalResults] = useState({
+        end: {
+            bigger: 0,
+            lower: 0
+        },
+        start: {
+            bigger: 0,
+            lower: 0
+        }
+    });
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
-            proximate_start: '',
-            proximate_finish: '',
-            real_start: '',
-            real_finish: '',
-            start_time: ''
+            proximate_start_hour: '13',
+            proximate_start_min: '00',
+            proximate_finish_hour: '15',
+            proximate_finish_min: '20',
+            real_start_hour: '',
+            real_start_min: '',
+            real_finish_hour: '',
+            real_finish_min: ''
         },
         mode: 'onTouched'
     });
@@ -36,166 +65,232 @@ const Time = () => {
 
             setDeviationList(posts);
         });
+        Axios.get('https://api.autoplaning.ir/api//acceptance-report-in-one-month/').then(res => {
+            console.log(res.data.results);
+        });
     }, []);
 
-    const formSubmit = data => {};
+    const formSubmit = data => {
+        let proximate_finish = `${data.proximate_finish_hour}:${data.proximate_finish_min}`;
+        let proximate_start = `${data.proximate_start_hour}:${data.proximate_start_min}`;
+        let real_finish = `${data.real_finish_hour}:${data.real_finish_min}`;
+        let real_start = `${data.real_start_hour}:${data.real_start_min}`;
+
+        let proximate_finish_sec = timeToSeconds(proximate_finish);
+        let proximate_start_sec = timeToSeconds(proximate_start);
+        let real_finish_sec = timeToSeconds(real_finish);
+        let real_start_sec = timeToSeconds(real_start);
+
+        setFinalResults({
+            ...finalResults,
+            end: {
+                bigger: proximate_finish_sec - real_finish_sec < 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0,
+                lower: proximate_finish_sec - real_finish_sec > 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0
+            },
+            start: {
+                bigger: proximate_start_sec - real_start_sec < 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0,
+                lower: proximate_start_sec - real_start_sec > 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0
+            }
+        });
+    };
+
+    console.log(finalResults);
 
     return (
         <form onSubmit={handleSubmit(formSubmit)}>
             <Grid container columnSpacing={4}>
                 <Grid item xs={12} md={6}>
-                    <InputComponent
+                    <TimePicker
+                        disabled
                         title='زمان تقریبی شروع'
-                        placeHolder='1402/04/08 - 20:20'
-                        type='text'
-                        icon={CalendarDate}
-                        detail={{
-                            ...register('proximate_start', {
+                        hourDetail={{
+                            ...register('proximate_start_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.proximate_start}
+                        minDetail={{
+                            ...register('proximate_start_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
-                    <InputComponent
+                    <br />
+                    <TimePicker
                         title='زمان واقعی شروع'
-                        placeHolder='1402/04/08 - 19:20'
-                        type='text'
-                        icon={ClockSquare}
-                        detail={{
-                            ...register('real_start', {
+                        hourDetail={{
+                            ...register('real_start_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.real_start}
+                        minDetail={{
+                            ...register('real_start_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <InputComponent
+                    <TimePicker
+                        disabled
                         title='زمان تقریبی پایان'
-                        placeHolder='1402/04/08 - 20:20'
-                        type='text'
-                        icon={CalendarDate}
-                        detail={{
-                            ...register('proximate_finish', {
+                        hourDetail={{
+                            ...register('proximate_finish_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.proximate_finish}
+                        minDetail={{
+                            ...register('proximate_finish_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
-                    <InputComponent
+                    <br />
+                    <TimePicker
                         title='زمان واقعی پایان'
-                        placeHolder='1402/04/08 - 19:20'
-                        type='text'
-                        icon={ClockSquare}
-                        detail={{
-                            ...register('real_finish', {
+                        hourDetail={{
+                            ...register('real_finish_hour', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.real_finish}
+                        minDetail={{
+                            ...register('real_finish_min', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
                     />
                 </Grid>
+                <FormButton
+                    text='محاسبه'
+                    loading={false}
+                    width='fit-content'
+                    className='submit'
+                    backgroundColor={'#174787'}
+                    onClick={() => {}}
+                    height='48px'
+                    type='submit'
+                    padding='15px'
+                    margin='10px 0 0 0'
+                />
             </Grid>
 
-            <div className='summary'>
-                <Grid container>
-                    <Grid item xs={12} md={6}>
-                        <div className='right_field'>
-                            <Grid container>
-                                <Grid item xs={12} sm={6}>
-                                    <div className='pill'>
-                                        <p>تاخیر در شروع</p>
-                                        <div>
-                                            <img src={clockDot} alt='' />
-                                            یک ساعت تاخیر در شروع
+            {finalResults.start.bigger !== 0 &&
+            finalResults.start.lower !== 0 &&
+            finalResults.end.bigger !== 0 &&
+            finalResults.end.lower !== 0 ? (
+                <div className='summary'>
+                    <Grid container>
+                        <Grid item xs={12} md={6}>
+                            <div className='right_field'>
+                                <Grid container>
+                                    <Grid item xs={12} sm={6}>
+                                        <div className='pill'>
+                                            <p>تاخیر در شروع</p>
+                                            <div>
+                                                <img src={clockDot} alt='' />
+                                                {finalResults.start.bigger ? `${finalResults.start.bigger} تاخیر در شروع` : ' انحراف ندارد'}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <div className='pill'>
-                                        <p>تاخیر در شروع</p>
-                                        <div>
-                                            <img src={clockDot} alt='' />
-                                            یک ساعت تاخیر در شروع
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <div className='pill'>
+                                            <p>تاجیل در شروع</p>
+                                            <div>
+                                                <img src={clockDot} alt='' />
+                                                {finalResults.start.lower ? `${finalResults.start.lower} تاخیر در شروع` : ' انحراف ندارد'}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <div className='pill'>
-                                        <p>تاخیر در شروع</p>
-                                        <div>
-                                            <img src={clockDot} alt='' />
-                                            یک ساعت تاخیر در شروع
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <div className='pill'>
+                                            <p>تاخیر در پایان</p>
+                                            <div>
+                                                <img src={clockDot} alt='' />
+                                                {finalResults.end.bigger ? `${finalResults.end.bigger} تاخیر در شروع` : ' انحراف ندارد'}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <div className='pill'>
-                                        <p>تاخیر در شروع</p>
-                                        <div>
-                                            <img src={clockDot} alt='' />
-                                            یک ساعت تاخیر در شروع
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <div className='pill'>
+                                            <p>تاجیل در پایان</p>
+                                            <div>
+                                                <img src={clockDot} alt='' />
+                                                {finalResults.end.lower ? `${finalResults.end.lower} تاخیر در شروع` : ' انحراف ندارد'}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </div>
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
-                        <div className='left_field'>
-                            <div className='auto_complete_wrapper'>
-                                <p className='auto_complete_title'>علت انحراف</p>
-                                <div className='auto_complete'>
-                                    <Controller
-                                        control={control}
-                                        name='deviation'
-                                        rules={{ required: 'این فیلد اجباری است' }}
-                                        render={({ field: { onChange, value } }) => {
-                                            return (
-                                                <Autocomplete
-                                                    options={deviationList}
-                                                    value={value?.label}
-                                                    onChange={(event, newValue) => {
-                                                        onChange(newValue?.value);
-                                                    }}
-                                                    sx={{ width: '100%' }}
-                                                    renderInput={params => <TextField {...params} />}
-                                                />
-                                            );
-                                        }}
-                                    />
-                                </div>
-                                <p className='auto_complete_error'>{errors?.deviation?.message}</p>
                             </div>
-                        </div>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <div className='left_field'>
+                                <div className='auto_complete_wrapper'>
+                                    <p className='auto_complete_title'>علت انحراف</p>
+                                    <div className='auto_complete'>
+                                        <Controller
+                                            control={control}
+                                            name='deviation'
+                                            render={({ field: { onChange, value } }) => {
+                                                return (
+                                                    <Autocomplete
+                                                        options={deviationList}
+                                                        value={value?.label}
+                                                        onChange={(event, newValue) => {
+                                                            onChange(newValue?.value);
+                                                        }}
+                                                        sx={{ width: '100%' }}
+                                                        renderInput={params => <TextField {...params} />}
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                    <p className='auto_complete_error'>{errors?.deviation?.message}</p>
+                                </div>
+                            </div>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div>
-            <FormButton
-                text='بعدی'
-                icon={Arrow}
-                loading={false}
-                width='fit-content'
-                className='submit'
-                backgroundColor={'#174787'}
-                onClick={() => {}}
-                height='48px'
-                type='submit'
-            />
+                    <FormButton
+                        text='بعدی'
+                        icon={Arrow}
+                        loading={false}
+                        width='fit-content'
+                        className='submit'
+                        backgroundColor={'#174787'}
+                        onClick={() => {}}
+                        height='48px'
+                        type='submit'
+                        padding='15px'
+                    />
+                </div>
+            ) : (
+                <></>
+            )}
         </form>
     );
 };
