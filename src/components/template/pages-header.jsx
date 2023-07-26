@@ -9,17 +9,7 @@ import { PagesHeaderStyle } from './pages-header.style';
 //Components
 import FormButton from '../form-groups/form-button';
 
-// Tools
-import tools from '../../utils/tools';
-
-const PagesHeader = ({
-    buttonTitle,
-    onButtonClick,
-    secondFiled = `تاریخ امروز : ${tools.changeDateToJalali(new Date(), false)}`,
-    hasFilter,
-    onFilterClick,
-    disabled = false
-}) => {
+const PagesHeader = ({ buttonTitle, onButtonClick, hasFilter, onFilterClick, disabled = false }) => {
     const userInfo = useSelector(state => state.User.info);
 
     return (
@@ -29,7 +19,7 @@ const PagesHeader = ({
             </p>
             {userInfo.role !== 'SuperAdmin' && (
                 <p>
-                    ساعت کاری نمایندگی : {userInfo?.calculate_hours.hours} ساعت {userInfo?.calculate_hours.minutes} دقیقه
+                    ساعت کاری نمایندگی : {userInfo?.calculate_hours?.hours} ساعت {userInfo?.calculate_hours?.minutes} دقیقه
                 </p>
             )}
             {userInfo.role !== 'SuperAdmin' && <p>کد نمایندگی : {userInfo?.company_code}</p>}
