@@ -287,7 +287,7 @@ const Qualification = () => {
                 />
             </Modal>
             <Modal state={detailModal} setState={setDetailModal} maxWidth='sm' handleClose={() => setDetailModal(false)}>
-                asd
+                <div className='details_main_field'>asdasd</div>
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}
