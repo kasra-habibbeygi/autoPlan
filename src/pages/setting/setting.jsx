@@ -53,7 +53,7 @@ const Setting = () => {
     };
     const formSubmit = data => {
         setButtonLoader(true);
-        Axios.put('user/super-admin/representation/retrieve_update_destroy/?pk=1', data)
+        Axios.put(`user/super-admin/representation/retrieve_update_destroy/?pk=${userInfo.company_id}`, data)
             .then(() => {
                 toast.success('اطلاعات نمایندگی با موفقیت ویرایش شد');
                 setModalOpen(false);
