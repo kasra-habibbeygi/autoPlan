@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { closeSideBar } from '../../store/reducers/sideBar';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Assets
 import Bill from './../../assets/images/sideBar/Bill.svg';
@@ -21,7 +22,7 @@ import { SidebarStyle } from './sidebar.style';
 
 //Components
 import FormButton from '../form-groups/form-button';
-import { useDispatch, useSelector } from 'react-redux';
+import ConfirmModal from '../template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
@@ -29,6 +30,7 @@ import PERMISSION from '../../utils/permission.ts';
 const SideBar = () => {
     const dispatch = useDispatch();
     const userRole = useSelector(state => state.User.info);
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
 
     const logoutHandler = () => {
         localStorage.removeItem('AutoPlaningToken');
@@ -172,8 +174,16 @@ const SideBar = () => {
             </ul>
 
             <div className='logout'>
-                <FormButton text='خروج' icon={Exit} className='item' justify_content='start' padding='10px 0' onClick={logoutHandler} />
+                <FormButton text='خروج' icon={Exit} className='item' justify_content='start' padding='10px 0' onClick={() => setConfirmModalStatus(true)} />
             </div>
+
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا مطمعن هستید میخواهید از حساب خود خارج شوید ؟ '
+                deleteHandler={logoutHandler}
+                loading={false}
+            />
         </SidebarStyle>
     );
 };

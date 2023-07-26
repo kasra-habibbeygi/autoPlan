@@ -15,17 +15,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const ConfirmModal = ({ status, setStatus, title, deleteHandler, loading }) => {
     return (
-        <MainField>
-            <Dialog
-                disablePortal
-                open={status}
-                TransitionComponent={Transition}
-                keepMounted={false}
-                onClose={() => setStatus(false)}
-                fullWidth={true}
-                maxWidth='sm'
-                scroll='body'
-            >
+        <Dialog
+            open={status}
+            TransitionComponent={Transition}
+            keepMounted={false}
+            onClose={() => setStatus(false)}
+            fullWidth={true}
+            maxWidth='sm'
+            scroll='body'
+        >
+            <MainField>
                 <div className='modal_content_field'>
                     <h3>{title}</h3>
                     <div className='button_group'>
@@ -33,8 +32,8 @@ const ConfirmModal = ({ status, setStatus, title, deleteHandler, loading }) => {
                         <FormButton text='بله' backgroundColor='#174787' onClick={deleteHandler} loading={loading} />
                     </div>
                 </div>
-            </Dialog>
-        </MainField>
+            </MainField>
+        </Dialog>
     );
 };
 
