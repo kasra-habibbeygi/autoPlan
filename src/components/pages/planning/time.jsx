@@ -1,6 +1,7 @@
-import React from 'react';
-import { Grid } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Autocomplete, Grid, TextField } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import Axios from '../../../configs/axios';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
@@ -13,7 +14,8 @@ import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
 const Time = () => {
-    const { register, handleSubmit, formState } = useForm({
+    const [deviationList, setDeviationList] = useState([]);
+    const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {
             proximate_start: '',
             proximate_finish: '',
@@ -24,6 +26,17 @@ const Time = () => {
         mode: 'onTouched'
     });
     const { errors } = formState;
+
+    useEffect(() => {
+        Axios.get('/worker/admin/reason-for-deviation/list_create/').then(res => {
+            let posts = res.data.results.map(item => ({
+                label: item.reason,
+                value: item.reason
+            }));
+
+            setDeviationList(posts);
+        });
+    }, []);
 
     const formSubmit = data => {};
 
@@ -144,20 +157,30 @@ const Time = () => {
 
                     <Grid item xs={12} md={6}>
                         <div className='left_field'>
-                            <InputComponent
-                                title='زمان تقریبی شروع'
-                                placeHolder='1402/04/08 - 20:20'
-                                type='text'
-                                detail={{
-                                    ...register('start_time', {
-                                        required: {
-                                            value: true,
-                                            message: 'این فیلد اجباری است'
-                                        }
-                                    })
-                                }}
-                                error={errors?.start_time}
-                            />
+                            <div className='auto_complete_wrapper'>
+                                <p className='auto_complete_title'>علت انحراف</p>
+                                <div className='auto_complete'>
+                                    <Controller
+                                        control={control}
+                                        name='deviation'
+                                        rules={{ required: 'این فیلد اجباری است' }}
+                                        render={({ field: { onChange, value } }) => {
+                                            return (
+                                                <Autocomplete
+                                                    options={deviationList}
+                                                    value={value?.label}
+                                                    onChange={(event, newValue) => {
+                                                        onChange(newValue?.value);
+                                                    }}
+                                                    sx={{ width: '100%' }}
+                                                    renderInput={params => <TextField {...params} />}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </div>
+                                <p className='auto_complete_error'>{errors?.deviation?.message}</p>
+                            </div>
                         </div>
                     </Grid>
                 </Grid>
