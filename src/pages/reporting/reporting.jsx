@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 
 //Assets
 import { ReportingWrapper } from './reporting.style';
+import Axios from './../../configs/axios';
 
 //Components
 import DetailBoxHeader from '../../components/template/detail-box-header';
@@ -13,6 +14,17 @@ import ReportingLineChart from '../../components/pages/reporting/line-chart';
 import ReportingBarChart from '../../components/pages/reporting/bar-chart';
 
 const Reporting = () => {
+    const [reportingChartData, setReportingChartData] = useState();
+
+    useEffect(() => {
+        Axios.get('/api/acceptance-report-in-one-month/')
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.log(err))
+            .finally(() => {});
+    }, []);
+
     return (
         <ReportingWrapper>
             <Grid container spacing={1.5}>

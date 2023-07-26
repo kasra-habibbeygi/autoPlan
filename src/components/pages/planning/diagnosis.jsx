@@ -31,7 +31,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
         Axios.get('/worker/admin/capacity-measurement/list_create/?date_now=true').then(res => {
             let posts = res.data.results.map(item => ({
                 label: item?.user_info?.personnel.fullname,
-                value: item?.user_info?.personnel.id,
+                value: item?.user_info?.id,
                 station: item?.type?.code
             }));
 
