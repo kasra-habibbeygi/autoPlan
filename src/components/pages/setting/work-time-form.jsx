@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Axios from '../../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { infoHandler } from '../../../store/reducers/user';
+import { useDispatch } from 'react-redux';
 
 //Assets
 import { FormWrapper } from './work-time-form.style';
@@ -13,6 +15,7 @@ import FormButton from '../../form-groups/form-button';
 import TimePicker from '../../form-groups/time-picker';
 
 const WorkTimeForm = () => {
+    const dispatch = useDispatch();
     const { register, handleSubmit, setValue } = useForm({
         mode: 'onTouched'
     });
@@ -33,6 +36,9 @@ const WorkTimeForm = () => {
                 .then(() => {
                     toast.success('ساعتی کاری شما با موفقیت ثبت شد');
                     setReload(!reload);
+                    Axios.get('user/profile/').then(res => {
+                        dispatch(infoHandler(res.data));
+                    });
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -43,6 +49,9 @@ const WorkTimeForm = () => {
                 .then(() => {
                     toast.success('ساعتی کاری شما با موفقیت ثبت شد');
                     setReload(!reload);
+                    Axios.get('user/profile/').then(res => {
+                        dispatch(infoHandler(res.data));
+                    });
                 })
                 .finally(() => {
                     setButtonLoader(false);

@@ -3,7 +3,8 @@ import { Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { infoHandler } from '../../store/reducers/user';
 
 //Assets
 import pen from './../../assets/images/global/pen.svg';
@@ -26,7 +27,7 @@ import { AddAdminWrapper } from '../add-admin/add-admin.style';
 
 const Setting = () => {
     const userInfo = useSelector(state => state.User.info);
-
+    const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
     const { register, handleSubmit, formState, reset, setValue } = useForm({
@@ -57,6 +58,9 @@ const Setting = () => {
                 toast.success('اطلاعات نمایندگی با موفقیت ویرایش شد');
                 setModalOpen(false);
                 reset();
+                Axios.get('user/profile/').then(res => {
+                    dispatch(infoHandler(res.data));
+                });
             })
             .catch(() => {})
             .finally(() => {
