@@ -72,25 +72,12 @@ const PERMISSION = {
         LIST: 34
     },
 
-    //اطلاعات خودرو
+    //برنامه ریزی تعمیرات
     VEHICLE_SPECIFICATIONS: {
-        ADD: 35,
-        EDIT: 36,
-        LIST: 37
-    },
-
-    //عیب یابی
-    DIAGNOSIS: {
-        ADD: 38,
-        EDIT: 39,
-        LIST: 40
-    },
-
-    //زمان کار
-    TIME_TO_TROUBLESHOOT: {
-        ADD: 41,
-        EDIT: 42,
-        LIST: 43
+        ADD_EDIT_VEHICLE_DETAIILS: 35,
+        ADD_EDIT_DIAGNOSIS: 36,
+        ADD_EDIT_TIME: 37,
+        LIST: 38
     }
 };
 

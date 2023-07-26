@@ -93,8 +93,6 @@ const Home = () => {
                         <div className='itemMore'>
                             <DetailBoxHeader title='تنظیمات سایت' buttonText='مشاهده' link='/setting' />
                         </div>
-                    </Grid>
-                    <Grid item xs={12}>
                         <div className='itemMore'>
                             <DetailBoxHeader title='اقدام اصلاحی' buttonText='مشاهده' link='/corrective' />
                         </div>
