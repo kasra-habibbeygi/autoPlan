@@ -18,15 +18,12 @@ import Time from '../../components/pages/planning/time';
 import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
 
-// Tools
-import Tools from '../../utils/tools';
-
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [Step1Id, setStep1Id] = useState();
     const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [planningList, PlanningList] = useState();
     const [reload, setReload] = useState(false);
 

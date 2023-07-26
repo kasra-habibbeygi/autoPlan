@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Grid, TextField } from '@mui/material';
@@ -31,6 +32,7 @@ function timeToSeconds(timeString) {
 
 const Time = ({ Step2Id }) => {
     const [deviationList, setDeviationList] = useState([]);
+    const [diagnosisValue, setDiagnosisValue] = useState();
     const [finalResults, setFinalResults] = useState({
         end: {
             bigger: 0,
@@ -41,7 +43,7 @@ const Time = ({ Step2Id }) => {
             lower: 0
         }
     });
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             proximate_start_hour: '13',
             proximate_start_min: '00',
@@ -65,8 +67,13 @@ const Time = ({ Step2Id }) => {
 
             setDeviationList(posts);
         });
-        Axios.get('https://api.autoplaning.ir/api//acceptance-report-in-one-month/').then(res => {
-            console.log(res.data.results);
+        Axios.get('worker/admin/diagnosis/list_create/').then(res => {
+            setDiagnosisValue();
+            let temp = res.data.results.filter(item => item.vehicle_specifications === Step2Id)[0];
+            setValue('proximate_finish_hour', temp.approximate_end_time.split(':')[0]);
+            setValue('proximate_finish_min', temp.approximate_end_time.split(':')[1]);
+            setValue('proximate_start_hour', temp.approximate_start_time.split(':')[0]);
+            setValue('proximate_start_min', temp.approximate_start_time.split(':')[1]);
         });
     }, []);
 
