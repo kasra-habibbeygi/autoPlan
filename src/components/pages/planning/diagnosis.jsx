@@ -28,10 +28,11 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('/worker/admin/capacity-measurement/list_create/').then(res => {
+        Axios.get('/worker/admin/capacity-measurement/list_create/date_now=true').then(res => {
+            console.log(res.data.results);
             let posts = res.data.results.map(item => ({
-                label: item?.user?.fullname,
-                value: item?.user?.id,
+                label: item?.user_info?.personnel.fullname,
+                value: item?.user_info?.personnel.id,
                 station: item?.type?.code
             }));
 
