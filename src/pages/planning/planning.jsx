@@ -75,30 +75,29 @@ const Planning = () => {
         { id: 7, title: 'کد تعمیرکار', key: 'mechanic_code' },
         { id: 8, title: 'جایگاه', key: 'station' },
         { id: 9, title: 'نوع تعمیر', key: 'repair_type' },
-
         {
             id: 10,
             title: 'زمان شروع واقعی',
             key: 'actual_start_repair_time',
-            renderCell: data => Tools.changeDateToJalali(data.actual_start_repair_time)
+            renderCell: data => data.actual_start_repair_time
         },
         {
             id: 11,
             title: 'زمان پایان واقعی',
             key: 'actual_end_repair_time',
-            renderCell: data => Tools.changeDateToJalali(data.actual_end_repair_time)
+            renderCell: data => data.actual_end_repair_time
         },
         {
             id: 12,
             title: 'زمان شروع تقریبی',
             key: 'estimated_start_repair_time',
-            renderCell: data => Tools.changeDateToJalali(data.estimated_start_repair_time)
+            renderCell: data => data.estimated_start_repair_time
         },
         {
             id: 13,
             title: 'زمان پایان تقریبی',
             key: 'estimated_end_repair_time',
-            renderCell: data => Tools.changeDateToJalali(data.estimated_end_repair_time)
+            renderCell: data => data.estimated_end_repair_time
         },
         {
             id: 14,

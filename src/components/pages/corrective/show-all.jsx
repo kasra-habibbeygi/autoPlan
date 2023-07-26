@@ -9,8 +9,6 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
     const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
     const isTime = finishedDate === today;
 
-    console.log(chosenEditItemDetails);
-
     return (
         <ShowAllStyle>
             <h2>اقدام اصلاحی</h2>

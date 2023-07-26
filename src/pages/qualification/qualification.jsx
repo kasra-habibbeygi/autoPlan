@@ -246,8 +246,6 @@ const Qualification = () => {
         });
     }, []);
 
-    console.log(reportList);
-
     return (
         <QualificationWrapper>
             <PagesHeader

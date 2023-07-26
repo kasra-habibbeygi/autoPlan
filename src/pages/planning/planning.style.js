@@ -12,6 +12,13 @@ export const PlanningField = styled.div(props => ({
         }
     },
 
+    '& .plaque': {
+        direction: 'rtl',
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        gap: '5px'
+    },
+
     form: {
         marginTop: '30px',
         margin: '20px auto',

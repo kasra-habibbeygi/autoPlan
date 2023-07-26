@@ -31,10 +31,6 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
     const { errors } = formState;
 
     const formSubmit = data => {
-        console.log(chosenEditItemDetails);
-        console.log(data);
-        console.log(allDetail);
-
         const newData = {
             // result: chosenEditItemDetails?.result,
             // control_completion_date: chosenEditItemDetails?.control_completion_date,
@@ -53,9 +49,7 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                 setIsModalOpen(false);
                 toast.success('با موفقیت ثبت گردید');
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(() => {})
             .finally(() => setButtonLoading(false));
     };
 

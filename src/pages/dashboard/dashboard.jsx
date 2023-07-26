@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import Axios from '../../configs/axios';
 
 //Assets
 import { HomeWrapper } from './dashboard.style';
@@ -12,48 +13,24 @@ import HomeTable from '../../components/pages/home/home-table';
 import PagesHeader from '../../components/template/pages-header';
 
 const Home = () => {
-    const tableData = [
-        {
-            id: 1,
-            car: 'پراید',
-            license: '66 985 ص 42',
-            mechanicCode: 659875,
-            position: 36,
-            pyramid: 5
-        },
-        {
-            id: 2,
-            car: 'پراید',
-            license: '66 985 ص 42',
-            mechanicCode: 659875,
-            position: 36,
-            pyramid: 5
-        },
-        {
-            id: 3,
-            car: 'پراید',
-            license: '66 985 ص 42',
-            mechanicCode: 659875,
-            position: 36,
-            pyramid: 5
-        },
-        {
-            id: 4,
-            car: 'پراید',
-            license: '66 985 ص 42',
-            mechanicCode: 659875,
-            position: 36,
-            pyramid: 5
-        },
-        {
-            id: 5,
-            car: 'پراید',
-            license: '66 985 ص 42',
-            mechanicCode: 659875,
-            position: 36,
-            pyramid: 5
-        }
-    ];
+    const [managementList, setManagementList] = useState([]);
+
+    useEffect(() => {
+        Axios.get('/worker/admin/vehicle-specifications/list_create/?page_size=5')
+            .then(res => {
+                setManagementList(() =>
+                    res.data.results.map(item => ({
+                        id: item.id,
+                        car: item.car_brand,
+                        license: `${item.plaque_4} ${item.plaque_3} ${item.plaque_2} ${item.plaque_1}`,
+                        mechanicCode: item.diagnosis_info.repairman || '---',
+                        position: '---',
+                        pyramid: item.diagnosis_info.pyramid_number || '---'
+                    }))
+                );
+            })
+            .catch(() => {});
+    }, []);
 
     return (
         <>
@@ -88,7 +65,7 @@ const Home = () => {
                     <Grid item xs={12} xl={7} top={1.5}>
                         <div className='item'>
                             <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' onClick={() => {}} buttonText='مدیریت تعمیرات' />
-                            <HomeTable data={tableData} />
+                            <HomeTable data={managementList} />
                         </div>
                         <div className='itemMore'>
                             <DetailBoxHeader title='تنظیمات سایت' buttonText='مشاهده' link='/setting' />

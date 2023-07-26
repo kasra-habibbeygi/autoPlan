@@ -14,7 +14,7 @@ const HomeTable = ({ data }) => {
                         <th>ردیف</th>
                         <th>خودرو</th>
                         <th>پلاک خودرو</th>
-                        <th>کد تعمیرکار</th>
+                        <th>نام تعمیرکار</th>
                         <th>جایگاه</th>
                         <th>هرم</th>
                     </tr>
