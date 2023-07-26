@@ -40,7 +40,7 @@ const Planning = () => {
     };
 
     useEffect(() => {
-        Axios.get('/worker/admin/vehicle-specifications/list_create/')
+        Axios.get('/worker/admin/time-to-troubleshoot/list_create/')
             .then(res => {
                 PlanningList(res.data.results);
 
@@ -54,21 +54,69 @@ const Planning = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'برند خودرو', key: 'car_brand' },
-        { id: 3, title: 'مدل خودرو', key: 'car_model' },
-        { id: 4, title: 'نام آورنده', key: 'customer_name' },
-        { id: 5, title: 'موبایل', key: 'customer_mobile_number' },
+        {
+            id: 2,
+            title: 'برند خودرو',
+            key: 'car_brand',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.vehicle_specifications_info.car_brand === null ||
+                    data.diagnosis_info.vehicle_specifications_info.car_brand === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.vehicle_specifications_info.car_brand}
+                </div>
+            )
+        },
+        {
+            id: 3,
+            title: 'مدل خودرو',
+            key: 'car_model',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.vehicle_specifications_info.car_model === null ||
+                    data.diagnosis_info.vehicle_specifications_info.car_model === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.vehicle_specifications_info.car_model}
+                </div>
+            )
+        },
+        {
+            id: 4,
+            title: 'نام آورنده',
+            key: 'customer_name',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.vehicle_specifications_info.customer_name === null ||
+                    data.diagnosis_info.vehicle_specifications_info.customer_name === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.vehicle_specifications_info.customer_name}
+                </div>
+            )
+        },
+        {
+            id: 5,
+            title: 'موبایل',
+            key: 'customer_mobile_number',
+            renderCell: data => (
+                <div>
+                    {data.diagnosis_info.vehicle_specifications_info.customer_mobile_number === null ||
+                    data.diagnosis_info.vehicle_specifications_info.customer_mobile_number === ''
+                        ? 'تعریف نشده'
+                        : data.diagnosis_info.vehicle_specifications_info.customer_mobile_number}
+                </div>
+            )
+        },
         {
             id: 6,
             title: 'پلاک خودرو',
             key: 'plate_number',
             renderCell: data => (
                 <div className='plaque'>
-                    <span>{data.plaque_1}</span>
-                    <span>{data.plaque_2}</span>
-                    <span>{data.plaque_3}</span>
+                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_1}</span>
+                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_2}</span>
+                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_3}</span>
                     <span>-</span>
-                    <span>{data.plaque_4}</span>
+                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_4}</span>
                 </div>
             )
         },
@@ -78,9 +126,10 @@ const Planning = () => {
             key: 'repairman',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data.diagnosis_info.repairman_info.user_info.personnel.fullname === null ||
+                    data.diagnosis_info.repairman_info.user_info.personnel.fullname === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data.diagnosis_info.repairman_info.user_info.personnel.fullname}
                 </div>
             )
         },
@@ -90,9 +139,9 @@ const Planning = () => {
             key: 'station',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data.diagnosis_info.repairman_info.type.code === null || data.diagnosis_info.repairman_info.type.code === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data.diagnosis_info.repairman_info.type.code}
                 </div>
             )
         },
@@ -109,7 +158,7 @@ const Planning = () => {
             )
         },
         {
-            id: 12,
+            id: 10,
             title: 'زمان شروع تقریبی',
             key: 'estimated_start_repair_time',
             renderCell: data => (
@@ -121,7 +170,7 @@ const Planning = () => {
             )
         },
         {
-            id: 13,
+            id: 11,
             title: 'زمان پایان تقریبی',
             key: 'estimated_end_repair_time',
             renderCell: data => (
@@ -133,32 +182,60 @@ const Planning = () => {
             )
         },
         {
-            id: 10,
+            id: 12,
             title: 'زمان شروع واقعی',
             key: 'exact_start_time',
             renderCell: data => (
-                <div>
-                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.exact_start_time === ''
-                        ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_start_time}
-                </div>
+                <div>{data.exact_start_time === null || data.exact_start_time === '' ? 'تعریف نشده' : data.exact_start_time}</div>
             )
         },
         {
-            id: 11,
+            id: 13,
             title: 'زمان پایان واقعی',
             key: 'exact_end_time',
+            renderCell: data => <div>{data.exact_end_time === null || data.exact_end_time === '' ? 'تعریف نشده' : data.exact_end_time}</div>
+        },
+        {
+            id: 14,
+            title: 'تعجیل در شروع',
+            key: 'start_with_haste',
+            renderCell: data => (
+                <div>{data.start_with_haste === null || data.start_with_haste === '' ? 'ندارد' : data.start_with_haste}</div>
+            )
+        },
+        {
+            id: 15,
+            title: 'تعجیل در پایان',
+            key: 'end_with_haste',
+            renderCell: data => <div>{data.end_with_haste === null || data.end_with_haste === '' ? 'ندارد' : data.end_with_haste}</div>
+        },
+        {
+            id: 16,
+            title: 'تاخیر در شروع',
+            key: 'delayed_start',
+            renderCell: data => <div>{data.delayed_start === null || data.delayed_start === '' ? 'ندارد' : data.delayed_start}</div>
+        },
+        {
+            id: 17,
+            title: 'تاخیر در پایان',
+            key: 'delayed_end',
+            renderCell: data => <div>{data.delayed_end === null || data.delayed_end === '' ? 'ندارد' : data.delayed_end}</div>
+        },
+        {
+            id: 18,
+            title: 'علت انحراف',
+            key: 'the_reason_for_the_deviation',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_end_time === null || data.diagnosis_info.exact_end_time === ''
-                        ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_end_time}
+                    {data.the_reason_for_the_deviation_info.reason === null || data.the_reason_for_the_deviation_info.reason === ''
+                        ? 'ندارد'
+                        : data.the_reason_for_the_deviation_info.reason}
                 </div>
             )
         },
 
         {
-            id: 14,
+            id: 19,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
