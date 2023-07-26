@@ -94,13 +94,21 @@ const CarDetail = ({ setStep, setStep1Id }) => {
                 <InputComponent
                     title='شماره موبایل'
                     placeHolder='09----------'
-                    type='text'
+                    type='number'
                     icon={PhoneIcon}
                     detail={{
                         ...register('customer_mobile_number', {
                             required: {
                                 value: true,
                                 message: 'این فیلد اجباری است'
+                            },
+                            maxLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
+                            },
+                            minLength: {
+                                value: 11,
+                                message: 'شماره باید ۱۱ عدد باشد'
                             }
                         })
                     }}
@@ -112,26 +120,32 @@ const CarDetail = ({ setStep, setStep1Id }) => {
                         <InputComponent
                             maxLength='2'
                             placeHolder='--'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_4')
+                                ...register('plaque_4', {
+                                    required: true
+                                })
                             }}
+                            error={errors?.plaque_4}
                         />
                         <InputComponent
                             placeHolder='---'
                             maxLength='3'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_3')
+                                ...register('plaque_3', {
+                                    required: true
+                                })
                             }}
+                            error={errors?.plaque_3}
                         />
                         <div className='auto_complete'>
                             <Controller
                                 control={control}
                                 name='plaque_2'
-                                rules={{ required: 'این فیلد اجباری است' }}
+                                rules={{ required: true }}
                                 render={({ field: { onChange, value } }) => {
                                     return (
                                         <Autocomplete
@@ -154,11 +168,14 @@ const CarDetail = ({ setStep, setStep1Id }) => {
                         <InputComponent
                             placeHolder='--'
                             maxLength='2'
-                            type='text'
+                            type='number'
                             className='Plaque_inputs'
                             detail={{
-                                ...register('plaque_1')
+                                ...register('plaque_1', {
+                                    required: true
+                                })
                             }}
+                            error={errors?.plaque_1}
                         />
                         <div className='flag'>
                             <span className='green'></span>

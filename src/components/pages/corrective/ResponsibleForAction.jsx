@@ -44,31 +44,6 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
             actionPerson: data
         }));
         setStep(5);
-
-        // setButtonLoading(true);
-        // const jsonString = JSON.stringify(data);
-
-        // if (isDirty) {
-        //     Axios.put(`reform_action/set_action_agent/?id=${allDetail?.mainId}`, {
-        //         action_agent: jsonString
-        //     })
-        //         .then(() => {
-        //             setAllDetail(prev => ({
-        //                 ...prev,
-        //                 actionPerson: jsonString
-        //             }));
-        //             setReload(prev => !prev);
-        //             setStep(5);
-        //         })
-        //         .catch(() => {})
-        //         .finally(() => setButtonLoading(false));
-        // } else {
-        //     setAllDetail(prev => ({
-        //         ...prev,
-        //         actionPerson: jsonString
-        //     }));
-        //     setStep(5);
-        // }
     };
 
     return (
