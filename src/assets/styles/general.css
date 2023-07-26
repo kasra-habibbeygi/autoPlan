@@ -137,3 +137,7 @@ textarea {
 .MuiTypography-overline{
     display: none;
 }
+
+.MuiDialog-paper{
+    border-radius: 20px !important;
+}
