@@ -222,7 +222,6 @@ const Accessibility = () => {
     return (
         <AccessibilityWrapper>
             <PagesHeader buttonTitle='دسترسی پنل' onButtonClick={openModal} />
-            <p className='header'>دسترسی ها</p>
             <div className='tabs_wrapper'>
                 <Tabs value={tabValue} onChange={handleChange} textColor='inherit'>
                     <Tab label='پست سازمانی' sx={{ fontWeight: 700, fontSize: 16, color: 'black' }} />

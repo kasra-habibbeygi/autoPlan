@@ -16,7 +16,6 @@ const PagesHeader = ({
     buttonTitle,
     onButtonClick,
     secondFiled = `تاریخ امروز : ${tools.changeDateToJalali(new Date(), false)}`,
-    representationCode = 123475,
     hasFilter,
     onFilterClick,
     disabled = false
@@ -28,8 +27,8 @@ const PagesHeader = ({
             <p>
                 {userInfo.role === 'SuperAdmin' ? 'سوپر ادمین' : 'ادمین'} ، {userInfo.fullname} ، خوش آمدید !
             </p>
-            {userInfo.role !== 'SuperAdmin' && <p>{secondFiled}</p>}
-            {userInfo.role !== 'SuperAdmin' && <p>کد نمایندگی : {representationCode}</p>}
+            {userInfo.role !== 'SuperAdmin' && <p>{userInfo?.calculate_hours}</p>}
+            {userInfo.role !== 'SuperAdmin' && <p>کد نمایندگی : {userInfo.company_code}</p>}
             {hasFilter ? <FormButton onClick={onFilterClick} className='filterButton' icon={filter} /> : null}
             {onButtonClick ? (
                 <FormButton
@@ -41,7 +40,7 @@ const PagesHeader = ({
                     disabled={disabled}
                 />
             ) : (
-                <p>{buttonTitle}</p>
+                <p>{userInfo.company_name}</p>
             )}
         </PagesHeaderStyle>
     );

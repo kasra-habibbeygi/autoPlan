@@ -35,8 +35,6 @@ const Planning = () => {
         current: 1
     });
 
-    console.log(Step1Id);
-
     const openModal = () => {
         setIsModalOpen(true);
     };

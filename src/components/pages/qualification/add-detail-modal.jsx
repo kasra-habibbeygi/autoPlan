@@ -13,16 +13,11 @@ import blocking from './../../../assets/images/icons/blocking.svg';
 //components
 import FormButton from '../../form-groups/form-button';
 
-const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, personnelList, seatList }) => {
+const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, personnelList, seatList, specificData, showSubModal }) => {
     const [filteredPersonnelList, setFilteredPersonnelList] = useState([]);
     const [filteredSeatList, setFilteredSeatList] = useState([]);
+    const [domLoaded, setDomLoaded] = useState(false);
     const { register, handleSubmit, control, formState, getValues, setValue, reset } = useForm({
-        defaultValues: {
-            name: '',
-            station: '',
-            hour: 1,
-            min: 0
-        },
         mode: 'onTouched'
     });
     const { errors } = formState;
@@ -35,10 +30,10 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                     [subModalStatus]: [
                         ...prev[subModalStatus],
                         {
-                            user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
+                            user: filteredPersonnelList.filter(item => item.label === data.name.label)[0]?.value,
                             time: `${data.hour}:${data.min}:00`,
-                            type: filteredSeatList.filter(item => item.label === data.station)[0].value,
-                            fullText: `${data.name} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station}`
+                            type: filteredSeatList.filter(item => item.label === data.station.label)[0]?.value,
+                            fullText: `${data.name.label} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station.label}`
                         }
                     ]
                 };
@@ -47,10 +42,10 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                 ...prev,
                 [subModalStatus]: [
                     {
-                        user: filteredPersonnelList.filter(item => item.label === data.name)[0].value,
+                        user: filteredPersonnelList.filter(item => item.label === data.name.label)[0]?.value,
                         time: `${data.hour}:${data.min}:00`,
-                        type: filteredSeatList.filter(item => item.label === data.station)[0].value,
-                        fullText: `${data.name} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station}`
+                        type: filteredSeatList.filter(item => item.label === data.station.label)[0]?.value,
+                        fullText: `${data.name.label} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station.label}`
                     }
                 ]
             };
@@ -86,52 +81,74 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
         setFilteredSeatList(seatTemp);
     }, [subModalStatus]);
 
+    useEffect(() => {
+        setValue('name', '');
+        setValue('station', '');
+        setValue('hour', 1);
+        setValue('min', 0);
+
+        if (specificData) {
+            setValue('name', specificData.name);
+            setValue('station', specificData.station);
+            setValue('hour', parseInt(specificData.hour));
+            setValue('min', parseInt(specificData.min));
+        }
+
+        setTimeout(() => {
+            setDomLoaded(true);
+        }, 100);
+    }, [showSubModal]);
+
     return (
         <FormWrapper onSubmit={handleSubmit(sendForm)}>
             <p>{`نام نیروی ${subModalStatus}`}</p>
             <div className={errors?.name?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
-                <Controller
-                    control={control}
-                    name='name'
-                    rules={{ required: 'این فیلد اجباری است' }}
-                    render={({ field: { onChange, value } }) => {
-                        return (
-                            <Autocomplete
-                                options={filteredPersonnelList}
-                                value={value?.label}
-                                onChange={(_, newValue) => {
-                                    onChange(newValue?.label);
-                                }}
-                                sx={{ width: '100%' }}
-                                renderInput={params => <TextField {...params} />}
-                            />
-                        );
-                    }}
-                />
+                {domLoaded && (
+                    <Controller
+                        control={control}
+                        name='name'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <Autocomplete
+                                    options={filteredPersonnelList}
+                                    value={value?.label}
+                                    onChange={(_, newValue) => {
+                                        onChange(newValue);
+                                    }}
+                                    sx={{ width: '100%' }}
+                                    renderInput={params => <TextField {...params} />}
+                                />
+                            );
+                        }}
+                    />
+                )}
 
                 <img src={circle} />
             </div>
             <p className='auto_error'>{errors?.name?.message}</p>
             <p>جایگاه نیرو</p>
             <div className={errors?.station?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
-                <Controller
-                    control={control}
-                    name='station'
-                    rules={{ required: 'این فیلد اجباری است' }}
-                    render={({ field: { onChange, value } }) => {
-                        return (
-                            <Autocomplete
-                                options={filteredSeatList}
-                                value={value?.label}
-                                onChange={(_, newValue) => {
-                                    onChange(newValue?.label);
-                                }}
-                                sx={{ width: '100%' }}
-                                renderInput={params => <TextField {...params} />}
-                            />
-                        );
-                    }}
-                />
+                {domLoaded && (
+                    <Controller
+                        control={control}
+                        name='station'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <Autocomplete
+                                    options={filteredSeatList}
+                                    value={value?.label}
+                                    onChange={(_, newValue) => {
+                                        onChange(newValue);
+                                    }}
+                                    sx={{ width: '100%' }}
+                                    renderInput={params => <TextField {...params} />}
+                                />
+                            );
+                        }}
+                    />
+                )}
 
                 <img src={blocking} />
             </div>

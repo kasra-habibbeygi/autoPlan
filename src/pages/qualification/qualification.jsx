@@ -1,11 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable consistent-return */
 /* eslint-disable vars-on-top */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 //Assets
 import blocking from '../../assets/images/icons/blocking.svg';
@@ -23,15 +24,23 @@ import AddDetailModal from '../../components/pages/qualification/add-detail-moda
 import FormButton from '../../components/form-groups/form-button';
 import ConfirmModal from '../../components/template/confirm-modal';
 
+// Tools
+import PERMISSION from '../../utils/permission.ts';
+import { Checkbox, FormControlLabel } from '@mui/material';
+
 const Qualification = () => {
-    const [details, setDetails] = useState({});
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSubModal, setShowSubModal] = useState(false);
-    const [subModalStatus, setSubModalStatus] = useState();
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
-    const [specificQualificationId, setSpecificQualificationId] = useState();
     const [reload, setReload] = useState(false);
+    const [detailModal, setDetailModal] = useState(false);
+    const [subModalStatus, setSubModalStatus] = useState();
+    const [specificQualificationId, setSpecificQualificationId] = useState();
+    const [specificData, setSpecificData] = useState();
     const [qualificationList, setQualificationList] = useState();
+    const [modalActionType, setModalActionType] = useState('add');
+    const [details, setDetails] = useState({});
     const [typesList, setTypesList] = useState([]);
     const [seatList, setSeatList] = useState([]);
     const [personnelList, setPersonnelList] = useState([]);
@@ -63,19 +72,35 @@ const Qualification = () => {
             add: true
         });
 
-        Axios.post('worker/admin/capacity-measurement/list_create/', formData)
-            .then(() => {
-                setReload(!reload);
-                setShowAddModal(false);
-                toast.success('ظرفیت جدید با موفقیت اضافه شد');
-            })
-            .catch(() => {})
-            .finally(() => {
-                setLoader({
-                    ...loader,
-                    add: false
+        if (modalActionType === 'add') {
+            Axios.post('worker/admin/capacity-measurement/list_create/', formData)
+                .then(() => {
+                    setReload(!reload);
+                    setShowAddModal(false);
+                    toast.success('ظرفیت جدید با موفقیت اضافه شد');
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader({
+                        ...loader,
+                        add: false
+                    });
                 });
-            });
+        } else {
+            Axios.put('worker/admin/capacity-measurement/retrieve_update_destroy', formData)
+                .then(() => {
+                    setReload(!reload);
+                    setShowAddModal(false);
+                    toast.success('ظرفیت جدید با موفقیت اضافه شد');
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader({
+                        ...loader,
+                        add: false
+                    });
+                });
+        }
     };
 
     const closeModalHandler = () => {
@@ -86,6 +111,8 @@ const Qualification = () => {
     const closeSubModalHandler = () => {
         setSubModalStatus();
         setShowSubModal(false);
+        setSpecificData();
+        setModalActionType('add');
     };
 
     const deleteModalHandler = id => {
@@ -95,17 +122,15 @@ const Qualification = () => {
 
     const deleteHandler = () => {
         setButtonLoader({ ...buttonLoader, delete: true });
-        specificQualificationId.map(item => {
-            Axios.delete(`worker/admin/capacity-measurement/retrieve_update_destroy/?pk=${item}`)
-                .then(() => {
-                    setConfirmModalStatus(false);
-                    setReload(!reload);
-                })
-                .catch(() => {})
-                .finally(() => {
-                    setButtonLoader({ ...buttonLoader, delete: false });
-                });
-        });
+        Axios.delete(`worker/admin/capacity-measurement/retrieve_update_destroy/?pk=${specificQualificationId}`)
+            .then(() => {
+                setConfirmModalStatus(false);
+                setReload(!reload);
+            })
+            .catch(() => {})
+            .finally(() => {
+                setButtonLoader({ ...buttonLoader, delete: false });
+            });
     };
 
     useEffect(() => {
@@ -120,36 +145,7 @@ const Qualification = () => {
                     total: res.data.total
                 });
 
-                const groupedData = {};
-
-                res.data.results.forEach(item => {
-                    const date = item.create_at.split(' - ')[0];
-                    if (groupedData[date]) {
-                        groupedData[date].ids.push(item.id);
-                        groupedData[date].type.push(item.type);
-
-                        if (!groupedData[date].time[item.type.type_info.title] || !groupedData[date].user[item.type.type_info.title]) {
-                            groupedData[date].time[item.type.type_info.title] = [];
-                            groupedData[date].user[item.type.type_info.title] = [];
-                        }
-                        groupedData[date].time[item.type.type_info.title].push(item.time);
-                        groupedData[date].user[item.type.type_info.title].push(item.user);
-                    } else {
-                        groupedData[date] = {
-                            ...item,
-                            ids: [item.id],
-                            type: [item.type],
-                            user: [],
-                            time: {
-                                [item.type.type_info.title]: [item.time]
-                            }
-                        };
-                    }
-                });
-
-                console.log(Object.values(groupedData));
-
-                setQualificationList(Object.values(groupedData));
+                setQualificationList(res.data.results);
             })
             .finally(() =>
                 setLoader({
@@ -160,34 +156,37 @@ const Qualification = () => {
             .catch(() => {});
     }, [pageStatus.current, reload]);
 
-    const dataProvider = data => {
-        let newData = {};
-        data.type.map(item => {
-            const arrTemp = [];
-            Object.keys(data.time).map(item1 => {
-                if (item1 === item.type_info.title) {
-                    data.time[item1].map(timeItem => {
-                        let time = timeItem.split(':');
-                        arrTemp.push({
-                            time: timeItem,
-                            user: data.user.id,
-                            fullText: `${data.user.fullname} : ${time[0]} ساعت ${time[1]} دقیقه کاری -در جایگاه ${item.code}`,
-                            type: item.type
-                        });
-                    });
-                }
-            });
-
-            newData[item.type_info.title] = arrTemp;
+    const editModalHandler = data => {
+        setModalActionType('edit');
+        setShowSubModal(true);
+        setSubModalStatus(data.type.type_info.title);
+        setSpecificData({
+            name: {
+                label: data.user.fullname,
+                value: data.user.id
+            },
+            station: {
+                label: data.type.code,
+                value: data.type.id
+            },
+            hour: data.time.split(':')[0],
+            min: data.time.split(':')[1]
         });
-
-        setDetails(newData);
     };
 
     useEffect(() => {
         var columns = [
             { id: 1, title: 'ردیف', key: 'index' },
             { id: 2, title: 'تاریخ', key: 'create_at' },
+            { id: 2, title: 'نام', key: 'name', renderCell: data => data.user.fullname },
+            {
+                id: 2,
+                title: 'زمان کاری',
+                key: 'time',
+                renderCell: data => `${data.time.split(':')[0]} ساعت و ${data.time.split(':')[1]} دقیقه`
+            },
+            { id: 2, title: 'کد جایگاه', key: 'code', renderCell: data => data.type.code },
+            { id: 2, title: 'اسم جایگاه', key: 'code', renderCell: data => data.type.type_info.title },
             {
                 id: 100,
                 title: 'عملیات',
@@ -196,12 +195,14 @@ const Qualification = () => {
                     <ActionCell>
                         <FormButton
                             icon={pen}
-                            onClick={() => {
-                                setShowAddModal(true);
-                                dataProvider(data);
-                            }}
+                            onClick={() => editModalHandler(data)}
+                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT)}
                         />
-                        <FormButton icon={trashBin} onClick={() => deleteModalHandler(data.ids)} />
+                        <FormButton
+                            icon={trashBin}
+                            onClick={() => deleteModalHandler(data.id)}
+                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE)}
+                        />
                     </ActionCell>
                 )
             }
@@ -217,51 +218,7 @@ const Qualification = () => {
                         value: item.id
                     });
                 }
-
                 return;
-            });
-
-            res.data.results.map((item, index) => {
-                if (item.technical_force) {
-                    columns.splice(1 + index, 0, {
-                        id: 2,
-                        title: item.title,
-                        key: 'title',
-                        renderCell: data => {
-                            let hour = 0;
-                            let personnel = 0;
-                            let min = 0;
-
-                            data.type.map(item2 => {
-                                if (item.title === item2.type_info.title) {
-                                    personnel += 1;
-                                }
-                            });
-
-                            Object.keys(data.time).map(item2 => {
-                                if (item.title === item2) {
-                                    let localHour = 0;
-                                    let localMin = 0;
-
-                                    data.time[item2].map(timeData => {
-                                        localHour += parseInt(timeData.split(':')[0]);
-                                        localMin += parseInt(timeData.split(':')[1]);
-                                    });
-                                    hour = localHour;
-
-                                    if (localMin < 60) {
-                                        min = localMin;
-                                    } else {
-                                        min = localMin % 60;
-                                        hour += parseInt(localMin / 60);
-                                    }
-                                }
-                            });
-
-                            return `${personnel} نفر ، ${hour} ساعت و ${min} دقیقه`;
-                        }
-                    });
-                }
             });
 
             setTableCol(columns);
@@ -280,9 +237,13 @@ const Qualification = () => {
         <QualificationWrapper>
             <PagesHeader
                 buttonTitle='ثبت ظرفیت سنجی جدید'
-                secondFiled='ساعت کاری مجموعه : ۸ ساعت'
                 onButtonClick={() => setShowAddModal(true)}
+                disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.ADD)}
             />
+            <div className='filter_field'>
+                <FormControlLabel control={<Checkbox />} label='فیلتر بر اساس تاریخ امروز' />
+                <FormButton text='نمایش گزارش مجموع ظرفیت های امروز' onClick={() => setDetailModal(true)} />
+            </div>
             <Table
                 columns={tableCol}
                 rows={qualificationList}
@@ -321,7 +282,12 @@ const Qualification = () => {
                     personnelList={personnelList}
                     seatList={seatList}
                     details={details}
+                    specificData={specificData}
+                    showSubModal={showSubModal}
                 />
+            </Modal>
+            <Modal state={detailModal} setState={setDetailModal} maxWidth='sm' handleClose={() => setDetailModal(false)}>
+                asd
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}
