@@ -19,10 +19,10 @@ import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
 
 // Tools
-import Tools from '../../utils/tools';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
+    const [tableLoading, setTableLoading] = useState(true);
     const [Step1Id, setStep1Id] = useState();
     const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
@@ -49,7 +49,8 @@ const Planning = () => {
                     total: res.data.total
                 });
             })
-            .catch(() => {});
+            .catch(() => {})
+            .finally(() => setTableLoading(false));
     }, [reload, pageStatus.current]);
 
     const columns = [
@@ -78,9 +79,9 @@ const Planning = () => {
             key: 'repairman',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data?.diagnosis_info?.repairman === null || data?.diagnosis_info?.repairman === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data?.diagnosis_info?.repairman}
                 </div>
             )
         },
@@ -90,9 +91,9 @@ const Planning = () => {
             key: 'station',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data?.diagnosis_info?.repairman === null || data?.diagnosis_info?.repairman === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data?.diagnosis_info?.repairman}
                 </div>
             )
         },
@@ -102,9 +103,9 @@ const Planning = () => {
             key: 'type_of_repair',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.type_of_repair === null || data.diagnosis_info.type_of_repair === ''
+                    {data?.diagnosis_info?.type_of_repair === null || data?.diagnosis_info?.type_of_repair === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.type_of_repair}
+                        : data?.diagnosis_info?.type_of_repair}
                 </div>
             )
         },
@@ -114,9 +115,9 @@ const Planning = () => {
             key: 'estimated_start_repair_time',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.approximate_start_time === null || data.diagnosis_info.approximate_start_time === ''
+                    {data?.diagnosis_info?.approximate_start_time === null || data?.diagnosis_info?.approximate_start_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.approximate_start_time}
+                        : data?.diagnosis_info?.approximate_start_time}
                 </div>
             )
         },
@@ -126,9 +127,9 @@ const Planning = () => {
             key: 'estimated_end_repair_time',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.approximate_end_time === ''
+                    {data?.diagnosis_info?.exact_start_time === null || data?.diagnosis_info?.approximate_end_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.approximate_end_time}
+                        : data?.diagnosis_info?.approximate_end_time}
                 </div>
             )
         },
@@ -138,9 +139,9 @@ const Planning = () => {
             key: 'exact_start_time',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.exact_start_time === ''
+                    {data?.diagnosis_info?.exact_start_time === null || data?.diagnosis_info?.exact_start_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_start_time}
+                        : data?.diagnosis_info?.exact_start_time}
                 </div>
             )
         },
@@ -150,9 +151,9 @@ const Planning = () => {
             key: 'exact_end_time',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_end_time === null || data.diagnosis_info.exact_end_time === ''
+                    {data?.diagnosis_info?.exact_end_time === null || data?.diagnosis_info?.exact_end_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_end_time}
+                        : data?.diagnosis_info?.exact_end_time}
                 </div>
             )
         },
@@ -161,7 +162,7 @@ const Planning = () => {
             id: 14,
             title: 'عملیات',
             key: 'actions',
-            renderCell: data => (
+            renderCell: () => (
                 <ActionCell>
                     <FormButton icon={pen} />
                 </ActionCell>
@@ -177,7 +178,7 @@ const Planning = () => {
                 hasFilter={true}
                 onFilterClick={() => setShowFilterModal(true)}
             />
-            <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} />
+            <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={tableLoading} />
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
                 <FilterModal />
             </Modal>

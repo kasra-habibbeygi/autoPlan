@@ -14,16 +14,46 @@ import ReportingLineChart from '../../components/pages/reporting/line-chart';
 import ReportingBarChart from '../../components/pages/reporting/bar-chart';
 
 const Reporting = () => {
+    const [chosenPeriod, setChosenPeriod] = useState(3);
     const [reportingChartData, setReportingChartData] = useState();
+    const [deviationInOneMonth, setDeviationInOneMonth] = useState();
+    const [deviationInMultiMonths, setDeviationInMultiMonths] = useState();
+    const [deviationInSixMonths, setDeviationInSixMonths] = useState();
 
     useEffect(() => {
-        Axios.get('/api/acceptance-report-in-one-month/')
+        Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')
             .then(res => {
-                console.log(res);
+                console.log('first', res);
+                setReportingChartData(res.data);
+            })
+            .catch(err => console.log(err))
+            .finally(() => {});
+
+        Axios.get('https://api.autoplaning.ir/api/percentage-deviation-in-one-month/')
+            .then(res => {
+                console.log('second', res);
+                setDeviationInOneMonth(res.data);
+            })
+            .catch(err => console.log(err))
+            .finally(() => {});
+        Axios.get('https://api.autoplaning.ir/api/deviation-in-six-months/')
+            .then(res => {
+                console.log('fourth', res);
+                setDeviationInSixMonths(res.data);
             })
             .catch(err => console.log(err))
             .finally(() => {});
     }, []);
+
+    useEffect(() => {
+        Axios.get(`https://api.autoplaning.ir/api/amount-of-deviation/${chosenPeriod}/`)
+            .then(res => {
+                console.log('third', res);
+                setDeviationInMultiMonths(res.data);
+            })
+            .catch(err => console.log(err))
+            .finally(() => {});
+    }, [chosenPeriod]);
 
     return (
         <ReportingWrapper>
@@ -39,7 +69,7 @@ const Reporting = () => {
                                 <ChartItem title='تعمیرات گازی' percent='۵۶' color='#e8f6fd' />
                             </div>
                             <div className='mainChart'>
-                                <ReportingChart />
+                                <ReportingChart detail={reportingChartData} />
                             </div>
                         </div>
                     </div>
@@ -55,7 +85,7 @@ const Reporting = () => {
                                 <ChartItem title='انحراف در بخش گاز کاری' percent='۵۶' color='#e8f6fd' />
                             </div>
                             <div className='mainChart'>
-                                <DeficiencyChart />
+                                <DeficiencyChart detail={deviationInOneMonth} />
                             </div>
                         </div>
                     </div>
@@ -64,10 +94,10 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader title='گزارش میزان انحراف در هر بخش' buttonText='دریافت گزارش کامل دوره' />
                         <div className='barchart_header'>
-                            <select>
-                                <option value='three'>سه ماه</option>
-                                <option value='six'>شش ماهه</option>
-                                <option value='nine'>نه ماه</option>
+                            <select value={chosenPeriod} onChange={e => setChosenPeriod(e.target.value)}>
+                                <option value={3}>سه ماه</option>
+                                <option value={6}>شش ماهه</option>
+                                <option value={9}>نه ماه</option>
                             </select>
                             <div className='barchart_items'>
                                 <div>
@@ -89,7 +119,7 @@ const Reporting = () => {
                             </div>
                         </div>
                         <div className='mainChart'>
-                            <ReportingBarChart />
+                            <ReportingBarChart detail={deviationInMultiMonths} />
                         </div>
                     </div>
                 </Grid>
@@ -97,7 +127,7 @@ const Reporting = () => {
                     <div className='item'>
                         <DetailBoxHeader title='میزان بروز انحراف در شش ماه گذشته' buttonText='دریافت گزارش کامل دوره' />
                         <div className='mainChart'>
-                            <ReportingLineChart />
+                            <ReportingLineChart detail={deviationInSixMonths} />
                         </div>
                     </div>
                 </Grid>

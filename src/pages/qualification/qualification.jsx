@@ -69,17 +69,17 @@ const Qualification = () => {
     var columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'create_at' },
-        { id: 2, title: 'نام', key: 'name', renderCell: data => data.user_info.personnel.fullname },
+        { id: 3, title: 'نام', key: 'name', renderCell: data => data.user_info.personnel.fullname },
         {
-            id: 2,
+            id: 4,
             title: 'زمان کاری',
             key: 'time',
             renderCell: data => `${data.time.split(':')[0]} ساعت و ${data.time.split(':')[1]} دقیقه`
         },
-        { id: 2, title: 'کد جایگاه', key: 'code', renderCell: data => data.type.code },
-        { id: 2, title: 'اسم جایگاه', key: 'code', renderCell: data => data.type.type_info.title },
+        { id: 5, title: 'کد جایگاه', key: 'code', renderCell: data => data.type.code },
+        { id: 6, title: 'اسم جایگاه', key: 'code', renderCell: data => data.type.type_info.title },
         {
-            id: 100,
+            id: 7,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
