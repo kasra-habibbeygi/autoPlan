@@ -13,11 +13,12 @@ import medal from './../../../assets/images/icons/Medal.svg';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
 const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModalCloseHandler }) => {
     const [postsList, setPostsList] = useState([{ value: '', label: '', id: '' }]);
     const [buttonLoader, setButtonLoader] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             full_name: '',
@@ -31,20 +32,27 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
     const { errors } = formState;
 
     useEffect(() => {
-        if (modalStatus === 'edit') {
-            setValue('full_name', editModalData?.personnel?.fullname);
-            setValue('mobile', editModalData?.personnel?.mobile_number);
-            setValue('role', editModalData?.organizational_position_info?.id);
-        }
+        setLoading(true);
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500')
+            .then(res => {
+                let posts = res.data.results.map(item => ({
+                    label: item.title,
+                    value: item.id
+                }));
 
-        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500').then(res => {
-            let posts = res.data.results.map(item => ({
-                label: item.title,
-                value: item.id
-            }));
+                setPostsList(posts);
 
-            setPostsList(posts);
-        });
+                if (modalStatus === 'edit') {
+                    console.log(editModalData);
+                    setValue('full_name', editModalData?.personnel?.fullname);
+                    setValue('mobile', editModalData?.personnel?.mobile_number);
+                    setValue('role', {
+                        label: editModalData?.organizational_position_info?.title,
+                        value: editModalData?.organizational_position_info?.id
+                    });
+                }
+            })
+            .finally(() => setLoading(false));
     }, [modalStatus]);
 
     const formSubmit = data => {
@@ -53,7 +61,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
         const newData = {
             fullname: data.full_name,
             mobile_number: data.mobile,
-            organizational_position: data.role
+            organizational_position: data.role.value
         };
 
         if (modalStatus === 'edit') {
@@ -84,81 +92,87 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
     return (
         <AddModalWrapper error={errors?.role?.message}>
             <h3>دسترسی پنل</h3>
-            <form onSubmit={handleSubmit(formSubmit)}>
-                <InputComponent
-                    title='کاربر'
-                    placeHolder='نام کاربر'
-                    icon={magnifier}
-                    type='text'
-                    detail={{
-                        ...register('full_name', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
-                    }}
-                    error={errors?.full_name}
-                />
-                <InputComponent
-                    title='شماره موبایل'
-                    icon={addPhone}
-                    placeHolder='---------۰۹'
-                    type='number'
-                    detail={{
-                        ...register('mobile', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            },
-                            maxLength: {
-                                value: 11,
-                                message: 'شماره باید ۱۱ عدد باشد'
-                            },
-                            minLength: {
-                                value: 11,
-                                message: 'شماره باید ۱۱ عدد باشد'
-                            }
-                        })
-                    }}
-                    error={errors?.mobile}
-                />
-
-                <div className='auto_complete_wrapper'>
-                    <p className='auto_complete_title'>پست سازمانی کاربر</p>
-                    <div className='auto_complete'>
-                        <Controller
-                            control={control}
-                            name='role'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return (
-                                    <Autocomplete
-                                        options={postsList}
-                                        value={value?.label}
-                                        onChange={(event, newValue) => {
-                                            onChange(newValue?.value);
-                                        }}
-                                        sx={{ width: '100%' }}
-                                        renderInput={params => <TextField {...params} />}
-                                    />
-                                );
-                            }}
-                        />
-
-                        <img src={medal} />
-                    </div>
-                    <p className='auto_complete_error'>{errors?.role?.message}</p>
+            {loading ? (
+                <div className='loading'>
+                    <CircularProgress />
                 </div>
-                <FormButton
-                    text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
-                    type='submit'
-                    backgroundColor={'#174787'}
-                    color={'white'}
-                    height={48}
-                    loading={buttonLoader}
-                />
-            </form>
+            ) : (
+                <form onSubmit={handleSubmit(formSubmit)}>
+                    <InputComponent
+                        title='کاربر'
+                        placeHolder='نام کاربر'
+                        icon={magnifier}
+                        type='text'
+                        detail={{
+                            ...register('full_name', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.full_name}
+                    />
+                    <InputComponent
+                        title='شماره موبایل'
+                        icon={addPhone}
+                        placeHolder='---------۰۹'
+                        type='number'
+                        detail={{
+                            ...register('mobile', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                },
+                                maxLength: {
+                                    value: 11,
+                                    message: 'شماره باید ۱۱ عدد باشد'
+                                },
+                                minLength: {
+                                    value: 11,
+                                    message: 'شماره باید ۱۱ عدد باشد'
+                                }
+                            })
+                        }}
+                        error={errors?.mobile}
+                    />
+
+                    <div className='auto_complete_wrapper'>
+                        <p className='auto_complete_title'>پست سازمانی کاربر</p>
+                        <div className='auto_complete'>
+                            <Controller
+                                control={control}
+                                name='role'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return (
+                                        <Autocomplete
+                                            options={postsList}
+                                            value={value?.label}
+                                            onChange={(event, newValue) => {
+                                                onChange(newValue);
+                                            }}
+                                            sx={{ width: '100%' }}
+                                            renderInput={params => <TextField {...params} />}
+                                        />
+                                    );
+                                }}
+                            />
+
+                            <img src={medal} />
+                        </div>
+                        <p className='auto_complete_error'>{errors?.role?.message}</p>
+                    </div>
+                    <FormButton
+                        text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
+                        type='submit'
+                        backgroundColor={'#174787'}
+                        color={'white'}
+                        height={48}
+                        loading={buttonLoader}
+                    />
+                </form>
+            )}
         </AddModalWrapper>
     );
 };

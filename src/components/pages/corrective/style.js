@@ -86,5 +86,15 @@ export const Style = styled.div(props => ({
 
     '& .auto_complete_error': {
         border: '1px solid #830000'
+    },
+
+    '& .loading': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: props.theme.colors.white,
+        padding: '50px 0',
+        borderRadius: '18px',
+        margin: '10px 0'
     }
 }));

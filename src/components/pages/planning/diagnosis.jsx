@@ -27,9 +27,10 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
 
     useEffect(() => {
         Axios.get('/worker/admin/capacity-measurement/list_create/').then(res => {
+            console.log(res.data);
             let posts = res.data.results.map(item => ({
                 label: item?.user_info?.personnel.fullname,
-                value: item?.user_info?.id,
+                value: item?.id,
                 station: item?.type?.code
             }));
 

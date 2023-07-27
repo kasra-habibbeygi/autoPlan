@@ -12,11 +12,12 @@ import Medal from './../../../assets/images/icons/Medal.svg';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
 const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalCloseHandler }) => {
     const [permissionList, setPermissionList] = useState([{ value: '', lable: '', id: '' }]);
     const [buttonLoader, setButtonLoader] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { register, handleSubmit, formState, control, reset, setValue } = useForm({
         defaultValues: {
             title: '',
@@ -28,28 +29,41 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('user/permissions/?page_size=500').then(res => {
-            let permission = res.data.results.map(item => ({
-                label: item.title,
-                value: item.id
-            }));
-            setPermissionList(permission);
-        });
-
-        if (modalStatus === 'edit') {
-            setValue('title', editModalData.title);
-            setValue('technical_force', editModalData.technical_force);
-            setValue(
-                'permissions',
-                editModalData?.permissions_info.map(item => item.code)
-            );
-        }
+        setLoading(true);
+        Axios.get('user/permissions/?page_size=500')
+            .then(res => {
+                let permission = res.data.results.map(item => ({
+                    label: item.title,
+                    value: item.id
+                }));
+                setPermissionList(permission);
+                if (modalStatus === 'edit') {
+                    setValue('title', editModalData.title);
+                    setValue('technical_force', editModalData.technical_force);
+                    setValue(
+                        'permissions',
+                        editModalData?.permissions_info.map(item => ({
+                            label: item.title,
+                            value: item.code
+                        }))
+                    );
+                }
+            })
+            .finally(() => setLoading(false));
     }, [editModalData]);
 
     const formSubmit = data => {
+        const newArray = data.permissions.map(item => item.value);
+
+        const newData = {
+            technical_force: data.technical_force,
+            title: data.title,
+            permissions: newArray
+        };
+
         setButtonLoader(true);
         if (modalStatus === 'edit') {
-            Axios.put(`/worker/admin/organizational-position/retrieve_update_destroy/?pk=${editModalData?.id}`, data)
+            Axios.put(`/worker/admin/organizational-position/retrieve_update_destroy/?pk=${editModalData?.id}`, newData)
                 .then(() => {
                     setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(prev => !prev);
@@ -60,7 +74,7 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
                 .catch(() => {})
                 .finally(() => setButtonLoader(false));
         } else {
-            Axios.post('/worker/admin/organizational-position/list_create/', data)
+            Axios.post('/worker/admin/organizational-position/list_create/', newData)
                 .then(() => {
                     setReload(prev => !prev);
                     setState(false);
@@ -76,64 +90,71 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
     return (
         <AddModalWrapper error={errors?.permissions?.message}>
             <h3>{modalStatus === 'edit' ? 'ویرایش پست سازمانی' : 'اضافه کردن پست سازمانی جدید'}</h3>
-            <form onSubmit={handleSubmit(formSubmit)}>
-                <InputComponent
-                    title='نام پست سازمانی جدید'
-                    placeHolder='نام پست'
-                    icon={Medal}
-                    type='text'
-                    detail={{
-                        ...register('title', {
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        })
-                    }}
-                    error={errors?.title}
-                />
-                <div className='auto_complete_wrapper'>
-                    <p className='auto_complete_title'>دسترسی</p>
-                    <div className='auto_complete'>
-                        <Controller
-                            control={control}
-                            name='permissions'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return (
-                                    <Autocomplete
-                                        multiple
-                                        options={permissionList}
-                                        value={value}
-                                        filterSelectedOptions
-                                        getOptionLabel={option => option?.label}
-                                        onChange={(_, newValue) => {
-                                            onChange(newValue.map(value => value.value));
-                                        }}
-                                        sx={{ width: '100%' }}
-                                        renderInput={params => <TextField {...params} />}
-                                    />
-                                );
-                            }}
-                        />
-                        <img src={UserHandUp} />
-                    </div>
-                    <p className='auto_complete_error'>{errors?.permissions?.message}</p>
-                </div>
 
-                <div className='checkbox_wrapper'>
-                    <p>نیروی فنی</p>
-                    <input type='checkbox' {...register('technical_force')} />
+            {loading ? (
+                <div className='loading'>
+                    <CircularProgress />
                 </div>
-                <FormButton
-                    text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
-                    type='submit'
-                    backgroundColor='#174787'
-                    color='white'
-                    height={48}
-                    loading={buttonLoader}
-                />
-            </form>
+            ) : (
+                <form onSubmit={handleSubmit(formSubmit)}>
+                    <InputComponent
+                        title='نام پست سازمانی جدید'
+                        placeHolder='نام پست'
+                        icon={Medal}
+                        type='text'
+                        detail={{
+                            ...register('title', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })
+                        }}
+                        error={errors?.title}
+                    />
+                    <div className='auto_complete_wrapper'>
+                        <p className='auto_complete_title'>دسترسی</p>
+                        <div className='auto_complete'>
+                            <Controller
+                                control={control}
+                                name='permissions'
+                                rules={{ required: 'این فیلد اجباری است' }}
+                                render={({ field: { onChange, value } }) => {
+                                    return (
+                                        <Autocomplete
+                                            multiple
+                                            options={permissionList}
+                                            value={value}
+                                            filterSelectedOptions
+                                            getOptionLabel={option => option?.label}
+                                            onChange={(_, newValue) => {
+                                                onChange(newValue.map(value => value));
+                                            }}
+                                            sx={{ width: '100%' }}
+                                            renderInput={params => <TextField {...params} />}
+                                        />
+                                    );
+                                }}
+                            />
+                            <img src={UserHandUp} />
+                        </div>
+                        <p className='auto_complete_error'>{errors?.permissions?.message}</p>
+                    </div>
+
+                    <div className='checkbox_wrapper'>
+                        <p>نیروی فنی</p>
+                        <input type='checkbox' {...register('technical_force')} />
+                    </div>
+                    <FormButton
+                        text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
+                        type='submit'
+                        backgroundColor='#174787'
+                        color='white'
+                        height={48}
+                        loading={buttonLoader}
+                    />
+                </form>
+            )}
         </AddModalWrapper>
     );
 };
