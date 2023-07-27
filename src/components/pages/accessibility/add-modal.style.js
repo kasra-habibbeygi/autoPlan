@@ -8,7 +8,7 @@ export const AddModalWrapper = styled.div(props => ({
         margin: '0 5px 0 10px !important'
     },
 
-    '@media(max-width : 700px)': {
+    '@media(max-width : 800px)': {
         width: '100%'
     },
 

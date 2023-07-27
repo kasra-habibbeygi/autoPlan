@@ -6,13 +6,26 @@ export const TimePickerStyle = styled.div(props => ({
     gap: '10px',
 
     p: {
-        fontWeight: '600'
+        fontWeight: '600',
+        ...(props.error && {
+            color: '#830000'
+        })
     },
 
     '& .timePicker': {
         display: 'flex',
         flexDirection: 'row-reverse',
         gap: '20px',
-        alignItems: 'center'
+        alignItems: 'center',
+        ...(props.error && {
+            border: '1px solid #830000',
+            borderRadius: '8px'
+        })
+    },
+
+    '& .error': {
+        fontWeight: '400',
+        fontSize: '12px',
+        color: '#830000'
     }
 }));

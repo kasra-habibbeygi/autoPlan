@@ -26,9 +26,12 @@ export const RootingStyle = styled.div(props => ({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        maxWidth: '412px',
-        minWidth: '412px',
         position: 'relative',
+
+        '@media(min-width : 800px)': {
+            maxWidth: '412px',
+            minWidth: '412px'
+        },
 
         input: {
             color: props.theme.colors.textColor,

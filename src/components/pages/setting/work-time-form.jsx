@@ -16,9 +16,11 @@ import TimePicker from '../../form-groups/time-picker';
 
 const WorkTimeForm = () => {
     const dispatch = useDispatch();
-    const { register, handleSubmit, setValue } = useForm({
+    const { register, handleSubmit, setValue, formState } = useForm({
         mode: 'onTouched'
     });
+
+    const { errors } = formState;
 
     const [buttonLoader, setButtonLoader] = useState(false);
     const [reload, setReload] = useState(false);
@@ -27,8 +29,8 @@ const WorkTimeForm = () => {
     const formSubmit = data => {
         setButtonLoader(true);
         const newData = {
-            start_time: `${data.approximate_start_time_hour}:${data.approximate_start_time_min}`,
-            end_time: `${data.approximate_end_time_hour}:${data.approximate_end_time_min}`
+            start_time: `${data?.approximate_start_time_hour}:${data?.approximate_start_time_min}`,
+            end_time: `${data?.approximate_end_time_hour}:${data?.approximate_end_time_min}`
         };
 
         if (getTime?.length > 0) {
@@ -96,6 +98,7 @@ const WorkTimeForm = () => {
                             }
                         })
                     }}
+                    error={(errors?.approximate_start_time_hour || errors?.approximate_start_time_min) && 'این فیلد اجباری است'}
                 />
                 <TimePicker
                     title='زمان پایان کار نمایندگی'
@@ -115,6 +118,7 @@ const WorkTimeForm = () => {
                             }
                         })
                     }}
+                    error={(errors?.approximate_end_time_hour || errors?.approximate_end_time_min) && 'این فیلد اجباری است'}
                 />
                 <FormButton
                     text={getTime?.length > 0 ? 'ویرایش' : 'ثبت'}

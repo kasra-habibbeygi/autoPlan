@@ -8,7 +8,7 @@ export const QualificationWrapper = styled.div(props => ({
         borderRadius: '12px',
         width: '600px',
 
-        '@media(max-width : 700px)': {
+        '@media(max-width : 800px)': {
             width: '100%',
             padding: '20px 30px'
         }
@@ -54,7 +54,7 @@ export const QualificationWrapper = styled.div(props => ({
         }
     },
 
-    '@media(max-width : 700px)': {
+    '@media(max-width : 800px)': {
         '& .filter_field': {
             backgroundColor: 'white',
             padding: '23px',

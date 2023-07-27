@@ -28,7 +28,7 @@ export const UploadFileStyle = styled.form(props => ({
         alignItems: 'center',
         gap: '20px',
 
-        '@media(max-width : 700px)': {
+        '@media(max-width : 800px)': {
             flexDirection: 'column',
             textAlign: 'center'
         },

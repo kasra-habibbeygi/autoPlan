@@ -6,7 +6,7 @@ export const AccessibilityWrapper = styled.div(props => ({
         gap: '10px',
         height: '62px',
 
-        '@media(max-width : 700px)': {
+        '@media(max-width : 800px)': {
             flexDirection: 'column',
             height: '124px'
         }

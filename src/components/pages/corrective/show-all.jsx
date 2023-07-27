@@ -7,7 +7,11 @@ import tools from '../../../utils/tools';
 
 const ShowAll = ({ chosenEditItemDetails, today }) => {
     const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
-    const isTime = finishedDate === today;
+
+    const finishedDateToday = new Date(finishedDate);
+    const todayDate = new Date(today);
+
+    const isTime = finishedDateToday <= todayDate;
 
     return (
         <ShowAllStyle>

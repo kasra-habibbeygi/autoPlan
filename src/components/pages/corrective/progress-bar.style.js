@@ -8,7 +8,7 @@ export const ProgressBarStyle = styled.div(props => ({
     justifyContent: 'center',
     marginTop: '50px',
 
-    '@media(max-width : 700px)': {
+    '@media(max-width : 800px)': {
         fontSize: '12px'
     },
 
@@ -39,7 +39,7 @@ export const ProgressBarStyle = styled.div(props => ({
             borderRadius: '50%',
             textAlign: 'center',
 
-            '@media(max-width : 700px)': {
+            '@media(max-width : 800px)': {
                 width: '25px',
                 height: '25px'
             }

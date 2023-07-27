@@ -4,7 +4,7 @@ export const ActionStyle = styled.div(props => ({
     width: '500px',
     margin: '50px auto',
 
-    '@media(max-width : 700px)': {
+    '@media(max-width : 800px)': {
         width: '100%'
     },
 

@@ -17,7 +17,11 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
-    const isTime = finishedDate === today;
+
+    const finishedDateToday = new Date(finishedDate);
+    const todayDate = new Date(today);
+
+    const isTime = finishedDateToday <= todayDate;
 
     const { control, handleSubmit, formState, setValue } = useForm({
         defaultValues: {

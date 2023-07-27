@@ -105,6 +105,7 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
                 </div>
 
                 <FormButton text='بعدی' icon={arrow} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(6)} margin={'20px 0'} />
             </form>
         </Style>
     );

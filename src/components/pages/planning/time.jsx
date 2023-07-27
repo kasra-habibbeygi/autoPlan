@@ -70,10 +70,10 @@ const Time = ({ Step2Id }) => {
         Axios.get('worker/admin/diagnosis/list_create/').then(res => {
             setDiagnosisValue();
             let temp = res.data.results.filter(item => item.vehicle_specifications === Step2Id)[0];
-            setValue('proximate_finish_hour', temp.approximate_end_time.split(':')[0]);
-            setValue('proximate_finish_min', temp.approximate_end_time.split(':')[1]);
-            setValue('proximate_start_hour', temp.approximate_start_time.split(':')[0]);
-            setValue('proximate_start_min', temp.approximate_start_time.split(':')[1]);
+            setValue('proximate_finish_hour', temp?.approximate_end_time.split(':')[0]);
+            setValue('proximate_finish_min', temp?.approximate_end_time.split(':')[1]);
+            setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
+            setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
         });
     }, []);
 
@@ -101,11 +101,11 @@ const Time = ({ Step2Id }) => {
         });
     };
 
-    console.log(finalResults);
+    // console.log(finalResults);
 
     return (
         <form onSubmit={handleSubmit(formSubmit)}>
-            <Grid container columnSpacing={4}>
+            <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
                     <TimePicker
                         disabled
@@ -146,6 +146,7 @@ const Time = ({ Step2Id }) => {
                                 }
                             })
                         }}
+                        error={(errors?.real_start_hour || errors?.real_start_min) && 'این فیلد اجباری است'}
                     />
                 </Grid>
 
@@ -189,6 +190,7 @@ const Time = ({ Step2Id }) => {
                                 }
                             })
                         }}
+                        error={(errors?.real_finish_hour || errors?.real_finish_min) && 'این فیلد اجباری است'}
                     />
                 </Grid>
                 <FormButton

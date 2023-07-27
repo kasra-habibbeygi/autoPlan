@@ -18,9 +18,6 @@ import Time from '../../components/pages/planning/time';
 import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
 
-// Tools
-import Tools from '../../utils/tools';
-
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [tableLoading, setTableLoading] = useState(true);
@@ -30,6 +27,11 @@ const Planning = () => {
     const [step, setStep] = useState(1);
     const [planningList, PlanningList] = useState();
     const [reload, setReload] = useState(false);
+    const [filtersDetail, setFiltersDetail] = useState({
+        timeFilter: '',
+        sectionFilter: '',
+        personFilter: ''
+    });
 
     const [pageStatus, setPageStatus] = useState({
         total: 1,
@@ -41,7 +43,21 @@ const Planning = () => {
     };
 
     useEffect(() => {
-        Axios.get('/worker/admin/time-to-troubleshoot/list_create/')
+        setTableLoading(true);
+
+        Axios.get(`/worker/admin/time-to-troubleshoot/list_create/?pageSize=10&page=${pageStatus.current}`, {
+            params: {
+                ...(filtersDetail.timeFilter && {
+                    some: 'gdaslksgh'
+                }),
+                ...(filtersDetail.sectionFilter && {
+                    some: 'gdaslksgh'
+                }),
+                ...(filtersDetail.personFilter && {
+                    some: 'gdaslksgh'
+                })
+            }
+        })
             .then(res => {
                 PlanningList(res.data.results);
 
@@ -62,10 +78,10 @@ const Planning = () => {
             key: 'car_brand',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.vehicle_specifications_info.car_brand === null ||
-                    data.diagnosis_info.vehicle_specifications_info.car_brand === ''
+                    {data?.diagnosis_info?.vehicle_specifications_info?.car_brand === null ||
+                    data?.diagnosis_info?.vehicle_specifications_info?.car_brand === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.vehicle_specifications_info.car_brand}
+                        : data?.diagnosis_info?.vehicle_specifications_info?.car_brand}
                 </div>
             )
         },
@@ -75,10 +91,10 @@ const Planning = () => {
             key: 'car_model',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.vehicle_specifications_info.car_model === null ||
-                    data.diagnosis_info.vehicle_specifications_info.car_model === ''
+                    {data?.diagnosis_info?.vehicle_specifications_info?.car_model === null ||
+                    data?.diagnosis_info?.vehicle_specifications_info?.car_model === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.vehicle_specifications_info.car_model}
+                        : data?.diagnosis_info?.vehicle_specifications_info?.car_model}
                 </div>
             )
         },
@@ -88,10 +104,10 @@ const Planning = () => {
             key: 'customer_name',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.vehicle_specifications_info.customer_name === null ||
-                    data.diagnosis_info.vehicle_specifications_info.customer_name === ''
+                    {data?.diagnosis_info?.vehicle_specifications_info?.customer_name === null ||
+                    data?.diagnosis_info?.vehicle_specifications_info?.customer_name === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.vehicle_specifications_info.customer_name}
+                        : data?.diagnosis_info?.vehicle_specifications_info?.customer_name}
                 </div>
             )
         },
@@ -101,10 +117,10 @@ const Planning = () => {
             key: 'customer_mobile_number',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.vehicle_specifications_info.customer_mobile_number === null ||
-                    data.diagnosis_info.vehicle_specifications_info.customer_mobile_number === ''
+                    {data?.diagnosis_info?.vehicle_specifications_info?.customer_mobile_number === null ||
+                    data?.diagnosis_info?.vehicle_specifications_info?.customer_mobile_number === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.vehicle_specifications_info.customer_mobile_number}
+                        : data?.diagnosis_info?.vehicle_specifications_info?.customer_mobile_number}
                 </div>
             )
         },
@@ -114,11 +130,11 @@ const Planning = () => {
             key: 'plate_number',
             renderCell: data => (
                 <div className='plaque'>
-                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_1}</span>
-                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_2}</span>
-                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_3}</span>
+                    <span>{data?.diagnosis_info?.vehicle_specifications_info?.plaque_1}</span>
+                    <span>{data?.diagnosis_info?.vehicle_specifications_info?.plaque_2}</span>
+                    <span>{data?.diagnosis_info?.vehicle_specifications_info?.plaque_3}</span>
                     <span>-</span>
-                    <span>{data.diagnosis_info.vehicle_specifications_info.plaque_4}</span>
+                    <span>{data?.diagnosis_info?.vehicle_specifications_info?.plaque_4}</span>
                 </div>
             )
         },
@@ -128,9 +144,9 @@ const Planning = () => {
             key: 'repairman',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data?.diagnosis_info?.repairman === null || data?.diagnosis_info?.repairman === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data?.diagnosis_info?.repairman}
                 </div>
             )
         },
@@ -140,9 +156,9 @@ const Planning = () => {
             key: 'station',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.repairman === null || data.diagnosis_info.repairman === ''
+                    {data?.diagnosis_info?.repairman === null || data?.diagnosis_info?.repairman === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.repairman}
+                        : data?.diagnosis_info?.repairman}
                 </div>
             )
         },
@@ -188,9 +204,9 @@ const Planning = () => {
             key: 'exact_start_time',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_start_time === null || data.diagnosis_info.exact_start_time === ''
+                    {data?.diagnosis_info?.exact_start_time === null || data?.diagnosis_info?.exact_start_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_start_time}
+                        : data?.diagnosis_info?.exact_start_time}
                 </div>
             )
         },
@@ -232,9 +248,9 @@ const Planning = () => {
             key: 'the_reason_for_the_deviation',
             renderCell: data => (
                 <div>
-                    {data.diagnosis_info.exact_end_time === null || data.diagnosis_info.exact_end_time === ''
+                    {data?.diagnosis_info?.exact_end_time === null || data?.diagnosis_info?.exact_end_time === ''
                         ? 'تعریف نشده'
-                        : data.diagnosis_info.exact_end_time}
+                        : data?.diagnosis_info?.exact_end_time}
                 </div>
             )
         },
@@ -261,7 +277,7 @@ const Planning = () => {
             />
             <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={tableLoading} />
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
-                <FilterModal />
+                <FilterModal setFiltersDetail={setFiltersDetail} setReload={setReload} setShowFilterModal={setShowFilterModal} />
             </Modal>
             <Modal state={modalIsOpen} setState={setIsModalOpen} bgStatus={true}>
                 <div className='formControl'>

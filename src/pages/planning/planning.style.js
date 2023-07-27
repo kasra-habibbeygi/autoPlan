@@ -7,7 +7,7 @@ export const PlanningField = styled.div(props => ({
         padding: '50px 60px',
         borderRadius: '12px',
 
-        '@media(max-width : 700px)': {
+        '@media(max-width : 800px)': {
             padding: '50px 30px'
         }
     },
@@ -51,10 +51,14 @@ export const PlanningField = styled.div(props => ({
                 fontWeight: 600
             },
 
-            '& .auto_complete_error': {
+            '& .auto_complete_error_message': {
                 color: '#830000',
                 fontSize: '12px',
                 marginTop: '10px'
+            },
+
+            '& .auto_complete_error': {
+                border: '1px solid #830000'
             }
         }
     },

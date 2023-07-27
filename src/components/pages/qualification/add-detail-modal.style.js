@@ -8,7 +8,7 @@ export const FormWrapper = styled.form(props => {
 
         padding: '0 45px',
 
-        '@media(max-width : 700px)': {
+        '@media(max-width : 800px)': {
             padding: '0'
         },
 

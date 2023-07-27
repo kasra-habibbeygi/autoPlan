@@ -41,29 +41,6 @@ const Action = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
             actions: data.actionFields
         }));
         setStep(4);
-
-        // setButtonLoading(true);
-        // if (isDirty) {
-        //     Axios.put(`reform_action/set_action/?id=${allDetail?.mainId}`, {
-        //         action: mainString
-        //     })
-        //         .then(() => {
-        //             setAllDetail(prev => ({
-        //                 ...prev,
-        //                 actions: data.actionFields
-        //             }));
-        //             setReload(prev => !prev);
-        //             setStep(4);
-        //         })
-        //         .catch(() => {})
-        //         .finally(() => setButtonLoading(false));
-        // } else {
-        //     setAllDetail(prev => ({
-        //         ...prev,
-        //         actions: data.actionFields
-        //     }));
-        //     setStep(4);
-        // }
     };
 
     const handleAddInput = () => {

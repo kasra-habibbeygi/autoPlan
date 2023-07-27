@@ -5,12 +5,12 @@ import Axios from '../../../configs/axios';
 
 //Assets
 import Question from '../../../assets/images/corrective/Question.svg';
-import arrow from './../../../assets/images/global/arrow.svg';
 import { Style } from './style';
 
 //Components
 import FormButton from '../../form-groups/form-button';
 import { toast } from 'react-hot-toast';
+import tools from '../../../utils/tools';
 
 const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails, setIsModalOpen }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
@@ -31,14 +31,16 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
     const { errors } = formState;
 
     const formSubmit = data => {
+        setButtonLoading(true);
+        console.log(allDetail);
+
         const newData = {
-            // result: chosenEditItemDetails?.result,
-            // control_completion_date: chosenEditItemDetails?.control_completion_date,
-            // controller: chosenEditItemDetails?.result,
-            //   effective_result: data.effective_result
+            result: allDetail?.action_result,
+            control_completion_date: tools.changeTimeStampToDate(allDetail?.effective_detail?.effective_date),
+            controller: allDetail?.effective_detail?.inCharge_person?.value,
+            control_result: data.effective_result
         };
 
-        setButtonLoading(true);
         Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
             .then(() => {
                 setReload(prev => !prev);
@@ -51,7 +53,9 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                 setIsModalOpen(false);
                 toast.success('با موفقیت ثبت گردید');
             })
-            .catch(() => {})
+            .catch(err => {
+                console.log(err);
+            })
             .finally(() => setButtonLoading(false));
     };
 
@@ -59,7 +63,7 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
                 <div className={errors?.effective_result ? 'text_area text_area_error' : 'text_area'}>
-                    <p className='title'>نتیجه</p>
+                    <p className='title'>نتیجه اثر بخشی</p>
                     <div>
                         <textarea
                             rows='8'
@@ -76,15 +80,8 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                     <p className='error'>{errors?.effective_result?.message}</p>
                 </div>
 
-                <FormButton
-                    text='بعدی'
-                    loading={buttonLoading}
-                    type='submit'
-                    backgroundColor={'#174787'}
-                    color={'white'}
-                    height={48}
-                    icon={arrow}
-                />
+                <FormButton text='ثبت' loading={buttonLoading} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(7)} margin={'20px 0'} />
             </form>
         </Style>
     );

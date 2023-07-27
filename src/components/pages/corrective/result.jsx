@@ -56,6 +56,7 @@ const Result = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
                 </div>
 
                 <FormButton text='بعدی' type='submit' backgroundColor={'#174787'} color={'white'} height={48} icon={arrow} />
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(5)} margin={'20px 0'} />
             </form>
         </Style>
     );

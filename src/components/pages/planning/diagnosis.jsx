@@ -6,8 +6,6 @@ import Axios from '../../../configs/axios';
 import Arrow from './../../../assets/images/global/arrow.svg';
 import ShockAbsorber from './../../../assets/images/icons/ShockAbsorber.svg';
 import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
-import ClockSquare from './../../../assets/images/icons/ClockSquare.svg';
-import clockDot from './../../../assets/images/icons/clockDot.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
@@ -28,7 +26,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('/worker/admin/capacity-measurement/list_create/?date_now=true').then(res => {
+        Axios.get('/worker/admin/capacity-measurement/list_create/').then(res => {
             let posts = res.data.results.map(item => ({
                 label: item?.user_info?.personnel.fullname,
                 value: item?.user_info?.id,
@@ -39,14 +37,16 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
         });
     }, []);
     const formSubmit = data => {
+        setLoader(true);
+
         const newData = {
             pyramid_number: data.pyramid_number,
             repairman: data.repairman,
             required_pieces: data.required_pieces,
             type_of_repair: data.type_of_repair,
             vehicle_specifications: Step1Id,
-            approximate_start_time: `${data.approximate_start_time_hour}:${data.approximate_start_time_min}`,
-            approximate_end_time: `${data.approximate_end_time_hour}:${data.approximate_end_time_min}`
+            approximate_start_time: `${data?.approximate_start_time_hour}:${data?.approximate_start_time_min}`,
+            approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`
         };
 
         Axios.post('/worker/admin/diagnosis/list_create/', newData)
@@ -54,15 +54,19 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
                 setStep(3);
                 setStep2Id(res.data.id);
             })
-            .catch(() => {})
+            .catch(err => {
+                console.log(err);
+            })
             .finally(() => {
                 setLoader(false);
             });
     };
 
+    console.log(errors);
+
     return (
         <form onSubmit={handleSubmit(formSubmit)} className='form_double_col'>
-            <Grid container columnSpacing={4}>
+            <Grid container spacing={4}>
                 <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
                     <InputComponent
                         title='نوع تعمیر'
@@ -81,7 +85,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
                     />
                     <div className='auto_complete_wrapper'>
                         <p className='auto_complete_title'>نام تعمیرکار</p>
-                        <div className='auto_complete'>
+                        <div className={errors?.repairman?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
                             <Controller
                                 control={control}
                                 name='repairman'
@@ -101,6 +105,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
                                 }}
                             />
                         </div>
+                        <p className='auto_complete_error_message'>{errors?.repairman?.message}</p>
                     </div>
 
                     <InputComponent
@@ -139,6 +144,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
                                 }
                             })
                         }}
+                        error={(errors?.approximate_start_time_hour || errors?.approximate_start_time_min) && 'این فیلد اجباری است'}
                     />
 
                     <TimePicker
@@ -159,7 +165,9 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
                                 }
                             })
                         }}
+                        error={(errors?.approximate_end_time_hour || errors?.approximate_end_time_min) && 'این فیلد اجباری است'}
                     />
+
                     <InputComponent
                         title='قطعات مورد نیاز تعمیرات'
                         placeHolder='قطعات مورد نیاز تعمیرات برای تعمیر'
