@@ -34,8 +34,10 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
         const newData = {
             // result: chosenEditItemDetails?.result,
             // control_completion_date: chosenEditItemDetails?.control_completion_date,
-            // result: chosenEditItemDetails?.result
+            // controller: chosenEditItemDetails?.result,
+            //   effective_result: data.effective_result
         };
+
         setButtonLoading(true);
         Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
             .then(() => {

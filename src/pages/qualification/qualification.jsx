@@ -121,20 +121,6 @@ const Qualification = () => {
                         add: false
                     });
                 });
-        } else {
-            Axios.put('worker/admin/capacity-measurement/retrieve_update_destroy', formData)
-                .then(() => {
-                    setReload(!reload);
-                    setShowAddModal(false);
-                    toast.success('ظرفیت جدید با موفقیت اضافه شد');
-                })
-                .catch(() => {})
-                .finally(() => {
-                    setLoader({
-                        ...loader,
-                        add: false
-                    });
-                });
         }
     };
 
@@ -197,6 +183,7 @@ const Qualification = () => {
 
         Axios.get('worker/admin/capacity-measurement/report/')
             .then(res => {
+                console.log(res);
                 setReportList(res.data.result);
             })
             .catch(() => {});
@@ -208,15 +195,16 @@ const Qualification = () => {
         setSubModalStatus(data.type.type_info.title);
         setSpecificData({
             name: {
-                label: data.user.fullname,
-                value: data.user.id
+                label: data?.user_info?.personnel?.fullname,
+                value: data?.user_info?.personnel?.id
             },
             station: {
-                label: data.type.code,
-                value: data.type.id
+                label: data?.type?.code,
+                value: data?.type?.id
             },
-            hour: data.time.split(':')[0],
-            min: data.time.split(':')[1]
+            hour: data?.time?.split(':')[0],
+            min: data?.time?.split(':')[1],
+            editId: data?.id
         });
     };
 
@@ -300,6 +288,9 @@ const Qualification = () => {
                     details={details}
                     specificData={specificData}
                     showSubModal={showSubModal}
+                    modalActionType={modalActionType}
+                    setReload={setReload}
+                    setShowSubModal={setShowSubModal}
                 />
             </Modal>
             <Modal state={detailModal} setState={setDetailModal} maxWidth='sm' handleClose={() => setDetailModal(false)}>

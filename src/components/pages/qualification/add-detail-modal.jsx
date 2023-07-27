@@ -9,11 +9,25 @@ import { FormWrapper } from './add-detail-modal.style';
 import decreesArrow from './../../../assets/images/icons/decreesArrow.svg';
 import increaseArrow from './../../../assets/images/icons/increaseArrow.svg';
 import blocking from './../../../assets/images/icons/blocking.svg';
+import Axios from './../../../configs/axios';
 
 //components
 import FormButton from '../../form-groups/form-button';
+import { toast } from 'react-hot-toast';
 
-const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, personnelList, seatList, specificData, showSubModal }) => {
+const AddDetailModal = ({
+    subModalStatus,
+    setDetails,
+    closeSubModalHandler,
+    personnelList,
+    seatList,
+    specificData,
+    showSubModal,
+    modalActionType,
+    setReload,
+    setShowSubModal
+}) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
     const [filteredPersonnelList, setFilteredPersonnelList] = useState([]);
     const [filteredSeatList, setFilteredSeatList] = useState([]);
     const [domLoaded, setDomLoaded] = useState(false);
@@ -53,6 +67,29 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
 
         closeSubModalHandler();
         reset();
+    };
+
+    const editHandler = data => {
+        setButtonLoading(true);
+        const newData = {
+            user: filteredPersonnelList.filter(item => item.label === data.name.label)[0]?.value,
+            time: `${data.hour}:${data.min}:00`,
+            type: filteredSeatList.filter(item => item.label === data.station.label)[0]?.value,
+            fullText: `${data.name.label} : ${data.hour} ساعت ${data.min} دقیقه کاری -در جایگاه ${data.station.label}`
+        };
+
+        Axios.put(`/worker/admin/capacity-measurement/retrieve_update_destroy/?pk=${specificData.editId}`, newData)
+            .then(() => {
+                setReload(prev => !prev);
+                setShowSubModal(false);
+                toast.success('ظرفیت جدید با موفقیت ویرایش شد');
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => {
+                setButtonLoading(false);
+            });
     };
 
     useEffect(() => {
@@ -100,7 +137,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
     }, [showSubModal]);
 
     return (
-        <FormWrapper onSubmit={handleSubmit(sendForm)}>
+        <FormWrapper onSubmit={modalActionType === 'add' ? handleSubmit(sendForm) : handleSubmit(editHandler)}>
             <p>{`نام نیروی ${subModalStatus}`}</p>
             <div className={errors?.name?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
                 {domLoaded && (
@@ -179,7 +216,7 @@ const AddDetailModal = ({ subModalStatus, setDetails, closeSubModalHandler, pers
                 </div>
             </div>
 
-            <FormButton text='ثبت' loading={false} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
+            <FormButton text='ثبت' loading={buttonLoading} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
         </FormWrapper>
     );
 };
