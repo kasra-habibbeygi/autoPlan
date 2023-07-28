@@ -20,7 +20,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id }) => {
 
     const [postsList, SetPostsList] = useState();
 
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, modalFormStatus, chosenEditItemDetails } = useForm({
         mode: 'onTouched'
     });
     const { errors } = formState;

@@ -13,7 +13,7 @@ const ChartItem = ({ title, percent, color }) => {
                 <p>{title}</p>
             </div>
             <p className='percent'>
-                {percent && '٪'} {percent}
+                {percent ? '٪' : null} {percent}
             </p>
         </ChartItemWrapper>
     );

@@ -14,7 +14,7 @@ import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
 import { Autocomplete, TextField } from '@mui/material';
 
-const CarDetail = ({ setStep, setStep1Id }) => {
+const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails }) => {
     const [loader, setLoader] = useState(false);
     const { register, handleSubmit, formState, control } = useForm({
         defaultValues: {

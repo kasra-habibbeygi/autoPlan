@@ -30,7 +30,7 @@ function timeToSeconds(timeString) {
     return totalSeconds;
 }
 
-const Time = ({ Step2Id }) => {
+const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
     const [deviationList, setDeviationList] = useState([]);
     const [diagnosisValue, setDiagnosisValue] = useState();
     const [finalResults, setFinalResults] = useState({

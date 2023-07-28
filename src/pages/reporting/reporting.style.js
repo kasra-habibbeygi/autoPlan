@@ -31,11 +31,11 @@ export const ReportingWrapper = styled.div(props => ({
             },
 
             '& .third': {
-                backgroundColor: '#95A4FC'
+                backgroundColor: '#174787'
             },
 
             '& .foutrh': {
-                backgroundColor: '#174787'
+                backgroundColor: '#95A4FC'
             },
 
             div: {
@@ -78,5 +78,15 @@ export const ReportingWrapper = styled.div(props => ({
         '& .mainChart': {
             margin: '0 auto'
         }
+    },
+
+    '& .loading': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: props.theme.colors.white,
+        padding: '50px 0',
+        borderRadius: '18px',
+        margin: '10px 0'
     }
 }));

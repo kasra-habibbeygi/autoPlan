@@ -5,13 +5,12 @@ import { PieChart, Pie, Cell } from 'recharts';
 
 //Components
 
-const ReportingChart = () => {
-    const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 }
-    ];
+const ReportingChart = ({ detail }) => {
+    const data = [];
+
+    Object.entries(detail)?.map(([title, percent]) => {
+        title !== 'link' && data.push({ name: title, value: percent });
+    });
 
     const colors = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
 

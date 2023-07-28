@@ -27,6 +27,8 @@ const Planning = () => {
     const [step, setStep] = useState(1);
     const [planningList, PlanningList] = useState();
     const [reload, setReload] = useState(false);
+    const [modalFormStatus, setModalFormStatus] = useState('add');
+    const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
     const [filtersDetail, setFiltersDetail] = useState({
         timeFilter: '',
         sectionFilter: '',
@@ -40,6 +42,7 @@ const Planning = () => {
 
     const openModal = () => {
         setIsModalOpen(true);
+        setModalFormStatus('add');
     };
 
     useEffect(() => {
@@ -259,9 +262,16 @@ const Planning = () => {
             id: 19,
             title: 'عملیات',
             key: 'actions',
-            renderCell: () => (
+            renderCell: data => (
                 <ActionCell>
-                    <FormButton icon={pen} />
+                    <FormButton
+                        icon={pen}
+                        onClick={() => {
+                            setIsModalOpen(true);
+                            setModalFormStatus('edit');
+                            setChosenEditItemDetails(data);
+                        }}
+                    />
                 </ActionCell>
             )
         }
@@ -279,15 +289,45 @@ const Planning = () => {
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
                 <FilterModal setFiltersDetail={setFiltersDetail} setReload={setReload} setShowFilterModal={setShowFilterModal} />
             </Modal>
-            <Modal state={modalIsOpen} setState={setIsModalOpen} bgStatus={true}>
+            <Modal
+                state={modalIsOpen}
+                setState={setIsModalOpen}
+                bgStatus={true}
+                handleClose={() => {
+                    setModalFormStatus();
+                    setChosenEditItemDetails();
+                }}
+            >
                 <div className='formControl'>
                     <h2>برنامه ریزی تعمیرات</h2>
                     <ProgressBar step={step} />
-                    {step === 1 && <CarDetail setStep={setStep} setStep1Id={setStep1Id} />}
+                    {step === 1 && (
+                        <CarDetail
+                            setStep={setStep}
+                            setStep1Id={setStep1Id}
+                            modalFormStatus={modalFormStatus}
+                            chosenEditItemDetails={chosenEditItemDetails}
+                        />
+                    )}
 
-                    {step === 2 && <Diagnosis setStep={setStep} Step1Id={Step1Id} setStep2Id={setStep2Id} />}
+                    {step === 2 && (
+                        <Diagnosis
+                            setStep={setStep}
+                            Step1Id={Step1Id}
+                            setStep2Id={setStep2Id}
+                            modalFormStatus={modalFormStatus}
+                            chosenEditItemDetails={chosenEditItemDetails}
+                        />
+                    )}
 
-                    {step === 3 && <Time setStep={setStep} Step2Id={Step2Id} />}
+                    {step === 3 && (
+                        <Time
+                            setStep={setStep}
+                            Step2Id={Step2Id}
+                            modalFormStatus={modalFormStatus}
+                            chosenEditItemDetails={chosenEditItemDetails}
+                        />
+                    )}
                 </div>
             </Modal>
         </PlanningField>

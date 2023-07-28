@@ -6,33 +6,12 @@ import { LineChartWrapper } from './line-chart.style';
 
 //Components
 
-const ReportingLineChart = () => {
-    const data = [
-        {
-            name: 'فروردین',
-            pv: 2000
-        },
-        {
-            name: 'اردیبهشت',
-            pv: 2700
-        },
-        {
-            name: 'خرداد',
-            pv: 5000
-        },
-        {
-            name: 'تیر',
-            pv: 3908
-        },
-        {
-            name: 'مرداد',
-            pv: 4800
-        },
-        {
-            name: 'شهریور',
-            pv: 3800
-        }
-    ];
+const ReportingLineChart = ({ detail }) => {
+    const data = [];
+
+    Object.entries(detail)?.map(([title, percent]) => {
+        title !== 'link' && data.push({ name: `${title} ماه گذشته`, pv: percent });
+    });
 
     return (
         <LineChartWrapper>

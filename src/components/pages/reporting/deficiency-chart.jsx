@@ -5,13 +5,12 @@ import { PieChart, Pie, Cell } from 'recharts';
 
 //Components
 
-const DeficiencyChart = () => {
-    const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 }
-    ];
+const DeficiencyChart = ({ detail }) => {
+    const data = [];
+
+    Object.entries(detail)?.map(([title, percent]) => {
+        title !== 'link' && data.push({ name: title, value: percent });
+    });
 
     const colors = ['#ad9bfd', '#f8c75b', '#8bf795', '#e8f6fd'];
 

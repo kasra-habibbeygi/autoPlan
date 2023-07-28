@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 
 //Assets
 import { ReportingWrapper } from './reporting.style';
@@ -19,40 +19,74 @@ const Reporting = () => {
     const [deviationInOneMonth, setDeviationInOneMonth] = useState();
     const [deviationInMultiMonths, setDeviationInMultiMonths] = useState();
     const [deviationInSixMonths, setDeviationInSixMonths] = useState();
+    const [loading, setLoading] = useState({
+        reportingChartDataLoading: true,
+        deviationInOneMonthLoading: true,
+        deviationInMultiMonthsLoading: true,
+        deviationInSixMonthsLoading: true
+    });
+
+    const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
+    const colorsDeficiency = ['#ad9bfd', '#f8c75b', '#8bf795', '#e8f6fd'];
 
     useEffect(() => {
         Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')
             .then(res => {
-                console.log('first', res);
+                // console.log('first', res);
                 setReportingChartData(res.data);
             })
             .catch(err => console.log(err))
-            .finally(() => {});
+            .finally(() => {
+                setLoading(prev => ({
+                    ...prev,
+                    reportingChartDataLoading: false
+                }));
+            });
 
         Axios.get('https://api.autoplaning.ir/api/percentage-deviation-in-one-month/')
             .then(res => {
-                console.log('second', res);
+                // console.log('second', res);
                 setDeviationInOneMonth(res.data);
             })
             .catch(err => console.log(err))
-            .finally(() => {});
+            .finally(() => {
+                setLoading(prev => ({
+                    ...prev,
+                    deviationInOneMonthLoading: false
+                }));
+            });
         Axios.get('https://api.autoplaning.ir/api/deviation-in-six-months/')
             .then(res => {
-                console.log('fourth', res);
+                // console.log('fourth', res);
                 setDeviationInSixMonths(res.data);
             })
             .catch(err => console.log(err))
-            .finally(() => {});
+            .finally(() => {
+                setLoading(prev => ({
+                    ...prev,
+                    deviationInSixMonthsLoading: false
+                }));
+            });
     }, []);
 
     useEffect(() => {
+        setLoading(prev => ({
+            ...prev,
+            deviationInMultiMonthsLoading: true
+        }));
+
         Axios.get(`https://api.autoplaning.ir/api/amount-of-deviation/${chosenPeriod}/`)
             .then(res => {
-                console.log('third', res);
+                // console.log('third', res);
                 setDeviationInMultiMonths(res.data);
             })
             .catch(err => console.log(err))
-            .finally(() => {});
+            .finally(() => {
+                setLoading(prev => ({
+                    ...prev,
+                    deviationInMultiMonthsLoading: false
+                }));
+            });
     }, [chosenPeriod]);
 
     return (
@@ -60,74 +94,119 @@ const Reporting = () => {
             <Grid container spacing={1.5}>
                 <Grid item xs={12} md={5}>
                     <div className='item'>
-                        <DetailBoxHeader title='گزارش پذیرش در ماه اخیر' buttonText='دریافت گزارش کامل دوره' />
-                        <div className='chartWrapper'>
-                            <div className='chartItems'>
-                                <ChartItem title='تعمیرات مکانیکی' percent='۳۸' color='#ad9bfd' />
-                                <ChartItem title='تعمیرات جلوبندی' percent='۲۲' color='#f8c75b' />
-                                <ChartItem title='تعمیرات برقی' percent='۴۵' color='#8bf795' />
-                                <ChartItem title='تعمیرات گازی' percent='۵۶' color='#e8f6fd' />
+                        <DetailBoxHeader
+                            title='گزارش پذیرش در ماه اخیر'
+                            buttonText='دریافت گزارش کامل دوره'
+                            link={`https://api.autoplaning.ir${reportingChartData?.link}`}
+                        />
+                        {loading.reportingChartDataLoading ? (
+                            <div className='loading'>
+                                <CircularProgress />
                             </div>
-                            <div className='mainChart'>
-                                <ReportingChart detail={reportingChartData} />
+                        ) : (
+                            <div className='chartWrapper'>
+                                <div className='chartItems'>
+                                    {reportingChartData &&
+                                        Object.entries(reportingChartData)?.map(
+                                            ([title, percent], index) =>
+                                                title !== 'link' && (
+                                                    <ChartItem key={title} title={title} percent={percent} color={colorsReporting[index]} />
+                                                )
+                                        )}
+                                </div>
+                                <div className='mainChart'>
+                                    <ReportingChart detail={reportingChartData} />
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </Grid>
                 <Grid item xs={12} md={7}>
                     <div className='item'>
-                        <DetailBoxHeader title='میزان انحراف در هر بخشی نمایندگی' buttonText='دریافت گزارش کامل دوره' />
-                        <div className='chartWrapper'>
-                            <div className='chartItems'>
-                                <ChartItem title='انحراف در بخش مکانیکی' percent='۳۸' color='#ad9bfd' />
-                                <ChartItem title='انحراف در بخش جلو بندی' percent='۲۲' color='#f8c75b' />
-                                <ChartItem title='انحراف در بخش برق کاری' percent='۴۵' color='#8bf795' />
-                                <ChartItem title='انحراف در بخش گاز کاری' percent='۵۶' color='#e8f6fd' />
+                        <DetailBoxHeader
+                            title='میزان انحراف در هر بخشی نمایندگی'
+                            buttonText='دریافت گزارش کامل دوره'
+                            link={`https://api.autoplaning.ir${deviationInOneMonth?.link}`}
+                        />
+                        {loading.deviationInOneMonthLoading ? (
+                            <div className='loading'>
+                                <CircularProgress />
                             </div>
-                            <div className='mainChart'>
-                                <DeficiencyChart detail={deviationInOneMonth} />
+                        ) : (
+                            <div className='chartWrapper'>
+                                <div className='chartItems'>
+                                    {deviationInOneMonth &&
+                                        Object.entries(deviationInOneMonth)?.map(
+                                            ([title, percent], index) =>
+                                                title !== 'link' && (
+                                                    <ChartItem
+                                                        key={title}
+                                                        title={`انحراف در ${title}`}
+                                                        percent={percent}
+                                                        color={colorsDeficiency[index]}
+                                                    />
+                                                )
+                                        )}
+                                </div>
+                                <div className='mainChart'>
+                                    <DeficiencyChart detail={deviationInOneMonth} />
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
                         <DetailBoxHeader title='گزارش میزان انحراف در هر بخش' buttonText='دریافت گزارش کامل دوره' />
-                        <div className='barchart_header'>
-                            <select value={chosenPeriod} onChange={e => setChosenPeriod(e.target.value)}>
-                                <option value={3}>سه ماه</option>
-                                <option value={6}>شش ماهه</option>
-                                <option value={9}>نه ماه</option>
-                            </select>
-                            <div className='barchart_items'>
-                                <div>
-                                    <span className='first'></span>
-                                    <p>تعجیل در پایان</p>
-                                </div>
-                                <div>
-                                    <span className='second'></span>
-                                    <p>تعجیل در شروع</p>
-                                </div>
-                                <div>
-                                    <span className='third'></span>
-                                    <p>تاخیر در شروع</p>
-                                </div>
-                                <div>
-                                    <span className='foutrh'></span>
-                                    <p>تاخیر در پایان</p>
-                                </div>
+                        {loading.deviationInMultiMonthsLoading ? (
+                            <div className='loading'>
+                                <CircularProgress />
                             </div>
-                        </div>
-                        <div className='mainChart'>
-                            <ReportingBarChart detail={deviationInMultiMonths} />
-                        </div>
+                        ) : (
+                            <>
+                                <div className='barchart_header'>
+                                    <select value={chosenPeriod} onChange={e => setChosenPeriod(e.target.value)}>
+                                        <option value={3}>سه ماه</option>
+                                        <option value={6}>شش ماهه</option>
+                                        <option value={9}>نه ماه</option>
+                                    </select>
+                                    <div className='barchart_items'>
+                                        <div>
+                                            <span className='first'></span>
+                                            <p>تعجیل در پایان</p>
+                                        </div>
+                                        <div>
+                                            <span className='second'></span>
+                                            <p>تعجیل در شروع</p>
+                                        </div>
+                                        <div>
+                                            <span className='third'></span>
+                                            <p>تاخیر در شروع</p>
+                                        </div>
+                                        <div>
+                                            <span className='foutrh'></span>
+                                            <p>تاخیر در پایان</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='mainChart'>
+                                    <ReportingBarChart detail={deviationInMultiMonths} />
+                                </div>
+                            </>
+                        )}
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
                         <DetailBoxHeader title='میزان بروز انحراف در شش ماه گذشته' buttonText='دریافت گزارش کامل دوره' />
                         <div className='mainChart'>
-                            <ReportingLineChart detail={deviationInSixMonths} />
+                            {loading.deviationInSixMonthsLoading ? (
+                                <div className='loading'>
+                                    <CircularProgress />
+                                </div>
+                            ) : (
+                                <ReportingLineChart detail={deviationInSixMonths} />
+                            )}
                         </div>
                     </div>
                 </Grid>
