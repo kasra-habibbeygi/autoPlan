@@ -8,9 +8,10 @@ import { PieChart, Pie, Cell } from 'recharts';
 const ReportingChart = ({ detail }) => {
     const data = [];
 
-    Object.entries(detail)?.map(([title, percent]) => {
-        title !== 'link' && data.push({ name: title, value: percent });
-    });
+    detail &&
+        Object.entries(detail)?.map(([title, percent]) => {
+            title !== 'link' && data.push({ name: title, value: percent });
+        });
 
     const colors = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
 

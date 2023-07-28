@@ -37,5 +37,15 @@ export const HomeWrapper = styled.div(props => ({
         padding: '23px',
         fontSize: '12px',
         marginTop: '10px'
+    },
+
+    '& .loading': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: props.theme.colors.white,
+        padding: '50px 0',
+        borderRadius: '18px',
+        margin: '10px 0'
     }
 }));
