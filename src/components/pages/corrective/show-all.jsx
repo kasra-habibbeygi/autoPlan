@@ -3,7 +3,6 @@ import { Grid } from '@mui/material';
 
 //Assets
 import { ShowAllStyle } from './show-all.style';
-import tools from '../../../utils/tools';
 
 const ShowAll = ({ chosenEditItemDetails, today }) => {
     const finishedDate = chosenEditItemDetails?.end_time.replaceAll('-', '/');
@@ -12,6 +11,8 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
     const todayDate = new Date(today);
 
     const isTime = finishedDateToday <= todayDate;
+
+    console.log(chosenEditItemDetails);
 
     return (
         <ShowAllStyle>
@@ -134,22 +135,19 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                             <>
                                 <div className='item'>
                                     <p className='title'>7. نتیجه</p>
-                                    <p className='text'>{chosenEditItemDetails?.result}</p>
+                                    <p className='text'>{chosenEditItemDetails?.control_result}</p>
                                 </div>
                                 <div className='item'>
                                     <p className='title'>8. تاریخ کنترل اثر بخشی </p>
-                                    <p className='text'>
-                                        {chosenEditItemDetails?.control_completion_date &&
-                                            tools.changeDateToJalali(chosenEditItemDetails?.control_completion_date, false)}
-                                    </p>
+                                    <p className='text'>{chosenEditItemDetails?.control_completion_date}</p>
                                 </div>
                                 <div className='item'>
                                     <p className='title'>9. مسئول کنترل اثر بخشی </p>
-                                    <p className='text'>{chosenEditItemDetails?.controller?.fullname}</p>
+                                    <p className='text'>{chosenEditItemDetails?.controller_info?.fullname}</p>
                                 </div>
                                 <div className='item'>
                                     <p className='title'>10. نتیجه کنترل اثر بخشی </p>
-                                    <p className='text'>{chosenEditItemDetails?.control_result}</p>
+                                    <p className='text'>{chosenEditItemDetails?.effectiveness_result}</p>
                                 </div>
                             </>
                         )}

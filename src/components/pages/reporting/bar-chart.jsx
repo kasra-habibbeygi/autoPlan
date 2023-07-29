@@ -1,19 +1,25 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const ReportingBarChart = ({ detail }) => {
-    const data = [];
+    let data = [];
 
-    Object.entries(detail)?.map(([title, value]) => {
-        title !== 'link' &&
-            data.push({
-                name: title,
-                delay_end: value?.delay_end,
-                delay_start: value?.delay_start,
-                rush_end: value?.rush_end,
-                rush_start: value?.rush_start
+    useEffect(() => {
+        if (detail) {
+            data = [];
+            Object.entries(detail)?.map(([title, value]) => {
+                title !== 'link' &&
+                    data.push({
+                        name: title,
+                        delay_end: value?.delay_end,
+                        delay_start: value?.delay_start,
+                        rush_end: value?.rush_end,
+                        rush_start: value?.rush_start
+                    });
             });
-    });
+        }
+    }, [detail]);
 
     return (
         <ResponsiveContainer width='100%' height={200}>

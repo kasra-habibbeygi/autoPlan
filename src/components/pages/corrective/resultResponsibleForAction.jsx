@@ -35,10 +35,10 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
         console.log(allDetail);
 
         const newData = {
-            result: allDetail?.action_result,
+            control_result: allDetail?.action_result,
             control_completion_date: tools.changeTimeStampToDate(allDetail?.effective_detail?.effective_date),
             controller: allDetail?.effective_detail?.inCharge_person?.value,
-            control_result: data.effective_result
+            effectiveness_result: data.effective_result
         };
 
         Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)

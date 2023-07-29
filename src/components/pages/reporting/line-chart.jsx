@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line, LineChart } from 'recharts';
 
 //Assets
@@ -7,11 +8,17 @@ import { LineChartWrapper } from './line-chart.style';
 //Components
 
 const ReportingLineChart = ({ detail }) => {
-    const data = [];
+    let data = [];
 
-    Object.entries(detail)?.map(([title, percent]) => {
-        title !== 'link' && data.push({ name: `${title} ماه گذشته`, pv: percent });
-    });
+    useEffect(() => {
+        if (detail) {
+            data = [];
+
+            Object.entries(detail)?.map(([title, percent]) => {
+                title !== 'link' && data.push({ name: `${title} ماه گذشته`, pv: percent });
+            });
+        }
+    }, [detail]);
 
     return (
         <LineChartWrapper>

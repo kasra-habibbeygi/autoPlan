@@ -32,9 +32,13 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
 
                 setPersonnel(personnelArray);
                 if (chosenEditItemDetails?.action_officials_info) {
-                    const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => ({
-                        [`correction_${index + 1}`]: { label: item.fullname, value: item.id }
-                    }));
+                    const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => {
+                        const foundedItem = personnelArray.find(itemArray => itemArray.value === item.id);
+
+                        return {
+                            [`correction_${index + 1}`]: { label: foundedItem.label, value: item.id }
+                        };
+                    });
 
                     newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
                 }

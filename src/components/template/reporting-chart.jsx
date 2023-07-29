@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, { useEffect } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
 //Assets
@@ -6,12 +8,17 @@ import { PieChart, Pie, Cell } from 'recharts';
 //Components
 
 const ReportingChart = ({ detail }) => {
-    const data = [];
+    let data = [];
 
-    detail &&
-        Object.entries(detail)?.map(([title, percent]) => {
-            title !== 'link' && data.push({ name: title, value: percent });
-        });
+    useEffect(() => {
+        if (detail) {
+            data = [];
+
+            Object.entries(detail)?.map(([title, percent]) => {
+                title !== 'link' && data.push({ name: title, value: percent });
+            });
+        }
+    }, [detail]);
 
     const colors = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
 
