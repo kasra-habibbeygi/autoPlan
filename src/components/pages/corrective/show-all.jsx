@@ -135,7 +135,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                             <>
                                 <div className='item'>
                                     <p className='title'>7. نتیجه</p>
-                                    <p className='text'>{chosenEditItemDetails?.control_result}</p>
+                                    <p className='text'>{chosenEditItemDetails?.result}</p>
                                 </div>
                                 <div className='item'>
                                     <p className='title'>8. تاریخ کنترل اثر بخشی </p>

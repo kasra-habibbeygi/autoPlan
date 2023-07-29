@@ -10,14 +10,14 @@ import { Style } from './style';
 //Components
 import FormButton from '../../form-groups/form-button';
 import { toast } from 'react-hot-toast';
-import tools from '../../../utils/tools';
 
-const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReload, chosenEditItemDetails, setIsModalOpen }) => {
+const EffectiveResult = ({ setStep, setAllDetail, setReload, chosenEditItemDetails, setIsModalOpen }) => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
-            effective_result: ''
+            effectiveness_result: '',
+            control_result: ''
         },
         mode: 'onTouched'
     });
@@ -32,16 +32,8 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
 
     const formSubmit = data => {
         setButtonLoading(true);
-        console.log(allDetail);
 
-        const newData = {
-            control_result: allDetail?.action_result,
-            control_completion_date: tools.changeTimeStampToDate(allDetail?.effective_detail?.effective_date),
-            controller: allDetail?.effective_detail?.inCharge_person?.value,
-            effectiveness_result: data.effective_result
-        };
-
-        Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
+        Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, data)
             .then(() => {
                 setReload(prev => !prev);
                 setAllDetail(prev => ({
@@ -53,22 +45,20 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                 setIsModalOpen(false);
                 toast.success('با موفقیت ثبت گردید');
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(err => console.log(err))
             .finally(() => setButtonLoading(false));
     };
 
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <div className={errors?.effective_result ? 'text_area text_area_error' : 'text_area'}>
+                <div className={errors?.effectiveness_result ? 'text_area text_area_error' : 'text_area'}>
                     <p className='title'>نتیجه اثر بخشی</p>
                     <div>
                         <textarea
-                            rows='8'
+                            rows='5'
                             placeholder='نتیجه اثربخشی'
-                            {...register('effective_result', {
+                            {...register('effectiveness_result', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
@@ -77,7 +67,25 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
                         ></textarea>
                         <img src={Question} />
                     </div>
-                    <p className='error'>{errors?.effective_result?.message}</p>
+                    <p className='error'>{errors?.effectiveness_result?.message}</p>
+                </div>
+
+                <div className={errors?.control_result ? 'text_area text_area_error' : 'text_area'}>
+                    <p className='title'>نتیجه کنترل</p>
+                    <div>
+                        <textarea
+                            rows='5'
+                            placeholder='نتیجه کنترل'
+                            {...register('control_result', {
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            })}
+                        ></textarea>
+                        <img src={Question} />
+                    </div>
+                    <p className='error'>{errors?.control_result?.message}</p>
                 </div>
 
                 <FormButton text='ثبت' loading={buttonLoading} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
@@ -87,4 +95,4 @@ const ResultResponsibleForAction = ({ setStep, setAllDetail, allDetail, setReloa
     );
 };
 
-export default ResultResponsibleForAction;
+export default EffectiveResult;

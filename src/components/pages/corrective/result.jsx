@@ -19,8 +19,8 @@ const Result = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     });
 
     useEffect(() => {
-        if (chosenEditItemDetails?.action_result) {
-            setValue('action_result', chosenEditItemDetails?.action_result);
+        if (chosenEditItemDetails?.result) {
+            setValue('action_result', chosenEditItemDetails?.result);
         }
     }, [chosenEditItemDetails]);
 

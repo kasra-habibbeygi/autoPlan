@@ -12,9 +12,12 @@ import Axios from './../../../configs/axios';
 import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
-const Effective = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, allDetail }) => {
+    const [buttonLoading, setButtonLoading] = useState(false);
+    const [dataLoading, setDataLoading] = useState(true);
+
     const [personnel, setPersonnel] = useState([{ value: '', label: '', id: '' }]);
 
     const { handleSubmit, formState, control, setValue } = useForm({
@@ -28,84 +31,129 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     const { errors } = formState;
 
     useEffect(() => {
-        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500').then(res => {
-            let personnelArray = res.data.results.map(item => ({
-                label: item.title,
-                value: item.id
-            }));
+        setDataLoading(true);
 
-            setPersonnel(personnelArray);
-            // if (chosenEditItemDetails?.action_officials_info) {
-            //     const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => ({
-            //         [`correction_${index + 1}`]: { label: item.fullname, value: item.id }
-            //     }));
+        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500')
+            .then(res => {
+                let personnelArray = res.data.results.map(item => ({
+                    label: item.title,
+                    value: item.id
+                }));
 
-            //     newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
-            // }
-        });
+                setPersonnel(personnelArray);
 
-        // if (chosenEditItemDetails?.effective_control_agent && chosenEditItemDetails?.effective_control_date) {
-        //     setValue('effective_date', tools.changeIsoDateToTimeStamp(chosenEditItemDetails?.effective_control_date));
-        //     setValue('inCharge_person', chosenEditItemDetails?.effective_control_agent);
-        // }
+                if (chosenEditItemDetails?.controller_info && chosenEditItemDetails?.control_completion_date) {
+                    setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
+                    setValue('inCharge_person', {
+                        label: chosenEditItemDetails?.controller_info?.fullname,
+                        value: chosenEditItemDetails?.controller_info?.id
+                    });
+                }
+            })
+            .finally(() => setDataLoading(false));
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        setAllDetail(prev => ({
-            ...prev,
-            effective_detail: data
-        }));
-        setStep(8);
+        if (data?.inCharge_person?.value && data?.effective_date) {
+            setAllDetail(prev => ({
+                ...prev,
+                effective_detail: data
+            }));
+            setStep(8);
+        } else {
+            setButtonLoading(true);
+
+            const newData = {
+                result: allDetail.action_result,
+                controller: data?.inCharge_person?.value,
+                control_completion_date: tools.changeTimeStampToDate(data?.effective_date)
+            };
+
+            Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        effective_detail: data
+                    }));
+                    setStep(8);
+                })
+                .catch(err => console.log(err))
+                .finally(() => setButtonLoading(false));
+        }
     };
 
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                <Controller
-                    control={control}
-                    name='effective_date'
-                    rules={{ required: 'این فیلد اجباری است' }}
-                    render={({ field: { onChange, value } }) => {
-                        return (
-                            <DatePickerComponent
-                                value={value}
-                                onChange={onChange}
-                                title='تاریخ کنترل اثر بخشی'
-                                error={errors?.effective_date}
-                            />
-                        );
-                    }}
-                />
-
-                <div className='auto_complete_wrapper'>
-                    <p className='auto_title'>مسئول کنترل اثر بخشی</p>
-                    <div className={errors?.inCharge_person?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
+                {dataLoading ? (
+                    <div className='loading'>
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <>
                         <Controller
                             control={control}
-                            name={'inCharge_person'}
+                            name='effective_date'
                             rules={{ required: 'این فیلد اجباری است' }}
                             render={({ field: { onChange, value } }) => {
                                 return (
-                                    <Autocomplete
-                                        options={personnel}
+                                    <DatePickerComponent
                                         value={value}
-                                        onChange={(event, newValue) => {
-                                            onChange(newValue);
-                                        }}
-                                        sx={{ width: '100%' }}
-                                        renderInput={params => <TextField {...params} />}
+                                        onChange={onChange}
+                                        title='تاریخ کنترل اثر بخشی'
+                                        error={errors?.effective_date}
                                     />
                                 );
                             }}
                         />
 
-                        <img src={user} />
-                    </div>
-                    <p className='auto_error'>{errors?.inCharge_person?.message}</p>
-                </div>
+                        <div className='auto_complete_wrapper'>
+                            <p className='auto_title'>مسئول کنترل اثر بخشی</p>
+                            <div className={errors?.inCharge_person?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
+                                <Controller
+                                    control={control}
+                                    name={'inCharge_person'}
+                                    rules={{ required: 'این فیلد اجباری است' }}
+                                    render={({ field: { onChange, value } }) => {
+                                        return (
+                                            <Autocomplete
+                                                options={personnel}
+                                                value={value}
+                                                onChange={(event, newValue) => {
+                                                    onChange(newValue);
+                                                }}
+                                                sx={{ width: '100%' }}
+                                                renderInput={params => <TextField {...params} />}
+                                            />
+                                        );
+                                    }}
+                                />
 
-                <FormButton text='بعدی' icon={arrow} type='submit' backgroundColor={'#174787'} color={'white'} height={48} />
-                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(6)} margin={'20px 0'} />
+                                <img src={user} />
+                            </div>
+                            <p className='auto_error'>{errors?.inCharge_person?.message}</p>
+                        </div>
+
+                        <FormButton
+                            text='بعدی'
+                            icon={arrow}
+                            type='submit'
+                            backgroundColor={'#174787'}
+                            color={'white'}
+                            height={48}
+                            loading={buttonLoading}
+                        />
+                        <FormButton
+                            text='قبلی'
+                            backgroundColor='#174787'
+                            color='white'
+                            height={48}
+                            onClick={() => setStep(6)}
+                            margin={'20px 0'}
+                        />
+                    </>
+                )}
             </form>
         </Style>
     );

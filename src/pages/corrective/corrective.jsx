@@ -28,7 +28,7 @@ import Result from '../../components/pages/corrective/result';
 import Effective from '../../components/pages/corrective/effective';
 import ShowAll from '../../components/pages/corrective/show-all';
 import ConfirmModal from '../../components/template/confirm-modal';
-import ResultResponsibleForAction from '../../components/pages/corrective/resultResponsibleForAction';
+import EffectiveResult from '../../components/pages/corrective/effective-result';
 
 const Corrective = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -185,13 +185,18 @@ const Corrective = () => {
                         ) : step === 6 ? (
                             <Result setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
                         ) : step === 7 ? (
-                            <Effective setStep={setStep} setAllDetail={setAllDetail} chosenEditItemDetails={chosenEditItemDetails} />
+                            <Effective
+                                setStep={setStep}
+                                setAllDetail={setAllDetail}
+                                chosenEditItemDetails={chosenEditItemDetails}
+                                setReload={setReload}
+                                allDetail={allDetail}
+                            />
                         ) : (
                             step === 8 && (
-                                <ResultResponsibleForAction
+                                <EffectiveResult
                                     setStep={setStep}
                                     setAllDetail={setAllDetail}
-                                    allDetail={allDetail}
                                     setReload={setReload}
                                     chosenEditItemDetails={chosenEditItemDetails}
                                     setIsModalOpen={setIsModalOpen}
