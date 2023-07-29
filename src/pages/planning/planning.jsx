@@ -55,7 +55,7 @@ const Planning = () => {
                         date: filtersDetail.timeFilter
                     }),
                     ...(filtersDetail.sectionFilter && {
-                        type: filtersDetail.sectionFilter
+                        type_id: filtersDetail.sectionFilter
                     }),
                     ...(filtersDetail.personFilter && {
                         personnel_id: filtersDetail.personFilter
