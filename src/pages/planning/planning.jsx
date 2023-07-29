@@ -58,7 +58,7 @@ const Planning = () => {
                         type: filtersDetail.sectionFilter
                     }),
                     ...(filtersDetail.personFilter && {
-                        person: filtersDetail.personFilter
+                        personnel_id: filtersDetail.personFilter
                     })
                 }
             })
