@@ -45,10 +45,10 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
     });
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
-            proximate_start_hour: '13',
-            proximate_start_min: '00',
-            proximate_finish_hour: '15',
-            proximate_finish_min: '20',
+            proximate_start_hour: '',
+            proximate_start_min: '',
+            proximate_finish_hour: '',
+            proximate_finish_min: '',
             real_start_hour: '',
             real_start_min: '',
             real_finish_hour: '',
@@ -56,7 +56,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
         },
         mode: 'onTouched'
     });
-    const { errors } = formState;
+    const { errors, submitCount } = formState;
 
     useEffect(() => {
         Axios.get('/worker/admin/reason-for-deviation/list_create/').then(res => {
@@ -100,8 +100,6 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
             }
         });
     };
-
-    // console.log(finalResults);
 
     return (
         <form onSubmit={handleSubmit(formSubmit)}>
@@ -295,10 +293,11 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
                         height='48px'
                         type='submit'
                         padding='15px'
+                        margin={'20px 0 0 0'}
                     />
                 </div>
             ) : (
-                <></>
+                submitCount > 0 && <p>انحرافی وجود ندارد</p>
             )}
         </form>
     );

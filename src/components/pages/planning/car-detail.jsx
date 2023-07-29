@@ -67,9 +67,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 newData
             )
                 .then(res => {
-                    console.log(res);
-                    // setStep(2);
-                    // setStep1Id(res.data.id);
+                    setStep1Id(res.data.id);
                 })
                 .catch(() => {})
                 .finally(() => {

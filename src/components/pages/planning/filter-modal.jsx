@@ -45,9 +45,10 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
 
         Axios.get('/worker/admin/capacity-measurement/list_create/')
             .then(res => {
+                console.log(res.data);
                 const newArray = res.data.results.map(item => {
                     return {
-                        label: item?.type?.code,
+                        label: item?.type?.type_info?.title,
                         value: item?.type?.id
                     };
                 });

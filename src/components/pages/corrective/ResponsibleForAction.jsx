@@ -25,6 +25,7 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
         setLoading(true);
         Axios.get('/worker/admin/organizational-position/list_create/?page_size=500')
             .then(res => {
+                console.log(res);
                 let personnelArray = res.data.results.map(item => ({
                     label: item.title,
                     value: item.id
