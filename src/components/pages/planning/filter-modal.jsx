@@ -15,6 +15,7 @@ import Axios from './../../../configs/axios';
 import FormButton from '../../form-groups/form-button';
 import Modal from '../../template/modal';
 import DatePickerComponent from '../../form-groups/date-picker';
+import tools from '../../../utils/tools';
 
 const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
     const [filterModalStatus, setFilterModalStatus] = useState('');
@@ -61,7 +62,7 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
             if (item === 'time') {
                 setFiltersDetail(prev => ({
                     ...prev,
-                    timeFilter: data[item]
+                    timeFilter: tools.changeTimeStampToDate(data[item])
                 }));
             } else if (item === 'part') {
                 setFiltersDetail(prev => ({

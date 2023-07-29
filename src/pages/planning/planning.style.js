@@ -110,5 +110,15 @@ export const PlanningField = styled.div(props => ({
         '& .left_field': {
             width: '100%'
         }
+    },
+
+    '& .loading': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: props.theme.colors.white,
+        padding: '50px 0',
+        borderRadius: '18px',
+        margin: '10px 0'
     }
 }));

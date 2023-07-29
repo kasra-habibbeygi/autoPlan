@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
 //Assets
@@ -7,14 +7,14 @@ import { PieChart, Pie, Cell } from 'recharts';
 //Components
 
 const DeficiencyChart = ({ detail }) => {
-    let data = [];
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         if (detail) {
-            data = [];
+            setData([]);
 
             Object.entries(detail)?.map(([title, percent]) => {
-                title !== 'link' && data.push({ name: title, value: percent });
+                title !== 'link' && setData(prev => [...prev, { name: title, value: percent }]);
             });
         }
     }, [detail]);

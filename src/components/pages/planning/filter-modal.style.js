@@ -50,7 +50,9 @@ export const FilterModalWrapper = styled.div(props => ({
 
         '& .auto_complete_error': {
             color: '#830000',
-            fontSize: '12px'
+            fontSize: '12px',
+            border: 'none !important',
+            marginTop: '10px'
         }
     }
 }));

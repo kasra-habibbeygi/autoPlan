@@ -1,22 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const ReportingBarChart = ({ detail }) => {
-    let data = [];
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         if (detail) {
-            data = [];
+            setData([]);
+
             Object.entries(detail)?.map(([title, value]) => {
                 title !== 'link' &&
-                    data.push({
-                        name: title,
-                        delay_end: value?.delay_end,
-                        delay_start: value?.delay_start,
-                        rush_end: value?.rush_end,
-                        rush_start: value?.rush_start
-                    });
+                    setData(prev => [
+                        ...prev,
+                        {
+                            name: title,
+                            delay_end: value?.delay_end,
+                            delay_start: value?.delay_start,
+                            rush_end: value?.rush_end,
+                            rush_start: value?.rush_start
+                        }
+                    ]);
             });
         }
     }, [detail]);

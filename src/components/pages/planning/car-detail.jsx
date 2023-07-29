@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
 
@@ -16,13 +17,41 @@ import { Autocomplete, TextField } from '@mui/material';
 
 const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails }) => {
     const [loader, setLoader] = useState(false);
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
-            plaque_2: Alphabet[0]
+            car_brand: '',
+            car_model: '',
+            customer_name: '',
+            customer_mobile_number: '',
+            plaque_4: '',
+            plaque_3: '',
+            plaque_2: Alphabet[0],
+            plaque_1: ''
         },
         mode: 'onTouched'
     });
     const { errors } = formState;
+
+    useEffect(() => {
+        if (modalFormStatus === 'edit') {
+            if (chosenEditItemDetails) {
+                setValue('car_brand', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.car_brand);
+                setValue('car_model', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.car_model);
+                setValue('customer_name', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.customer_name);
+                setValue(
+                    'customer_mobile_number',
+                    chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.customer_mobile_number
+                );
+                setValue('plaque_4', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_4);
+                setValue('plaque_3', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_3);
+                setValue('plaque_2', {
+                    label: chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_2,
+                    value: chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_2
+                });
+                setValue('plaque_1', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_1);
+            }
+        }
+    }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
         setLoader(true);
@@ -32,15 +61,31 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
             plaque_2: data.plaque_2.label
         };
 
-        Axios.post('/worker/admin/vehicle-specifications/list_create/', newData)
-            .then(res => {
-                setStep(2);
-                setStep1Id(res.data.id);
-            })
-            .catch(() => {})
-            .finally(() => {
-                setLoader(false);
-            });
+        if (modalFormStatus === 'edit') {
+            Axios.put(
+                `/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.vehicle_specifications}`,
+                newData
+            )
+                .then(res => {
+                    console.log(res);
+                    // setStep(2);
+                    // setStep1Id(res.data.id);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader(false);
+                });
+        } else {
+            Axios.post('/worker/admin/vehicle-specifications/list_create/', newData)
+                .then(res => {
+                    setStep(2);
+                    setStep1Id(res.data.id);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader(false);
+                });
+        }
     };
 
     return (

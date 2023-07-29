@@ -24,8 +24,8 @@ const Planning = () => {
     const [Step1Id, setStep1Id] = useState();
     const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(1);
-    const [planningList, PlanningList] = useState();
+    const [step, setStep] = useState(2);
+    const [planningList, setPlanningList] = useState();
     const [reload, setReload] = useState(false);
     const [modalFormStatus, setModalFormStatus] = useState('add');
     const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
@@ -47,30 +47,44 @@ const Planning = () => {
 
     useEffect(() => {
         setTableLoading(true);
-
-        Axios.get(`/worker/admin/time-to-troubleshoot/list_create/?pageSize=10&page=${pageStatus.current}`, {
-            params: {
-                ...(filtersDetail.timeFilter && {
-                    some: 'gdaslksgh'
-                }),
-                ...(filtersDetail.sectionFilter && {
-                    some: 'gdaslksgh'
-                }),
-                ...(filtersDetail.personFilter && {
-                    some: 'gdaslksgh'
-                })
-            }
-        })
-            .then(res => {
-                PlanningList(res.data.results);
-
-                setPageStatus({
-                    ...pageStatus,
-                    total: res.data.total
-                });
+        setPlanningList();
+        if (filtersDetail?.timeFilter || filtersDetail?.sectionFilter || filtersDetail?.personFilter) {
+            Axios.get(`/worker/admin/repair-planning/filter-by/?pageSize=10&page=${pageStatus.current}`, {
+                params: {
+                    ...(filtersDetail.timeFilter && {
+                        date: filtersDetail.timeFilter
+                    }),
+                    ...(filtersDetail.sectionFilter && {
+                        type: filtersDetail.sectionFilter
+                    }),
+                    ...(filtersDetail.personFilter && {
+                        person: filtersDetail.personFilter
+                    })
+                }
             })
-            .catch(() => {})
-            .finally(() => setTableLoading(false));
+                .then(res => {
+                    setPlanningList(res.data.results);
+
+                    setPageStatus({
+                        ...pageStatus,
+                        total: res.data.total
+                    });
+                })
+                .catch(() => {})
+                .finally(() => setTableLoading(false));
+        } else {
+            Axios.get(`/worker/admin/time-to-troubleshoot/list_create/?pageSize=10&page=${pageStatus.current}`)
+                .then(res => {
+                    setPlanningList(res.data.results);
+
+                    setPageStatus({
+                        ...pageStatus,
+                        total: res.data.total
+                    });
+                })
+                .catch(() => {})
+                .finally(() => setTableLoading(false));
+        }
     }, [reload, pageStatus.current]);
 
     const columns = [
