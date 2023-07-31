@@ -46,7 +46,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                 if (modalStatus === 'edit') {
                     setValue('full_name', editModalData?.personnel?.fullname);
                     setValue('mobile', editModalData?.personnel?.mobile_number);
-                    setValue('code', editModalData?.personnel?.code);
+                    setValue('code', editModalData?.code);
                     setValue('role', {
                         label: editModalData?.organizational_position_info?.title,
                         value: editModalData?.organizational_position_info?.id
@@ -62,8 +62,11 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
         const newData = {
             fullname: data.full_name,
             mobile_number: data.mobile,
-            organizational_position: data.role.value
+            organizational_position: data.role.value,
+            code: data.code
         };
+
+        console.log(newData);
 
         if (modalStatus === 'edit') {
             Axios.put(`/worker/admin/personnel/retrieve_update_destroy/?pk=${editModalData.id}`, newData)
