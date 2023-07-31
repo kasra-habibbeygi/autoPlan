@@ -22,6 +22,7 @@ const HomeTable = ({ data }) => {
                 <tbody>
                     {data.map((item, index) => (
                         <tr key={item.id}>
+                            {console.log(item)}
                             <td>{index + 1}</td>
                             <td>{item.car}</td>
                             <td>{item.license}</td>

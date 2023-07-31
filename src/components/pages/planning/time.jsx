@@ -365,7 +365,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                         </Grid>
                     </Grid>
                     <FormButton
-                        text='بعدی'
+                        text='ثبت'
                         icon={Arrow}
                         loading={false}
                         width='fit-content'

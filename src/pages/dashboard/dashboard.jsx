@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Grid } from '@mui/material';
 import Axios from '../../configs/axios';
@@ -23,16 +24,16 @@ const Home = () => {
     const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
 
     useEffect(() => {
-        Axios.get('/worker/admin/vehicle-specifications/list_create/?page_size=5')
+        Axios.get('/worker/admin/diagnosis/list_create/?page_size=5')
             .then(res => {
                 setManagementList(() =>
                     res.data.results.map(item => ({
                         id: item?.id,
-                        car: item?.car_brand,
-                        license: `${item?.plaque_4} ${item?.plaque_3} ${item?.plaque_2} ${item?.plaque_1}`,
-                        mechanicCode: item?.diagnosis_info?.repairman || '---',
-                        position: '---',
-                        pyramid: item?.diagnosis_info?.pyramid_number || '---'
+                        car: item?.vehicle_specifications_info?.car_brand,
+                        license: `${item?.vehicle_specifications_info?.plaque_4} ${item?.vehicle_specifications_info?.plaque_3} ${item?.vehicle_specifications_info?.plaque_2} ${item?.vehicle_specifications_info?.plaque_1}`,
+                        mechanicCode: item?.repairman_info?.user_info?.personnel?.fullname || '---',
+                        position: item?.repairman_info?.type?.code || '---',
+                        pyramid: item?.pyramid_number || '---'
                     }))
                 );
             })
@@ -107,7 +108,7 @@ const Home = () => {
                     </Grid>
                     <Grid item xs={12} xl={7} top={1.5}>
                         <div className='item'>
-                            <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' buttonText='مدیریت تعمیرات' />
+                            <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' buttonText='مدیریت تعمیرات' link='/planning' />
                             {loading.tableLoading ? (
                                 <div className='loading'>
                                     <CircularProgress />
