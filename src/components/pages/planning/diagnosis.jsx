@@ -16,7 +16,8 @@ import FormButton from '../../form-groups/form-button';
 import { Autocomplete, CircularProgress, Grid, TextField } from '@mui/material';
 import TimePicker from '../../form-groups/time-picker';
 
-const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails }) => {
+const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
+    console.log(chosenEditItemDetails);
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
 
@@ -94,15 +95,28 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
             approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`
         };
 
-        Axios.post('/worker/admin/diagnosis/list_create/', newData)
-            .then(res => {
-                setStep(3);
-                setStep2Id(res.data.id);
-            })
-            .catch(() => {})
-            .finally(() => {
-                setLoader(false);
-            });
+        if (modalFormStatus === 'edit') {
+            Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails.diagnosis}`, newData)
+                .then(res => {
+                    setStep(3);
+                    setStep2Id(res.data.id);
+                    setReload(prev => !prev);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader(false);
+                });
+        } else {
+            Axios.post('/worker/admin/diagnosis/list_create/', newData)
+                .then(res => {
+                    setStep(3);
+                    setStep2Id(res.data.id);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setLoader(false);
+                });
+        }
     };
 
     return (

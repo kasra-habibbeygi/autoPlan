@@ -15,7 +15,7 @@ import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
 import { Autocomplete, TextField } from '@mui/material';
 
-const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails }) => {
+const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
     const [loader, setLoader] = useState(false);
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
@@ -67,7 +67,9 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 newData
             )
                 .then(res => {
+                    setStep(2);
                     setStep1Id(res.data.id);
+                    setReload(prev => !prev);
                 })
                 .catch(() => {})
                 .finally(() => {

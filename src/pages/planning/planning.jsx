@@ -324,6 +324,7 @@ const Planning = () => {
                             setStep1Id={setStep1Id}
                             modalFormStatus={modalFormStatus}
                             chosenEditItemDetails={chosenEditItemDetails}
+                            setReload={setReload}
                         />
                     )}
 
@@ -334,6 +335,7 @@ const Planning = () => {
                             setStep2Id={setStep2Id}
                             modalFormStatus={modalFormStatus}
                             chosenEditItemDetails={chosenEditItemDetails}
+                            setReload={setReload}
                         />
                     )}
 
@@ -343,6 +345,8 @@ const Planning = () => {
                             Step2Id={Step2Id}
                             modalFormStatus={modalFormStatus}
                             chosenEditItemDetails={chosenEditItemDetails}
+                            setReload={setReload}
+                            setIsModalOpen={setIsModalOpen}
                         />
                     )}
                 </div>
