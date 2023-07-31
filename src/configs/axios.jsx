@@ -31,8 +31,8 @@ instance.interceptors.response.use(
     },
     error => {
         if (error?.response?.status === 401) {
-            // localStorage.removeItem('AutoPlaningToken');
-            // window.location.href = '/';
+            localStorage.removeItem('AutoPlaningToken');
+            window.location.href = '/';
         }
 
         if (error?.response?.data?.detail) {
