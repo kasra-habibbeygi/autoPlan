@@ -2,7 +2,7 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
 
 //Assets
@@ -17,7 +17,6 @@ import TimePicker from '../../form-groups/time-picker';
 function secondsToTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
 
@@ -30,14 +29,14 @@ function timeToSeconds(timeString) {
     return totalSeconds;
 }
 
-const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
+const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setReload, setIsModalOpen }) => {
     const [deviationList, setDeviationList] = useState([]);
-    const [diagnosisValue, setDiagnosisValue] = useState();
     const [reasonValue, setReasonValue] = useState();
     const [exactTime, setExactTime] = useState({
         start: '',
         end: ''
     });
+
     const [finalResults, setFinalResults] = useState({
         end: {
             bigger: 0,
@@ -48,6 +47,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
             lower: 0
         }
     });
+
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             proximate_start_hour: '',
@@ -70,46 +70,52 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
                 value: item.id
             }));
 
+            let filteredPosts = posts?.filter(item => item.value === chosenEditItemDetails?.the_reason_for_the_deviation_info.id)[0];
+
             setDeviationList(posts);
+
+            if (modalFormStatus === 'edit') {
+                setReasonValue(filteredPosts);
+            }
         });
 
         Axios.get('worker/admin/diagnosis/list_create/').then(res => {
-            setDiagnosisValue();
             let temp = res.data.results.filter(item => item.id === Step2Id)[0];
             setValue('proximate_finish_hour', temp?.approximate_end_time.split(':')[0]);
             setValue('proximate_finish_min', temp?.approximate_end_time.split(':')[1]);
             setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
             setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
-        });
-    }, []);
 
-    const formSubmit = data => {
-        setExactTime({
-            start: `${data.real_start_hour}:${data.real_start_min}`,
-            end: `${data.real_finish_hour}:${data.real_finish_min}`
-        });
+            if (modalFormStatus === 'edit') {
+                setValue('real_start_hour', chosenEditItemDetails.exact_start_time.split(':')[0]);
+                setValue('real_start_min', chosenEditItemDetails.exact_start_time.split(':')[1]);
+                setValue('real_finish_hour', chosenEditItemDetails.exact_end_time.split(':')[0]);
+                setValue('real_finish_min', chosenEditItemDetails.exact_end_time.split(':')[1]);
 
-        let proximate_finish = `${data.proximate_finish_hour}:${data.proximate_finish_min}`;
-        let proximate_start = `${data.proximate_start_hour}:${data.proximate_start_min}`;
-        let real_finish = `${data.real_finish_hour}:${data.real_finish_min}`;
-        let real_start = `${data.real_start_hour}:${data.real_start_min}`;
-
-        let proximate_finish_sec = timeToSeconds(proximate_finish);
-        let proximate_start_sec = timeToSeconds(proximate_start);
-        let real_finish_sec = timeToSeconds(real_finish);
-        let real_start_sec = timeToSeconds(real_start);
-
-        setFinalResults({
-            ...finalResults,
-            end: {
-                bigger: proximate_finish_sec - real_finish_sec < 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0,
-                lower: proximate_finish_sec - real_finish_sec > 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0
-            },
-            start: {
-                bigger: proximate_start_sec - real_start_sec < 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0,
-                lower: proximate_start_sec - real_start_sec > 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0
+                timeCounter(
+                    chosenEditItemDetails.exact_start_time.split(':')[0],
+                    chosenEditItemDetails.exact_start_time.split(':')[1],
+                    chosenEditItemDetails.exact_end_time.split(':')[0],
+                    chosenEditItemDetails.exact_end_time.split(':')[1],
+                    temp?.approximate_end_time.split(':')[0],
+                    temp?.approximate_end_time.split(':')[1],
+                    temp?.approximate_start_time.split(':')[0],
+                    temp?.approximate_start_time.split(':')[1]
+                );
             }
         });
+    }, []);
+    const formSubmit = data => {
+        timeCounter(
+            data.real_start_hour,
+            data.real_start_min,
+            data.real_finish_hour,
+            data.real_finish_min,
+            data.proximate_finish_hour,
+            data.proximate_finish_min,
+            data.proximate_start_hour,
+            data.proximate_start_min
+        );
     };
 
     const handleSubmitForm = () => {
@@ -124,12 +130,65 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
             the_reason_for_the_deviation: reasonValue.value
         };
 
-        Axios.post('/worker/admin/time-to-troubleshoot/list_create/', newData)
-            .then(res => {
-                setStep(1);
-            })
-            .catch(() => {})
-            .finally(() => {});
+        if (modalFormStatus === 'edit') {
+            Axios.put(`/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails.id}`, newData)
+                .then(() => {
+                    setStep(1);
+                    setReload(prev => !prev);
+                    setIsModalOpen('');
+                })
+                .catch(() => {})
+                .finally(() => {});
+        } else {
+            Axios.post('worker/admin/time-to-troubleshoot/list_create/', newData)
+                .then(() => {
+                    setStep(1);
+                    setReload(prev => !prev);
+                    setIsModalOpen('');
+                })
+                .catch(() => {})
+                .finally(() => {});
+        }
+    };
+
+    const timeCounter = (
+        real_start_hour,
+        real_start_min,
+        real_finish_hour,
+        real_finish_min,
+        proximate_finish_hour,
+        proximate_finish_min,
+        proximate_start_hour,
+        proximate_start_min
+    ) => {
+        setExactTime({
+            start: `${real_start_hour}:${real_start_min}`,
+            end: `${real_finish_hour}:${real_finish_min}`
+        });
+
+        let proximate_finish = `${proximate_finish_hour}:${proximate_finish_min}`;
+        let proximate_start = `${proximate_start_hour}:${proximate_start_min}`;
+        let real_finish = `${real_finish_hour}:${real_finish_min}`;
+        let real_start = `${real_start_hour}:${real_start_min}`;
+
+        let proximate_finish_sec = timeToSeconds(proximate_finish);
+        let proximate_start_sec = timeToSeconds(proximate_start);
+        let real_finish_sec = timeToSeconds(real_finish);
+        let real_start_sec = timeToSeconds(real_start);
+
+        let timeTemp = real_finish_sec + (proximate_start_sec - real_start_sec);
+
+        setFinalResults({
+            ...finalResults,
+            end: {
+                bigger: proximate_finish_sec - timeTemp < 0 ? secondsToTime(Math.abs(proximate_finish_sec - timeTemp)) : 0,
+                lower: proximate_finish_sec - timeTemp > 0 ? secondsToTime(Math.abs(proximate_finish_sec - timeTemp)) : 0
+            },
+            start: {
+                bigger: proximate_start_sec - real_start_sec < 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0,
+                lower: proximate_start_sec - real_start_sec > 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0
+            }
+        });
     };
 
     return (
@@ -268,7 +327,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
                                             <p>تاخیر در پایان</p>
                                             <div>
                                                 <img src={clockDot} alt='' />
-                                                {finalResults.end.bigger ? `${finalResults.end.bigger} تاخیر در شروع` : ' انحراف ندارد'}
+                                                {finalResults.end.bigger ? `${finalResults.end.bigger} تاخیر در پایان` : ' انحراف ندارد'}
                                             </div>
                                         </div>
                                     </Grid>
@@ -277,7 +336,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
                                             <p>تاجیل در پایان</p>
                                             <div>
                                                 <img src={clockDot} alt='' />
-                                                {finalResults.end.lower ? `${finalResults.end.lower} تاخیر در شروع` : ' انحراف ندارد'}
+                                                {finalResults.end.lower ? `${finalResults.end.lower} تاخیر در پایان` : ' انحراف ندارد'}
                                             </div>
                                         </div>
                                     </Grid>
@@ -301,7 +360,6 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
                                             renderInput={params => <TextField {...params} />}
                                         />
                                     </div>
-                                    <p className='auto_complete_error'>{errors?.deviation?.message}</p>
                                 </div>
                             </div>
                         </Grid>
