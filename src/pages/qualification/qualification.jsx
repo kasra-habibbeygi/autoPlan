@@ -183,7 +183,6 @@ const Qualification = () => {
 
         Axios.get('worker/admin/capacity-measurement/report/')
             .then(res => {
-                console.log(res);
                 setReportList(res.data.result);
             })
             .catch(() => {});

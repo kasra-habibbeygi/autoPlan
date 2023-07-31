@@ -84,9 +84,7 @@ const AddDetailModal = ({
                 setShowSubModal(false);
                 toast.success('ظرفیت جدید با موفقیت ویرایش شد');
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(() => {})
             .finally(() => {
                 setButtonLoading(false);
             });

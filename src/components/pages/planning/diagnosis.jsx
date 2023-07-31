@@ -48,9 +48,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                 SetPostsList(posts);
                 if (modalFormStatus === 'edit') {
                     if (chosenEditItemDetails) {
-                        console.log(chosenEditItemDetails);
-                        console.log(posts);
-
                         setValue('type_of_repair', chosenEditItemDetails?.diagnosis_info?.type_of_repair);
                         setValue('repairman', {
                             label: chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname,
@@ -97,16 +94,12 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
             approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`
         };
 
-        console.log(newData);
-
         Axios.post('/worker/admin/diagnosis/list_create/', newData)
             .then(res => {
                 setStep(3);
                 setStep2Id(res.data.id);
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(() => {})
             .finally(() => {
                 setLoader(false);
             });

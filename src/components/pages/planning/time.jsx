@@ -30,9 +30,14 @@ function timeToSeconds(timeString) {
     return totalSeconds;
 }
 
-const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
+const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep }) => {
     const [deviationList, setDeviationList] = useState([]);
     const [diagnosisValue, setDiagnosisValue] = useState();
+    const [reasonValue, setReasonValue] = useState();
+    const [exactTime, setExactTime] = useState({
+        start: '',
+        end: ''
+    });
     const [finalResults, setFinalResults] = useState({
         end: {
             bigger: 0,
@@ -43,7 +48,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
             lower: 0
         }
     });
-    const { register, handleSubmit, formState, control, setValue } = useForm({
+    const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             proximate_start_hour: '',
             proximate_start_min: '',
@@ -62,14 +67,15 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
         Axios.get('/worker/admin/reason-for-deviation/list_create/').then(res => {
             let posts = res.data.results.map(item => ({
                 label: item.reason,
-                value: item.reason
+                value: item.id
             }));
 
             setDeviationList(posts);
         });
+
         Axios.get('worker/admin/diagnosis/list_create/').then(res => {
             setDiagnosisValue();
-            let temp = res.data.results.filter(item => item.vehicle_specifications === Step2Id)[0];
+            let temp = res.data.results.filter(item => item.id === Step2Id)[0];
             setValue('proximate_finish_hour', temp?.approximate_end_time.split(':')[0]);
             setValue('proximate_finish_min', temp?.approximate_end_time.split(':')[1]);
             setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
@@ -78,6 +84,11 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
     }, []);
 
     const formSubmit = data => {
+        setExactTime({
+            start: `${data.real_start_hour}:${data.real_start_min}`,
+            end: `${data.real_finish_hour}:${data.real_finish_min}`
+        });
+
         let proximate_finish = `${data.proximate_finish_hour}:${data.proximate_finish_min}`;
         let proximate_start = `${data.proximate_start_hour}:${data.proximate_start_min}`;
         let real_finish = `${data.real_finish_hour}:${data.real_finish_min}`;
@@ -99,6 +110,26 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
                 lower: proximate_start_sec - real_start_sec > 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0
             }
         });
+    };
+
+    const handleSubmitForm = () => {
+        const newData = {
+            diagnosis: Step2Id,
+            exact_start_time: exactTime.start,
+            exact_end_time: exactTime.end,
+            delayed_start: finalResults.start.bigger === 0 ? '0:0' : finalResults.start.bigger,
+            start_with_haste: finalResults.start.lower === 0 ? '0:0' : finalResults.start.lower,
+            delayed_end: finalResults.end.bigger === 0 ? '0:0' : finalResults.end.bigger,
+            end_with_haste: finalResults.end.lower === 0 ? '0:0' : finalResults.end.lower,
+            the_reason_for_the_deviation: reasonValue.value
+        };
+
+        Axios.post('/worker/admin/time-to-troubleshoot/list_create/', newData)
+            .then(res => {
+                setStep(1);
+            })
+            .catch(() => {})
+            .finally(() => {});
     };
 
     return (
@@ -205,9 +236,9 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
                 />
             </Grid>
 
-            {finalResults.start.bigger !== 0 &&
-            finalResults.start.lower !== 0 &&
-            finalResults.end.bigger !== 0 &&
+            {finalResults.start.bigger !== 0 ||
+            finalResults.start.lower !== 0 ||
+            finalResults.end.bigger !== 0 ||
             finalResults.end.lower !== 0 ? (
                 <div className='summary'>
                     <Grid container>
@@ -259,22 +290,15 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
                                 <div className='auto_complete_wrapper'>
                                     <p className='auto_complete_title'>علت انحراف</p>
                                     <div className='auto_complete'>
-                                        <Controller
-                                            control={control}
-                                            name='deviation'
-                                            render={({ field: { onChange, value } }) => {
-                                                return (
-                                                    <Autocomplete
-                                                        options={deviationList}
-                                                        value={value?.label}
-                                                        onChange={(event, newValue) => {
-                                                            onChange(newValue?.value);
-                                                        }}
-                                                        sx={{ width: '100%' }}
-                                                        renderInput={params => <TextField {...params} />}
-                                                    />
-                                                );
+                                        <Autocomplete
+                                            options={deviationList}
+                                            value={reasonValue}
+                                            getOptionLabel={option => option?.label}
+                                            onChange={(_, newValue) => {
+                                                setReasonValue(newValue);
                                             }}
+                                            sx={{ width: '100%' }}
+                                            renderInput={params => <TextField {...params} />}
                                         />
                                     </div>
                                     <p className='auto_complete_error'>{errors?.deviation?.message}</p>
@@ -289,7 +313,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails }) => {
                         width='fit-content'
                         className='submit'
                         backgroundColor={'#174787'}
-                        onClick={() => {}}
+                        onClick={handleSubmitForm}
                         height='48px'
                         type='submit'
                         padding='15px'

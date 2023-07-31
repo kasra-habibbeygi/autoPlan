@@ -23,7 +23,8 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
         defaultValues: {
             full_name: '',
             mobile: '',
-            role: ''
+            role: '',
+            code: ''
         },
 
         mode: 'onTouched'
@@ -43,9 +44,9 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                 setPostsList(posts);
 
                 if (modalStatus === 'edit') {
-                    console.log(editModalData);
                     setValue('full_name', editModalData?.personnel?.fullname);
                     setValue('mobile', editModalData?.personnel?.mobile_number);
+                    setValue('code', editModalData?.personnel?.code);
                     setValue('role', {
                         label: editModalData?.organizational_position_info?.title,
                         value: editModalData?.organizational_position_info?.id
@@ -113,6 +114,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                         }}
                         error={errors?.full_name}
                     />
+
                     <InputComponent
                         title='شماره موبایل'
                         icon={addPhone}
@@ -163,6 +165,18 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                         </div>
                         <p className='auto_complete_error'>{errors?.role?.message}</p>
                     </div>
+
+                    <InputComponent
+                        title='کد پرسنل'
+                        placeHolder='کد پرسنل'
+                        icon={magnifier}
+                        type='text'
+                        detail={{
+                            ...register('code')
+                        }}
+                        error={errors?.code}
+                    />
+
                     <FormButton
                         text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
                         type='submit'

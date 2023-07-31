@@ -45,7 +45,7 @@ const EffectiveResult = ({ setStep, setAllDetail, setReload, chosenEditItemDetai
                 setIsModalOpen(false);
                 toast.success('با موفقیت ثبت گردید');
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => setButtonLoading(false));
     };
 

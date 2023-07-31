@@ -12,8 +12,6 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
 
     const isTime = finishedDateToday <= todayDate;
 
-    console.log(chosenEditItemDetails);
-
     return (
         <ShowAllStyle>
             <h2>اقدام اصلاحی</h2>

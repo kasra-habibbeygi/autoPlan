@@ -31,14 +31,12 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        console.log(data);
         setAllDetail(prev => ({
             ...prev,
             actionPerson: data
         }));
         setStep(5);
     };
-    console.log(errors);
 
     return (
         <Style>

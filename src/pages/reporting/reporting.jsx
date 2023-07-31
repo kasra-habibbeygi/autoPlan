@@ -32,10 +32,9 @@ const Reporting = () => {
     useEffect(() => {
         Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')
             .then(res => {
-                // console.log('first', res);
                 setReportingChartData(res.data);
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => {
                 setLoading(prev => ({
                     ...prev,
@@ -45,10 +44,9 @@ const Reporting = () => {
 
         Axios.get('https://api.autoplaning.ir/api/percentage-deviation-in-one-month/')
             .then(res => {
-                // console.log('second', res);
                 setDeviationInOneMonth(res.data);
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => {
                 setLoading(prev => ({
                     ...prev,
@@ -57,10 +55,9 @@ const Reporting = () => {
             });
         Axios.get('https://api.autoplaning.ir/api/deviation-in-six-months/')
             .then(res => {
-                // console.log('fourth', res);
                 setDeviationInSixMonths(res.data);
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => {
                 setLoading(prev => ({
                     ...prev,
@@ -77,10 +74,9 @@ const Reporting = () => {
 
         Axios.get(`https://api.autoplaning.ir/api/amount-of-deviation/${chosenPeriod}/`)
             .then(res => {
-                // console.log('third', res);
                 setDeviationInMultiMonths(res.data);
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => {
                 setLoading(prev => ({
                     ...prev,

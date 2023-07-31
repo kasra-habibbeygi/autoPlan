@@ -48,7 +48,7 @@ const Home = () => {
             .then(res => {
                 setReportingChartData(res.data);
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => {
                 setLoading(prev => ({
                     ...prev,

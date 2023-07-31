@@ -81,7 +81,7 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, al
                     setStep(1);
                 }
             })
-            .catch(err => console.log(err))
+            .catch(() => {})
             .finally(() => setButtonLoading(false));
         // }
     };
