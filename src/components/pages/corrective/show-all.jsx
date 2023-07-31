@@ -116,7 +116,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                             {chosenEditItemDetails?.action_officials_info?.map((person, index) => (
                                 <p className='questions' key={person.id}>
                                     <span className='quest'>مسئول اقدام اصلاحی {index + 1} :</span>
-                                    <span className='answer'>{person.fullname}</span>
+                                    <span className='answer'>{person.title}</span>
                                 </p>
                             ))}
                         </div>
@@ -141,7 +141,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
                                 </div>
                                 <div className='item'>
                                     <p className='title'>9. مسئول کنترل اثر بخشی </p>
-                                    <p className='text'>{chosenEditItemDetails?.controller_info?.fullname}</p>
+                                    <p className='text'>{chosenEditItemDetails?.controller}</p>
                                 </div>
                                 <div className='item'>
                                     <p className='title'>10. نتیجه کنترل اثر بخشی </p>

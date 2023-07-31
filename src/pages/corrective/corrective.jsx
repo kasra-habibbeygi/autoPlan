@@ -65,7 +65,7 @@ const Corrective = () => {
             renderCell: data => (
                 <div className='action_officials_field'>
                     {data?.action_officials_info?.map((item, index) => (
-                        <p key={`action_officials_${index}`}>{item.fullname} ,</p>
+                        <p key={`action_officials_${index}`}>{item.title} ,</p>
                     ))}
                 </div>
             )
@@ -135,6 +135,8 @@ const Corrective = () => {
         setConfirmModalStatus(true);
         setSpecificDeviationId(id);
     };
+
+    // console.log(correctiveData);
 
     return (
         <>

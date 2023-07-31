@@ -25,6 +25,7 @@ const Home = () => {
     useEffect(() => {
         Axios.get('/worker/admin/vehicle-specifications/list_create/?page_size=5')
             .then(res => {
+                console.log(res.data);
                 setManagementList(() =>
                     res.data.results.map(item => ({
                         id: item?.id,

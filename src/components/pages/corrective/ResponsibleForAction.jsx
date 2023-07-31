@@ -19,15 +19,14 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
     const { errors } = formState;
 
     useEffect(() => {
-        // if (chosenEditItemDetails?.action_officials_info) {
-        //     const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => {
-        //         const foundedItem = personnelArray.find(itemArray => itemArray.value === item.id);
-        //         return {
-        //             [`correction_${index + 1}`]: { label: foundedItem.label, value: item.id }
-        //         };
-        //     });
-        //     newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
-        // }
+        if (chosenEditItemDetails?.action_officials_info) {
+            const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => {
+                return {
+                    [`correction_${index + 1}`]: item.title
+                };
+            });
+            newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+        }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {

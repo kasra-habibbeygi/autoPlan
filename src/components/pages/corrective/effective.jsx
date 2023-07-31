@@ -15,7 +15,7 @@ import tools from '../../../utils/tools';
 import InputComponent from '../../form-groups/input-component';
 
 const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, allDetail, today, setIsModalOpen }) => {
-    const finishedDate = chosenEditItemDetails?.control_completion_date.replaceAll('-', '/');
+    const finishedDate = chosenEditItemDetails?.control_completion_date?.replaceAll('-', '/');
 
     const finishedDateToday = new Date(finishedDate);
     const todayDate = new Date(today);
@@ -35,29 +35,13 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, al
     const { errors } = formState;
 
     useEffect(() => {
-        // if (chosenEditItemDetails?.controller_info && chosenEditItemDetails?.control_completion_date) {
-        //     setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
-        //     setValue('inCharge_person', {
-        //         label: chosenEditItemDetails?.controller_info?.fullname,
-        //         value: chosenEditItemDetails?.controller_info?.id
-        //     });
-        // }
+        if (chosenEditItemDetails?.controller && chosenEditItemDetails?.control_completion_date) {
+            setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
+            setValue('inCharge_person', chosenEditItemDetails.controller);
+        }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        // if (chosenEditItemDetails) {
-        //     setAllDetail(prev => ({
-        //         ...prev,
-        //         effective_detail: data
-        //     }));
-
-        // if (isTime) {
-        //     setStep(8);
-        // } else {
-        //     setIsModalOpen(false);
-        //     setStep(1);
-        // }
-        // } else {
         setButtonLoading(true);
 
         const newData = {
@@ -66,24 +50,43 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, al
             control_completion_date: tools.changeTimeStampToDate(data?.effective_date)
         };
 
-        Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
-            .then(() => {
-                setReload(prev => !prev);
-                setAllDetail(prev => ({
-                    ...prev,
-                    effective_detail: data
-                }));
+        if (chosenEditItemDetails.result && chosenEditItemDetails.controller && chosenEditItemDetails.control_completion_date) {
+            Axios.put(`/worker/admin/corrective-action/update/?pk=${chosenEditItemDetails.id}`, newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        effective_detail: data
+                    }));
 
-                if (isTime) {
-                    setStep(8);
-                } else {
-                    setIsModalOpen(false);
-                    setStep(1);
-                }
-            })
-            .catch(() => {})
-            .finally(() => setButtonLoading(false));
-        // }
+                    if (isTime) {
+                        setStep(8);
+                    } else {
+                        setIsModalOpen(false);
+                        setStep(1);
+                    }
+                })
+                .catch(() => {})
+                .finally(() => setButtonLoading(false));
+        } else {
+            Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
+                .then(() => {
+                    setReload(prev => !prev);
+                    setAllDetail(prev => ({
+                        ...prev,
+                        effective_detail: data
+                    }));
+
+                    if (isTime) {
+                        setStep(8);
+                    } else {
+                        setIsModalOpen(false);
+                        setStep(1);
+                    }
+                })
+                .catch(() => {})
+                .finally(() => setButtonLoading(false));
+        }
     };
 
     return (
