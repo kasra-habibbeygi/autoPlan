@@ -17,7 +17,6 @@ import TimePicker from '../../form-groups/time-picker';
 function secondsToTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
 
@@ -71,7 +70,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                 value: item.id
             }));
 
-            let filteredPosts = posts?.filter(item => item.value === chosenEditItemDetails.the_reason_for_the_deviation_info.id)[0];
+            let filteredPosts = posts?.filter(item => item.value === chosenEditItemDetails?.the_reason_for_the_deviation_info.id)[0];
 
             setDeviationList(posts);
 
@@ -177,11 +176,13 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
         let real_finish_sec = timeToSeconds(real_finish);
         let real_start_sec = timeToSeconds(real_start);
 
+        let timeTemp = real_finish_sec + (proximate_start_sec - real_start_sec);
+
         setFinalResults({
             ...finalResults,
             end: {
-                bigger: proximate_finish_sec - real_finish_sec < 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0,
-                lower: proximate_finish_sec - real_finish_sec > 0 ? secondsToTime(Math.abs(proximate_finish_sec - real_finish_sec)) : 0
+                bigger: proximate_finish_sec - timeTemp < 0 ? secondsToTime(Math.abs(proximate_finish_sec - timeTemp)) : 0,
+                lower: proximate_finish_sec - timeTemp > 0 ? secondsToTime(Math.abs(proximate_finish_sec - timeTemp)) : 0
             },
             start: {
                 bigger: proximate_start_sec - real_start_sec < 0 ? secondsToTime(Math.abs(proximate_start_sec - real_start_sec)) : 0,
