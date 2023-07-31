@@ -19,7 +19,7 @@ import Modal from '../../template/modal';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
 
-const FilterModal = ({ setReload, setShowFilterModal }) => {
+const FilterModal = ({ setShowFilterModal }) => {
     const [filterModalStatus, setFilterModalStatus] = useState('');
     const [showModalStatus, setShowModalStatus] = useState(false);
     const [personnelData, setPersonnelData] = useState([]);
