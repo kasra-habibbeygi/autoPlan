@@ -161,9 +161,10 @@ const Planning = () => {
             key: 'repairman',
             renderCell: data => (
                 <div>
-                    {data?.diagnosis_info?.repairman === null || data?.diagnosis_info?.repairman === ''
+                    {data?.diagnosis_info?.repairman_info.user_info.personnel.fullname === null ||
+                    data?.diagnosis_info?.repairman_info.user_info.personnel.fullname === ''
                         ? 'تعریف نشده'
-                        : data?.diagnosis_info?.repairman}
+                        : data?.diagnosis_info?.repairman_info.user_info.personnel.fullname}
                 </div>
             )
         },
@@ -220,11 +221,7 @@ const Planning = () => {
             title: 'زمان شروع واقعی',
             key: 'exact_start_time',
             renderCell: data => (
-                <div>
-                    {data?.diagnosis_info?.exact_start_time === null || data?.diagnosis_info?.exact_start_time === ''
-                        ? 'تعریف نشده'
-                        : data?.diagnosis_info?.exact_start_time}
-                </div>
+                <div>{data?.exact_start_time === null || data?.exact_start_time === '' ? 'تعریف نشده' : data?.exact_start_time}</div>
             )
         },
         {
@@ -265,9 +262,9 @@ const Planning = () => {
             key: 'the_reason_for_the_deviation',
             renderCell: data => (
                 <div>
-                    {data?.diagnosis_info?.exact_end_time === null || data?.diagnosis_info?.exact_end_time === ''
+                    {data?.the_reason_for_the_deviation_info?.reason === null || data?.the_reason_for_the_deviation_info?.reason === ''
                         ? 'تعریف نشده'
-                        : data?.diagnosis_info?.exact_end_time}
+                        : data?.the_reason_for_the_deviation_info?.reason}
                 </div>
             )
         },
