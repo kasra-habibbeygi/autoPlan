@@ -17,6 +17,7 @@ import Diagnosis from '../../components/pages/planning/diagnosis';
 import Time from '../../components/pages/planning/time';
 import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
+import { useSearchParams } from 'react-router-dom';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
@@ -29,16 +30,12 @@ const Planning = () => {
     const [reload, setReload] = useState(false);
     const [modalFormStatus, setModalFormStatus] = useState('add');
     const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
-    const [filtersDetail, setFiltersDetail] = useState({
-        timeFilter: '',
-        sectionFilter: '',
-        personFilter: ''
-    });
-
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
     });
+
+    const [searchParams] = useSearchParams();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -48,17 +45,26 @@ const Planning = () => {
     useEffect(() => {
         setTableLoading(true);
         setPlanningList();
-        if (filtersDetail?.timeFilter || filtersDetail?.sectionFilter || filtersDetail?.personFilter) {
+
+        const dateQuery = searchParams.get('date');
+        const typeIdQuery = searchParams.get('type_id');
+        const personnelIdQuery = searchParams.get('personnel_id');
+
+        if (dateQuery || typeIdQuery || personnelIdQuery) {
+            setPageStatus(prev => ({
+                ...prev,
+                current: 1
+            }));
             Axios.get(`/worker/admin/repair-planning/filter-by/?pageSize=10&page=${pageStatus.current}`, {
                 params: {
-                    ...(filtersDetail.timeFilter && {
-                        date: filtersDetail.timeFilter
+                    ...(dateQuery && {
+                        date: dateQuery
                     }),
-                    ...(filtersDetail.sectionFilter && {
-                        type_id: filtersDetail.sectionFilter
+                    ...(typeIdQuery && {
+                        type_id: typeIdQuery
                     }),
-                    ...(filtersDetail.personFilter && {
-                        personnel_id: filtersDetail.personFilter
+                    ...(personnelIdQuery && {
+                        personnel_id: personnelIdQuery
                     })
                 }
             })
@@ -85,7 +91,7 @@ const Planning = () => {
                 .catch(() => {})
                 .finally(() => setTableLoading(false));
         }
-    }, [reload, pageStatus.current]);
+    }, [reload, pageStatus.current, searchParams]);
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
@@ -301,7 +307,7 @@ const Planning = () => {
             />
             <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={tableLoading} />
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
-                <FilterModal setFiltersDetail={setFiltersDetail} setReload={setReload} setShowFilterModal={setShowFilterModal} />
+                <FilterModal setReload={setReload} setShowFilterModal={setShowFilterModal} />
             </Modal>
             <Modal
                 state={modalIsOpen}
