@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 //Assets
 import LeftArrow from './../../../assets/images/icons/LeftArrow.svg';
@@ -17,12 +19,13 @@ import Modal from '../../template/modal';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
 
-const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
+const FilterModal = ({ setShowFilterModal }) => {
     const [filterModalStatus, setFilterModalStatus] = useState('');
     const [showModalStatus, setShowModalStatus] = useState(false);
     const [personnelData, setPersonnelData] = useState([]);
     const [sectionData, setSectionData] = useState([]);
 
+    const navigate = useNavigate();
     const { handleSubmit, control, formState, reset } = useForm({
         mode: 'onTouched'
     });
@@ -32,26 +35,24 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
         setPersonnelData();
         Axios.get('/worker/admin/personnel/list_create/')
             .then(res => {
-                const newArray = res.data.results.map(item => {
+                const newArray = res?.data?.results?.map(item => {
                     return {
                         label: item?.personnel?.fullname,
                         value: item?.personnel?.id
                     };
                 });
-
                 setPersonnelData(newArray);
             })
             .catch(() => {});
 
         Axios.get('/worker/admin/capacity-measurement/list_create/')
             .then(res => {
-                const newArray = res.data.results.map(item => {
+                const newArray = res?.data?.results?.map(item => {
                     return {
                         label: item?.type?.type_info?.title,
                         value: item?.type?.id
                     };
                 });
-
                 setSectionData(newArray);
             })
             .catch(() => {});
@@ -60,23 +61,13 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
     const filterFormHandler = data => {
         for (const item in data) {
             if (item === 'time') {
-                setFiltersDetail(prev => ({
-                    ...prev,
-                    timeFilter: tools.changeTimeStampToDate(data[item])
-                }));
+                navigate(`/planning?date=${tools.changeTimeStampToDate(data[item])}`);
             } else if (item === 'part') {
-                setFiltersDetail(prev => ({
-                    ...prev,
-                    sectionFilter: data[item]
-                }));
+                navigate(`/planning?type_id=${data[item]}`);
             } else if (item === 'person') {
-                setFiltersDetail(prev => ({
-                    ...prev,
-                    personFilter: data[item]
-                }));
+                navigate(`/planning?personnel_id=${data[item]}`);
             }
         }
-        setReload(prev => !prev);
         setShowFilterModal(false);
     };
 
@@ -151,7 +142,7 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
                                     render={({ field: { onChange, value } }) => {
                                         return (
                                             <Autocomplete
-                                                options={sectionData}
+                                                options={sectionData || []}
                                                 value={value?.label}
                                                 onChange={(event, newValue) => {
                                                     onChange(newValue?.value);
@@ -178,7 +169,7 @@ const FilterModal = ({ setFiltersDetail, setReload, setShowFilterModal }) => {
                                     render={({ field: { onChange, value } }) => {
                                         return (
                                             <Autocomplete
-                                                options={personnelData}
+                                                options={personnelData || []}
                                                 value={value?.label}
                                                 onChange={(event, newValue) => {
                                                     onChange(newValue?.value);
