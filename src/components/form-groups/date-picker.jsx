@@ -17,7 +17,7 @@ const cacheRtl = createCache({
     stylisPlugins: [prefixer, rtlPlugin]
 });
 
-const DatePickerComponent = ({ value, onChange, title, error, disabled = false }) => {
+const DatePickerComponent = ({ value, onChange, title, error, disabled = false, minDate }) => {
     return (
         <DatePickerWrapper error={error}>
             {title && <p>{title}</p>}
@@ -30,6 +30,7 @@ const DatePickerComponent = ({ value, onChange, title, error, disabled = false }
                             sx={{ width: '100%' }}
                             format='yyyy/MM/dd'
                             disabled={disabled}
+                            minDate={minDate}
                         />
                     </CacheProvider>
                 </LocalizationProvider>

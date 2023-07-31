@@ -12,15 +12,19 @@ import Axios from './../../../configs/axios';
 import FormButton from '../../form-groups/form-button';
 import DatePickerComponent from '../../form-groups/date-picker';
 import tools from '../../../utils/tools';
-import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import InputComponent from '../../form-groups/input-component';
 
-const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, allDetail }) => {
+const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, allDetail, today, setIsModalOpen }) => {
+    const finishedDate = chosenEditItemDetails?.control_completion_date.replaceAll('-', '/');
+
+    const finishedDateToday = new Date(finishedDate);
+    const todayDate = new Date(today);
+
+    const isTime = finishedDateToday <= todayDate;
+
     const [buttonLoading, setButtonLoading] = useState(false);
-    const [dataLoading, setDataLoading] = useState(true);
 
-    const [personnel, setPersonnel] = useState([{ value: '', label: '', id: '' }]);
-
-    const { handleSubmit, formState, control, setValue } = useForm({
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             effective_date: '',
             inCharge_person: ''
@@ -31,129 +35,101 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, al
     const { errors } = formState;
 
     useEffect(() => {
-        setDataLoading(true);
-
-        Axios.get('/worker/admin/organizational-position/list_create/?page_size=500')
-            .then(res => {
-                let personnelArray = res.data.results.map(item => ({
-                    label: item.title,
-                    value: item.id
-                }));
-
-                setPersonnel(personnelArray);
-
-                if (chosenEditItemDetails?.controller_info && chosenEditItemDetails?.control_completion_date) {
-                    setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
-                    setValue('inCharge_person', {
-                        label: chosenEditItemDetails?.controller_info?.fullname,
-                        value: chosenEditItemDetails?.controller_info?.id
-                    });
-                }
-            })
-            .finally(() => setDataLoading(false));
+        // if (chosenEditItemDetails?.controller_info && chosenEditItemDetails?.control_completion_date) {
+        //     setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
+        //     setValue('inCharge_person', {
+        //         label: chosenEditItemDetails?.controller_info?.fullname,
+        //         value: chosenEditItemDetails?.controller_info?.id
+        //     });
+        // }
     }, [chosenEditItemDetails]);
 
     const formSubmit = data => {
-        if (data?.inCharge_person?.value && data?.effective_date) {
-            setAllDetail(prev => ({
-                ...prev,
-                effective_detail: data
-            }));
-            setStep(8);
-        } else {
-            setButtonLoading(true);
+        // if (chosenEditItemDetails) {
+        //     setAllDetail(prev => ({
+        //         ...prev,
+        //         effective_detail: data
+        //     }));
 
-            const newData = {
-                result: allDetail.action_result,
-                controller: data?.inCharge_person?.value,
-                control_completion_date: tools.changeTimeStampToDate(data?.effective_date)
-            };
+        // if (isTime) {
+        //     setStep(8);
+        // } else {
+        //     setIsModalOpen(false);
+        //     setStep(1);
+        // }
+        // } else {
+        setButtonLoading(true);
 
-            Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
-                .then(() => {
-                    setReload(prev => !prev);
-                    setAllDetail(prev => ({
-                        ...prev,
-                        effective_detail: data
-                    }));
+        const newData = {
+            result: allDetail.action_result,
+            controller: data?.inCharge_person,
+            control_completion_date: tools.changeTimeStampToDate(data?.effective_date)
+        };
+
+        Axios.put(`/worker/admin/corrective-action/retrieve_update_destroy/?pk=${chosenEditItemDetails?.id}`, newData)
+            .then(() => {
+                setReload(prev => !prev);
+                setAllDetail(prev => ({
+                    ...prev,
+                    effective_detail: data
+                }));
+
+                if (isTime) {
                     setStep(8);
-                })
-                .catch(err => console.log(err))
-                .finally(() => setButtonLoading(false));
-        }
+                } else {
+                    setIsModalOpen(false);
+                    setStep(1);
+                }
+            })
+            .catch(err => console.log(err))
+            .finally(() => setButtonLoading(false));
+        // }
     };
 
     return (
         <Style>
             <form onSubmit={handleSubmit(formSubmit)}>
-                {dataLoading ? (
-                    <div className='loading'>
-                        <CircularProgress />
-                    </div>
-                ) : (
-                    <>
-                        <Controller
-                            control={control}
-                            name='effective_date'
-                            rules={{ required: 'این فیلد اجباری است' }}
-                            render={({ field: { onChange, value } }) => {
-                                return (
-                                    <DatePickerComponent
-                                        value={value}
-                                        onChange={onChange}
-                                        title='تاریخ کنترل اثر بخشی'
-                                        error={errors?.effective_date}
-                                    />
-                                );
-                            }}
-                        />
+                <Controller
+                    control={control}
+                    name='effective_date'
+                    rules={{ required: 'این فیلد اجباری است' }}
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DatePickerComponent
+                                value={value}
+                                onChange={onChange}
+                                title='تاریخ کنترل اثر بخشی'
+                                error={errors?.effective_date}
+                                minDate={new Date()}
+                            />
+                        );
+                    }}
+                />
+                <InputComponent
+                    title='مسئول کنترل اثر بخشی'
+                    icon={user}
+                    type='text'
+                    detail={{
+                        ...register('inCharge_person', {
+                            required: {
+                                value: true,
+                                message: 'این فیلد اجباری است'
+                            }
+                        })
+                    }}
+                    error={errors?.inCharge_person}
+                />
 
-                        <div className='auto_complete_wrapper'>
-                            <p className='auto_title'>مسئول کنترل اثر بخشی</p>
-                            <div className={errors?.inCharge_person?.message ? 'auto_complete auto_complete_error' : 'auto_complete'}>
-                                <Controller
-                                    control={control}
-                                    name={'inCharge_person'}
-                                    rules={{ required: 'این فیلد اجباری است' }}
-                                    render={({ field: { onChange, value } }) => {
-                                        return (
-                                            <Autocomplete
-                                                options={personnel}
-                                                value={value}
-                                                onChange={(event, newValue) => {
-                                                    onChange(newValue);
-                                                }}
-                                                sx={{ width: '100%' }}
-                                                renderInput={params => <TextField {...params} />}
-                                            />
-                                        );
-                                    }}
-                                />
-
-                                <img src={user} />
-                            </div>
-                            <p className='auto_error'>{errors?.inCharge_person?.message}</p>
-                        </div>
-
-                        <FormButton
-                            text='بعدی'
-                            icon={arrow}
-                            type='submit'
-                            backgroundColor={'#174787'}
-                            color={'white'}
-                            height={48}
-                            loading={buttonLoading}
-                        />
-                        <FormButton
-                            text='قبلی'
-                            backgroundColor='#174787'
-                            color='white'
-                            height={48}
-                            onClick={() => setStep(6)}
-                            margin={'20px 0'}
-                        />
-                    </>
-                )}
+                <FormButton
+                    text='بعدی'
+                    icon={arrow}
+                    type='submit'
+                    backgroundColor={'#174787'}
+                    color={'white'}
+                    height={48}
+                    loading={buttonLoading}
+                />
+                <FormButton text='قبلی' backgroundColor='#174787' color='white' height={48} onClick={() => setStep(6)} margin={'20px 0'} />
             </form>
         </Style>
     );

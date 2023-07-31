@@ -26,7 +26,6 @@ export const AddModalWrapper = styled.div(props => ({
                 marginTop: '10px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '30px',
                 background: props.theme.colors.white,
                 boxShadow: '0px 4px 14px 0px #0000000D',
                 padding: '0 20px',

@@ -191,6 +191,8 @@ const Corrective = () => {
                                 chosenEditItemDetails={chosenEditItemDetails}
                                 setReload={setReload}
                                 allDetail={allDetail}
+                                today={today}
+                                setIsModalOpen={setIsModalOpen}
                             />
                         ) : (
                             step === 8 && (

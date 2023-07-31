@@ -46,7 +46,7 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
         const changedActionPersonsData = [];
 
         for (const some in allDetail.actionPerson) {
-            changedActionPersonsData.push(allDetail.actionPerson[some].value);
+            changedActionPersonsData.push(allDetail.actionPerson[some]);
         }
 
         var formData = new FormData();
@@ -112,6 +112,7 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
                                     onChange={onChange}
                                     title='زمان شروع اقدام اصلاحی'
                                     error={errors?.started_time}
+                                    minDate={new Date()}
                                 />
                             );
                         }}
@@ -130,6 +131,7 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
                                     onChange={onChange}
                                     title='زمان پایان اقدام اصلاحی'
                                     error={errors?.finished_time}
+                                    minDate={new Date()}
                                 />
                             );
                         }}
