@@ -136,6 +136,8 @@ const Corrective = () => {
         setSpecificDeviationId(id);
     };
 
+    console.log(allDetail);
+
     return (
         <>
             <PagesHeader
