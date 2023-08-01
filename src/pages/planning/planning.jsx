@@ -205,38 +205,72 @@ const Planning = () => {
             title: 'زمان شروع واقعی',
             key: 'exact_start_time',
             renderCell: data => (
-                <div>{!data?.exact_start_time || data?.exact_start_time === '' ? 'تعریف نشده' : data?.exact_start_time}</div>
+                <div>
+                    {!data?.time_to_troubleshoot_info?.exact_start_time || data?.time_to_troubleshoot_info?.exact_start_time === ''
+                        ? 'تعریف نشده'
+                        : data?.time_to_troubleshoot_info?.exact_start_time}
+                </div>
             )
         },
         {
             id: 13,
             title: 'زمان پایان واقعی',
             key: 'exact_end_time',
-            renderCell: data => <div>{!data.exact_end_time || data.exact_end_time === '' ? 'تعریف نشده' : data.exact_end_time}</div>
+            renderCell: data => (
+                <div>
+                    {!data?.time_to_troubleshoot_info.exact_end_time || data?.time_to_troubleshoot_info.exact_end_time === ''
+                        ? 'تعریف نشده'
+                        : data?.time_to_troubleshoot_info.exact_end_time}
+                </div>
+            )
         },
         {
             id: 14,
             title: 'تعجیل در شروع',
             key: 'start_with_haste',
-            renderCell: data => <div>{!data.start_with_haste || data.start_with_haste === '' ? 'ندارد' : data.start_with_haste}</div>
+            renderCell: data => (
+                <div>
+                    {!data?.time_to_troubleshoot_info.start_with_haste || data?.time_to_troubleshoot_info.start_with_haste === ''
+                        ? 'ندارد'
+                        : data?.time_to_troubleshoot_info.start_with_haste}
+                </div>
+            )
         },
         {
             id: 15,
             title: 'تعجیل در پایان',
             key: 'end_with_haste',
-            renderCell: data => <div>{!data.end_with_haste || data.end_with_haste === '' ? 'ندارد' : data.end_with_haste}</div>
+            renderCell: data => (
+                <div>
+                    {!data?.time_to_troubleshoot_info.end_with_haste || data?.time_to_troubleshoot_info.end_with_haste === ''
+                        ? 'ندارد'
+                        : data?.time_to_troubleshoot_info.end_with_haste}
+                </div>
+            )
         },
         {
             id: 16,
             title: 'تاخیر در شروع',
             key: 'delayed_start',
-            renderCell: data => <div>{!data.delayed_start || data.delayed_start === '' ? 'ندارد' : data.delayed_start}</div>
+            renderCell: data => (
+                <div>
+                    {!data?.time_to_troubleshoot_info.delayed_start || data?.time_to_troubleshoot_info.delayed_start === ''
+                        ? 'ندارد'
+                        : data?.time_to_troubleshoot_info.delayed_start}
+                </div>
+            )
         },
         {
             id: 17,
             title: 'تاخیر در پایان',
             key: 'delayed_end',
-            renderCell: data => <div>{!data.delayed_end || data.delayed_end === '' ? 'ندارد' : data.delayed_end}</div>
+            renderCell: data => (
+                <div>
+                    {!data?.time_to_troubleshoot_info.delayed_end || data?.time_to_troubleshoot_info.delayed_end === ''
+                        ? 'ندارد'
+                        : data?.time_to_troubleshoot_info.delayed_end}
+                </div>
+            )
         },
         {
             id: 18,
@@ -244,9 +278,10 @@ const Planning = () => {
             key: 'the_reason_for_the_deviation',
             renderCell: data => (
                 <div>
-                    {!data?.the_reason_for_the_deviation_info?.reason || data?.the_reason_for_the_deviation_info?.reason === ''
+                    {!data?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.reason ||
+                    data?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.reason === ''
                         ? 'تعریف نشده'
-                        : data?.the_reason_for_the_deviation_info?.reason}
+                        : data?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.reason}
                 </div>
             )
         },
