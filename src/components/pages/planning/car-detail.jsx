@@ -35,20 +35,17 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
     useEffect(() => {
         if (modalFormStatus === 'edit') {
             if (chosenEditItemDetails) {
-                setValue('car_brand', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.car_brand);
-                setValue('car_model', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.car_model);
-                setValue('customer_name', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.customer_name);
-                setValue(
-                    'customer_mobile_number',
-                    chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.customer_mobile_number
-                );
-                setValue('plaque_4', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_4);
-                setValue('plaque_3', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_3);
+                setValue('car_brand', chosenEditItemDetails?.car_brand);
+                setValue('car_model', chosenEditItemDetails?.car_model);
+                setValue('customer_name', chosenEditItemDetails?.customer_name);
+                setValue('customer_mobile_number', chosenEditItemDetails?.customer_mobile_number);
+                setValue('plaque_4', chosenEditItemDetails?.plaque_4);
+                setValue('plaque_3', chosenEditItemDetails?.plaque_3);
                 setValue('plaque_2', {
-                    label: chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_2,
-                    value: chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_2
+                    label: chosenEditItemDetails?.plaque_2,
+                    value: chosenEditItemDetails?.plaque_2
                 });
-                setValue('plaque_1', chosenEditItemDetails?.diagnosis_info?.vehicle_specifications_info?.plaque_1);
+                setValue('plaque_1', chosenEditItemDetails?.plaque_1);
             }
         }
     }, [chosenEditItemDetails]);
@@ -237,7 +234,6 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                         loading={loader}
                         className='login'
                         backgroundColor={'#174787'}
-                        onClick={() => {}}
                         height='48px'
                         type='submit'
                     />
