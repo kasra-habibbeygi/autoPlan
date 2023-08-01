@@ -84,7 +84,7 @@ const Home = () => {
                                                         <ChartItem
                                                             key={title}
                                                             title={title}
-                                                            percent={percent}
+                                                            percent={percent.toFixed(2)}
                                                             color={colorsReporting[index]}
                                                         />
                                                     )
