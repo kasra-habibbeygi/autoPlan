@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Bill from './../../assets/images/sideBar/Bill.svg';
 import Box from './../../assets/images/sideBar/Box.svg';
 import Document from './../../assets/images/sideBar/DocumentAdd.svg';
+import arrow from './../../assets/images/sideBar/expand-arrow.png';
 import Group from './../../assets/images/sideBar/Group2.svg';
 import Home from './../../assets/images/sideBar/HomeSmile.svg';
 import Notes from './../../assets/images/sideBar/Notes.svg';
@@ -26,6 +27,7 @@ import ConfirmModal from '../template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 
 const SideBar = () => {
     const dispatch = useDispatch();
@@ -99,16 +101,7 @@ const SideBar = () => {
                                 </div>
                             </NavLink>
                         </li>
-                        {permissionHandler(['SEAT_CAPACITY.ADD', 'SEAT_CAPACITY.EDIT', 'SEAT_CAPACITY.DELETE']) && (
-                            <li>
-                                <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
-                                    <div className='item'>
-                                        <img src={blocking} />
-                                        <p>جایگاه</p>
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
+                 
                         {permissionHandler(['LACK_PARTS.ADD', 'LACK_PARTS.EDIT', 'LACK_PARTS.DELETE']) && (
                             <li>
                                 <NavLink to='/deficiency' onClick={() => dispatch(closeSideBar())}>
@@ -120,16 +113,7 @@ const SideBar = () => {
                             </li>
                         )}
         
-                        {permissionHandler(['DEVIATION_REASON.ADD', 'DEVIATION_REASON.EDIT', 'DEVIATION_REASON.DELETE']) && (
-                            <li>
-                                <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
-                                    <div className='item'>
-                                        <img src={Bill} />
-                                        <p>علت انحرافات</p>
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}                       
+                                   
                         <li>
                             <NavLink to='/reporting' onClick={() => dispatch(closeSideBar())}>
                                 <div className='item'>
@@ -148,16 +132,49 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
-                            <li>
-                                <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
-                                    <div className='item'>
-                                        <img src={UserId} />
-                                        <p>اضافه کردن دسترسی</p>
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
+                        
+                        <div className='accordion_wrapper'>
+                            <Accordion>
+                                <AccordionSummary expandIcon={ <img className='arrow_icon' src={arrow} />}>
+                                    <Typography sx={{marginRight : '10px'}}>تعاریف پایه</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    {permissionHandler(['SEAT_CAPACITY.ADD', 'SEAT_CAPACITY.EDIT', 'SEAT_CAPACITY.DELETE']) && (
+                                        <li>
+                                            <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
+                                                <div className='item'>
+                                                    <img src={blocking} />
+                                                    <p>جایگاه</p>
+                                                </div>
+                                            </NavLink>
+                                        </li>
+                                    )}
+
+                        
+                                    {permissionHandler(['DEVIATION_REASON.ADD', 'DEVIATION_REASON.EDIT', 'DEVIATION_REASON.DELETE']) && (
+                                        <li>
+                                            <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
+                                                <div className='item'>
+                                                    <img src={Bill} />
+                                                    <p>علت انحرافات</p>
+                                                </div>
+                                            </NavLink>
+                                        </li>
+                                    )}   
+                                    {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
+                                        <li>
+                                            <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
+                                                <div className='item'>
+                                                    <img src={UserId} />
+                                                    <p>اضافه کردن دسترسی</p>
+                                                </div>
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                </AccordionDetails>
+                            </Accordion>
+                        </div>
+                 
             
                     </>
                 )}

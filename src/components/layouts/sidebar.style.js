@@ -55,5 +55,20 @@ export const SidebarStyle = styled.div(props => ({
             color: props.theme.colors.textDisable,
             backgroundColor: 'transparent'
         }
+    },
+
+    '& .accordion_wrapper': {
+        '& .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root': {
+            direction: 'ltr !important'
+        },
+
+        '& .css-1elwnq4-MuiPaper-root-MuiAccordion-root': {
+            boxShadow: 'none'
+        },
+
+        '& .arrow_icon': {
+            width: '15px',
+            height: '15px'
+        }
     }
 }));
