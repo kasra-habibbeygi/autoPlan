@@ -164,9 +164,9 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                     <label>پلاک خودرو</label>
                     <div className='input_field'>
                         <InputComponent
-                            maxLength='2'
+                            maxLength={2}
                             placeHolder='--'
-                            type='number'
+                            type='tel'
                             className='Plaque_inputs'
                             detail={{
                                 ...register('plaque_4', {
@@ -177,8 +177,8 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                         />
                         <InputComponent
                             placeHolder='---'
-                            maxLength='3'
-                            type='number'
+                            maxLength={3}
+                            type='tel'
                             className='Plaque_inputs'
                             detail={{
                                 ...register('plaque_3', {
@@ -213,8 +213,8 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
 
                         <InputComponent
                             placeHolder='--'
-                            maxLength='2'
-                            type='number'
+                            maxLength={2}
+                            type='tel'
                             className='Plaque_inputs'
                             detail={{
                                 ...register('plaque_1', {
