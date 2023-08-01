@@ -44,6 +44,8 @@ const Reporting = () => {
 
         Axios.get('https://api.autoplaning.ir/api/percentage-deviation-in-one-month/')
             .then(res => {
+                console.log(res);
+
                 setDeviationInOneMonth(res.data);
             })
             .catch(() => {})

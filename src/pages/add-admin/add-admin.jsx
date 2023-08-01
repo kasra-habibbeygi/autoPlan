@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import { infoHandler } from '../../store/reducers/user';
 
 //Assets
 import { AddAdminWrapper } from './add-admin.style';
@@ -26,7 +24,6 @@ import ConfirmModal from '../../components/template/confirm-modal';
 import FormButton from '../../components/form-groups/form-button';
 
 const AddAdmin = () => {
-    const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalStatus, setModalStatus] = useState('');
     const [confirmModalStatus, setConfirmModalStatus] = useState(false);
@@ -218,7 +215,7 @@ const AddAdmin = () => {
 
                         <InputComponent
                             title='شماره موبایل'
-                            type='number'
+                            type='tel'
                             icon={addPhone}
                             detail={{
                                 ...register('phone', {
@@ -236,6 +233,7 @@ const AddAdmin = () => {
                                     }
                                 })
                             }}
+                            maxLength={11}
                             error={errors?.phone}
                             placeHolder='---------۰۹'
                         />

@@ -17,7 +17,6 @@ import { Autocomplete, CircularProgress, Grid, TextField } from '@mui/material';
 import TimePicker from '../../form-groups/time-picker';
 
 const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
-    console.log(chosenEditItemDetails);
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
 
@@ -42,16 +41,27 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         setDataLoading(true);
         Axios.get('/worker/admin/capacity-measurement/list_create/')
             .then(res => {
+                console.log(res);
+
                 let posts = res.data.results.map(item => ({
-                    label: item?.user_info?.personnel.fullname,
+                    label: `${item?.user_info?.personnel?.fullname} - ${item?.user_info?.organizational_position_info.title} - ${
+                        item?.user_info?.code ? item?.user_info?.code : ''
+                    }`,
                     value: item?.id
                 }));
                 SetPostsList(posts);
                 if (modalFormStatus === 'edit') {
                     if (chosenEditItemDetails) {
+                        console.log(chosenEditItemDetails);
                         setValue('type_of_repair', chosenEditItemDetails?.diagnosis_info?.type_of_repair);
                         setValue('repairman', {
-                            label: chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname,
+                            label: `${chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname} - ${
+                                chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.organizational_position_info?.title
+                            } - ${
+                                chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.code
+                                    ? chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.code
+                                    : ''
+                            }`,
                             value: chosenEditItemDetails?.diagnosis_info?.repairman_info?.id
                         });
                         setValue('pyramid_number', chosenEditItemDetails?.diagnosis_info?.pyramid_number);
@@ -175,14 +185,8 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                 type='text'
                                 icon={UserHandUp}
                                 detail={{
-                                    ...register('pyramid_number', {
-                                        required: {
-                                            value: true,
-                                            message: 'این فیلد اجباری است'
-                                        }
-                                    })
+                                    ...register('pyramid_number')
                                 }}
-                                error={errors?.pyramid_number}
                             />
                         </Grid>
 
@@ -234,14 +238,8 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                 placeHolder='قطعات مورد نیاز تعمیرات برای تعمیر'
                                 type='text'
                                 detail={{
-                                    ...register('required_pieces', {
-                                        required: {
-                                            value: true,
-                                            message: 'این فیلد اجباری است'
-                                        }
-                                    })
+                                    ...register('required_pieces')
                                 }}
-                                error={errors?.required_pieces}
                             />
                         </Grid>
                     </Grid>

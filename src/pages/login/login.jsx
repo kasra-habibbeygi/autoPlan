@@ -119,7 +119,7 @@ const Login = ({ showModal, setShowModal }) => {
                             </p>
                             <InputComponent
                                 title='شماره موبایل'
-                                type='number'
+                                type='tel'
                                 icon={addPhone}
                                 detail={{
                                     ...register('mobile_number', {
@@ -137,6 +137,7 @@ const Login = ({ showModal, setShowModal }) => {
                                         }
                                     })
                                 }}
+                                maxLength={11}
                                 error={errors?.mobile_number}
                                 placeHolder='---------۰۹'
                             />

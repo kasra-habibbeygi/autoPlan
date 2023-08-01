@@ -122,7 +122,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                         title='شماره موبایل'
                         icon={addPhone}
                         placeHolder='---------۰۹'
-                        type='number'
+                        type='tel'
                         detail={{
                             ...register('mobile', {
                                 required: {
@@ -139,6 +139,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                                 }
                             })
                         }}
+                        maxLength={11}
                         error={errors?.mobile}
                     />
 

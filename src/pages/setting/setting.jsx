@@ -144,7 +144,7 @@ const Setting = () => {
 
                                 <InputComponent
                                     title='شماره موبایل'
-                                    type='number'
+                                    type='tel'
                                     icon={addPhone}
                                     detail={{
                                         ...register('phone', {
@@ -162,6 +162,7 @@ const Setting = () => {
                                             }
                                         })
                                     }}
+                                    maxLength={11}
                                     error={errors?.phone}
                                     placeHolder='---------۰۹'
                                 />

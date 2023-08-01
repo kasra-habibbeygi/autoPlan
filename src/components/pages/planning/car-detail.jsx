@@ -139,7 +139,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 <InputComponent
                     title='شماره موبایل'
                     placeHolder='09----------'
-                    type='number'
+                    type='tel'
                     icon={PhoneIcon}
                     detail={{
                         ...register('customer_mobile_number', {
@@ -157,6 +157,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                             }
                         })
                     }}
+                    maxLength={11}
                     error={errors?.customer_mobile_number}
                 />
                 <div className='Plaque_Field'>
