@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -13,27 +14,31 @@ import { RootingStyle } from './rootting.style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Rootting = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Rootting = ({ setStep, setAllDetail, chosenEditItemDetails, allDetail }) => {
     const [inputValues, setInputValues] = useState([[''], [''], [''], [''], ['']]);
 
     useEffect(() => {
-        if (chosenEditItemDetails?.whys) {
-            const newArray = [[], [], [], [], []];
+        if (allDetail?.troubleshooting) {
+            setInputValues(allDetail?.troubleshooting);
+        } else {
+            if (chosenEditItemDetails?.whys) {
+                const newArray = [[], [], [], [], []];
 
-            chosenEditItemDetails?.whys?.forEach(item => {
-                if (item.type === 'why1') {
-                    newArray[0].push(item.title);
-                } else if (item.type === 'why2') {
-                    newArray[1].push(item.title);
-                } else if (item.type === 'why3') {
-                    newArray[2].push(item.title);
-                } else if (item.type === 'why4') {
-                    newArray[3].push(item.title);
-                } else if (item.type === 'why5') {
-                    newArray[4].push(item.title);
-                }
-            });
-            setInputValues(newArray);
+                chosenEditItemDetails?.whys?.forEach(item => {
+                    if (item.type === 'why1') {
+                        newArray[0].push(item.title);
+                    } else if (item.type === 'why2') {
+                        newArray[1].push(item.title);
+                    } else if (item.type === 'why3') {
+                        newArray[2].push(item.title);
+                    } else if (item.type === 'why4') {
+                        newArray[3].push(item.title);
+                    } else if (item.type === 'why5') {
+                        newArray[4].push(item.title);
+                    }
+                });
+                setInputValues(newArray);
+            }
         }
     }, [chosenEditItemDetails]);
 

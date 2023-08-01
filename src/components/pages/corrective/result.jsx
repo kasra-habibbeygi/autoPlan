@@ -10,7 +10,7 @@ import { Style } from './style';
 //Components
 import FormButton from '../../form-groups/form-button';
 
-const Result = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Result = ({ setStep, setAllDetail, chosenEditItemDetails, allDetail }) => {
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             action_result: ''
@@ -19,8 +19,12 @@ const Result = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     });
 
     useEffect(() => {
-        if (chosenEditItemDetails?.result) {
-            setValue('action_result', chosenEditItemDetails?.result);
+        if (allDetail?.action_result) {
+            setValue('action_result', allDetail?.action_result);
+        } else {
+            if (chosenEditItemDetails?.result) {
+                setValue('action_result', chosenEditItemDetails?.result);
+            }
         }
     }, [chosenEditItemDetails]);
 

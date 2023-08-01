@@ -11,7 +11,7 @@ import { Style } from './style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Problem = ({ setStep, setAllDetail, chosenEditItemDetails, allDetail }) => {
     const { register, handleSubmit, formState, setValue } = useForm({
         defaultValues: {
             problem: ''
@@ -22,8 +22,12 @@ const Problem = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     const { errors } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails) {
-            setValue('problem', chosenEditItemDetails?.problem);
+        if (allDetail?.problem) {
+            setValue('problem', allDetail?.problem);
+        } else {
+            if (chosenEditItemDetails) {
+                setValue('problem', chosenEditItemDetails?.problem);
+            }
         }
     }, [chosenEditItemDetails]);
 

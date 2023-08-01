@@ -35,9 +35,14 @@ const Effective = ({ setStep, setAllDetail, chosenEditItemDetails, setReload, al
     const { errors } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails?.controller && chosenEditItemDetails?.control_completion_date) {
-            setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
-            setValue('inCharge_person', chosenEditItemDetails.controller);
+        if (allDetail?.effective_detail) {
+            setValue('effective_date', allDetail?.effective_detail?.effective_date);
+            setValue('inCharge_person', allDetail?.effective_detail?.inCharge_person);
+        } else {
+            if (chosenEditItemDetails?.controller && chosenEditItemDetails?.control_completion_date) {
+                setValue('effective_date', tools.changeDateToTimeStamp(chosenEditItemDetails?.control_completion_date));
+                setValue('inCharge_person', chosenEditItemDetails.controller);
+            }
         }
     }, [chosenEditItemDetails]);
 

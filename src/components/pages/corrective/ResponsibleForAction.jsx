@@ -19,13 +19,17 @@ const ResponsibleForAction = ({ setStep, setAllDetail, allDetail, chosenEditItem
     const { errors } = formState;
 
     useEffect(() => {
-        if (chosenEditItemDetails?.action_officials_info) {
-            const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => {
-                return {
-                    [`correction_${index + 1}`]: item.title
-                };
-            });
-            newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+        if (allDetail?.actionPerson) {
+            Object.entries(allDetail?.actionPerson).map(([key, value]) => setValue(key, value));
+        } else {
+            if (chosenEditItemDetails?.action_officials_info) {
+                const newArray = chosenEditItemDetails?.action_officials_info?.map((item, index) => {
+                    return {
+                        [`correction_${index + 1}`]: item.title
+                    };
+                });
+                newArray.forEach((item, index) => setValue(`correction_${index + 1}`, item[`correction_${index + 1}`]));
+            }
         }
     }, [chosenEditItemDetails]);
 

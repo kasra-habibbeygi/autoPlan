@@ -12,7 +12,7 @@ import { ActionStyle } from './action.style';
 import InputComponent from '../../form-groups/input-component';
 import FormButton from '../../form-groups/form-button';
 
-const Action = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
+const Action = ({ setStep, setAllDetail, chosenEditItemDetails, allDetail }) => {
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             actionFields: [{ action: '' }]
@@ -29,9 +29,13 @@ const Action = ({ setStep, setAllDetail, chosenEditItemDetails }) => {
     });
 
     useEffect(() => {
-        if (chosenEditItemDetails?.action) {
-            const newArray = chosenEditItemDetails?.action?.map(item => ({ action: item.title }));
-            setValue('actionFields', newArray);
+        if (allDetail?.actions) {
+            setValue('actionFields', allDetail?.actions);
+        } else {
+            if (chosenEditItemDetails?.action) {
+                const newArray = chosenEditItemDetails?.action?.map(item => ({ action: item.title }));
+                setValue('actionFields', newArray);
+            }
         }
     }, [chosenEditItemDetails]);
 
