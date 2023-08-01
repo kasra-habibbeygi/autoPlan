@@ -89,7 +89,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
             setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
 
-            if (modalFormStatus === 'edit') {
+            if (modalFormStatus === 'edit' && chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time) {
                 setValue('real_start_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0]);
                 setValue('real_start_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1]);
                 setValue('real_finish_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0]);
@@ -108,6 +108,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             }
         });
     }, []);
+
     const formSubmit = data => {
         timeCounter(
             data.real_start_hour,
@@ -134,7 +135,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             the_reason_for_the_deviation: reasonValue?.value
         };
 
-        if (modalFormStatus === 'edit') {
+        if (modalFormStatus === 'edit' && chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time) {
             Axios.put(`/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
                 .then(() => {
                     setStep(1);

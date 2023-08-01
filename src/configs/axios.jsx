@@ -39,6 +39,18 @@ instance.interceptors.response.use(
             toast.error(error?.response?.data?.detail, { style: { zIndex: 2000 } });
         }
 
+        if (error?.response?.data) {
+            Object?.keys(error?.response?.data)?.forEach((item, index) => {
+                if (index === 0) {
+                    Object.values(error?.response?.data).forEach((item1, index) => {
+                        if (index === 0) {
+                            toast.error(item1, { style: { zIndex: 2000 } });
+                        }
+                    });
+                }
+            });
+        }
+
         return Promise.reject(error);
     }
 );

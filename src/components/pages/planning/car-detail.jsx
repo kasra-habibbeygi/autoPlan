@@ -13,6 +13,8 @@ import { StepsStyle } from './steps.style';
 //Components
 import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
+
+// MUI
 import { Autocomplete, TextField } from '@mui/material';
 
 const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
@@ -50,8 +52,6 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         }
     }, [chosenEditItemDetails]);
 
-    console.log(chosenEditItemDetails);
-
     const formSubmit = data => {
         setLoader(true);
 
@@ -60,7 +60,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
             plaque_2: data.plaque_2.label
         };
 
-        if (modalFormStatus === 'edit') {
+        if (modalFormStatus === 'edit' && chosenEditItemDetails?.id) {
             Axios.put(`/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
                 .then(res => {
                     setStep(2);
@@ -76,6 +76,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 .then(res => {
                     setStep(2);
                     setStep1Id(res.data.id);
+                    setReload(prev => !prev);
                 })
                 .catch(() => {})
                 .finally(() => {

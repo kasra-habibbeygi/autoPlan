@@ -48,7 +48,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                     value: item?.id
                 }));
                 SetPostsList(posts);
-                if (modalFormStatus === 'edit') {
+                if (modalFormStatus === 'edit' && chosenEditItemDetails?.diagnosis_info?.id) {
                     if (chosenEditItemDetails) {
                         setValue('type_of_repair', chosenEditItemDetails?.diagnosis_info?.type_of_repair);
                         setValue('repairman', {
@@ -102,7 +102,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
             approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`
         };
 
-        if (modalFormStatus === 'edit') {
+        if (modalFormStatus === 'edit' && chosenEditItemDetails?.diagnosis_info?.id) {
             Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.id}`, newData)
                 .then(res => {
                     setStep(3);
@@ -118,6 +118,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                 .then(res => {
                     setStep(3);
                     setStep2Id(res.data.id);
+                    setReload(prev => !prev);
                 })
                 .catch(() => {})
                 .finally(() => {
