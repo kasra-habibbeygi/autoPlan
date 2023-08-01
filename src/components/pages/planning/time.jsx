@@ -379,7 +379,24 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                     />
                 </div>
             ) : (
-                submitCount > 0 && <p>انحرافی وجود ندارد</p>
+                submitCount > 0 && (
+                    <>
+                        <p>انحرافی وجود ندارد</p>
+                        <FormButton
+                            text='ثبت'
+                            icon={Arrow}
+                            loading={false}
+                            width='fit-content'
+                            className='submit'
+                            backgroundColor={'#174787'}
+                            onClick={handleSubmitForm}
+                            height='48px'
+                            type='submit'
+                            padding='15px'
+                            margin={'20px 0 0 0'}
+                        />
+                    </>
+                )
             )}
         </form>
     );
