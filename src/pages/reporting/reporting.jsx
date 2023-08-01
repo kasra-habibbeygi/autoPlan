@@ -108,7 +108,12 @@ const Reporting = () => {
                                         Object.entries(reportingChartData)?.map(
                                             ([title, percent], index) =>
                                                 title !== 'link' && (
-                                                    <ChartItem key={title} title={title} percent={percent} color={colorsReporting[index]} />
+                                                    <ChartItem
+                                                        key={title}
+                                                        title={title}
+                                                        percent={percent.toFixed(2)}
+                                                        color={colorsReporting[index]}
+                                                    />
                                                 )
                                         )}
                                 </div>
@@ -140,7 +145,7 @@ const Reporting = () => {
                                                     <ChartItem
                                                         key={title}
                                                         title={`انحراف در ${title}`}
-                                                        percent={percent}
+                                                        percent={percent.toFixed(2)}
                                                         color={colorsDeficiency[index]}
                                                     />
                                                 )

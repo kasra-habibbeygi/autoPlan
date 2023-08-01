@@ -42,14 +42,6 @@ const AddAdmin = () => {
     });
 
     const { register, handleSubmit, formState, reset, setValue } = useForm({
-        defaultValues: {
-            company_address: '',
-            company_code: '',
-            company_name: '',
-            company_owner: '',
-            mobile: '',
-            username: ''
-        },
         mode: 'onTouched'
     });
     const { errors } = formState;
@@ -76,7 +68,12 @@ const AddAdmin = () => {
         },
         { id: 3, title: 'کد نمایندگی', key: 'code' },
         { id: 4, title: 'نام نمایندگی', key: 'title' },
-        { id: 5, title: 'شماره موبایل', key: 'phone' },
+        {
+            id: 5,
+            title: 'شماره موبایل',
+            key: 'mobile_number',
+            renderCell: data => <div>{data?.admin?.mobile_number}</div>
+        },
         {
             id: 6,
             title: 'آدرس نمایندگی',
@@ -103,7 +100,7 @@ const AddAdmin = () => {
         setValue('fullname', data.admin.fullname);
         setValue('code', data.code);
         setValue('title', data.title);
-        setValue('phone', data.phone);
+        setValue('mobile_number', data.admin.mobile_number);
         setValue('address', data.address);
     };
 
@@ -218,7 +215,7 @@ const AddAdmin = () => {
                             type='tel'
                             icon={addPhone}
                             detail={{
-                                ...register('phone', {
+                                ...register('mobile_number', {
                                     required: {
                                         value: true,
                                         message: 'این فیلد اجباری است'
@@ -234,7 +231,7 @@ const AddAdmin = () => {
                                 })
                             }}
                             maxLength={11}
-                            error={errors?.phone}
+                            error={errors?.mobile_number}
                             placeHolder='---------۰۹'
                         />
 

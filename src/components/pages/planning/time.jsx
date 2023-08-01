@@ -32,6 +32,7 @@ function timeToSeconds(timeString) {
 const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setReload, setIsModalOpen }) => {
     const [deviationList, setDeviationList] = useState([]);
     const [reasonValue, setReasonValue] = useState();
+    const [submitLoading, setSubmitLoading] = useState(false);
     const [exactTime, setExactTime] = useState({
         start: '',
         end: ''
@@ -119,35 +120,42 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
     };
 
     const handleSubmitForm = () => {
-        const newData = {
-            diagnosis: Step2Id,
-            exact_start_time: exactTime.start,
-            exact_end_time: exactTime.end,
-            delayed_start: finalResults.start.bigger === 0 ? '0:0' : finalResults.start.bigger,
-            start_with_haste: finalResults.start.lower === 0 ? '0:0' : finalResults.start.lower,
-            delayed_end: finalResults.end.bigger === 0 ? '0:0' : finalResults.end.bigger,
-            end_with_haste: finalResults.end.lower === 0 ? '0:0' : finalResults.end.lower,
-            the_reason_for_the_deviation: reasonValue.value
-        };
+        if (reasonValue?.value) {
+            setSubmitLoading(true);
+            const newData = {
+                diagnosis: Step2Id,
+                exact_start_time: exactTime?.start,
+                exact_end_time: exactTime?.end,
+                delayed_start: finalResults?.start.bigger === 0 ? '0:0' : finalResults?.start.bigger,
+                start_with_haste: finalResults?.start.lower === 0 ? '0:0' : finalResults?.start.lower,
+                delayed_end: finalResults?.end.bigger === 0 ? '0:0' : finalResults?.end.bigger,
+                end_with_haste: finalResults?.end.lower === 0 ? '0:0' : finalResults?.end.lower,
+                the_reason_for_the_deviation: reasonValue?.value
+            };
 
-        if (modalFormStatus === 'edit') {
-            Axios.put(`/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails.id}`, newData)
-                .then(() => {
-                    setStep(1);
-                    setReload(prev => !prev);
-                    setIsModalOpen('');
-                })
-                .catch(() => {})
-                .finally(() => {});
-        } else {
-            Axios.post('worker/admin/time-to-troubleshoot/list_create/', newData)
-                .then(() => {
-                    setStep(1);
-                    setReload(prev => !prev);
-                    setIsModalOpen('');
-                })
-                .catch(() => {})
-                .finally(() => {});
+            if (modalFormStatus === 'edit') {
+                Axios.put(`/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
+                    .then(() => {
+                        setStep(1);
+                        setReload(prev => !prev);
+                        setIsModalOpen('');
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        setSubmitLoading(false);
+                    });
+            } else {
+                Axios.post('worker/admin/time-to-troubleshoot/list_create/', newData)
+                    .then(() => {
+                        setStep(1);
+                        setReload(prev => !prev);
+                        setIsModalOpen('');
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        setSubmitLoading(false);
+                    });
+            }
         }
     };
 
@@ -367,7 +375,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                     <FormButton
                         text='ثبت'
                         icon={Arrow}
-                        loading={false}
+                        loading={submitLoading}
                         width='fit-content'
                         className='submit'
                         backgroundColor={'#174787'}
@@ -385,7 +393,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                         <FormButton
                             text='ثبت'
                             icon={Arrow}
-                            loading={false}
+                            loading={submitLoading}
                             width='fit-content'
                             className='submit'
                             backgroundColor={'#174787'}
