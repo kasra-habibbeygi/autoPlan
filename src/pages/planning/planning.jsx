@@ -35,8 +35,6 @@ const Planning = () => {
         current: 1
     });
 
-    console.log(planningList);
-
     const [searchParams] = useSearchParams();
 
     const openModal = () => {
@@ -324,6 +322,7 @@ const Planning = () => {
                 handleClose={() => {
                     setModalFormStatus();
                     setChosenEditItemDetails();
+                    setStep(1);
                 }}
             >
                 <div className='formControl'>

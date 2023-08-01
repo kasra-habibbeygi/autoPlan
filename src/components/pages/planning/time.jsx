@@ -71,7 +71,9 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                 value: item.id
             }));
 
-            let filteredPosts = posts?.filter(item => item.value === chosenEditItemDetails?.the_reason_for_the_deviation_info.id)[0];
+            let filteredPosts = posts?.filter(
+                item => item.value === chosenEditItemDetails?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.id
+            )[0];
 
             setDeviationList(posts);
 
@@ -88,16 +90,16 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
 
             if (modalFormStatus === 'edit') {
-                setValue('real_start_hour', chosenEditItemDetails.exact_start_time.split(':')[0]);
-                setValue('real_start_min', chosenEditItemDetails.exact_start_time.split(':')[1]);
-                setValue('real_finish_hour', chosenEditItemDetails.exact_end_time.split(':')[0]);
-                setValue('real_finish_min', chosenEditItemDetails.exact_end_time.split(':')[1]);
+                setValue('real_start_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0]);
+                setValue('real_start_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1]);
+                setValue('real_finish_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0]);
+                setValue('real_finish_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1]);
 
                 timeCounter(
-                    chosenEditItemDetails.exact_start_time.split(':')[0],
-                    chosenEditItemDetails.exact_start_time.split(':')[1],
-                    chosenEditItemDetails.exact_end_time.split(':')[0],
-                    chosenEditItemDetails.exact_end_time.split(':')[1],
+                    chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0],
+                    chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1],
+                    chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0],
+                    chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1],
                     temp?.approximate_end_time.split(':')[0],
                     temp?.approximate_end_time.split(':')[1],
                     temp?.approximate_start_time.split(':')[0],

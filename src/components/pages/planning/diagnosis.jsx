@@ -41,8 +41,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         setDataLoading(true);
         Axios.get('/worker/admin/capacity-measurement/list_create/')
             .then(res => {
-                console.log(res);
-
                 let posts = res.data.results.map(item => ({
                     label: `${item?.user_info?.personnel?.fullname} - ${item?.user_info?.organizational_position_info.title} - ${
                         item?.user_info?.code ? item?.user_info?.code : ''
@@ -52,7 +50,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                 SetPostsList(posts);
                 if (modalFormStatus === 'edit') {
                     if (chosenEditItemDetails) {
-                        console.log(chosenEditItemDetails);
                         setValue('type_of_repair', chosenEditItemDetails?.diagnosis_info?.type_of_repair);
                         setValue('repairman', {
                             label: `${chosenEditItemDetails?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname} - ${
@@ -106,7 +103,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         };
 
         if (modalFormStatus === 'edit') {
-            Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails.diagnosis}`, newData)
+            Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.id}`, newData)
                 .then(res => {
                     setStep(3);
                     setStep2Id(res.data.id);

@@ -66,8 +66,6 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
             code: data.code
         };
 
-        console.log(newData);
-
         if (modalStatus === 'edit') {
             Axios.put(`/worker/admin/personnel/retrieve_update_destroy/?pk=${editModalData.id}`, newData)
                 .then(() => {

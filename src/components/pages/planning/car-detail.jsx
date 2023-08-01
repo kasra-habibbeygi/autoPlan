@@ -50,6 +50,8 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         }
     }, [chosenEditItemDetails]);
 
+    console.log(chosenEditItemDetails);
+
     const formSubmit = data => {
         setLoader(true);
 
@@ -59,10 +61,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         };
 
         if (modalFormStatus === 'edit') {
-            Axios.put(
-                `/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.vehicle_specifications}`,
-                newData
-            )
+            Axios.put(`/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
                 .then(res => {
                     setStep(2);
                     setStep1Id(res.data.id);
