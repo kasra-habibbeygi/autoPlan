@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -11,16 +11,18 @@ const ReportingBarChart = ({ detail }) => {
 
             Object.entries(detail)?.map(([title, value]) => {
                 title !== 'link' &&
-                    setData(prev => [
-                        ...prev,
-                        {
-                            name: title,
-                            delay_end: value?.delay_end,
-                            delay_start: value?.delay_start,
-                            rush_end: value?.rush_end,
-                            rush_start: value?.rush_start
-                        }
-                    ]);
+                    Object.entries(value)?.map(([innerTitle, innerValue]) => {
+                        setData(prev => [
+                            ...prev,
+                            {
+                                name: innerTitle,
+                                delay_end: innerValue?.delay_end,
+                                delay_start: innerValue?.delay_start,
+                                rush_end: innerValue?.rush_end,
+                                rush_start: innerValue?.rush_start
+                            }
+                        ]);
+                    });
             });
         }
     }, [detail]);

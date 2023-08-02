@@ -85,6 +85,19 @@ const Reporting = () => {
             });
     }, [chosenPeriod]);
 
+    const downloadHandler = link => {
+        Axios.get(link, {
+            baseURL: 'https://api.autoplaning.ir'
+        })
+            .then(res => {
+                if (res?.data?.link) {
+                    location.href = `https://api.autoplaning.ir/${res.data?.link}`;
+                }
+            })
+            .catch(err => console.log(err))
+            .finally(() => {});
+    };
+
     return (
         <ReportingWrapper>
             <Grid container spacing={1.5}>
@@ -93,7 +106,7 @@ const Reporting = () => {
                         <DetailBoxHeader
                             title='گزارش پذیرش در ماه اخیر'
                             buttonText='دریافت گزارش کامل دوره'
-                            link={`https://api.autoplaning.ir${reportingChartData?.link}`}
+                            onClick={() => downloadHandler(reportingChartData?.link)}
                         />
                         {loading.reportingChartDataLoading ? (
                             <div className='loading'>
@@ -127,7 +140,7 @@ const Reporting = () => {
                         <DetailBoxHeader
                             title='میزان انحراف در هر بخشی نمایندگی'
                             buttonText='دریافت گزارش کامل دوره'
-                            link={`https://api.autoplaning.ir${deviationInOneMonth?.link}`}
+                            onClick={() => downloadHandler(deviationInOneMonth?.link)}
                         />
                         {loading.deviationInOneMonthLoading ? (
                             <div className='loading'>
@@ -158,7 +171,11 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <DetailBoxHeader title='گزارش میزان انحراف در هر بخش' buttonText='دریافت گزارش کامل دوره' />
+                        <DetailBoxHeader
+                            title='گزارش میزان انحراف در هر بخش'
+                            buttonText='دریافت گزارش کامل دوره'
+                            onClick={() => downloadHandler(deviationInMultiMonths?.link)}
+                        />
                         {loading.deviationInMultiMonthsLoading ? (
                             <div className='loading'>
                                 <CircularProgress />
@@ -199,7 +216,11 @@ const Reporting = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <div className='item'>
-                        <DetailBoxHeader title='میزان بروز انحراف در شش ماه گذشته' buttonText='دریافت گزارش کامل دوره' />
+                        <DetailBoxHeader
+                            title='میزان بروز انحراف در شش ماه گذشته'
+                            buttonText='دریافت گزارش کامل دوره'
+                            onClick={() => downloadHandler(deviationInSixMonths?.link)}
+                        />
                         <div className='mainChart'>
                             {loading.deviationInSixMonthsLoading ? (
                                 <div className='loading'>
