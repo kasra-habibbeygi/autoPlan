@@ -20,6 +20,8 @@ import Exit from './../../assets/images/sideBar/Exit.svg';
 import blocking from './../../assets/images/icons/blocking.svg';
 import user from './../../assets/images/icons/User.svg';
 import { SidebarStyle } from './sidebar.style';
+import Accumulator from './../../assets/images/icons/Accumulator.svg';
+
 
 //Components
 import FormButton from '../form-groups/form-button';
@@ -107,7 +109,18 @@ const SideBar = () => {
                                 <NavLink to='/deficiency' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>
                                         <img src={Box} />
-                                        <p>کسری قطعات انبار</p>
+                                        <p>کسری قطعات </p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+
+                        {permissionHandler(['EQUIPMENT_SHORTAGE.ADD', 'EQUIPMENT_SHORTAGE.EDIT', 'EQUIPMENT_SHORTAGE.DELETE', 'EQUIPMENT_SHORTAGE.LIST']) && (
+                            <li>
+                                <NavLink to='/equipment' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Accumulator} />
+                                        <p>کسری تجهیزات</p>
                                     </div>
                                 </NavLink>
                             </li>

@@ -25,6 +25,7 @@ import MobileAlertModal from './template/mobile-alert-modal';
 import Station from '../pages/station/station';
 import AddAdmin from '../pages/add-admin/add-admin';
 import { Toaster } from 'react-hot-toast';
+import Equipment from '../pages/equipment/equipment';
 
 function App() {
     const themeConfig = createTheme(getDesignTokens('light'));
@@ -51,6 +52,7 @@ function App() {
                         <Route path='deficiency' element={<Deficiency />} />
                         <Route path='planning' element={<Planning />} />
                         <Route path='deviation' element={<Deviation />} />
+                        <Route path='equipment' element={<Equipment />} />
                         <Route path='corrective' element={<Corrective />} />
                         <Route path='accessibility' element={<Accessibility />} />
                         <Route path='reporting' element={<Reporting />} />

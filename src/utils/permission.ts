@@ -78,6 +78,19 @@ const PERMISSION = {
         ADD_EDIT_DIAGNOSIS: 36,
         ADD_EDIT_TIME: 37,
         LIST: 38
+    },
+
+    //نمودارها و اکسل
+    EXLE: {
+        LIST: 39
+    },
+
+    //کسری تجهیزات
+    EQUIPMENT_SHORTAGE: {
+        ADD: 40,
+        EDIT: 41,
+        DELETE: 42,
+        LIST: 43
     }
 };
 
