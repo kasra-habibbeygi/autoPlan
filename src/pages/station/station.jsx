@@ -1,11 +1,12 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -14,6 +15,8 @@ import document from './../../assets/images/sideBar/DocumentAdd.svg';
 import widget from './../../assets/images/sideBar/WidgetAdd.svg';
 import { ActionCell } from '../deviation/deviation.style';
 import { StationWrapper } from './station.style';
+import plus from './../../assets/images/icons/plus.svg';
+import closeIcon from './../../assets/images/global/closeIcon.svg';
 
 //Components
 import FormButton from '../../components/form-groups/form-button';
@@ -36,6 +39,15 @@ const Station = () => {
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
+    const [activeStation, setActiveStation] = useState(false);
+    const [inputsValue, setInputsValue] = useState({
+        partsInput: '',
+        equipmentInput: ''
+    });
+    const [statusArrays, setStatusArrays] = useState({
+        parts: [],
+        equipment: []
+    });
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
@@ -46,10 +58,16 @@ const Station = () => {
         current: 1
     });
 
-    const { register, control, handleSubmit, formState, reset, setValue } = useForm({
+    const addInputPartRef = useRef();
+    const addInputEquipmentRef = useRef();
+
+    const { register, control, handleSubmit, formState, reset, setValue, watch } = useForm({
         mode: 'onTouched'
     });
     const { errors } = formState;
+
+    const conditionOfParts = watch('condition_of_parts');
+    const equipmentStatus = watch('equipment_status');
 
     useEffect(() => {
         setLoader(true);
@@ -125,7 +143,7 @@ const Station = () => {
                     setReload(!reload);
                     toast.success('جایگاه جدید با موفقیت ثبت شد');
                     setModalOpen(false);
-                    reset();
+                    closeModalFunctions();
                 })
                 .catch(() => {});
         } else {
@@ -135,7 +153,7 @@ const Station = () => {
                     setReload(!reload);
                     toast.success('جایگاه با موفقیت ویرایش شد');
                     setModalOpen(false);
-                    reset();
+                    closeModalFunctions();
                 })
                 .catch(() => {});
         }
@@ -174,6 +192,49 @@ const Station = () => {
         });
     };
 
+    const closeModalFunctions = () => {
+        reset();
+        setStatusArrays({
+            parts: [],
+            equipment: []
+        });
+        setInputsValue({
+            partsInput: '',
+            equipmentInput: ''
+        });
+        setActiveStation(false);
+    };
+
+    const addPartsHandler = () => {
+        if (inputsValue.partsInput.trim()) {
+            setStatusArrays(prev => ({
+                ...prev,
+                parts: [...prev.parts, { id: uuidv4(), label: inputsValue.partsInput }]
+            }));
+            setInputsValue(prev => ({
+                ...prev,
+                partsInput: ''
+            }));
+
+            addInputPartRef.current.focus();
+        }
+    };
+
+    const addEquipmentHandler = () => {
+        if (inputsValue.equipmentInput.trim()) {
+            setStatusArrays(prev => ({
+                ...prev,
+                equipment: [...prev.equipment, { id: uuidv4(), label: inputsValue.equipmentInput }]
+            }));
+            setInputsValue(prev => ({
+                ...prev,
+                equipmentInput: ''
+            }));
+
+            addInputEquipmentRef.current.focus();
+        }
+    };
+
     return (
         <StationWrapper error={errors?.type?.message}>
             <PagesHeader
@@ -183,7 +244,7 @@ const Station = () => {
                 disabled={!userPermissions.includes(PERMISSION.SEAT_CAPACITY.ADD)}
             />
             <Table columns={columns} rows={stationData} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={loader} />
-            <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>
+            <Modal state={modalOpen} setState={setModalOpen} handleClose={closeModalFunctions} bgStatus={true}>
                 <div className='formControl'>
                     {modalStatus === 'add' ? <h2>فرم ثبت جایگاه</h2> : <h2>ویرایش جایگاه</h2>}
                     <form onSubmit={handleSubmit(formSubmit)}>
@@ -235,13 +296,13 @@ const Station = () => {
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value={false}
+                                            value={true}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value={true}
+                                            value={false}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -251,6 +312,53 @@ const Station = () => {
                             />
                             <p className='error'>{errors?.partsStatus?.message}</p>
                         </div>
+                        {(conditionOfParts === 'true' || conditionOfParts === true) && (
+                            <>
+                                <div className='choose_input'>
+                                    <p className='choose_input_title'>نام قطعه</p>
+                                    <div className='choose_input_wrapper'>
+                                        <input
+                                            type='text'
+                                            className='choose_input_filed'
+                                            placeholder='نام قطعه'
+                                            ref={addInputPartRef}
+                                            value={inputsValue.partsInput}
+                                            onChange={e =>
+                                                setInputsValue(prev => ({
+                                                    ...prev,
+                                                    partsInput: e.target.value
+                                                }))
+                                            }
+                                            onKeyDown={e => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    addPartsHandler();
+                                                }
+                                            }}
+                                        />
+                                        <FormButton icon={plus} width='fit-content' padding='5px' onClick={addPartsHandler} />
+                                    </div>
+                                </div>
+
+                                <div className='options_array'>
+                                    {statusArrays.parts.map(item => (
+                                        <div
+                                            className='options_wrapper'
+                                            key={item.id}
+                                            onClick={() =>
+                                                setStatusArrays(prev => ({
+                                                    ...prev,
+                                                    parts: prev.parts.filter(filed => filed !== item)
+                                                }))
+                                            }
+                                        >
+                                            <p className='options_text'>{item.label}</p>
+                                            <img src={closeIcon} className='options_img' />
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                         <div className='radios'>
                             <p className='title'>وضعیت تجهیزات</p>
                             <Controller
@@ -259,13 +367,13 @@ const Station = () => {
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value={false}
+                                            value={true}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value={true}
+                                            value={false}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -275,6 +383,59 @@ const Station = () => {
                             />
                             <p className='error'>{errors?.equipmentStatus?.message}</p>
                         </div>
+
+                        {(equipmentStatus === 'true' || equipmentStatus === true) && (
+                            <>
+                                <div className='choose_input'>
+                                    <p className='choose_input_title'>نام تجهیزات</p>
+                                    <div className='choose_input_wrapper'>
+                                        <input
+                                            type='text'
+                                            className='choose_input_filed'
+                                            placeholder='نام تجهیزات'
+                                            ref={addInputEquipmentRef}
+                                            value={inputsValue.equipmentInput}
+                                            onChange={e =>
+                                                setInputsValue(prev => ({
+                                                    ...prev,
+                                                    equipmentInput: e.target.value
+                                                }))
+                                            }
+                                            onKeyDown={e => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    addEquipmentHandler();
+                                                }
+                                            }}
+                                        />
+                                        <FormButton icon={plus} width='fit-content' padding='5px' onClick={addEquipmentHandler} />
+                                    </div>
+                                </div>
+                                <div className='options_array'>
+                                    {statusArrays.equipment.map(item => (
+                                        <div
+                                            className='options_wrapper'
+                                            key={item.id}
+                                            onClick={() =>
+                                                setStatusArrays(prev => ({
+                                                    ...prev,
+                                                    equipment: prev.equipment.filter(filed => filed !== item)
+                                                }))
+                                            }
+                                        >
+                                            <p className='options_text'>{item.label}</p>
+                                            <img src={closeIcon} className='options_img' />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <FormControlLabel
+                                    control={<Checkbox value={activeStation} onChange={e => setActiveStation(e.target.checked)} />}
+                                    label='جایگاه فعال'
+                                    sx={{ marginBottom: '30px' }}
+                                />
+                            </>
+                        )}
                         <FormButton
                             text='ادامه'
                             type='submit'
