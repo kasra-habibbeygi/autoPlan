@@ -25,7 +25,7 @@ const Planning = () => {
     const [Step1Id, setStep1Id] = useState();
     const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [planningList, setPlanningList] = useState();
     const [reload, setReload] = useState(false);
     const [modalFormStatus, setModalFormStatus] = useState('add');

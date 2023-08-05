@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
+import { v4 as uuidv4 } from 'uuid';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
 import ShockAbsorber from './../../../assets/images/icons/ShockAbsorber.svg';
 import UserHandUp from './../../../assets/images/icons/UserHandUp.svg';
+import plus from './../../../assets/images/icons/plus.svg';
+import closeIcon from './../../../assets/images/global/closeIcon.svg';
 
 //Components
 import InputComponent from '../../form-groups/input-component';
@@ -19,8 +22,19 @@ import TimePicker from '../../form-groups/time-picker';
 const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
-
     const [postsList, SetPostsList] = useState();
+    const [partsInputValue, setPartsInputValue] = useState('');
+    const [partsArray, setPartsArray] = useState([]);
+    // const [inputsValue, setInputsValue] = useState({
+    //     partsInput: '',
+    //     equipmentInput: ''
+    // });
+    // const [statusArrays, setStatusArrays] = useState({
+    //     parts: [],
+    //     equipment: []
+    // });
+
+    const addInputPartRef = useRef();
 
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
@@ -30,8 +44,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
             approximate_start_time_hour: '',
             approximate_start_time_min: '',
             approximate_end_time_hour: '',
-            approximate_end_time_min: '',
-            required_pieces: ''
+            approximate_end_time_min: ''
         },
         mode: 'onTouched'
     });
@@ -82,7 +95,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                             chosenEditItemDetails?.diagnosis_info?.approximate_end_time[3] +
                                 chosenEditItemDetails?.diagnosis_info?.approximate_end_time[4]
                         );
-                        setValue('required_pieces', chosenEditItemDetails?.diagnosis_info?.required_pieces);
                     }
                 }
             })
@@ -95,7 +107,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         const newData = {
             pyramid_number: data.pyramid_number,
             repairman: data.repairman.value,
-            required_pieces: data.required_pieces,
             type_of_repair: data.type_of_repair,
             vehicle_specifications: Step1Id,
             approximate_start_time: `${data?.approximate_start_time_hour}:${data?.approximate_start_time_min}`,
@@ -124,6 +135,15 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                 .finally(() => {
                     setLoader(false);
                 });
+        }
+    };
+
+    const addPartsHandler = () => {
+        if (partsInputValue.trim()) {
+            setPartsArray(prev => [...prev, { id: uuidv4(), label: partsInputValue }]);
+            setPartsInputValue('');
+
+            addInputPartRef.current.focus();
         }
     };
 
@@ -231,14 +251,39 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                 error={(errors?.approximate_end_time_hour || errors?.approximate_end_time_min) && 'این فیلد اجباری است'}
                             />
 
-                            <InputComponent
-                                title='قطعات مورد نیاز تعمیرات'
-                                placeHolder='قطعات مورد نیاز تعمیرات برای تعمیر'
-                                type='text'
-                                detail={{
-                                    ...register('required_pieces')
-                                }}
-                            />
+                            <div className='choose_input'>
+                                <p className='choose_input_title'>نام قطعه</p>
+                                <div className='choose_input_wrapper'>
+                                    <input
+                                        type='text'
+                                        className='choose_input_filed'
+                                        placeholder='نام قطعه'
+                                        ref={addInputPartRef}
+                                        value={partsInputValue}
+                                        onChange={e => setPartsInputValue(e.target.value)}
+                                        onKeyDown={e => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                addPartsHandler();
+                                            }
+                                        }}
+                                    />
+                                    <FormButton icon={plus} width='fit-content' padding='5px' onClick={addPartsHandler} />
+                                </div>
+                            </div>
+
+                            <div className='options_array'>
+                                {partsArray.map(item => (
+                                    <div
+                                        className='options_wrapper'
+                                        key={item.id}
+                                        onClick={() => setPartsArray(prev => prev.filter(filed => filed !== item))}
+                                    >
+                                        <p className='options_text'>{item.label}</p>
+                                        <img src={closeIcon} className='options_img' />
+                                    </div>
+                                ))}
+                            </div>
                         </Grid>
                     </Grid>
 
