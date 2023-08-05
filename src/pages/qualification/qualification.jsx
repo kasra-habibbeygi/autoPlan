@@ -3,7 +3,7 @@
 /* eslint-disable vars-on-top */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ import ConfirmModal from '../../components/template/confirm-modal';
 // Tools
 import PERMISSION from '../../utils/permission.ts';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import DatePickerComponent from '../../components/form-groups/date-picker';
 
 const Qualification = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -47,6 +48,7 @@ const Qualification = () => {
     const [personnelList, setPersonnelList] = useState([]);
     const [tableCol, setTableCol] = useState([]);
     const [reportList, setReportList] = useState([]);
+
     const [loader, setLoader] = useState({
         table: false,
         add: false
@@ -65,6 +67,15 @@ const Qualification = () => {
         mode: 'onTouched'
     });
     const { submitCount } = formState;
+
+    const {
+        handleSubmit: handleSubmit1,
+        formState: formState1,
+        control
+    } = useForm({
+        mode: 'onTouched'
+    });
+    const { errors } = formState1;
 
     var columns = [
         { id: 1, title: 'ردیف', key: 'index' },
@@ -233,6 +244,8 @@ const Qualification = () => {
         });
     }, []);
 
+    const searchSubmit = () => {};
+
     return (
         <QualificationWrapper>
             <PagesHeader
@@ -245,6 +258,25 @@ const Qualification = () => {
                     control={<Checkbox value={dateFilterCheckboxValue} onChange={e => setDateFilterCheckboxValue(e.target.checked)} />}
                     label='فیلتر بر اساس تاریخ امروز'
                 />
+                <form onSubmit={handleSubmit1(searchSubmit)} className='search_style'>
+                    <Controller
+                        control={control}
+                        name='effective_date'
+                        rules={{ required: 'این فیلد اجباری است' }}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DatePickerComponent
+                                    value={value}
+                                    onChange={onChange}
+                                    error={errors?.effective_date}
+                                    minDate={new Date()}
+                                />
+                            );
+                        }}
+                    />
+                    <FormButton text='جستجو' type='submite' backgroundColor='#174787' color='white' />
+                </form>
+
                 <FormButton text='نمایش گزارش مجموع ظرفیت های امروز' onClick={() => setDetailModal(true)} />
             </div>
             <Table

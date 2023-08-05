@@ -39,7 +39,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
 
     useEffect(() => {
         setDataLoading(true);
-        Axios.get('/worker/admin/capacity-measurement/list_create/')
+        Axios.get('/worker/admin/capacity-measurement/list_create/?date_now=true')
             .then(res => {
                 let posts = res.data.results.map(item => ({
                     label: `${item?.user_info?.personnel?.fullname} - ${item?.user_info?.organizational_position_info.title} - ${
