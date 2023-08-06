@@ -47,7 +47,7 @@ const Equipment = () => {
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'date' },
-        { id: 3, title: 'نام تجهیزات', key: 'title' },
+        { id: 3, title: 'نام تجهیزات', key: 'equipment' },
         {
             id: 5,
             title: 'عملیات',
@@ -76,7 +76,7 @@ const Equipment = () => {
 
     useEffect(() => {
         setLoader(true);
-        Axios.get(`worker/admin/lack-parts/list_create/?page=${pageStatus.current}`)
+        Axios.get(`worker/admin/equipment-deficit/list_create/?page=${pageStatus.current}`)
             .then(res => {
                 setDeficiencyData(res.data.results);
                 setPageStatus({
@@ -102,7 +102,7 @@ const Equipment = () => {
         setModalStatus('edit');
         setIsModalOpen(true);
         setValue('date', Tools.changeDateToTimeStamp(data.date));
-        setValue('title', data.title);
+        setValue('equipment', data.equipment);
         setSpecificDeviationId(data.id);
     };
 
@@ -112,16 +112,16 @@ const Equipment = () => {
             modalButton: true
         }));
 
-        const newDate = {
+        const newData = {
             ...data,
             date: Tools.changeTimeStampToDate(data.date)
         };
 
         if (modalStatus === 'add') {
-            Axios.post('worker/admin/lack-parts/list_create/', newDate)
+            Axios.post('worker/admin/equipment-deficit/list_create/', newData)
                 .then(() => {
                     setReload(prev => !prev);
-                    toast.success('کسری قطعات با موفقیت ثبت شد');
+                    toast.success('کسری تجهیزات با موفقیت ثبت شد');
                     setIsModalOpen(false);
                     reset();
                 })
@@ -133,10 +133,10 @@ const Equipment = () => {
                     }));
                 });
         } else {
-            Axios.put(`worker/admin/lack-parts/retrieve_update_destroy/?pk=${specificDeviationId}`, newDate)
+            Axios.put(`worker/admin/equipment-deficit/delete_update/${specificDeviationId}`, newData)
                 .then(() => {
                     setReload(prev => !prev);
-                    toast.success('کسری قطعات با موفقیت ویرایش شد');
+                    toast.success('کسری تجهیزات با موفقیت ویرایش شد');
                     setIsModalOpen(false);
                     reset();
                 })
@@ -156,11 +156,12 @@ const Equipment = () => {
             delete: true
         }));
 
-        Axios.delete(`worker/admin/lack-parts/retrieve_update_destroy/?pk=${specificDeviationId}`)
+        Axios.delete(`worker/admin/equipment-deficit/delete_update/${specificDeviationId}`)
             .then(() => {
                 setReload(!reload);
                 toast.success('کسری قطعه  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setSpecificDeviationId();
             })
             .catch(() => {})
             .finally(() => {
@@ -168,7 +169,6 @@ const Equipment = () => {
                     ...prev,
                     delete: false
                 }));
-                setSpecificDeviationId();
             });
     };
 
@@ -210,14 +210,14 @@ const Equipment = () => {
                         type='text'
                         icon={ShockAbsorber}
                         detail={{
-                            ...register('title', {
+                            ...register('equipment', {
                                 required: {
                                     value: true,
                                     message: 'این فیلد اجباری است'
                                 }
                             })
                         }}
-                        error={errors?.title}
+                        error={errors?.equipment}
                     />
                     <FormButton
                         text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
