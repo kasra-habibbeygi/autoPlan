@@ -12,6 +12,7 @@ import DeficiencyChart from '../../components/pages/reporting/deficiency-chart';
 import ReportingChart from '../../components/template/reporting-chart';
 import ReportingLineChart from '../../components/pages/reporting/line-chart';
 import ReportingBarChart from '../../components/pages/reporting/bar-chart';
+import BarChartCustom from '../../components/pages/reporting/bar-chart-custom';
 
 const Reporting = () => {
     const [chosenPeriod, setChosenPeriod] = useState(3);
@@ -210,6 +211,7 @@ const Reporting = () => {
                                 <div className='mainChart'>
                                     <ReportingBarChart detail={deviationInMultiMonths} />
                                 </div>
+                                <BarChartCustom detail={deviationInMultiMonths} />
                             </>
                         )}
                     </div>
