@@ -13,6 +13,7 @@ import ReportingChart from '../../components/template/reporting-chart';
 import ReportingLineChart from '../../components/pages/reporting/line-chart';
 import ReportingBarChart from '../../components/pages/reporting/bar-chart';
 import BarChartCustom from '../../components/pages/reporting/bar-chart-custom';
+import TimeBaseForm from '../../components/pages/reporting/time-base-form';
 
 const Reporting = () => {
     const [chosenPeriod, setChosenPeriod] = useState(3);
@@ -134,6 +135,7 @@ const Reporting = () => {
                                 </div>
                             </div>
                         )}
+                        <TimeBaseForm url={reportingChartData?.link} />
                     </div>
                 </Grid>
                 <Grid item xs={12} md={7}>
@@ -168,6 +170,7 @@ const Reporting = () => {
                                 </div>
                             </div>
                         )}
+                        <TimeBaseForm url={deviationInOneMonth?.link} />
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -211,7 +214,7 @@ const Reporting = () => {
                                 <div className='mainChart'>
                                     <ReportingBarChart detail={deviationInMultiMonths} />
                                 </div>
-                                <BarChartCustom detail={deviationInMultiMonths} />
+                                <BarChartCustom detail={deviationInMultiMonths} url={deviationInMultiMonths?.link} />
                             </>
                         )}
                     </div>
@@ -232,6 +235,7 @@ const Reporting = () => {
                                 <ReportingLineChart detail={deviationInSixMonths} />
                             )}
                         </div>
+                        <TimeBaseForm url={deviationInSixMonths?.link} />
                     </div>
                 </Grid>
             </Grid>
