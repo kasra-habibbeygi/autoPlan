@@ -18,6 +18,7 @@ import Time from '../../components/pages/planning/time';
 import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
 import { useSearchParams } from 'react-router-dom';
+import tools from '../../utils/tools';
 
 const Planning = () => {
     const [modalIsOpen, setIsModalOpen] = useState(false);
@@ -25,7 +26,7 @@ const Planning = () => {
     const [Step1Id, setStep1Id] = useState();
     const [Step2Id, setStep2Id] = useState();
     const [showFilterModal, setShowFilterModal] = useState(false);
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [planningList, setPlanningList] = useState();
     const [reload, setReload] = useState(false);
     const [modalFormStatus, setModalFormStatus] = useState('add');
@@ -92,6 +93,9 @@ const Planning = () => {
                 .finally(() => setTableLoading(false));
         }
     }, [reload, pageStatus.current, searchParams]);
+
+    const date = new Date();
+    const today = tools.changeDateToJalali(date, false).replaceAll('/', '-');
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
@@ -288,18 +292,24 @@ const Planning = () => {
             id: 19,
             title: 'عملیات',
             key: 'actions',
-            renderCell: data => (
-                <ActionCell>
-                    <FormButton
-                        icon={pen}
-                        onClick={() => {
-                            setIsModalOpen(true);
-                            setModalFormStatus('edit');
-                            setChosenEditItemDetails(data);
-                        }}
-                    />
-                </ActionCell>
-            )
+            renderCell: data => {
+                const createdDate = data?.create_at.slice(0, 10);
+                const isMatch = createdDate !== today;
+
+                return (
+                    <ActionCell>
+                        <FormButton
+                            icon={pen}
+                            onClick={() => {
+                                setIsModalOpen(true);
+                                setModalFormStatus('edit');
+                                setChosenEditItemDetails(data);
+                            }}
+                            disabled={isMatch}
+                        />
+                    </ActionCell>
+                );
+            }
         }
     ];
 

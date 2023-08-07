@@ -28,6 +28,7 @@ import ConfirmModal from '../../components/template/confirm-modal';
 import PERMISSION from '../../utils/permission.ts';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import DatePickerComponent from '../../components/form-groups/date-picker';
+import tools from '../../utils/tools';
 
 const Qualification = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -77,6 +78,9 @@ const Qualification = () => {
     });
     const { errors } = formState1;
 
+    const date = new Date();
+    const today = tools.changeDateToJalali(date, false).replaceAll('/', '-');
+
     var columns = [
         { id: 1, title: 'ردیف', key: 'index' },
         { id: 2, title: 'تاریخ', key: 'create_at' },
@@ -93,20 +97,24 @@ const Qualification = () => {
             id: 7,
             title: 'عملیات',
             key: 'actions',
-            renderCell: data => (
-                <ActionCell>
-                    <FormButton
-                        icon={pen}
-                        onClick={() => editModalHandler(data)}
-                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT)}
-                    />
-                    <FormButton
-                        icon={trashBin}
-                        onClick={() => deleteModalHandler(data.id)}
-                        disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE)}
-                    />
-                </ActionCell>
-            )
+            renderCell: data => {
+                const createdDate = data?.create_at.slice(0, 10);
+                const isMatch = createdDate !== today;
+                return (
+                    <ActionCell>
+                        <FormButton
+                            icon={pen}
+                            onClick={() => editModalHandler(data)}
+                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.EDIT) || isMatch}
+                        />
+                        <FormButton
+                            icon={trashBin}
+                            onClick={() => deleteModalHandler(data.id)}
+                            disabled={!userPermissions.includes(PERMISSION.CAPACITY_MEASUREMENT.DELETE) || isMatch}
+                        />
+                    </ActionCell>
+                );
+            }
         }
     ];
 
