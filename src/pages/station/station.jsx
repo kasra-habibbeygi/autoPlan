@@ -136,37 +136,60 @@ const Station = () => {
 
     const formSubmit = data => {
         setButtonLoader({ ...buttonLoader, modalButton: true });
+
+        const newData = {
+            ...data,
+            condition_of_parts: JSON.parse(data.condition_of_parts),
+            equipment_status: JSON.parse(data.equipment_status),
+            list_of_condition_of_parts: statusArrays.parts.map(item => item.label),
+            list_of_equipment_status: statusArrays.equipment.map(item => item.label),
+            station_status: activeStation
+        };
+
+        console.log(newData);
+
         if (modalStatus === 'add') {
-            Axios.post('/worker/admin/seat-capacity/list_create/', data)
+            Axios.post('/worker/admin/seat-capacity/list_create/', newData)
                 .then(() => {
-                    setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(!reload);
                     toast.success('جایگاه جدید با موفقیت ثبت شد');
                     setModalOpen(false);
                     closeModalFunctions();
                 })
-                .catch(() => {});
+                .catch(() => {})
+                .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
         } else {
-            Axios.put(`/worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`, data)
+            Axios.put(`/worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`, newData)
                 .then(() => {
-                    setButtonLoader({ ...buttonLoader, modalButton: false });
                     setReload(!reload);
                     toast.success('جایگاه با موفقیت ویرایش شد');
                     setModalOpen(false);
                     closeModalFunctions();
                 })
-                .catch(() => {});
+                .catch(() => {})
+                .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
         }
     };
 
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        setValue('title', data.title);
+        console.log(data);
         setValue('code', data.code);
         setValue('type', data.type);
         setValue('condition_of_parts', data.condition_of_parts);
         setValue('equipment_status', data.equipment_status);
+        setStatusArrays({
+            parts: data.lack_parts.map(item => ({
+                id: uuidv4(),
+                label: item.title
+            })),
+            equipment: data.equipment_deficits.map(item => ({
+                id: uuidv4(),
+                label: item.equipment
+            }))
+        });
+        setActiveStation(data.station_status);
         setSpecificDeviationId(data.id);
     };
 
@@ -203,6 +226,7 @@ const Station = () => {
             equipmentInput: ''
         });
         setActiveStation(false);
+        setSpecificDeviationId();
     };
 
     const addPartsHandler = () => {
@@ -296,13 +320,13 @@ const Station = () => {
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value={true}
+                                            value={false}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value={false}
+                                            value={true}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -312,7 +336,7 @@ const Station = () => {
                             />
                             <p className='error'>{errors?.partsStatus?.message}</p>
                         </div>
-                        {(conditionOfParts === 'true' || conditionOfParts === true) && (
+                        {(conditionOfParts === 'false' || conditionOfParts === false) && (
                             <>
                                 <div className='choose_input'>
                                     <p className='choose_input_title'>نام قطعه</p>
@@ -367,13 +391,13 @@ const Station = () => {
                                 render={({ field: { onChange, value } }) => (
                                     <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
                                         <FormControlLabel
-                                            value={true}
+                                            value={false}
                                             control={<Radio />}
                                             label='ناقص'
                                             sx={{ backgroundColor: 'transparent' }}
                                         />
                                         <FormControlLabel
-                                            value={false}
+                                            value={true}
                                             control={<Radio />}
                                             label='کامل'
                                             sx={{ backgroundColor: 'transparent' }}
@@ -384,7 +408,7 @@ const Station = () => {
                             <p className='error'>{errors?.equipmentStatus?.message}</p>
                         </div>
 
-                        {(equipmentStatus === 'true' || equipmentStatus === true) && (
+                        {(equipmentStatus === 'false' || equipmentStatus === false) && (
                             <>
                                 <div className='choose_input'>
                                     <p className='choose_input_title'>نام تجهیزات</p>
@@ -430,14 +454,20 @@ const Station = () => {
                                 </div>
 
                                 <FormControlLabel
-                                    control={<Checkbox value={activeStation} onChange={e => setActiveStation(e.target.checked)} />}
+                                    control={
+                                        <Checkbox
+                                            value={activeStation}
+                                            onChange={e => setActiveStation(e.target.checked)}
+                                            checked={activeStation}
+                                        />
+                                    }
                                     label='جایگاه فعال'
                                     sx={{ marginBottom: '30px' }}
                                 />
                             </>
                         )}
                         <FormButton
-                            text='ادامه'
+                            text={modalStatus === 'edit' ? 'ویرایش' : 'ثبت'}
                             type='submit'
                             backgroundColor='#174787'
                             color='white'
