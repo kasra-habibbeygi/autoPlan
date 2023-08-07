@@ -44,10 +44,10 @@ const ReportingBarChart = ({ detail }) => {
                 <XAxis dataKey='name' tickLine={false} />
                 <YAxis tick={{ dy: -5, dx: -40 }} axisLine={false} tickLine={false} />
                 <Tooltip />
-                <Bar dataKey='delay_end' fill='#95A4FC' />
-                <Bar dataKey='delay_start' fill='#174787' />
-                <Bar dataKey='rush_end' fill='#E8E8E8' />
-                <Bar dataKey='rush_start' fill='#299D91' />
+                <Bar dataKey='delay_end' name='تاخیر در پایان' fill='#95A4FC' />
+                <Bar dataKey='delay_start' name='تاخیر در شروع' fill='#174787' />
+                <Bar dataKey='rush_end' name='تعجیل در پایان' fill='#E8E8E8' />
+                <Bar dataKey='rush_start' name='تعجیل در پایان' fill='#299D91' />
             </BarChart>
         </ResponsiveContainer>
     );
