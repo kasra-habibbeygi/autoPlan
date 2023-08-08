@@ -248,7 +248,8 @@ const Qualification = () => {
         });
 
         Axios.get('worker/admin/seat-capacity/list_create/?page_size=500').then(res => {
-            setSeatList(res.data.results);
+            const newArray = res?.data?.results?.filter(item => item.station_status);
+            setSeatList(newArray);
         });
     }, []);
 
