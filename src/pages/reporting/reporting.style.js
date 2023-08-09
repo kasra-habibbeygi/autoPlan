@@ -88,5 +88,12 @@ export const ReportingWrapper = styled.div(props => ({
         padding: '50px 0',
         borderRadius: '18px',
         margin: '10px 0'
+    },
+
+    '& .no_report': {
+        textAlign: 'center',
+        margin: '100px 0',
+        fontWeight: 700,
+        fontSize: '16px'
     }
 }));

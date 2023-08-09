@@ -1,13 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
-//Assets
-
-//Components
-
 const DeficiencyChart = ({ detail }) => {
     const [data, setData] = useState([]);
+
+    const backupData = [
+        { name: 'empty', value: 33 },
+        { name: 'empty', value: 33 },
+        { name: 'empty', value: 33 }
+    ];
 
     useEffect(() => {
         if (detail) {
@@ -23,7 +24,7 @@ const DeficiencyChart = ({ detail }) => {
 
     return (
         <PieChart width={170} height={200}>
-            <Pie data={data} innerRadius={50} outerRadius={80} dataKey='value'>
+            <Pie data={data.length ? data : backupData} innerRadius={50} outerRadius={80} dataKey='value'>
                 {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={colors[index]} />
                 ))}
