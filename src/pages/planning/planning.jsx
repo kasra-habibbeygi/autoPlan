@@ -298,7 +298,6 @@ const Planning = () => {
             renderCell: data => {
                 const createdDate = data?.create_at.slice(0, 10);
                 const isMatch = createdDate !== today;
-
                 return (
                     <ActionCell>
                         <FormButton
@@ -309,10 +308,10 @@ const Planning = () => {
                                 setChosenEditItemDetails(data);
                             }}
                             disabled={
-                                isMatch &&
-                                (!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS) ||
-                                    !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS) ||
-                                    !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME))
+                                isMatch ||
+                                !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS) ||
+                                !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS) ||
+                                !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)
                             }
                         />
                     </ActionCell>
