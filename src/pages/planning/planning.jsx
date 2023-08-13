@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
+import PERMISSION from '../../utils/permission.ts';
 
 //Assets
 import { PlanningField } from './planning.style';
@@ -21,6 +23,7 @@ import { useSearchParams } from 'react-router-dom';
 import tools from '../../utils/tools';
 
 const Planning = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [modalIsOpen, setIsModalOpen] = useState(false);
     const [tableLoading, setTableLoading] = useState(true);
     const [Step1Id, setStep1Id] = useState();
@@ -305,7 +308,12 @@ const Planning = () => {
                                 setModalFormStatus('edit');
                                 setChosenEditItemDetails(data);
                             }}
-                            disabled={isMatch}
+                            disabled={
+                                isMatch &&
+                                (!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS) ||
+                                    !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS) ||
+                                    !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME))
+                            }
                         />
                     </ActionCell>
                 );
@@ -320,6 +328,7 @@ const Planning = () => {
                 onButtonClick={openModal}
                 hasFilter={true}
                 onFilterClick={() => setShowFilterModal(true)}
+                disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS)}
             />
             <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={tableLoading} />
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>

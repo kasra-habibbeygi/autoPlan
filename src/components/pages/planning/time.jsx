@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Grid, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
+import { useSelector } from 'react-redux';
+import PERMISSION from '../../../utils/permission.ts';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
@@ -30,6 +32,8 @@ function timeToSeconds(timeString) {
 }
 
 const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setReload, setIsModalOpen }) => {
+    const userPermissions = useSelector(state => state.User.info.permission);
+
     const [deviationList, setDeviationList] = useState([]);
     const [reasonValue, setReasonValue] = useState();
     const [submitLoading, setSubmitLoading] = useState(false);
@@ -385,6 +389,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                         type='submit'
                         padding='15px'
                         margin={'20px 0 0 0'}
+                        disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)}
                     />
                 </div>
             ) : (
@@ -403,6 +408,7 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                             type='submit'
                             padding='15px'
                             margin={'20px 0 0 0'}
+                            disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)}
                         />
                     </>
                 )

@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
+import PERMISSION from '../../../utils/permission.ts';
+import { useSelector } from 'react-redux';
 
 //Assets
 import Bus from './../../../assets/images/icons/Bus.svg';
@@ -18,6 +20,7 @@ import InputComponent from '../../form-groups/input-component';
 import { Autocomplete, TextField } from '@mui/material';
 
 const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [loader, setLoader] = useState(false);
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
@@ -236,6 +239,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                         backgroundColor={'#174787'}
                         height='48px'
                         type='submit'
+                        disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS)}
                     />
                 </div>
             </form>

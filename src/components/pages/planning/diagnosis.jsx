@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
 import { v4 as uuidv4 } from 'uuid';
+import PERMISSION from '../../../utils/permission.ts';
+import { useSelector } from 'react-redux';
 
 //Assets
 import Arrow from './../../../assets/images/global/arrow.svg';
@@ -20,6 +22,7 @@ import { Autocomplete, CircularProgress, Grid, TextField } from '@mui/material';
 import TimePicker from '../../form-groups/time-picker';
 
 const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
     const [postsList, SetPostsList] = useState();
@@ -297,6 +300,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                         onClick={() => {}}
                         height='48px'
                         type='submit'
+                        disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS)}
                     />
                 </>
             )}
