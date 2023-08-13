@@ -7,6 +7,7 @@ export const QualificationWrapper = styled.div(props => ({
         gap: '15px',
         marginTop: '0px !important'
     },
+
     '& .formControl': {
         margin: '0 auto',
         backgroundColor: props.theme.colors.white,

@@ -57,7 +57,6 @@ const ExecuteDate = ({ setStep, setAllDetail, allDetail, setIsModalOpen, setRelo
         let formData = new FormData();
 
         formData.append('action_officials', JSON.stringify(changedActionPersonsData));
-
         formData.append('actions_data', JSON.stringify(allDetail.actions.map(item => item.action)));
         formData.append('end_time', tools.changeTimeStampToDate(data?.finished_time));
         formData.append('problem', allDetail.problem);

@@ -49,6 +49,7 @@ const Qualification = () => {
     const [personnelList, setPersonnelList] = useState([]);
     const [tableCol, setTableCol] = useState([]);
     const [reportList, setReportList] = useState([]);
+    const [dateSearch, setDateSearch] = useState('');
 
     const [loader, setLoader] = useState({
         table: false,
@@ -172,8 +173,15 @@ const Qualification = () => {
                 setButtonLoader({ ...buttonLoader, delete: false });
             });
     };
+
+    const searchSubmit = data => {
+        setDateSearch(tools.changeTimeStampToDate(data.effective_date));
+        setReload(!reload);
+    };
+
     useEffect(() => {
         let query = '';
+        let search_date = '';
         setLoader({
             ...loader,
             table: true
@@ -181,6 +189,10 @@ const Qualification = () => {
 
         if (dateFilterCheckboxValue) {
             query += '&date_now=true';
+        }
+        if (dateSearch) {
+            query += `&date=${dateSearch}`;
+            search_date += `&date=${dateSearch}`;
         }
 
         Axios.get(`worker/admin/capacity-measurement/list_create/?page=${pageStatus.current}${query}`)
@@ -200,7 +212,7 @@ const Qualification = () => {
             )
             .catch(() => {});
 
-        Axios.get('worker/admin/capacity-measurement/report/')
+        Axios.get(`worker/admin/capacity-measurement/report/?${search_date}`)
             .then(res => {
                 setReportList(res.data.result);
             })
@@ -227,7 +239,7 @@ const Qualification = () => {
     };
 
     useEffect(() => {
-        Axios.get('worker/admin/organizational-position/list_create/?page_size=500').then(res => {
+        Axios.get('worker/admin/organizational-position/list_create/?page_size=15').then(res => {
             let temp = [];
 
             res.data.results.map(item => {
@@ -253,8 +265,6 @@ const Qualification = () => {
         });
     }, []);
 
-    const searchSubmit = () => {};
-
     return (
         <QualificationWrapper>
             <PagesHeader
@@ -273,14 +283,7 @@ const Qualification = () => {
                         name='effective_date'
                         rules={{ required: 'این فیلد اجباری است' }}
                         render={({ field: { onChange, value } }) => {
-                            return (
-                                <DatePickerComponent
-                                    value={value}
-                                    onChange={onChange}
-                                    error={errors?.effective_date}
-                                    minDate={new Date()}
-                                />
-                            );
+                            return <DatePickerComponent value={value} onChange={onChange} error={errors?.effective_date} />;
                         }}
                     />
                     <FormButton text='جستجو' type='submite' backgroundColor='#174787' color='white' />

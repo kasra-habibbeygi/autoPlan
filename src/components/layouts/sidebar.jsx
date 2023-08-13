@@ -74,16 +74,7 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        {permissionHandler(['SETTING_RECEPTION.ADD', 'SETTING_RECEPTION.EDIT', 'REPRESENTATION_WORKING_TIME.ADD', 'REPRESENTATION_WORKING_TIME.EDIT']) && (
-                            <li>
-                                <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
-                                    <div className='item'>
-                                        <img src={Group} />
-                                        <p>تنظیمات پذیرش</p>
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
+             
                 
                         {permissionHandler(['CAPACITY_MEASUREMENT.ADD', 'CAPACITY_MEASUREMENT.EDIT', 'CAPACITY_MEASUREMENT.DELETE']) && (
                             <li>
@@ -95,14 +86,19 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        <li>
-                            <NavLink to='/planning' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Widget} />
-                                    <p>برنامه ریزی تعمیرات</p>
-                                </div>
-                            </NavLink>
-                        </li>
+
+
+                        {permissionHandler(['VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME', 'VEHICLE_SPECIFICATIONS.LIST']) && (
+                            <li>
+                                <NavLink to='/planning' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Widget} />
+                                        <p>برنامه ریزی تعمیرات</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+              
                  
                         {permissionHandler(['LACK_PARTS.ADD', 'LACK_PARTS.EDIT', 'LACK_PARTS.DELETE']) && (
                             <li>
@@ -126,15 +122,18 @@ const SideBar = () => {
                             </li>
                         )}
         
-                                   
-                        <li>
-                            <NavLink to='/reporting' onClick={() => dispatch(closeSideBar())}>
-                                <div className='item'>
-                                    <img src={Notes} />
-                                    <p>گزارش گیری</p>
-                                </div>
-                            </NavLink>
-                        </li>                        
+                        {permissionHandler(['EXCEL.LIST']) && (
+                            <li>
+                                <NavLink to='/reporting' onClick={() => dispatch(closeSideBar())}>
+                                    <div className='item'>
+                                        <img src={Notes} />
+                                        <p>گزارش گیری</p>
+                                    </div>
+                                </NavLink>
+                            </li> 
+                        )}     
+                        
+
                         {permissionHandler(['CORRECTIVE_ACTION.ADD , CORRECTIVE_ACTION.DELETE', 'CORRECTIVE_ACTION.EDIT']) && (
                             <li>
                                 <NavLink to='/corrective' onClick={() => dispatch(closeSideBar())}>
@@ -162,7 +161,16 @@ const SideBar = () => {
                                             </NavLink>
                                         </li>
                                     )}
-
+                                    {permissionHandler(['SETTING_RECEPTION.ADD', 'SETTING_RECEPTION.EDIT', 'REPRESENTATION_WORKING_TIME.ADD', 'REPRESENTATION_WORKING_TIME.EDIT']) && (
+                                        <li>
+                                            <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
+                                                <div className='item'>
+                                                    <img src={Group} />
+                                                    <p>تنظیمات پذیرش</p>
+                                                </div>
+                                            </NavLink>
+                                        </li>
+                                    )}
                         
                                     {permissionHandler(['DEVIATION_REASON.ADD', 'DEVIATION_REASON.EDIT', 'DEVIATION_REASON.DELETE']) && (
                                         <li>
@@ -174,6 +182,7 @@ const SideBar = () => {
                                             </NavLink>
                                         </li>
                                     )}   
+                                    
                                     {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
                                         <li>
                                             <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
