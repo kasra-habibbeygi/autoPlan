@@ -39,7 +39,7 @@ const Station = () => {
     const [loader, setLoader] = useState(true);
     const [reload, setReload] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
-    const [activeStation, setActiveStation] = useState(false);
+    const [activeStation, setActiveStation] = useState(true);
     const [inputsValue, setInputsValue] = useState({
         partsInput: '',
         equipmentInput: ''
