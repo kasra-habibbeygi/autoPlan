@@ -96,7 +96,7 @@ const Reporting = () => {
                     location.href = `https://api.autoplaning.ir/${res.data?.link}`;
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => {})
             .finally(() => {});
     };
 

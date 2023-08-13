@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import Axios from '../../../configs/axios';
+import { useSelector } from 'react-redux';
+import PERMISSION from '../../../utils/permission.ts';
 
 //Assets
 import { FormWrapper } from './reception-form.style';
@@ -15,6 +17,7 @@ import InputComponent from './../../form-groups/input-component';
 import { toast } from 'react-hot-toast';
 
 const ReceptionForm = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [addButtonStatus, setAddButtonStatus] = useState(false);
     const [loading, setLoading] = useState(false);
     const [reload, setReload] = useState(false);
@@ -123,6 +126,11 @@ const ReceptionForm = () => {
                     backgroundColor='#174787'
                     color='white'
                     height={48}
+                    disabled={
+                        addButtonStatus
+                            ? !userPermissions.includes(PERMISSION.SETTING_RECEPTION.EDIT)
+                            : !userPermissions.includes(PERMISSION.SETTING_RECEPTION.ADD)
+                    }
                 />
             </form>
         </FormWrapper>

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
@@ -22,7 +23,6 @@ import ConfirmModal from '../../components/template/confirm-modal';
 import AddPost from './../../components/pages/accessibility/add-post';
 import AddPersonnel from './../../components/pages/accessibility/add-personell';
 import { Tab, Tabs } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 const Accessibility = () => {
     const userPermissions = useSelector(state => state.User.info.permission);

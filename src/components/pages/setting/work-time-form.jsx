@@ -4,17 +4,19 @@ import Axios from '../../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { infoHandler } from '../../../store/reducers/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Assets
 import { FormWrapper } from './work-time-form.style';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
+import PERMISSION from '../../../utils/permission.ts';
 
 //Components
 import FormButton from '../../form-groups/form-button';
 import TimePicker from '../../form-groups/time-picker';
 
 const WorkTimeForm = () => {
+    const userPermissions = useSelector(state => state.User.info.permission);
     const dispatch = useDispatch();
     const { register, handleSubmit, setValue, formState } = useForm({
         mode: 'onTouched'
@@ -128,6 +130,11 @@ const WorkTimeForm = () => {
                     color='white'
                     height={48}
                     loading={buttonLoader}
+                    disabled={
+                        getTime?.length > 0
+                            ? !userPermissions.includes(PERMISSION.REPRESENTATION_WORKING_TIME.EDIT)
+                            : !userPermissions.includes(PERMISSION.REPRESENTATION_WORKING_TIME.ADD)
+                    }
                 />
             </form>
         </FormWrapper>

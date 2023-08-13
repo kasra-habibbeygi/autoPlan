@@ -12,10 +12,8 @@ import ChartItem from '../../components/pages/reporting/chart-item';
 import ReportingChart from '../../components/template/reporting-chart';
 import HomeTable from '../../components/pages/home/home-table';
 import PagesHeader from '../../components/template/pages-header';
-import { useSelector } from 'react-redux';
 
 const Home = () => {
-    const userRole = useSelector(state => state.User.info.role);
     const [managementList, setManagementList] = useState([]);
     const [reportingChartData, setReportingChartData] = useState();
     const [loading, setLoading] = useState({

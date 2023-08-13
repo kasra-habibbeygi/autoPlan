@@ -192,6 +192,7 @@ const Setting = () => {
                                     color={'white'}
                                     height={48}
                                     loading={buttonLoader}
+                                    disabled={userInfo?.role !== 'admin'}
                                 />
                             </form>
                         </div>

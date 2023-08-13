@@ -146,8 +146,6 @@ const Station = () => {
             station_status: activeStation
         };
 
-        console.log(newData);
-
         if (modalStatus === 'add') {
             Axios.post('/worker/admin/seat-capacity/list_create/', newData)
                 .then(() => {
@@ -174,7 +172,6 @@ const Station = () => {
     const editModalHandler = data => {
         setModalStatus('edit');
         setModalOpen(true);
-        console.log(data);
         setValue('code', data.code);
         setValue('type', data.type);
         setValue('condition_of_parts', data.condition_of_parts);

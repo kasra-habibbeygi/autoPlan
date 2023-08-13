@@ -80,17 +80,17 @@ const PERMISSION = {
         LIST: 38
     },
 
-    //نمودارها و اکسل
-    EXCEL: {
-        LIST: 39
-    },
-
     //کسری تجهیزات
     EQUIPMENT_SHORTAGE: {
         ADD: 40,
         EDIT: 41,
         DELETE: 42,
         LIST: 43
+    },
+
+    //نمودارها و اکسل
+    EXCEL: {
+        LIST: 44
     }
 };
 
