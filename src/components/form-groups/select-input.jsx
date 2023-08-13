@@ -8,7 +8,7 @@ import closeIcon from './../../assets/images/global/closeIcon.svg';
 //components
 import FormButton from '../../components/form-groups/form-button';
 
-const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails, placeHolder }) => {
+const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails, placeHolder, shouldValidate = true, deleteHandler }) => {
     const deleteItemHandler = data => {
         setDetails(prevDetails => {
             const updatedDetails = { ...prevDetails };
@@ -22,7 +22,7 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails
     };
 
     return (
-        <SelectWrapper error={submitCount > 0 && items.length === 0 ? true : false}>
+        <SelectWrapper error={shouldValidate && submitCount > 0 && items.length === 0 ? true : false}>
             {title && <p>{title}</p>}
 
             <div className='container'>
@@ -32,7 +32,11 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails
                             items.map(item => (
                                 <p key={item.id}>
                                     {item.fullText}
-                                    <img src={closeIcon} className='close_icon' onClick={() => deleteItemHandler(item)} />
+                                    <img
+                                        src={closeIcon}
+                                        className='close_icon'
+                                        onClick={() => (deleteHandler ? deleteHandler(item) : deleteItemHandler(item))}
+                                    />
                                 </p>
                             ))
                         ) : (
@@ -45,7 +49,7 @@ const SelectInput = ({ title, icon, onClick, items = [], submitCount, setDetails
                     <FormButton icon={plus} type='button' onClick={onClick} variant={'contained'} />
                 </div>
             </div>
-            {submitCount && items.length <= 0 ? <span className='error'>این فیلد اجباری است</span> : null}
+            {shouldValidate && submitCount && items.length <= 0 ? <span className='error'>این فیلد اجباری است</span> : null}
         </SelectWrapper>
     );
 };

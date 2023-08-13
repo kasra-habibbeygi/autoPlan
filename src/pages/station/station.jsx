@@ -28,6 +28,8 @@ import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
+import SelectInput from '../../components/form-groups/select-input';
+import AddPartModal from '../../components/pages/station/addPartModal';
 
 const Station = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -40,14 +42,10 @@ const Station = () => {
     const [reload, setReload] = useState(false);
     const [specificDeviationId, setSpecificDeviationId] = useState();
     const [activeStation, setActiveStation] = useState(true);
-    const [inputsValue, setInputsValue] = useState({
-        partsInput: '',
-        equipmentInput: ''
-    });
-    const [statusArrays, setStatusArrays] = useState({
-        parts: [],
-        equipment: []
-    });
+    const [equipmentInputValue, setEquipmentInputValue] = useState('');
+    const [equipmentArrays, setEquipmentArrays] = useState([]);
+    const [partsArray, setPartsArray] = useState([]);
+    const [showPartsModal, setShowPartsModal] = useState(false);
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
@@ -58,13 +56,12 @@ const Station = () => {
         current: 1
     });
 
-    const addInputPartRef = useRef();
     const addInputEquipmentRef = useRef();
 
     const { register, control, handleSubmit, formState, reset, setValue, watch } = useForm({
         mode: 'onTouched'
     });
-    const { errors } = formState;
+    const { errors, submitCount } = formState;
 
     const conditionOfParts = watch('condition_of_parts');
     const equipmentStatus = watch('equipment_status');
@@ -141,8 +138,13 @@ const Station = () => {
             ...data,
             condition_of_parts: JSON.parse(data.condition_of_parts),
             equipment_status: JSON.parse(data.equipment_status),
-            list_of_condition_of_parts: statusArrays.parts.map(item => item.label),
-            list_of_equipment_status: statusArrays.equipment.map(item => item.label),
+            list_of_condition_of_parts: partsArray.map(item => ({
+                date: item.date,
+                title: item.title,
+                code: item.code,
+                car_type: item.car_type
+            })),
+            list_of_equipment_status: equipmentArrays.map(item => item.label),
             station_status: activeStation
         };
 
@@ -176,16 +178,19 @@ const Station = () => {
         setValue('type', data.type);
         setValue('condition_of_parts', data.condition_of_parts);
         setValue('equipment_status', data.equipment_status);
-        setStatusArrays({
-            parts: data.lack_parts.map(item => ({
-                id: uuidv4(),
-                label: item.title
-            })),
-            equipment: data.equipment_deficits.map(item => ({
+        setEquipmentArrays(
+            data.equipment_deficits.map(item => ({
                 id: uuidv4(),
                 label: item.equipment
             }))
-        });
+        );
+        setPartsArray(
+            data.lack_parts.map(item => ({
+                ...item,
+                id: uuidv4(),
+                fullText: `${item?.title} - ${item?.code} - ${item?.car_type}`
+            }))
+        );
         setActiveStation(data.station_status);
         setSpecificDeviationId(data.id);
     };
@@ -214,43 +219,22 @@ const Station = () => {
 
     const closeModalFunctions = () => {
         reset();
-        setStatusArrays({
-            parts: [],
-            equipment: []
-        });
-        setInputsValue({
-            partsInput: '',
-            equipmentInput: ''
-        });
+        setEquipmentArrays([]);
+        setPartsArray([]);
+        setEquipmentInputValue('');
         setActiveStation(false);
         setSpecificDeviationId();
     };
 
-    const addPartsHandler = () => {
-        if (inputsValue.partsInput.trim()) {
-            setStatusArrays(prev => ({
-                ...prev,
-                parts: [...prev.parts, { id: uuidv4(), label: inputsValue.partsInput }]
-            }));
-            setInputsValue(prev => ({
-                ...prev,
-                partsInput: ''
-            }));
-
-            addInputPartRef.current.focus();
-        }
+    const deletePartsHandler = chosenPart => {
+        console.log(chosenPart);
+        setPartsArray(prev => prev.filter(item => item.id !== chosenPart.id));
     };
 
     const addEquipmentHandler = () => {
-        if (inputsValue.equipmentInput.trim()) {
-            setStatusArrays(prev => ({
-                ...prev,
-                equipment: [...prev.equipment, { id: uuidv4(), label: inputsValue.equipmentInput }]
-            }));
-            setInputsValue(prev => ({
-                ...prev,
-                equipmentInput: ''
-            }));
+        if (equipmentInputValue.trim()) {
+            setEquipmentArrays(prev => [...prev, { id: uuidv4(), label: equipmentInputValue }]);
+            setEquipmentInputValue('');
 
             addInputEquipmentRef.current.focus();
         }
@@ -335,49 +319,16 @@ const Station = () => {
                         </div>
                         {(conditionOfParts === 'false' || conditionOfParts === false) && (
                             <>
-                                <div className='choose_input'>
-                                    <p className='choose_input_title'>نام قطعه</p>
-                                    <div className='choose_input_wrapper'>
-                                        <input
-                                            type='text'
-                                            className='choose_input_filed'
-                                            placeholder='نام قطعه'
-                                            ref={addInputPartRef}
-                                            value={inputsValue.partsInput}
-                                            onChange={e =>
-                                                setInputsValue(prev => ({
-                                                    ...prev,
-                                                    partsInput: e.target.value
-                                                }))
-                                            }
-                                            onKeyDown={e => {
-                                                if (e.key === 'Enter') {
-                                                    e.preventDefault();
-                                                    addPartsHandler();
-                                                }
-                                            }}
-                                        />
-                                        <FormButton icon={plus} width='fit-content' padding='5px' onClick={addPartsHandler} />
-                                    </div>
-                                </div>
-
-                                <div className='options_array'>
-                                    {statusArrays.parts.map(item => (
-                                        <div
-                                            className='options_wrapper'
-                                            key={item.id}
-                                            onClick={() =>
-                                                setStatusArrays(prev => ({
-                                                    ...prev,
-                                                    parts: prev.parts.filter(filed => filed !== item)
-                                                }))
-                                            }
-                                        >
-                                            <p className='options_text'>{item.label}</p>
-                                            <img src={closeIcon} className='options_img' />
-                                        </div>
-                                    ))}
-                                </div>
+                                <SelectInput
+                                    title='نام قطعه'
+                                    onClick={() => setShowPartsModal(true)}
+                                    items={partsArray}
+                                    submitCount={submitCount}
+                                    setDetails={setPartsArray}
+                                    placeHolder={'نام قطعات'}
+                                    shouldValidate={false}
+                                    deleteHandler={deletePartsHandler}
+                                />
                             </>
                         )}
                         <div className='radios'>
@@ -415,13 +366,8 @@ const Station = () => {
                                             className='choose_input_filed'
                                             placeholder='نام تجهیزات'
                                             ref={addInputEquipmentRef}
-                                            value={inputsValue.equipmentInput}
-                                            onChange={e =>
-                                                setInputsValue(prev => ({
-                                                    ...prev,
-                                                    equipmentInput: e.target.value
-                                                }))
-                                            }
+                                            value={equipmentInputValue}
+                                            onChange={e => setEquipmentInputValue(e.target.value)}
                                             onKeyDown={e => {
                                                 if (e.key === 'Enter') {
                                                     e.preventDefault();
@@ -433,16 +379,11 @@ const Station = () => {
                                     </div>
                                 </div>
                                 <div className='options_array'>
-                                    {statusArrays.equipment.map(item => (
+                                    {equipmentArrays.map(item => (
                                         <div
                                             className='options_wrapper'
                                             key={item.id}
-                                            onClick={() =>
-                                                setStatusArrays(prev => ({
-                                                    ...prev,
-                                                    equipment: prev.equipment.filter(filed => filed !== item)
-                                                }))
-                                            }
+                                            onClick={() => setEquipmentArrays(prev => prev.filter(filed => filed !== item))}
                                         >
                                             <p className='options_text'>{item.label}</p>
                                             <img src={closeIcon} className='options_img' />
@@ -473,6 +414,8 @@ const Station = () => {
                         />
                     </form>
                 </div>
+
+                <AddPartModal showPartsModal={showPartsModal} setShowPartsModal={setShowPartsModal} setPartsArray={setPartsArray} />
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}
