@@ -123,7 +123,8 @@ export const PlanningField = styled.div(props => ({
     },
 
     '& .choose_input': {
-        //
+        marginTop: '20px',
+
         '& .choose_input_title': {
             fontWeight: 700
         },

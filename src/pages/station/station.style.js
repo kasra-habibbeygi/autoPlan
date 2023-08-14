@@ -114,6 +114,12 @@ export const StationWrapper = styled.div(props => ({
         }
     },
 
+    '& .inner_modal': {
+        backgroundColor: 'white',
+        padding: '40px',
+        borderRadius: '12px'
+    },
+
     form: {
         marginTop: '30px'
     }

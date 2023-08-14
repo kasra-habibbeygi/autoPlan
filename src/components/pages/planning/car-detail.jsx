@@ -19,9 +19,12 @@ import InputComponent from '../../form-groups/input-component';
 // MUI
 import { Autocomplete, TextField } from '@mui/material';
 
-const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
+const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload, setIsModalOpen }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [loader, setLoader] = useState(false);
+
+    const hasNextStepPermission = userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS);
+
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             car_brand: '',
@@ -66,9 +69,14 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         if (modalFormStatus === 'edit' && chosenEditItemDetails?.id) {
             Axios.put(`/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
                 .then(res => {
-                    setStep(2);
-                    setStep1Id(res.data.id);
-                    setReload(prev => !prev);
+                    if (hasNextStepPermission) {
+                        setStep(2);
+                        setStep1Id(res.data.id);
+                        setReload(prev => !prev);
+                    } else {
+                        setReload(prev => !prev);
+                        setIsModalOpen(false);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -77,9 +85,14 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         } else {
             Axios.post('/worker/admin/vehicle-specifications/list_create/', newData)
                 .then(res => {
-                    setStep(2);
-                    setStep1Id(res.data.id);
-                    setReload(prev => !prev);
+                    if (hasNextStepPermission) {
+                        setStep(2);
+                        setStep1Id(res.data.id);
+                        setReload(prev => !prev);
+                    } else {
+                        setReload(prev => !prev);
+                        setIsModalOpen(false);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -232,8 +245,8 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 </div>
                 <div className='button_box'>
                     <FormButton
-                        text='بعدی'
-                        icon={Arrow}
+                        text={hasNextStepPermission ? 'بعدی' : 'ثبت'}
+                        icon={hasNextStepPermission && Arrow}
                         loading={loader}
                         className='login'
                         backgroundColor={'#174787'}

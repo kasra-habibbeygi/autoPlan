@@ -353,6 +353,7 @@ const Planning = () => {
                             modalFormStatus={modalFormStatus}
                             chosenEditItemDetails={chosenEditItemDetails}
                             setReload={setReload}
+                            setIsModalOpen={setIsModalOpen}
                         />
                     )}
 
@@ -364,6 +365,7 @@ const Planning = () => {
                             modalFormStatus={modalFormStatus}
                             chosenEditItemDetails={chosenEditItemDetails}
                             setReload={setReload}
+                            setIsModalOpen={setIsModalOpen}
                         />
                     )}
 

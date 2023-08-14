@@ -21,21 +21,15 @@ import FormButton from '../../form-groups/form-button';
 import { Autocomplete, CircularProgress, Grid, TextField } from '@mui/material';
 import TimePicker from '../../form-groups/time-picker';
 
-const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
+const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload, setIsModalOpen }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
     const [postsList, SetPostsList] = useState();
     const [partsInputValue, setPartsInputValue] = useState('');
     const [partsArray, setPartsArray] = useState([]);
-    // const [inputsValue, setInputsValue] = useState({
-    //     partsInput: '',
-    //     equipmentInput: ''
-    // });
-    // const [statusArrays, setStatusArrays] = useState({
-    //     parts: [],
-    //     equipment: []
-    // });
+
+    const hasNextStepPermission = userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME);
 
     const addInputPartRef = useRef();
 
@@ -113,15 +107,21 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
             type_of_repair: data.type_of_repair,
             vehicle_specifications: Step1Id,
             approximate_start_time: `${data?.approximate_start_time_hour}:${data?.approximate_start_time_min}`,
-            approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`
+            approximate_end_time: `${data?.approximate_end_time_hour}:${data.approximate_end_time_min}`,
+            required_pieces: partsArray.map(item => item.label)
         };
 
         if (modalFormStatus === 'edit' && chosenEditItemDetails?.diagnosis_info?.id) {
             Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.id}`, newData)
                 .then(res => {
-                    setStep(3);
-                    setStep2Id(res.data.id);
-                    setReload(prev => !prev);
+                    if (hasNextStepPermission) {
+                        setStep(3);
+                        setStep2Id(res.data.id);
+                        setReload(prev => !prev);
+                    } else {
+                        setReload(prev => !prev);
+                        setIsModalOpen(false);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -130,9 +130,14 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         } else {
             Axios.post('/worker/admin/diagnosis/list_create/', newData)
                 .then(res => {
-                    setStep(3);
-                    setStep2Id(res.data.id);
-                    setReload(prev => !prev);
+                    if (hasNextStepPermission) {
+                        setStep(3);
+                        setStep2Id(res.data.id);
+                        setReload(prev => !prev);
+                    } else {
+                        setReload(prev => !prev);
+                        setIsModalOpen(false);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -255,12 +260,12 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                             />
 
                             <div className='choose_input'>
-                                <p className='choose_input_title'>نام قطعه</p>
+                                <p className='choose_input_title'>کد قطعه</p>
                                 <div className='choose_input_wrapper'>
                                     <input
                                         type='text'
                                         className='choose_input_filed'
-                                        placeholder='نام قطعه'
+                                        placeholder='کد قطعه'
                                         ref={addInputPartRef}
                                         value={partsInputValue}
                                         onChange={e => setPartsInputValue(e.target.value)}
@@ -291,8 +296,8 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                     </Grid>
 
                     <FormButton
-                        text='بعدی'
-                        icon={Arrow}
+                        text={hasNextStepPermission ? 'بعدی' : 'ثبت'}
+                        icon={hasNextStepPermission && Arrow}
                         loading={loader}
                         width='fit-content'
                         className='submit'

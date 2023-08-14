@@ -74,7 +74,7 @@ export const SelectWrapper = styled.div(props => ({
         background: props.theme.colors.white,
         boxShadow: '0px 4px 14px 0px #0000000D',
         borderRadius: '8px',
-        height: '58px',
+        height: '50px',
         width: '55px',
         cursor: 'pointer'
     },
