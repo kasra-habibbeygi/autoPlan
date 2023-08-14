@@ -26,6 +26,8 @@ const ReportingBarChart = ({ detail }) => {
         }
     }, [detail]);
 
+    console.log(data);
+
     return (
         <>
             {data.length ? (
@@ -42,7 +44,7 @@ const ReportingBarChart = ({ detail }) => {
                         }}
                     >
                         <CartesianGrid strokeLinecap='1' vertical={false} stroke='#f2f2f2' />
-                        <XAxis dataKey='name' tickLine={false} />
+                        <XAxis dataKey='name' tickLine={false} interval={0} hide />
                         <YAxis tick={{ dy: -5, dx: -40 }} axisLine={false} tickLine={false} />
                         <Tooltip />
                         <Bar dataKey='delay_end' name='تاخیر در پایان' fill='#95A4FC' />
