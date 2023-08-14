@@ -33,8 +33,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
 
     const addInputPartRef = useRef();
 
-    console.log(chosenEditItemDetails);
-
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             type_of_repair: '',
