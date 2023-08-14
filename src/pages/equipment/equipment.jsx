@@ -162,6 +162,10 @@ const Equipment = () => {
                 toast.success('کسری قطعه  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
                 setSpecificDeviationId();
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {

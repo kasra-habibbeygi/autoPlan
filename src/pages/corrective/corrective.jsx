@@ -127,6 +127,10 @@ const Corrective = () => {
                 setReload(!reload);
                 toast.success('اقدام اصلاحی  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {});
     };

@@ -142,6 +142,10 @@ const Deviation = () => {
                 setReload(!reload);
                 toast.success('انحراف  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {

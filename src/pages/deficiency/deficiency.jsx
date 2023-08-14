@@ -180,6 +180,10 @@ const Deficiency = () => {
                 setReload(!reload);
                 toast.success('کسری قطعه  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {
