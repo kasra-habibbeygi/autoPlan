@@ -1,16 +1,20 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/material';
+import React from 'react';
 import { getDesignTokens } from '../configs/theme';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { infoHandler, loginStatusHandler } from '../store/reducers/user';
-import Axios from '../configs/axios';
+import { loginStatusHandler } from '../store/reducers/user';
 
 // Assets
 import '../assets/styles/general.css';
+
+// MUI
+import { ThemeProvider, createTheme, useMediaQuery, useTheme } from '@mui/material';
+
+// Tools
+import PERMISSION from '../utils/permission.ts';
 
 //components
 import LayoutProvider from './layouts/layout-provider';
@@ -32,9 +36,9 @@ import AddAdmin from '../pages/add-admin/add-admin';
 import Equipment from '../pages/equipment/equipment';
 
 const AuthenticationGuard = ({ children }) => {
-    var template = [];
     const location = useLocation();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const userInfo = useSelector(state => state.User);
 
     if (localStorage.getItem('AutoPlaningToken') !== null) {
@@ -42,17 +46,31 @@ const AuthenticationGuard = ({ children }) => {
     }
 
     if (userInfo.isLoggedIn) {
-        if (location.pathname !== '/dashboard' && userInfo.info.role === 'Admin') {
-            template.push(<Navigate to='/dashboard' replace state={{ path: location.pathname }} />);
-        } else if (location.pathname !== '/addAdmin' && userInfo.info.role === 'SuperAdmin') {
-            template.push(<Navigate to='/addAdmin' replace state={{ path: location.pathname }} />);
-        } else if (location.pathname !== '/dashboard' && userInfo.info.role === 'Worker') {
-            template.push(<Navigate to='/addAdmin' replace state={{ path: location.pathname }} />);
-        } else {
-            template.push(<LayoutProvider>{children}</LayoutProvider>);
+        if (location.pathname !== '/addAdmin' && userInfo.info.role === 'SuperAdmin') {
+            return <Navigate to='/addAdmin' replace state={{ path: location.pathname }} />;
+        }
+
+        if (userInfo.info.role === 'Worker') {
+            const userPermissions = JSON.parse(localStorage.getItem('AutoPlanUserInfo')).permissions;
+            const matchingObjects = [];
+
+            for (const key in PERMISSION) {
+                if (typeof PERMISSION[key] === 'object') {
+                    for (const subKey in PERMISSION[key]) {
+                        if (typeof PERMISSION[key][subKey] === 'number' && userPermissions.includes(PERMISSION[key][subKey])) {
+                            matchingObjects.push(PERMISSION[key].URL);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!matchingObjects.includes(location.pathname)) {
+                return <Navigate to={matchingObjects[0]} replace state={{ path: location.pathname }} />;
+            }
         }
     }
-    return template;
+    return <LayoutProvider>{children}</LayoutProvider>;
 };
 
 function App() {

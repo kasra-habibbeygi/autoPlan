@@ -38,6 +38,7 @@ const SideBar = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem('AutoPlaningToken');
+        localStorage.removeItem('AutoPlanUserInfo');
         window.location.href = '/';
     };
 
@@ -49,10 +50,6 @@ const SideBar = () => {
                 if(userRole.permission.includes(PERMISSION[item.split('.')[0]][item.split('.')[1]])){
                     flag = true;
                 } 
-            }else{
-                if(userRole.permission.includes(PERMISSION[item])){
-                    flag = true;
-                }
             }
         });
 
@@ -64,7 +61,7 @@ const SideBar = () => {
             <ul>
                 {userRole.role !== 'SuperAdmin' && (
                     <>
-                        {permissionHandler(['DASHBOARD']) && (
+                        {permissionHandler(['DASHBOARD.LIST']) && (
                             <li>
                                 <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>
@@ -97,8 +94,7 @@ const SideBar = () => {
                                     </div>
                                 </NavLink>
                             </li>
-                        )}
-              
+                        )}              
                  
                         {permissionHandler(['LACK_PARTS.ADD', 'LACK_PARTS.EDIT', 'LACK_PARTS.DELETE']) && (
                             <li>
@@ -131,8 +127,7 @@ const SideBar = () => {
                                     </div>
                                 </NavLink>
                             </li> 
-                        )}     
-                        
+                        )}   
 
                         {permissionHandler(['CORRECTIVE_ACTION.ADD , CORRECTIVE_ACTION.DELETE', 'CORRECTIVE_ACTION.EDIT']) && (
                             <li>
@@ -196,8 +191,6 @@ const SideBar = () => {
                                 </AccordionDetails>
                             </Accordion>
                         </div>
-                 
-            
                     </>
                 )}
                 {userRole.role === 'SuperAdmin' && (
