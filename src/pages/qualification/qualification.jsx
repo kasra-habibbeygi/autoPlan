@@ -47,7 +47,6 @@ const Qualification = () => {
     const [typesList, setTypesList] = useState([]);
     const [seatList, setSeatList] = useState([]);
     const [personnelList, setPersonnelList] = useState([]);
-    const [tableCol, setTableCol] = useState([]);
     const [reportList, setReportList] = useState([]);
     const [dateSearch, setDateSearch] = useState('');
 
@@ -239,30 +238,35 @@ const Qualification = () => {
     };
 
     useEffect(() => {
-        Axios.get('worker/admin/organizational-position/list_create/?page_size=15').then(res => {
-            let temp = [];
+        Axios.get('worker/admin/organizational-position/list_create/?page_size=15')
+            .then(res => {
+                let temp = [];
 
-            res.data.results.map(item => {
-                if (item.technical_force) {
-                    temp.push({
-                        label: item.title,
-                        value: item.id
-                    });
-                }
-                return;
-            });
+                res.data.results.map(item => {
+                    if (item.technical_force) {
+                        temp.push({
+                            label: item.title,
+                            value: item.id
+                        });
+                    }
+                    return;
+                });
 
-            setTableCol(columns);
-            setTypesList(temp);
-        });
-        Axios.get('worker/admin/personnel/list_create/?page_size=500').then(res => {
-            setPersonnelList(res.data.results);
-        });
+                setTypesList(temp);
+            })
+            .catch(() => {});
+        Axios.get('worker/admin/personnel/list_create/?page_size=500')
+            .then(res => {
+                setPersonnelList(res.data.results);
+            })
+            .catch(() => {});
 
-        Axios.get('worker/admin/seat-capacity/list_create/?page_size=500').then(res => {
-            const newArray = res?.data?.results?.filter(item => item.station_status);
-            setSeatList(newArray);
-        });
+        Axios.get('worker/admin/seat-capacity/list_create/?page_size=500')
+            .then(res => {
+                const newArray = res?.data?.results?.filter(item => item.station_status);
+                setSeatList(newArray);
+            })
+            .catch(() => {});
     }, []);
 
     return (
@@ -292,7 +296,7 @@ const Qualification = () => {
                 <FormButton text='نمایش گزارش مجموع ظرفیت های امروز' onClick={() => setDetailModal(true)} />
             </div>
             <Table
-                columns={tableCol}
+                columns={columns}
                 rows={qualificationList}
                 pageStatus={pageStatus}
                 setPageStatus={setPageStatus}

@@ -53,6 +53,7 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                     });
                 }
             })
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, [modalStatus]);
 

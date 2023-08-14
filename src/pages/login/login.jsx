@@ -102,6 +102,8 @@ const Login = ({ showModal, setShowModal }) => {
             });
     };
 
+    console.log();
+
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>
             <LoginStyle>
@@ -154,7 +156,7 @@ const Login = ({ showModal, setShowModal }) => {
                     ) : loginStatus === 'sendConfirmCode' ? (
                         <div className='secondStep'>
                             <p className='text'>
-                                کد یکبار مصرف به شماره ۰۹۳۶۸۳۲۰۲۱۶ پیامک شد؛ لطفا کد ارسال شده را در کادر زیر وارد نمایید.
+                                کد یکبار مصرف به شماره {inputValues.mobile_number} پیامک شد؛ لطفا کد ارسال شده را در کادر زیر وارد نمایید.
                             </p>
                             <p className='verificationText'>کد یکبار مصرف</p>
                             <div className='codeInput'>
