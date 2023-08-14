@@ -25,6 +25,10 @@ export const ShowAllStyle = styled.div(props => ({
             }
         },
 
+        '& .text_date': {
+            display: 'flex'
+        },
+
         '& .questions': {
             display: 'flex',
             gap: '5px',
