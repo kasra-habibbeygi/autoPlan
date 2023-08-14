@@ -33,6 +33,8 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
 
     const addInputPartRef = useRef();
 
+    console.log(chosenEditItemDetails);
+
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
             type_of_repair: '',
@@ -91,6 +93,12 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                             'approximate_end_time_min',
                             chosenEditItemDetails?.diagnosis_info?.approximate_end_time[3] +
                                 chosenEditItemDetails?.diagnosis_info?.approximate_end_time[4]
+                        );
+                        setPartsArray(
+                            chosenEditItemDetails?.diagnosis_info?.required_pieces?.map(item => ({
+                                id: uuidv4(),
+                                label: item
+                            }))
                         );
                     }
                 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 
 //Assets
@@ -11,7 +11,6 @@ import tools from '../../../utils/tools';
 //Components
 import InputComponent from '../../form-groups/input-component';
 import Modal from '../../template/modal';
-import DatePickerComponent from '../../form-groups/date-picker';
 import FormButton from '../../form-groups/form-button';
 
 const AddPartModal = ({ showPartsModal, setShowPartsModal, setPartsArray }) => {
@@ -19,7 +18,6 @@ const AddPartModal = ({ showPartsModal, setShowPartsModal, setPartsArray }) => {
         register,
         handleSubmit,
         formState: { errors },
-        control,
         reset
     } = useForm({
         defaultValues: {
