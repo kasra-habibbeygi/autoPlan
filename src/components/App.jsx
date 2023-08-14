@@ -3,7 +3,7 @@
 import React from 'react';
 import { getDesignTokens } from '../configs/theme';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { loginStatusHandler } from '../store/reducers/user';
 
@@ -38,7 +38,6 @@ import Equipment from '../pages/equipment/equipment';
 const AuthenticationGuard = ({ children }) => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const userInfo = useSelector(state => state.User);
 
     if (localStorage.getItem('AutoPlaningToken') !== null) {
