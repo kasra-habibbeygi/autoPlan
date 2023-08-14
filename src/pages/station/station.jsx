@@ -152,6 +152,8 @@ const Station = () => {
             station_status: activeStation
         };
 
+        console.log(newData);
+
         if (modalStatus === 'add') {
             Axios.post('/worker/admin/seat-capacity/list_create/', newData)
                 .then(() => {
@@ -232,7 +234,7 @@ const Station = () => {
         setEquipmentArrays([]);
         setPartsArray([]);
         setEquipmentInputValue('');
-        setActiveStation(false);
+        setActiveStation(true);
         setSpecificDeviationId();
     };
 
