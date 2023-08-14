@@ -1,13 +1,17 @@
 const PERMISSION = {
     //داشبورد
-    DASHBOARD: 0,
+    DASHBOARD: {
+        LIST: 0,
+        URL: '/dashboard'
+    },
 
     //دسترسی پرسنل
     ACCESS_PERSONNEL: {
         ADD: 1,
         EDIT: 2,
         DELETE: 3,
-        LIST: 4
+        LIST: 4,
+        URL: '/accessibility'
     },
 
     //دسترسی پست
@@ -15,7 +19,8 @@ const PERMISSION = {
         ADD: 5,
         EDIT: 6,
         DELETE: 7,
-        LIST: 8
+        LIST: 8,
+        URL: '/accessibility'
     },
 
     //علت انحراف
@@ -23,7 +28,8 @@ const PERMISSION = {
         ADD: 9,
         EDIT: 10,
         DELETE: 11,
-        LIST: 12
+        LIST: 12,
+        URL: '/deviation'
     },
 
     //تعریف جایگاه
@@ -31,7 +37,8 @@ const PERMISSION = {
         ADD: 13,
         EDIT: 14,
         DELETE: 15,
-        LIST: 16
+        LIST: 16,
+        URL: '/station'
     },
 
     //کسری قطعات
@@ -39,21 +46,24 @@ const PERMISSION = {
         ADD: 17,
         EDIT: 18,
         DELETE: 19,
-        LIST: 20
+        LIST: 20,
+        URL: '/deficiency'
     },
 
     //تنظیمات پذیرش
     SETTING_RECEPTION: {
         ADD: 21,
         EDIT: 22,
-        LIST: 23
+        LIST: 23,
+        URL: '/setting'
     },
 
     //تنظیمات ساعت کاری نمایندگی
     REPRESENTATION_WORKING_TIME: {
         ADD: 24,
         EDIT: 25,
-        LIST: 26
+        LIST: 26,
+        URL: '/setting'
     },
 
     // ظرفیت سنجی
@@ -61,7 +71,8 @@ const PERMISSION = {
         ADD: 27,
         EDIT: 28,
         DELETE: 29,
-        LIST: 30
+        LIST: 30,
+        URL: '/qualification'
     },
 
     //اقدام اصلاحی
@@ -69,7 +80,8 @@ const PERMISSION = {
         ADD: 31,
         EDIT: 32,
         DELETE: 33,
-        LIST: 34
+        LIST: 34,
+        URL: '/corrective'
     },
 
     //برنامه ریزی تعمیرات
@@ -77,7 +89,8 @@ const PERMISSION = {
         ADD_EDIT_VEHICLE_DETAIILS: 35,
         ADD_EDIT_DIAGNOSIS: 36,
         ADD_EDIT_TIME: 37,
-        LIST: 38
+        LIST: 38,
+        URL: '/planning'
     },
 
     //کسری تجهیزات
@@ -85,12 +98,14 @@ const PERMISSION = {
         ADD: 40,
         EDIT: 41,
         DELETE: 42,
-        LIST: 43
+        LIST: 43,
+        URL: '/equipment'
     },
 
     //نمودارها و اکسل
     EXCEL: {
-        LIST: 44
+        LIST: 44,
+        URL: '/reporting'
     }
 };
 
