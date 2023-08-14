@@ -192,9 +192,10 @@ const Setting = () => {
                                     color={'white'}
                                     height={48}
                                     loading={buttonLoader}
-                                    disabled={userInfo?.role !== 'admin'}
+                                    disabled={userInfo?.role !== 'Admin'}
                                 />
                             </form>
+                            {console.log(userInfo?.role !== 'Admin')}
                         </div>
                     </AddAdminWrapper>
                 </Modal>
