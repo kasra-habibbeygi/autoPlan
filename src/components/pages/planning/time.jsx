@@ -42,8 +42,6 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
         end: ''
     });
 
-    console.log(chosenEditItemDetails);
-
     const [finalResults, setFinalResults] = useState({
         end: {
             bigger: 0,

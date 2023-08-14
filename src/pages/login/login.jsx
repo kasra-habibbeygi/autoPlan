@@ -5,7 +5,7 @@ import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginStatusHandler } from '../../store/reducers/user';
+import { infoHandler, loginStatusHandler } from '../../store/reducers/user';
 
 //assets
 import { LoginStyle } from './login.style';
@@ -89,9 +89,19 @@ const Login = ({ showModal, setShowModal }) => {
                         token: res.data.token
                     })
                 );
-                dispatch(loginStatusHandler(true));
-                toast.success('ورود شما با موفقیت انجام شد');
-                navigate('/dashboard');
+                Axios.get('user/profile/').then(res => {
+                    dispatch(infoHandler(res.data));
+                    dispatch(loginStatusHandler(true));
+                    localStorage.setItem(
+                        'AutoPlanUserInfo',
+                        JSON.stringify({
+                            role: res.data.role,
+                            permissions: res.data.permission
+                        })
+                    );
+                    toast.success('ورود شما با موفقیت انجام شد');
+                    navigate('/dashboard');
+                });
             })
             .catch(() => {})
             .finally(() => {
@@ -101,8 +111,6 @@ const Login = ({ showModal, setShowModal }) => {
                 });
             });
     };
-
-    console.log();
 
     return (
         <Modal state={showModal} setState={setShowModal} handleClose={closeModalHandler}>

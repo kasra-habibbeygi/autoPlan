@@ -195,7 +195,6 @@ const Setting = () => {
                                     disabled={userInfo?.role !== 'Admin'}
                                 />
                             </form>
-                            {console.log(userInfo?.role !== 'Admin')}
                         </div>
                     </AddAdminWrapper>
                 </Modal>

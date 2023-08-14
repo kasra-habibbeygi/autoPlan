@@ -233,7 +233,6 @@ const Station = () => {
     };
 
     const deletePartsHandler = chosenPart => {
-        console.log(chosenPart);
         setPartsArray(prev => prev.filter(item => item.id !== chosenPart.id));
     };
 

@@ -81,7 +81,7 @@ article {
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 7px;
+    height: 7px;
 }
 
 a {
@@ -130,14 +130,14 @@ textarea {
     font-family: 'main' !important;
 }
 
-.MuiTimePickerToolbar-hourMinuteLabel{
-   direction: ltr !important
+.MuiTimePickerToolbar-hourMinuteLabel {
+    direction: ltr !important
 }
 
-.MuiTypography-overline{
+.MuiTypography-overline {
     display: none;
 }
 
-.MuiDialog-paper{
+.MuiDialog-paper {
     border-radius: 20px !important;
 }
