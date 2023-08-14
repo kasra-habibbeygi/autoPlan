@@ -123,7 +123,7 @@ const ShowAll = ({ chosenEditItemDetails, today }) => {
 
                         <div className='item'>
                             <p className='title'>6. تاریخ اجرا</p>
-                            <p className='text'>
+                            <p className='text text_date'>
                                 <span>{chosenEditItemDetails?.start_time}</span>
                                 <span>الی</span>
                                 <span>{chosenEditItemDetails?.end_time}</span>

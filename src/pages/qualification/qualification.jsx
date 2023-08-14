@@ -166,6 +166,10 @@ const Qualification = () => {
             .then(() => {
                 setConfirmModalStatus(false);
                 setReload(!reload);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {

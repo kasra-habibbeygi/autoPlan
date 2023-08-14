@@ -219,6 +219,10 @@ const Station = () => {
                 setReload(!reload);
                 toast.success('جایگاه  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {});
     };

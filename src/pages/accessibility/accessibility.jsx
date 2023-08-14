@@ -92,6 +92,10 @@ const Accessibility = () => {
                 setReload(!reload);
                 toast.success('پست سازمانی  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {
@@ -106,6 +110,10 @@ const Accessibility = () => {
                 setReloadUser(prev => !prev);
                 toast.success('پرسنل  با موفقیت حذف شد');
                 setConfirmUserModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {
