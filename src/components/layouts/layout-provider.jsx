@@ -27,9 +27,11 @@ const LayoutProvider = () => {
 
     useEffect(() => {
         if (localStorage.getItem('AutoPlaningToken') !== null) {
-            Axios.get('user/profile/').then(res => {
-                dispatch(infoHandler(res.data));
-            });
+            Axios.get('user/profile/')
+                .then(res => {
+                    dispatch(infoHandler(res.data));
+                })
+                .catch(() => {});
         } else {
             navigate('/');
         }
