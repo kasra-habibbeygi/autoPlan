@@ -149,7 +149,7 @@ const Station = () => {
                 car_type: item.car_type
             })),
             list_of_equipment_status: equipmentArrays.map(item => item.label),
-            station_status: activeStation
+            station_status: JSON.parse(data?.equipment_status) || activeStation
         };
 
         if (modalStatus === 'add') {
@@ -232,7 +232,7 @@ const Station = () => {
         setEquipmentArrays([]);
         setPartsArray([]);
         setEquipmentInputValue('');
-        setActiveStation(false);
+        setActiveStation(true);
         setSpecificDeviationId();
     };
 

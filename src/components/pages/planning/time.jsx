@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Grid, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, Grid, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
 import { useSelector } from 'react-redux';
@@ -33,6 +33,7 @@ function timeToSeconds(timeString) {
 
 const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setReload, setIsModalOpen }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
+    const [dataLoading, setDataLoading] = useState(true);
 
     const [deviationList, setDeviationList] = useState([]);
     const [reasonValue, setReasonValue] = useState();
@@ -114,7 +115,8 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                     );
                 }
             })
-            .catch(() => {});
+            .catch(() => {})
+            .finally(() => setDataLoading(false));
     }, []);
 
     const formSubmit = data => {
@@ -136,14 +138,10 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             diagnosis: Step2Id,
             exact_start_time: exactTime?.start,
             exact_end_time: exactTime?.end,
-            // delayed_start: finalResults?.start.bigger === 0 ? '0:0' : finalResults?.start.bigger,
-            // start_with_haste: finalResults?.start.lower === 0 ? '0:0' : finalResults?.start.lower,
-            // delayed_end: finalResults?.end.bigger === 0 ? '0:0' : finalResults?.end.bigger,
-            // end_with_haste: finalResults?.end.lower === 0 ? '0:0' : finalResults?.end.lower,
-            delayed_start: '00:00',
-            start_with_haste: '00:00',
-            delayed_end: '00:00',
-            end_with_haste: '00:06',
+            delayed_start: finalResults?.start.bigger === 0 ? '0:0' : finalResults?.start.bigger,
+            start_with_haste: finalResults?.start.lower === 0 ? '0:0' : finalResults?.start.lower,
+            delayed_end: finalResults?.end.bigger === 0 ? '0:0' : finalResults?.end.bigger,
+            end_with_haste: finalResults?.end.lower === 0 ? '0:0' : finalResults?.end.lower,
             the_reason_for_the_deviation: reasonValue?.value
         };
 
@@ -214,107 +212,115 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
 
     return (
         <form onSubmit={handleSubmit(formSubmit)}>
-            <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
-                    <TimePicker
-                        disabled
-                        title='زمان تقریبی شروع'
-                        hourDetail={{
-                            ...register('proximate_start_hour', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        minDetail={{
-                            ...register('proximate_start_min', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                    />
-                    <br />
-                    <TimePicker
-                        title='زمان واقعی شروع'
-                        hourDetail={{
-                            ...register('real_start_hour', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        minDetail={{
-                            ...register('real_start_min', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={(errors?.real_start_hour || errors?.real_start_min) && 'این فیلد اجباری است'}
-                    />
-                </Grid>
+            {dataLoading ? (
+                <div className='loading'>
+                    <CircularProgress />
+                </div>
+            ) : (
+                <>
+                    <Grid container spacing={4}>
+                        <Grid item xs={12} md={6}>
+                            <TimePicker
+                                disabled
+                                title='زمان تقریبی شروع'
+                                hourDetail={{
+                                    ...register('proximate_start_hour', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                minDetail={{
+                                    ...register('proximate_start_min', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                            />
+                            <br />
+                            <TimePicker
+                                title='زمان واقعی شروع'
+                                hourDetail={{
+                                    ...register('real_start_hour', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                minDetail={{
+                                    ...register('real_start_min', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={(errors?.real_start_hour || errors?.real_start_min) && 'این فیلد اجباری است'}
+                            />
+                        </Grid>
 
-                <Grid item xs={12} md={6}>
-                    <TimePicker
-                        disabled
-                        title='زمان تقریبی پایان'
-                        hourDetail={{
-                            ...register('proximate_finish_hour', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        minDetail={{
-                            ...register('proximate_finish_min', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                    />
-                    <br />
-                    <TimePicker
-                        title='زمان واقعی پایان'
-                        hourDetail={{
-                            ...register('real_finish_hour', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        minDetail={{
-                            ...register('real_finish_min', {
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            })
-                        }}
-                        error={(errors?.real_finish_hour || errors?.real_finish_min) && 'این فیلد اجباری است'}
-                    />
-                </Grid>
-                <FormButton
-                    text='محاسبه'
-                    loading={false}
-                    width='fit-content'
-                    className='submit'
-                    backgroundColor={'#174787'}
-                    onClick={() => {}}
-                    height='48px'
-                    type='submit'
-                    padding='15px'
-                    margin='10px 0 0 0'
-                />
-            </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TimePicker
+                                disabled
+                                title='زمان تقریبی پایان'
+                                hourDetail={{
+                                    ...register('proximate_finish_hour', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                minDetail={{
+                                    ...register('proximate_finish_min', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                            />
+                            <br />
+                            <TimePicker
+                                title='زمان واقعی پایان'
+                                hourDetail={{
+                                    ...register('real_finish_hour', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                minDetail={{
+                                    ...register('real_finish_min', {
+                                        required: {
+                                            value: true,
+                                            message: 'این فیلد اجباری است'
+                                        }
+                                    })
+                                }}
+                                error={(errors?.real_finish_hour || errors?.real_finish_min) && 'این فیلد اجباری است'}
+                            />
+                        </Grid>
+                        <FormButton
+                            text='محاسبه'
+                            loading={false}
+                            width='fit-content'
+                            className='submit'
+                            backgroundColor={'#174787'}
+                            onClick={() => {}}
+                            height='48px'
+                            type='submit'
+                            padding='15px'
+                            margin='10px 0 0 0'
+                        />
+                    </Grid>
+                </>
+            )}
 
             {finalResults.start.bigger !== 0 ||
             finalResults.start.lower !== 0 ||

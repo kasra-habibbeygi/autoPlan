@@ -92,6 +92,12 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                             chosenEditItemDetails?.diagnosis_info?.approximate_end_time[3] +
                                 chosenEditItemDetails?.diagnosis_info?.approximate_end_time[4]
                         );
+                        setPartsArray(
+                            chosenEditItemDetails?.diagnosis_info?.required_pieces?.map(item => ({
+                                id: uuidv4(),
+                                label: item
+                            }))
+                        );
                     }
                 }
             })
