@@ -23,7 +23,6 @@ const AddPartModal = ({ showPartsModal, setShowPartsModal, setPartsArray }) => {
         reset
     } = useForm({
         defaultValues: {
-            date: '',
             title: '',
             code: '',
             car_type: ''
@@ -54,19 +53,6 @@ const AddPartModal = ({ showPartsModal, setShowPartsModal, setPartsArray }) => {
                 <h2> کسری قطعات </h2>
 
                 <form onSubmit={handleSubmit(formSubmit)}>
-                    <Controller
-                        control={control}
-                        name='date'
-                        rules={{
-                            required: {
-                                value: true,
-                                message: 'این فیلد اجباری است'
-                            }
-                        }}
-                        render={({ field: { onChange, value } }) => {
-                            return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
-                        }}
-                    />
                     <InputComponent
                         title='نام قطعه'
                         placeHolder='نام قطعه'
