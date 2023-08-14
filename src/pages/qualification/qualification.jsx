@@ -47,7 +47,6 @@ const Qualification = () => {
     const [typesList, setTypesList] = useState([]);
     const [seatList, setSeatList] = useState([]);
     const [personnelList, setPersonnelList] = useState([]);
-    const [tableCol, setTableCol] = useState([]);
     const [reportList, setReportList] = useState([]);
     const [dateSearch, setDateSearch] = useState('');
 
@@ -252,7 +251,6 @@ const Qualification = () => {
                 return;
             });
 
-            setTableCol(columns);
             setTypesList(temp);
         });
         Axios.get('worker/admin/personnel/list_create/?page_size=500').then(res => {
@@ -292,7 +290,7 @@ const Qualification = () => {
                 <FormButton text='نمایش گزارش مجموع ظرفیت های امروز' onClick={() => setDetailModal(true)} />
             </div>
             <Table
-                columns={tableCol}
+                columns={columns}
                 rows={qualificationList}
                 pageStatus={pageStatus}
                 setPageStatus={setPageStatus}
