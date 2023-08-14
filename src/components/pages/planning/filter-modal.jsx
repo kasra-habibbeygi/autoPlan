@@ -36,12 +36,16 @@ const FilterModal = ({ setShowFilterModal }) => {
         Axios.get('/worker/admin/personnel/list_create/')
             .then(res => {
                 const newArray = res?.data?.results?.map(item => {
-                    return {
-                        label: item?.personnel?.fullname,
-                        value: item?.personnel?.id
-                    };
+                    if (item?.organizational_position_info?.technical_force) {
+                        return {
+                            label: item?.personnel?.fullname,
+                            value: item?.personnel?.id
+                        };
+                    }
+                    return null;
                 });
-                setPersonnelData(newArray);
+
+                setPersonnelData(newArray.filter(item => item !== null));
             })
             .catch(() => {});
 
@@ -53,10 +57,15 @@ const FilterModal = ({ setShowFilterModal }) => {
                         value: item?.type?.id
                     };
                 });
+
+                // console.log(res.data);
+                // console.log(newArray);
                 setSectionData(newArray);
             })
             .catch(() => {});
     }, []);
+
+    console.log(personnelData);
 
     const filterFormHandler = data => {
         for (const item in data) {
