@@ -49,6 +49,7 @@ const AddPost = ({ setReload, setState, editModalData, modalStatus, subModalClos
                     );
                 }
             })
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, [editModalData]);
 

@@ -71,48 +71,52 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
     const { errors, submitCount } = formState;
 
     useEffect(() => {
-        Axios.get('/worker/admin/reason-for-deviation/list_create/').then(res => {
-            let posts = res.data.results.map(item => ({
-                label: item.reason,
-                value: item.id
-            }));
+        Axios.get('/worker/admin/reason-for-deviation/list_create/')
+            .then(res => {
+                let posts = res.data.results.map(item => ({
+                    label: item.reason,
+                    value: item.id
+                }));
 
-            let filteredPosts = posts?.filter(
-                item => item.value === chosenEditItemDetails?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.id
-            )[0];
+                let filteredPosts = posts?.filter(
+                    item => item.value === chosenEditItemDetails?.time_to_troubleshoot_info?.the_reason_for_the_deviation_info?.id
+                )[0];
 
-            setDeviationList(posts);
+                setDeviationList(posts);
 
-            if (modalFormStatus === 'edit') {
-                setReasonValue(filteredPosts);
-            }
-        });
+                if (modalFormStatus === 'edit') {
+                    setReasonValue(filteredPosts);
+                }
+            })
+            .catch(() => {});
 
-        Axios.get('worker/admin/diagnosis/list_create/').then(res => {
-            let temp = res.data.results.filter(item => item.id === Step2Id)[0];
-            setValue('proximate_finish_hour', temp?.approximate_end_time.split(':')[0]);
-            setValue('proximate_finish_min', temp?.approximate_end_time.split(':')[1]);
-            setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
-            setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
+        Axios.get('worker/admin/diagnosis/list_create/')
+            .then(res => {
+                let temp = res.data.results.filter(item => item.id === Step2Id)[0];
+                setValue('proximate_finish_hour', temp?.approximate_end_time.split(':')[0]);
+                setValue('proximate_finish_min', temp?.approximate_end_time.split(':')[1]);
+                setValue('proximate_start_hour', temp?.approximate_start_time.split(':')[0]);
+                setValue('proximate_start_min', temp?.approximate_start_time.split(':')[1]);
 
-            if (modalFormStatus === 'edit' && chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time) {
-                setValue('real_start_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0]);
-                setValue('real_start_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1]);
-                setValue('real_finish_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0]);
-                setValue('real_finish_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1]);
+                if (modalFormStatus === 'edit' && chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time) {
+                    setValue('real_start_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0]);
+                    setValue('real_start_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1]);
+                    setValue('real_finish_hour', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0]);
+                    setValue('real_finish_min', chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1]);
 
-                timeCounter(
-                    chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0],
-                    chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1],
-                    chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0],
-                    chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1],
-                    temp?.approximate_end_time.split(':')[0],
-                    temp?.approximate_end_time.split(':')[1],
-                    temp?.approximate_start_time.split(':')[0],
-                    temp?.approximate_start_time.split(':')[1]
-                );
-            }
-        });
+                    timeCounter(
+                        chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[0],
+                        chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time.split(':')[1],
+                        chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[0],
+                        chosenEditItemDetails.time_to_troubleshoot_info.exact_end_time.split(':')[1],
+                        temp?.approximate_end_time.split(':')[0],
+                        temp?.approximate_end_time.split(':')[1],
+                        temp?.approximate_start_time.split(':')[0],
+                        temp?.approximate_start_time.split(':')[1]
+                    );
+                }
+            })
+            .catch(() => {});
     }, []);
 
     const formSubmit = data => {

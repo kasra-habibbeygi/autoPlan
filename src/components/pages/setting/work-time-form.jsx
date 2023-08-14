@@ -57,6 +57,7 @@ const WorkTimeForm = () => {
                         dispatch(infoHandler(res.data));
                     });
                 })
+                .catch(() => {})
                 .finally(() => {
                     setButtonLoader(false);
                 });
@@ -64,18 +65,20 @@ const WorkTimeForm = () => {
     };
 
     useEffect(() => {
-        Axios.get('worker/admin/representation-working-hours/list_create/').then(res => {
-            setGetTime(res.data.results);
-            if (res.data.results.length) {
-                const start_time = res.data.results[0].start_time.split(':');
-                const end_time = res.data.results[0].end_time.split(':');
+        Axios.get('worker/admin/representation-working-hours/list_create/')
+            .then(res => {
+                setGetTime(res.data.results);
+                if (res.data.results.length) {
+                    const start_time = res.data.results[0].start_time.split(':');
+                    const end_time = res.data.results[0].end_time.split(':');
 
-                setValue('approximate_start_time_hour', start_time[0]);
-                setValue('approximate_start_time_min', start_time[1]);
-                setValue('approximate_end_time_hour', end_time[0]);
-                setValue('approximate_end_time_min', end_time[1]);
-            }
-        });
+                    setValue('approximate_start_time_hour', start_time[0]);
+                    setValue('approximate_start_time_min', start_time[1]);
+                    setValue('approximate_end_time_hour', end_time[0]);
+                    setValue('approximate_end_time_min', end_time[1]);
+                }
+            })
+            .catch(() => {});
     }, [reload]);
 
     return (

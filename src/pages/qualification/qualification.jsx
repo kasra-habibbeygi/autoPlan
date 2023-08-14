@@ -239,30 +239,36 @@ const Qualification = () => {
     };
 
     useEffect(() => {
-        Axios.get('worker/admin/organizational-position/list_create/?page_size=15').then(res => {
-            let temp = [];
+        Axios.get('worker/admin/organizational-position/list_create/?page_size=15')
+            .then(res => {
+                let temp = [];
 
-            res.data.results.map(item => {
-                if (item.technical_force) {
-                    temp.push({
-                        label: item.title,
-                        value: item.id
-                    });
-                }
-                return;
-            });
+                res.data.results.map(item => {
+                    if (item.technical_force) {
+                        temp.push({
+                            label: item.title,
+                            value: item.id
+                        });
+                    }
+                    return;
+                });
 
-            setTableCol(columns);
-            setTypesList(temp);
-        });
-        Axios.get('worker/admin/personnel/list_create/?page_size=500').then(res => {
-            setPersonnelList(res.data.results);
-        });
+                setTableCol(columns);
+                setTypesList(temp);
+            })
+            .catch(() => {});
+        Axios.get('worker/admin/personnel/list_create/?page_size=500')
+            .then(res => {
+                setPersonnelList(res.data.results);
+            })
+            .catch(() => {});
 
-        Axios.get('worker/admin/seat-capacity/list_create/?page_size=500').then(res => {
-            const newArray = res?.data?.results?.filter(item => item.station_status);
-            setSeatList(newArray);
-        });
+        Axios.get('worker/admin/seat-capacity/list_create/?page_size=500')
+            .then(res => {
+                const newArray = res?.data?.results?.filter(item => item.station_status);
+                setSeatList(newArray);
+            })
+            .catch(() => {});
     }, []);
 
     return (
