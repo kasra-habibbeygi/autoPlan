@@ -236,7 +236,7 @@ const Planning = () => {
             renderCell: data => (
                 <div>
                     {!data?.time_to_troubleshoot_info.start_with_haste || data?.time_to_troubleshoot_info.start_with_haste === ''
-                        ? 'ندارد'
+                        ? 'تعریف نشده'
                         : data?.time_to_troubleshoot_info.start_with_haste}
                 </div>
             )
@@ -248,7 +248,7 @@ const Planning = () => {
             renderCell: data => (
                 <div>
                     {!data?.time_to_troubleshoot_info.end_with_haste || data?.time_to_troubleshoot_info.end_with_haste === ''
-                        ? 'ندارد'
+                        ? 'تعریف نشده'
                         : data?.time_to_troubleshoot_info.end_with_haste}
                 </div>
             )
@@ -260,7 +260,7 @@ const Planning = () => {
             renderCell: data => (
                 <div>
                     {!data?.time_to_troubleshoot_info.delayed_start || data?.time_to_troubleshoot_info.delayed_start === ''
-                        ? 'ندارد'
+                        ? 'تعریف نشده'
                         : data?.time_to_troubleshoot_info.delayed_start}
                 </div>
             )
@@ -272,7 +272,7 @@ const Planning = () => {
             renderCell: data => (
                 <div>
                     {!data?.time_to_troubleshoot_info.delayed_end || data?.time_to_troubleshoot_info.delayed_end === ''
-                        ? 'ندارد'
+                        ? 'تعریف نشده'
                         : data?.time_to_troubleshoot_info.delayed_end}
                 </div>
             )
