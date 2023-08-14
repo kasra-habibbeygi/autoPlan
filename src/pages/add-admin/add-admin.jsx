@@ -138,8 +138,12 @@ const AddAdmin = () => {
         Axios.delete(`user/super-admin/representation/retrieve_update_destroy/?pk=${specificDeviationId}`)
             .then(() => {
                 setReload(!reload);
-                toast.success('انحراف  با موفقیت حذف شد');
+                toast.success('نمایندگی  با موفقیت حذف شد');
                 setConfirmModalStatus(false);
+                setPageStatus({
+                    ...pageStatus,
+                    current: 1
+                });
             })
             .catch(() => {})
             .finally(() => {
@@ -254,7 +258,7 @@ const AddAdmin = () => {
                         </div>
 
                         <FormButton
-                            text='افزودن'
+                            text={modalStatus === 'add' ? 'افزودن' : 'ویرایش'}
                             type='submit'
                             backgroundColor='#174787'
                             color={'white'}

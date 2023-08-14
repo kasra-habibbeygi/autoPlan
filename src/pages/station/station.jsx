@@ -102,8 +102,8 @@ const Station = () => {
             key: 'create_at'
         },
         { id: 4, title: 'کد', key: 'code' },
-        { id: 5, title: 'وضعیت قطعات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
-        { id: 6, title: 'وضعیت تجهیزات', key: 'condition_of_parts', renderCell: data => (data.condition_of_parts ? 'کامل' : 'ناقص') },
+        { id: 5, title: 'وضعیت قطعات', key: 'condition_of_parts', renderCell: data => (data.condition_of_parts ? 'کامل' : 'ناقص') },
+        { id: 6, title: 'وضعیت تجهیزات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
         {
             id: 7,
             title: 'نوع',
