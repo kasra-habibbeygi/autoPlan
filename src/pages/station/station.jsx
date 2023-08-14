@@ -136,7 +136,7 @@ const Station = () => {
     ];
 
     const formSubmit = data => {
-        setButtonLoader({ ...buttonLoader, modalButton: true });
+        // setButtonLoader({ ...buttonLoader, modalButton: true });
 
         const newData = {
             ...data,
@@ -149,32 +149,32 @@ const Station = () => {
                 car_type: item.car_type
             })),
             list_of_equipment_status: equipmentArrays.map(item => item.label),
-            station_status: activeStation
+            station_status: JSON.parse(data?.equipment_status) || JSON.parse(activeStation)
         };
 
         console.log(newData);
 
-        if (modalStatus === 'add') {
-            Axios.post('/worker/admin/seat-capacity/list_create/', newData)
-                .then(() => {
-                    setReload(!reload);
-                    toast.success('جایگاه جدید با موفقیت ثبت شد');
-                    setModalOpen(false);
-                    closeModalFunctions();
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
-        } else {
-            Axios.put(`/worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`, newData)
-                .then(() => {
-                    setReload(!reload);
-                    toast.success('جایگاه با موفقیت ویرایش شد');
-                    setModalOpen(false);
-                    closeModalFunctions();
-                })
-                .catch(() => {})
-                .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
-        }
+        // if (modalStatus === 'add') {
+        //     Axios.post('/worker/admin/seat-capacity/list_create/', newData)
+        //         .then(() => {
+        //             setReload(!reload);
+        //             toast.success('جایگاه جدید با موفقیت ثبت شد');
+        //             setModalOpen(false);
+        //             closeModalFunctions();
+        //         })
+        //         .catch(() => {})
+        //         .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
+        // } else {
+        //     Axios.put(`/worker/admin/seat-capacity/retrieve_update_destroy/?pk=${specificDeviationId}`, newData)
+        //         .then(() => {
+        //             setReload(!reload);
+        //             toast.success('جایگاه با موفقیت ویرایش شد');
+        //             setModalOpen(false);
+        //             closeModalFunctions();
+        //         })
+        //         .catch(() => {})
+        //         .finally(() => setButtonLoader({ ...buttonLoader, modalButton: false }));
+        // }
     };
 
     const editModalHandler = data => {
