@@ -31,7 +31,16 @@ function timeToSeconds(timeString) {
     return totalSeconds;
 }
 
-const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setReload, setIsModalOpen }) => {
+const Time = ({
+    Step2Id,
+    modalFormStatus,
+    chosenEditItemDetails,
+    setStep,
+    setReload,
+    setIsModalOpen,
+    setConfirmModalStatus,
+    setDeflection
+}) => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [dataLoading, setDataLoading] = useState(true);
 
@@ -150,10 +159,26 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                 `/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails?.time_to_troubleshoot_info?.id}`,
                 newData
             )
-                .then(() => {
+                .then(res => {
                     setStep(1);
                     setReload(prev => !prev);
+                    setDeflection({
+                        delayed_start: finalResults.start.bigger === 0 ? '00:00' : finalResults.start.bigger,
+                        start_with_haste: finalResults.start.lower === 0 ? '00:00' : finalResults.start.lower,
+                        delayed_end: finalResults.end.bigger === 0 ? '00:00' : finalResults.end.bigger,
+                        end_with_haste: finalResults.end.lower === 0 ? '00:00' : finalResults.end.lower,
+                        time_to_troubleshoot: res.data.id
+                    });
                     setIsModalOpen('');
+
+                    if (
+                        finalResults.end.lower !== 0 ||
+                        finalResults.end.bigger !== 0 ||
+                        finalResults.start.lower !== 0 ||
+                        finalResults.start.bigger !== 0
+                    ) {
+                        setConfirmModalStatus(true);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -161,10 +186,27 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
                 });
         } else {
             Axios.post('worker/admin/time-to-troubleshoot/list_create/', newData)
-                .then(() => {
+                .then(res => {
                     setStep(1);
                     setReload(prev => !prev);
                     setIsModalOpen('');
+
+                    setDeflection({
+                        delayed_start: finalResults.start.bigger === 0 ? '00:00' : finalResults.start.bigger,
+                        start_with_haste: finalResults.start.lower === 0 ? '00:00' : finalResults.start.lower,
+                        delayed_end: finalResults.end.bigger === 0 ? '00:00' : finalResults.end.bigger,
+                        end_with_haste: finalResults.end.lower === 0 ? '00:00' : finalResults.end.lower,
+                        time_to_troubleshoot: res.data.id
+                    });
+
+                    if (
+                        finalResults.end.lower !== 0 ||
+                        finalResults.end.bigger !== 0 ||
+                        finalResults.start.lower !== 0 ||
+                        finalResults.start.bigger !== 0
+                    ) {
+                        setConfirmModalStatus(true);
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {

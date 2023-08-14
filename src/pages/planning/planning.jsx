@@ -21,6 +21,7 @@ import FormButton from '../../components/form-groups/form-button';
 import { ActionCell } from '../deviation/deviation.style';
 import { useSearchParams } from 'react-router-dom';
 import tools from '../../utils/tools';
+import ConfirmModal from '../../components/template/confirm-modal';
 
 const Planning = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -33,7 +34,9 @@ const Planning = () => {
     const [planningList, setPlanningList] = useState();
     const [reload, setReload] = useState(false);
     const [modalFormStatus, setModalFormStatus] = useState('add');
+    const [confirmModalStatus, setConfirmModalStatus] = useState(false);
     const [chosenEditItemDetails, setChosenEditItemDetails] = useState();
+    const [deflection, setDeflection] = useState({});
     const [pageStatus, setPageStatus] = useState({
         total: 1,
         current: 1
@@ -320,6 +323,17 @@ const Planning = () => {
         }
     ];
 
+    const confirmModalHandler = () => {
+        Axios.post('worker/admin/time-to-troubleshoot/automatic-alculation/', deflection)
+            .then(() => {
+                setConfirmModalStatus(false);
+            })
+            .catch(() => {})
+            .finally(() => {
+                setReload(!reload);
+            });
+    };
+
     return (
         <PlanningField>
             <PagesHeader
@@ -377,10 +391,19 @@ const Planning = () => {
                             chosenEditItemDetails={chosenEditItemDetails}
                             setReload={setReload}
                             setIsModalOpen={setIsModalOpen}
+                            setConfirmModalStatus={setConfirmModalStatus}
+                            setDeflection={setDeflection}
                         />
                     )}
                 </div>
             </Modal>
+            <ConfirmModal
+                status={confirmModalStatus}
+                setStatus={setConfirmModalStatus}
+                title='آیا میخواهید انحراف به صورت اتوماتیک محاسبه شود ؟'
+                deleteHandler={confirmModalHandler}
+                loading={false}
+            />
         </PlanningField>
     );
 };
