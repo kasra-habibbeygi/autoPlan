@@ -146,7 +146,10 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
         };
 
         if (modalFormStatus === 'edit' && chosenEditItemDetails.time_to_troubleshoot_info.exact_start_time) {
-            Axios.put(`/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
+            Axios.put(
+                `/worker/admin/time-to-troubleshoot/retrieve_update/?pk=${chosenEditItemDetails?.time_to_troubleshoot_info?.id}`,
+                newData
+            )
                 .then(() => {
                     setStep(1);
                     setReload(prev => !prev);
