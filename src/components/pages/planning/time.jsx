@@ -42,6 +42,8 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
         end: ''
     });
 
+    console.log(chosenEditItemDetails);
+
     const [finalResults, setFinalResults] = useState({
         end: {
             bigger: 0,
@@ -132,10 +134,14 @@ const Time = ({ Step2Id, modalFormStatus, chosenEditItemDetails, setStep, setRel
             diagnosis: Step2Id,
             exact_start_time: exactTime?.start,
             exact_end_time: exactTime?.end,
-            delayed_start: finalResults?.start.bigger === 0 ? '0:0' : finalResults?.start.bigger,
-            start_with_haste: finalResults?.start.lower === 0 ? '0:0' : finalResults?.start.lower,
-            delayed_end: finalResults?.end.bigger === 0 ? '0:0' : finalResults?.end.bigger,
-            end_with_haste: finalResults?.end.lower === 0 ? '0:0' : finalResults?.end.lower,
+            // delayed_start: finalResults?.start.bigger === 0 ? '0:0' : finalResults?.start.bigger,
+            // start_with_haste: finalResults?.start.lower === 0 ? '0:0' : finalResults?.start.lower,
+            // delayed_end: finalResults?.end.bigger === 0 ? '0:0' : finalResults?.end.bigger,
+            // end_with_haste: finalResults?.end.lower === 0 ? '0:0' : finalResults?.end.lower,
+            delayed_start: '00:00',
+            start_with_haste: '00:00',
+            delayed_end: '00:00',
+            end_with_haste: '00:06',
             the_reason_for_the_deviation: reasonValue?.value
         };
 
