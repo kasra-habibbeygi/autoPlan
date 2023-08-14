@@ -223,9 +223,9 @@ const Planning = () => {
             key: 'exact_end_time',
             renderCell: data => (
                 <div>
-                    {!data?.time_to_troubleshoot_info.exact_end_time || data?.time_to_troubleshoot_info.exact_end_time === ''
+                    {!data?.time_to_troubleshoot_info?.exact_end_time || data?.time_to_troubleshoot_info?.exact_end_time === ''
                         ? 'تعریف نشده'
-                        : data?.time_to_troubleshoot_info.exact_end_time}
+                        : data?.time_to_troubleshoot_info?.exact_end_time}
                 </div>
             )
         },
@@ -235,9 +235,9 @@ const Planning = () => {
             key: 'start_with_haste',
             renderCell: data => (
                 <div>
-                    {!data?.time_to_troubleshoot_info.start_with_haste || data?.time_to_troubleshoot_info.start_with_haste === ''
+                    {!data?.time_to_troubleshoot_info?.start_with_haste || data?.time_to_troubleshoot_info?.start_with_haste === ''
                         ? 'تعریف نشده'
-                        : data?.time_to_troubleshoot_info.start_with_haste}
+                        : data?.time_to_troubleshoot_info?.start_with_haste}
                 </div>
             )
         },
@@ -247,9 +247,9 @@ const Planning = () => {
             key: 'end_with_haste',
             renderCell: data => (
                 <div>
-                    {!data?.time_to_troubleshoot_info.end_with_haste || data?.time_to_troubleshoot_info.end_with_haste === ''
+                    {!data?.time_to_troubleshoot_info?.end_with_haste || data?.time_to_troubleshoot_info?.end_with_haste === ''
                         ? 'تعریف نشده'
-                        : data?.time_to_troubleshoot_info.end_with_haste}
+                        : data?.time_to_troubleshoot_info?.end_with_haste}
                 </div>
             )
         },
@@ -259,9 +259,9 @@ const Planning = () => {
             key: 'delayed_start',
             renderCell: data => (
                 <div>
-                    {!data?.time_to_troubleshoot_info.delayed_start || data?.time_to_troubleshoot_info.delayed_start === ''
+                    {!data?.time_to_troubleshoot_info?.delayed_start || data?.time_to_troubleshoot_info?.delayed_start === ''
                         ? 'تعریف نشده'
-                        : data?.time_to_troubleshoot_info.delayed_start}
+                        : data?.time_to_troubleshoot_info?.delayed_start}
                 </div>
             )
         },
@@ -271,9 +271,9 @@ const Planning = () => {
             key: 'delayed_end',
             renderCell: data => (
                 <div>
-                    {!data?.time_to_troubleshoot_info.delayed_end || data?.time_to_troubleshoot_info.delayed_end === ''
+                    {!data?.time_to_troubleshoot_info?.delayed_end || data?.time_to_troubleshoot_info?.delayed_end === ''
                         ? 'تعریف نشده'
-                        : data?.time_to_troubleshoot_info.delayed_end}
+                        : data?.time_to_troubleshoot_info?.delayed_end}
                 </div>
             )
         },
