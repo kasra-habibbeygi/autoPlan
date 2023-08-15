@@ -49,23 +49,24 @@ const FilterModal = ({ setShowFilterModal }) => {
             })
             .catch(() => {});
 
-        Axios.get('/worker/admin/capacity-measurement/list_create/')
+        Axios.get('/worker/admin/organizational-position/list_create/')
             .then(res => {
                 const newArray = res?.data?.results?.map(item => {
-                    return {
-                        label: item?.type?.type_info?.title,
-                        value: item?.type?.id
-                    };
+                    if (item?.technical_force) {
+                        return {
+                            label: item?.title,
+                            value: item?.id
+                        };
+                    }
+                    return null;
                 });
 
-                // console.log(res.data);
-                // console.log(newArray);
-                setSectionData(newArray);
+                setSectionData(newArray.filter(item => item !== null));
             })
             .catch(() => {});
     }, []);
 
-    console.log(personnelData);
+    // console.log(personnelData);
 
     const filterFormHandler = data => {
         for (const item in data) {

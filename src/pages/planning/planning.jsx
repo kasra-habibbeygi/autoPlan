@@ -57,47 +57,47 @@ const Planning = () => {
         const typeIdQuery = searchParams.get('type_id');
         const personnelIdQuery = searchParams.get('personnel_id');
 
-        if (dateQuery || typeIdQuery || personnelIdQuery) {
-            setPageStatus(prev => ({
-                ...prev,
-                current: 1
-            }));
-            Axios.get(`/worker/admin/repair-planning/filter-by/?pageSize=10&page=${pageStatus.current}`, {
-                params: {
-                    ...(dateQuery && {
-                        date: dateQuery
-                    }),
-                    ...(typeIdQuery && {
-                        type_id: typeIdQuery
-                    }),
-                    ...(personnelIdQuery && {
-                        personnel_id: personnelIdQuery
-                    })
-                }
+        // if (dateQuery || typeIdQuery || personnelIdQuery) {
+        setPageStatus(prev => ({
+            ...prev,
+            current: 1
+        }));
+        Axios.get(`worker/admin/vehicle-specifications/list_create/?pageSize=10&page=${pageStatus.current}`, {
+            params: {
+                ...(dateQuery && {
+                    date: dateQuery
+                }),
+                ...(typeIdQuery && {
+                    type_id: typeIdQuery
+                }),
+                ...(personnelIdQuery && {
+                    personnel_id: personnelIdQuery
+                })
+            }
+        })
+            .then(res => {
+                setPlanningList(res.data.results);
+
+                setPageStatus({
+                    ...pageStatus,
+                    total: res.data.total
+                });
             })
-                .then(res => {
-                    setPlanningList(res.data.results);
+            .catch(() => {})
+            .finally(() => setTableLoading(false));
+        // } else {
+        //     Axios.get(`worker/admin/vehicle-specifications/list_create/?pageSize=10&page=${pageStatus.current}`)
+        //         .then(res => {
+        //             setPlanningList(res.data.results);
 
-                    setPageStatus({
-                        ...pageStatus,
-                        total: res.data.total
-                    });
-                })
-                .catch(() => {})
-                .finally(() => setTableLoading(false));
-        } else {
-            Axios.get(`worker/admin/vehicle-specifications/list_create/?pageSize=10&page=${pageStatus.current}`)
-                .then(res => {
-                    setPlanningList(res.data.results);
-
-                    setPageStatus({
-                        ...pageStatus,
-                        total: res.data.total
-                    });
-                })
-                .catch(() => {})
-                .finally(() => setTableLoading(false));
-        }
+        //             setPageStatus({
+        //                 ...pageStatus,
+        //                 total: res.data.total
+        //             });
+        //         })
+        //         .catch(() => {})
+        //         .finally(() => setTableLoading(false));
+        // }
     }, [reload, pageStatus.current, searchParams]);
 
     const date = new Date();
