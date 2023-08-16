@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
+import Axios from '../../configs/axios';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete, Checkbox, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
-import Axios from '../../configs/axios';
 import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -57,7 +57,7 @@ const Station = () => {
     const { register, control, handleSubmit, formState, reset, setValue, watch } = useForm({
         mode: 'onTouched'
     });
-    const { errors, submitCount } = formState;
+    const { errors } = formState;
 
     const equipmentStatus = watch('equipment_status');
 
@@ -217,7 +217,6 @@ const Station = () => {
         if (equipmentInputValue.trim()) {
             setEquipmentArrays(prev => [...prev, { id: uuidv4(), label: equipmentInputValue }]);
             setEquipmentInputValue('');
-
             addInputEquipmentRef.current.focus();
         }
     };

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Axios from '../../configs/axios';
 import { useSelector } from 'react-redux';
 import PERMISSION from '../../utils/permission.ts';
+import { useSearchParams } from 'react-router-dom';
 
 //Assets
 import { PlanningField } from './planning.style';
 import pen from './../../assets/images/global/pen.svg';
+import { ActionCell } from '../deviation/deviation.style';
 
 //Components
 import Table from '../../components/template/Table';
@@ -18,10 +20,10 @@ import CarDetail from '../../components/pages/planning/car-detail';
 import Diagnosis from '../../components/pages/planning/diagnosis';
 import Time from '../../components/pages/planning/time';
 import FormButton from '../../components/form-groups/form-button';
-import { ActionCell } from '../deviation/deviation.style';
-import { useSearchParams } from 'react-router-dom';
-import tools from '../../utils/tools';
 import ConfirmModal from '../../components/template/confirm-modal';
+
+// Tools
+import tools from '../../utils/tools';
 
 const Planning = () => {
     const userPermissions = useSelector(state => state.User.info.permission);

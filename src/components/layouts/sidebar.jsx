@@ -22,13 +22,14 @@ import user from './../../assets/images/icons/User.svg';
 import { SidebarStyle } from './sidebar.style';
 import Accumulator from './../../assets/images/icons/Accumulator.svg';
 
-
 //Components
 import FormButton from '../form-groups/form-button';
 import ConfirmModal from '../template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
+
+// MUI
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 
 const SideBar = () => {
@@ -61,7 +62,7 @@ const SideBar = () => {
             <ul>
                 {userRole.role !== 'SuperAdmin' && (
                     <>
-                        {permissionHandler(['DASHBOARD.LIST']) && (
+                        {permissionHandler(['DASHBOARD.LIST', 'VEHICLE_SPECIFICATIONS.LIST', 'EXCEL.LIST']) && (
                             <li>
                                 <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>
@@ -70,8 +71,7 @@ const SideBar = () => {
                                     </div>
                                 </NavLink>
                             </li>
-                        )}
-             
+                        )}             
                 
                         {permissionHandler(['CAPACITY_MEASUREMENT.ADD', 'CAPACITY_MEASUREMENT.EDIT', 'CAPACITY_MEASUREMENT.DELETE']) && (
                             <li>
@@ -83,7 +83,6 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-
 
                         {permissionHandler(['VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME', 'VEHICLE_SPECIFICATIONS.LIST']) && (
                             <li>

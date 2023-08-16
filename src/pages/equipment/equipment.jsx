@@ -193,7 +193,6 @@ const Equipment = () => {
                 }}
             >
                 <h2> کسری تجهیزات </h2>
-
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <Controller
                         control={control}
