@@ -28,8 +28,6 @@ import ConfirmModal from '../../components/template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
-import SelectInput from '../../components/form-groups/select-input';
-import AddPartModal from '../../components/pages/station/addPartModal';
 
 const Station = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -44,8 +42,6 @@ const Station = () => {
     const [activeStation, setActiveStation] = useState(true);
     const [equipmentInputValue, setEquipmentInputValue] = useState('');
     const [equipmentArrays, setEquipmentArrays] = useState([]);
-    const [partsArray, setPartsArray] = useState([]);
-    const [showPartsModal, setShowPartsModal] = useState(false);
     const [buttonLoader, setButtonLoader] = useState({
         modalButton: false,
         delete: false
@@ -63,7 +59,6 @@ const Station = () => {
     });
     const { errors, submitCount } = formState;
 
-    const conditionOfParts = watch('condition_of_parts');
     const equipmentStatus = watch('equipment_status');
 
     useEffect(() => {
@@ -106,16 +101,15 @@ const Station = () => {
             key: 'create_at'
         },
         { id: 4, title: 'کد', key: 'code' },
-        { id: 5, title: 'وضعیت قطعات', key: 'condition_of_parts', renderCell: data => (data.condition_of_parts ? 'کامل' : 'ناقص') },
-        { id: 6, title: 'وضعیت تجهیزات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
+        { id: 5, title: 'وضعیت تجهیزات', key: 'equipment_status', renderCell: data => (data.equipment_status ? 'کامل' : 'ناقص') },
         {
-            id: 7,
+            id: 6,
             title: 'نوع',
             key: 'type',
             renderCell: data => typeList.filter(item => item.value === data.type)[0]?.label
         },
         {
-            id: 8,
+            id: 7,
             title: 'عملیات',
             key: 'actions',
             renderCell: data => (
@@ -140,14 +134,7 @@ const Station = () => {
 
         const newData = {
             ...data,
-            condition_of_parts: JSON.parse(data.condition_of_parts),
             equipment_status: JSON.parse(data.equipment_status),
-            list_of_condition_of_parts: partsArray.map(item => ({
-                date: item.date,
-                title: item.title,
-                code: item.code,
-                car_type: item.car_type
-            })),
             list_of_equipment_status: equipmentArrays.map(item => item.label),
             station_status: JSON.parse(data?.equipment_status) || activeStation
         };
@@ -180,19 +167,11 @@ const Station = () => {
         setModalOpen(true);
         setValue('code', data.code);
         setValue('type', data.type);
-        setValue('condition_of_parts', data.condition_of_parts);
         setValue('equipment_status', data.equipment_status);
         setEquipmentArrays(
             data.equipment_deficits.map(item => ({
                 id: uuidv4(),
                 label: item.equipment
-            }))
-        );
-        setPartsArray(
-            data.lack_parts.map(item => ({
-                ...item,
-                id: uuidv4(),
-                fullText: `${item?.title} - ${item?.code} - ${item?.car_type}`
             }))
         );
         setActiveStation(data.station_status);
@@ -207,7 +186,6 @@ const Station = () => {
     const addModalHandler = () => {
         setModalStatus('add');
         setModalOpen(true);
-        setValue('condition_of_parts', false);
         setValue('equipment_status', false);
     };
 
@@ -230,14 +208,9 @@ const Station = () => {
     const closeModalFunctions = () => {
         reset();
         setEquipmentArrays([]);
-        setPartsArray([]);
         setEquipmentInputValue('');
         setActiveStation(true);
         setSpecificDeviationId();
-    };
-
-    const deletePartsHandler = chosenPart => {
-        setPartsArray(prev => prev.filter(item => item.id !== chosenPart.id));
     };
 
     const addEquipmentHandler = () => {
@@ -301,45 +274,6 @@ const Station = () => {
                             error={errors?.code}
                             placeHolder='کد'
                         />
-
-                        <div className='radios'>
-                            <p className='title'>وضعیت قطعات</p>
-                            <Controller
-                                control={control}
-                                name='condition_of_parts'
-                                render={({ field: { onChange, value } }) => (
-                                    <RadioGroup row value={value} onChange={event => onChange(event.target.value)}>
-                                        <FormControlLabel
-                                            value={false}
-                                            control={<Radio />}
-                                            label='ناقص'
-                                            sx={{ backgroundColor: 'transparent' }}
-                                        />
-                                        <FormControlLabel
-                                            value={true}
-                                            control={<Radio />}
-                                            label='کامل'
-                                            sx={{ backgroundColor: 'transparent' }}
-                                        />
-                                    </RadioGroup>
-                                )}
-                            />
-                            <p className='error'>{errors?.partsStatus?.message}</p>
-                        </div>
-                        {(conditionOfParts === 'false' || conditionOfParts === false) && (
-                            <>
-                                <SelectInput
-                                    title='نام قطعه'
-                                    onClick={() => setShowPartsModal(true)}
-                                    items={partsArray}
-                                    submitCount={submitCount}
-                                    setDetails={setPartsArray}
-                                    placeHolder={'نام قطعات'}
-                                    shouldValidate={false}
-                                    deleteHandler={deletePartsHandler}
-                                />
-                            </>
-                        )}
                         <div className='radios'>
                             <p className='title'>وضعیت تجهیزات</p>
                             <Controller
@@ -388,7 +322,7 @@ const Station = () => {
                                     </div>
                                 </div>
                                 <div className='options_array'>
-                                    {equipmentArrays.map(item => (
+                                    {equipmentArrays?.map(item => (
                                         <div
                                             className='options_wrapper'
                                             key={item.id}
@@ -423,8 +357,6 @@ const Station = () => {
                         />
                     </form>
                 </div>
-
-                <AddPartModal showPartsModal={showPartsModal} setShowPartsModal={setShowPartsModal} setPartsArray={setPartsArray} />
             </Modal>
             <ConfirmModal
                 status={confirmModalStatus}

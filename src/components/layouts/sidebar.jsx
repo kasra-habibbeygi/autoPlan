@@ -145,16 +145,6 @@ const SideBar = () => {
                                         <Typography sx={{marginRight : '10px'}}>تعاریف پایه</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        {permissionHandler(['SEAT_CAPACITY.ADD', 'SEAT_CAPACITY.EDIT', 'SEAT_CAPACITY.DELETE']) && (
-                                            <li>
-                                                <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
-                                                    <div className='item'>
-                                                        <img src={blocking} />
-                                                        <p>جایگاه</p>
-                                                    </div>
-                                                </NavLink>
-                                            </li>
-                                        )}
                                         {permissionHandler(['SETTING_RECEPTION.ADD', 'SETTING_RECEPTION.EDIT', 'REPRESENTATION_WORKING_TIME.ADD', 'REPRESENTATION_WORKING_TIME.EDIT']) && (
                                             <li>
                                                 <NavLink to='/setting' onClick={() => dispatch(closeSideBar())}>
@@ -165,7 +155,29 @@ const SideBar = () => {
                                                 </NavLink>
                                             </li>
                                         )}
-                    
+                                        
+                                        {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
+                                            <li>
+                                                <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
+                                                    <div className='item'>
+                                                        <img src={UserId} />
+                                                        <p>اضافه کردن دسترسی</p>
+                                                    </div>
+                                                </NavLink>
+                                            </li>
+                                        )}
+                                        
+                                        {permissionHandler(['SEAT_CAPACITY.ADD', 'SEAT_CAPACITY.EDIT', 'SEAT_CAPACITY.DELETE']) && (
+                                            <li>
+                                                <NavLink to='/station' onClick={() => dispatch(closeSideBar())}>
+                                                    <div className='item'>
+                                                        <img src={blocking} />
+                                                        <p>جایگاه</p>
+                                                    </div>
+                                                </NavLink>
+                                            </li>
+                                        )}
+                              
                                         {permissionHandler(['DEVIATION_REASON.ADD', 'DEVIATION_REASON.EDIT', 'DEVIATION_REASON.DELETE']) && (
                                             <li>
                                                 <NavLink to='/deviation' onClick={() => dispatch(closeSideBar())}>
@@ -177,16 +189,7 @@ const SideBar = () => {
                                             </li>
                                         )}   
                                 
-                                        {permissionHandler(['ACCESS_PERSONNEL.ADD , ACCESS_PERSONNEL.DELETE', 'ACCESS_PERSONNEL.EDIT', 'ACCESS_POST.ADD', 'ACCESS_POST.EDIT', 'ACCESS_POST.DELETE']) && (
-                                            <li>
-                                                <NavLink to='/accessibility' onClick={() => dispatch(closeSideBar())}>
-                                                    <div className='item'>
-                                                        <img src={UserId} />
-                                                        <p>اضافه کردن دسترسی</p>
-                                                    </div>
-                                                </NavLink>
-                                            </li>
-                                        )}
+                           
                                     </AccordionDetails>
                                 </Accordion>
                             </div>

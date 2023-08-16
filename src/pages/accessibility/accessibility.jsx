@@ -168,7 +168,7 @@ const Accessibility = () => {
         { id: 2, title: 'موبایل', renderCell: item => item?.personnel?.mobile_number },
         { id: 4, title: 'نقش کاربر', renderCell: item => item?.organizational_position_info?.title },
         { id: 5, title: 'نام و نام خانوادگی', renderCell: item => item?.personnel?.fullname },
-        { id: 6, title: 'کدپرسنلی', key: 'code' },
+        { id: 6, title: 'کد تعمیرکار', key: 'code' },
         {
             id: 7,
             title: 'عملیات',
