@@ -146,7 +146,6 @@ const Deviation = () => {
                     ...pageStatus,
                     current: 1
                 });
-                console.log(1);
             })
             .catch(() => {})
             .finally(() => {

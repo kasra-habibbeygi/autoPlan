@@ -170,8 +170,8 @@ const AddPersonnel = ({ setReload, setState, editModalData, modalStatus, subModa
                     </div>
 
                     <InputComponent
-                        title='کد پرسنل'
-                        placeHolder='کد پرسنل'
+                        title='کد تعمیرکار'
+                        placeHolder='کد تعمیرکار'
                         icon={magnifier}
                         type='text'
                         detail={{

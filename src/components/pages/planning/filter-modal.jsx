@@ -66,8 +66,6 @@ const FilterModal = ({ setShowFilterModal }) => {
             .catch(() => {});
     }, []);
 
-    // console.log(personnelData);
-
     const filterFormHandler = data => {
         for (const item in data) {
             if (item === 'time') {

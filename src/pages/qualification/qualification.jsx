@@ -217,7 +217,6 @@ const Qualification = () => {
 
         Axios.get(`worker/admin/capacity-measurement/report/?${search_date}`)
             .then(res => {
-                console.log(res.data.result);
                 setReportList(res.data.result);
             })
             .catch(() => {});
@@ -311,6 +310,19 @@ const Qualification = () => {
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
                     <form onSubmit={handleSubmit(formSubmit)}>
+                        <Controller
+                            control={control}
+                            name='date'
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: 'این فیلد اجباری است'
+                                }
+                            }}
+                            render={({ field: { onChange, value } }) => {
+                                return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
+                            }}
+                        />
                         {typesList.map(item => (
                             <SelectInput
                                 key={item?.value}
