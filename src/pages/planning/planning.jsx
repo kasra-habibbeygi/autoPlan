@@ -94,6 +94,7 @@ const Planning = () => {
 
     const columns = [
         { id: 1, title: 'ردیف', key: 'index' },
+        { id: 1, title: 'تاریخ برنامه', key: 'date' },
         {
             id: 2,
             title: 'برند خودرو',
