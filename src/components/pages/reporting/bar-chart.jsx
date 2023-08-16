@@ -26,8 +26,6 @@ const ReportingBarChart = ({ detail }) => {
         }
     }, [detail]);
 
-    console.log(data);
-
     return (
         <>
             {data.length ? (

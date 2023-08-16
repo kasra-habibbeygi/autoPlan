@@ -161,6 +161,7 @@ const Time = ({
             )
                 .then(res => {
                     setStep(1);
+                    setIsModalOpen('');
                     setReload(prev => !prev);
                     setDeflection({
                         delayed_start: finalResults.start.bigger === 0 ? '00:00' : finalResults.start.bigger,
@@ -169,8 +170,6 @@ const Time = ({
                         end_with_haste: finalResults.end.lower === 0 ? '00:00' : finalResults.end.lower,
                         time_to_troubleshoot: res.data.id
                     });
-                    setIsModalOpen('');
-
                     if (
                         finalResults.end.lower !== 0 ||
                         finalResults.end.bigger !== 0 ||
@@ -190,7 +189,6 @@ const Time = ({
                     setStep(1);
                     setReload(prev => !prev);
                     setIsModalOpen('');
-
                     setDeflection({
                         delayed_start: finalResults.start.bigger === 0 ? '00:00' : finalResults.start.bigger,
                         start_with_haste: finalResults.start.lower === 0 ? '00:00' : finalResults.start.lower,
@@ -198,7 +196,6 @@ const Time = ({
                         end_with_haste: finalResults.end.lower === 0 ? '00:00' : finalResults.end.lower,
                         time_to_troubleshoot: res.data.id
                     });
-
                     if (
                         finalResults.end.lower !== 0 ||
                         finalResults.end.bigger !== 0 ||

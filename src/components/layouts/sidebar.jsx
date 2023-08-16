@@ -61,7 +61,7 @@ const SideBar = () => {
             <ul>
                 {userRole.role !== 'SuperAdmin' && (
                     <>
-                        {permissionHandler(['DASHBOARD.LIST']) && (
+                        {permissionHandler(['DASHBOARD.LIST', 'VEHICLE_SPECIFICATIONS.LIST', 'EXCEL.LIST']) && (
                             <li>
                                 <NavLink to='/dashboard' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>
@@ -70,8 +70,7 @@ const SideBar = () => {
                                     </div>
                                 </NavLink>
                             </li>
-                        )}
-             
+                        )}             
                 
                         {permissionHandler(['CAPACITY_MEASUREMENT.ADD', 'CAPACITY_MEASUREMENT.EDIT', 'CAPACITY_MEASUREMENT.DELETE']) && (
                             <li>
@@ -83,7 +82,6 @@ const SideBar = () => {
                                 </NavLink>
                             </li>
                         )}
-
 
                         {permissionHandler(['VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME', 'VEHICLE_SPECIFICATIONS.LIST']) && (
                             <li>

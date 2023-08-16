@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Grid } from '@mui/material';
 import Axios from '../../configs/axios';
+import { useSelector } from 'react-redux';
 
 //Assets
 import { HomeWrapper } from './dashboard.style';
@@ -13,7 +15,13 @@ import ReportingChart from '../../components/template/reporting-chart';
 import HomeTable from '../../components/pages/home/home-table';
 import PagesHeader from '../../components/template/pages-header';
 
+// Tools
+import PERMISSION from '../../utils/permission.ts';
+import NotAccessField from '../../components/template/not-access';
+
 const Home = () => {
+    const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
+    const userPermissions = useSelector(state => state.User.info.permission);
     const [managementList, setManagementList] = useState([]);
     const [reportingChartData, setReportingChartData] = useState();
     const [loading, setLoading] = useState({
@@ -21,42 +29,56 @@ const Home = () => {
         tableLoading: true
     });
 
-    const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
-
     useEffect(() => {
-        Axios.get('/worker/admin/vehicle-specifications/list_create/?page_size=5')
-            .then(res => {
-                setManagementList(() =>
-                    res.data.results.map(item => ({
-                        id: item?.id,
-                        car: item?.car_brand,
-                        license: `${item?.plaque_4} ${item?.plaque_3} ${item?.plaque_2} ${item?.plaque_1}`,
-                        mechanicCode: item?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname || '---',
-                        position: item?.diagnosis_info?.repairman_info?.type?.code || '---',
-                        pyramid: item?.diagnosis_info?.pyramid_number || '---'
-                    }))
-                );
-            })
-            .catch(() => {})
-            .finally(() => {
-                setLoading(prev => ({
-                    ...prev,
+        if (userPermissions.length) {
+            if (userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.LIST)) {
+                Axios.get('/worker/admin/vehicle-specifications/list_create/?page_size=5')
+                    .then(res => {
+                        setManagementList(() =>
+                            res.data.results.map(item => ({
+                                id: item?.id,
+                                car: item?.car_brand,
+                                license: `${item?.plaque_4} ${item?.plaque_3} ${item?.plaque_2} ${item?.plaque_1}`,
+                                mechanicCode: item?.diagnosis_info?.repairman_info?.user_info?.personnel?.fullname || '---',
+                                position: item?.diagnosis_info?.repairman_info?.type?.code || '---',
+                                pyramid: item?.diagnosis_info?.pyramid_number || '---'
+                            }))
+                        );
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        setLoading(prev => ({
+                            ...prev,
+                            tableLoading: false
+                        }));
+                    });
+            } else {
+                setLoading({
+                    ...loading,
                     tableLoading: false
-                }));
-            });
+                });
+            }
 
-        Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')
-            .then(res => {
-                setReportingChartData(res.data);
-            })
-            .catch(() => {})
-            .finally(() => {
-                setLoading(prev => ({
-                    ...prev,
+            if (userPermissions.includes(PERMISSION.EXCEL.LIST)) {
+                Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')
+                    .then(res => {
+                        setReportingChartData(res.data);
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        setLoading(prev => ({
+                            ...prev,
+                            reportingChartDataLoading: false
+                        }));
+                    });
+            } else {
+                setLoading({
+                    ...loading,
                     reportingChartDataLoading: false
-                }));
-            });
-    }, []);
+                });
+            }
+        }
+    }, [userPermissions]);
 
     return (
         <>
@@ -70,7 +92,9 @@ const Home = () => {
                                 buttonText='دریافت گزارش کامل دوره'
                                 link={`https://api.autoplaning.ir${reportingChartData?.link}`}
                             />
-                            {loading.reportingChartDataLoading ? (
+                            {!userPermissions.includes(PERMISSION.EXCEL.LIST) && userPermissions.length ? (
+                                <NotAccessField />
+                            ) : loading.reportingChartDataLoading ? (
                                 <div className='loading'>
                                     <CircularProgress />
                                 </div>
@@ -109,7 +133,9 @@ const Home = () => {
                     <Grid item xs={12} xl={7} top={1.5}>
                         <div className='item'>
                             <DetailBoxHeader title='مدیریت برنامه ریزی تعمیرات' buttonText='مدیریت تعمیرات' link='/planning' />
-                            {loading.tableLoading ? (
+                            {!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.LIST) && userPermissions.length ? (
+                                <NotAccessField />
+                            ) : loading.tableLoading ? (
                                 <div className='loading'>
                                     <CircularProgress />
                                 </div>

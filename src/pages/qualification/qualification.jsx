@@ -217,7 +217,6 @@ const Qualification = () => {
 
         Axios.get(`worker/admin/capacity-measurement/report/?${search_date}`)
             .then(res => {
-                console.log(res.data.result);
                 setReportList(res.data.result);
             })
             .catch(() => {});
