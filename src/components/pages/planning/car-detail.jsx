@@ -15,9 +15,13 @@ import { StepsStyle } from './steps.style';
 //Components
 import FormButton from '../../form-groups/form-button';
 import InputComponent from '../../form-groups/input-component';
+import DatePickerComponent from '../../form-groups/date-picker';
 
 // MUI
 import { Autocomplete, TextField } from '@mui/material';
+
+// Tools
+import Tools from '../../../utils/tools';
 
 const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload, setIsModalOpen }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -27,6 +31,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
 
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
+            data: '',
             car_brand: '',
             car_model: '',
             customer_name: '',
@@ -43,6 +48,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
     useEffect(() => {
         if (modalFormStatus === 'edit') {
             if (chosenEditItemDetails) {
+                setValue('date', Tools.changeDateToTimeStamp(chosenEditItemDetails?.date));
                 setValue('car_brand', chosenEditItemDetails?.car_brand);
                 setValue('car_model', chosenEditItemDetails?.car_model);
                 setValue('customer_name', chosenEditItemDetails?.customer_name);
@@ -63,7 +69,8 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
 
         const newData = {
             ...data,
-            plaque_2: data.plaque_2.label
+            plaque_2: data.plaque_2.label,
+            date: Tools.changeTimeStampToDate(data.date)
         };
 
         if (modalFormStatus === 'edit' && chosenEditItemDetails?.id) {
@@ -104,6 +111,19 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
     return (
         <StepsStyle>
             <form onSubmit={handleSubmit(formSubmit)}>
+                <Controller
+                    control={control}
+                    name='date'
+                    rules={{
+                        required: {
+                            value: true,
+                            message: 'این فیلد اجباری است'
+                        }
+                    }}
+                    render={({ field: { onChange, value } }) => {
+                        return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
+                    }}
+                />
                 <InputComponent
                     title='برند'
                     placeHolder='برند خودرو'

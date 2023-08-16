@@ -49,6 +49,10 @@ const Qualification = () => {
     const [personnelList, setPersonnelList] = useState([]);
     const [reportList, setReportList] = useState([]);
     const [dateSearch, setDateSearch] = useState('');
+    const [valueDate, setValueDate] = useState({
+        timeStamp: '',
+        date: ''
+    });
 
     const [loader, setLoader] = useState({
         table: false,
@@ -83,7 +87,7 @@ const Qualification = () => {
 
     var columns = [
         { id: 1, title: 'ردیف', key: 'index' },
-        { id: 2, title: 'تاریخ', key: 'create_at' },
+        { id: 2, title: 'تاریخ', key: 'date' },
         { id: 3, title: 'نام', key: 'name', renderCell: data => data.user_info.personnel.fullname },
         {
             id: 4,
@@ -118,9 +122,18 @@ const Qualification = () => {
         }
     ];
 
+    const onChangeDate = data => {
+        let dateFormat = tools.changeTimeStampToDate(data);
+        setValueDate({ ...valueDate, timeStamp: data });
+        setValueDate({ ...valueDate, date: dateFormat });
+    };
+
     const formSubmit = () => {
         var formData = new FormData();
-        formData.append('data', JSON.stringify(details));
+        console.log(formData);
+        const newData = { ...details, date: valueDate.date };
+        formData.append('data', JSON.stringify(newData));
+        // formData.append('date', valueDate.date);
         setLoader({
             ...loader,
             add: true
@@ -310,18 +323,11 @@ const Qualification = () => {
                 <div className='formControl'>
                     <h2>فرم ظرفیت سنجی</h2>
                     <form onSubmit={handleSubmit(formSubmit)}>
-                        <Controller
-                            control={control}
-                            name='date'
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: 'این فیلد اجباری است'
-                                }
-                            }}
-                            render={({ field: { onChange, value } }) => {
-                                return <DatePickerComponent value={value} onChange={onChange} title='انتخاب تاریخ' error={errors?.date} />;
-                            }}
+                        <DatePickerComponent
+                            value={valueDate.timeStamp}
+                            onChange={onChangeDate}
+                            title='انتخاب تاریخ'
+                            error={errors?.date}
                         />
                         {typesList.map(item => (
                             <SelectInput
