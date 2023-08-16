@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
@@ -24,6 +25,10 @@ import Modal from '../../components/template/modal';
 import FormButton from '../../components/form-groups/form-button';
 import InputComponent from '../../components/form-groups/input-component';
 import { AddAdminWrapper } from '../add-admin/add-admin.style';
+import NotAccessField from '../../components/template/not-access';
+
+// Tools
+import PERMISSION from '../../utils/permission.ts';
 
 const Setting = () => {
     const userInfo = useSelector(state => state.User.info);
@@ -75,21 +80,35 @@ const Setting = () => {
                 <Grid container spacing={1.5}>
                     <Grid item xs={12} md={6}>
                         <div className='item'>
-                            <ReceptionForm />
+                            {userInfo.permission.includes(PERMISSION.SETTING_RECEPTION.ADD) &&
+                            userInfo.permission.includes(PERMISSION.SETTING_RECEPTION.EDIT) &&
+                            userInfo.permission.includes(PERMISSION.SETTING_RECEPTION.LIST) ? (
+                                    <ReceptionForm />
+                                ) : (
+                                    <NotAccessField />
+                                )}
                         </div>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <div className='item'>
-                            <WorkTimeForm />
+                            {userInfo.permission.includes(PERMISSION.REPRESENTATION_WORKING_TIME.ADD) &&
+                            userInfo.permission.includes(PERMISSION.REPRESENTATION_WORKING_TIME.EDIT) &&
+                            userInfo.permission.includes(PERMISSION.REPRESENTATION_WORKING_TIME.LIST) ? (
+                                    <WorkTimeForm />
+                                ) : (
+                                    <NotAccessField />
+                                )}
                         </div>
                         <br />
-                        <div className='item'>
-                            <DetailBoxHeader
-                                title={`نام نمایندگی: ${userInfo.company_name}`}
-                                onClick={editModalHandler}
-                                buttonText={<img src={pen} />}
-                            />
-                        </div>
+                        {userInfo.role === 'Admin' && (
+                            <div className='item'>
+                                <DetailBoxHeader
+                                    title={`نام نمایندگی: ${userInfo.company_name}`}
+                                    onClick={editModalHandler}
+                                    buttonText={<img src={pen} />}
+                                />
+                            </div>
+                        )}
                     </Grid>
                 </Grid>
                 <Modal state={modalOpen} setState={setModalOpen} handleClose={reset} bgStatus={true}>

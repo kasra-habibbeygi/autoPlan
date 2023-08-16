@@ -86,7 +86,7 @@ const PERMISSION = {
 
     //برنامه ریزی تعمیرات
     VEHICLE_SPECIFICATIONS: {
-        ADD_EDIT_VEHICLE_DETAIILS: 35,
+        ADD_EDIT_VEHICLE_DETAILS: 35,
         ADD_EDIT_DIAGNOSIS: 36,
         ADD_EDIT_TIME: 37,
         LIST: 38,

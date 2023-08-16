@@ -59,11 +59,11 @@ const Planning = () => {
         const typeIdQuery = searchParams.get('type_id');
         const personnelIdQuery = searchParams.get('personnel_id');
 
-        // if (dateQuery || typeIdQuery || personnelIdQuery) {
         setPageStatus(prev => ({
             ...prev,
             current: 1
         }));
+
         Axios.get(`worker/admin/vehicle-specifications/list_create/?pageSize=10&page=${pageStatus.current}`, {
             params: {
                 ...(dateQuery && {
@@ -87,19 +87,6 @@ const Planning = () => {
             })
             .catch(() => {})
             .finally(() => setTableLoading(false));
-        // } else {
-        //     Axios.get(`worker/admin/vehicle-specifications/list_create/?pageSize=10&page=${pageStatus.current}`)
-        //         .then(res => {
-        //             setPlanningList(res.data.results);
-
-        //             setPageStatus({
-        //                 ...pageStatus,
-        //                 total: res.data.total
-        //             });
-        //         })
-        //         .catch(() => {})
-        //         .finally(() => setTableLoading(false));
-        // }
     }, [reload, pageStatus.current, searchParams]);
 
     const date = new Date();
@@ -314,7 +301,7 @@ const Planning = () => {
                             }}
                             disabled={
                                 isMatch ||
-                                !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS) ||
+                                !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAILS) ||
                                 !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS) ||
                                 !userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)
                             }
@@ -343,7 +330,7 @@ const Planning = () => {
                 onButtonClick={openModal}
                 hasFilter={true}
                 onFilterClick={() => setShowFilterModal(true)}
-                disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS)}
+                disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAILS)}
             />
             <Table columns={columns} rows={planningList} pageStatus={pageStatus} setPageStatus={setPageStatus} loading={tableLoading} />
             <Modal state={showFilterModal} setState={setShowFilterModal} maxWidth='sm'>
@@ -372,7 +359,6 @@ const Planning = () => {
                             setIsModalOpen={setIsModalOpen}
                         />
                     )}
-
                     {step === 2 && (
                         <Diagnosis
                             setStep={setStep}
@@ -384,7 +370,6 @@ const Planning = () => {
                             setIsModalOpen={setIsModalOpen}
                         />
                     )}
-
                     {step === 3 && (
                         <Time
                             setStep={setStep}

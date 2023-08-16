@@ -23,15 +23,15 @@ import TimePicker from '../../form-groups/time-picker';
 
 const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditItemDetails, setReload, setIsModalOpen }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
+    const addInputPartRef = useRef();
     const [loader, setLoader] = useState(false);
     const [dataLoading, setDataLoading] = useState(true);
     const [postsList, SetPostsList] = useState();
     const [partsInputValue, setPartsInputValue] = useState('');
     const [partsArray, setPartsArray] = useState([]);
 
-    const hasNextStepPermission = userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME);
-
-    const addInputPartRef = useRef();
+    const havePermission =
+        modalFormStatus === 'edit' ? userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS) : true;
 
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
@@ -120,14 +120,10 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         if (modalFormStatus === 'edit' && chosenEditItemDetails?.diagnosis_info?.id) {
             Axios.put(`/worker/admin/diagnosis/retrieve_update/?pk=${chosenEditItemDetails?.diagnosis_info?.id}`, newData)
                 .then(res => {
-                    if (hasNextStepPermission) {
-                        setStep(3);
-                        setStep2Id(res.data.id);
-                        setReload(prev => !prev);
-                    } else {
-                        setReload(prev => !prev);
-                        setIsModalOpen(false);
-                    }
+                    setReload(prev => !prev);
+                    setIsModalOpen(false);
+                    setStep(3);
+                    setStep2Id(res.data.id);
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -136,14 +132,10 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         } else {
             Axios.post('/worker/admin/diagnosis/list_create/', newData)
                 .then(res => {
-                    if (hasNextStepPermission) {
-                        setStep(3);
-                        setStep2Id(res.data.id);
-                        setReload(prev => !prev);
-                    } else {
-                        setReload(prev => !prev);
-                        setIsModalOpen(false);
-                    }
+                    setReload(prev => !prev);
+                    setIsModalOpen(false);
+                    setStep(3);
+                    setStep2Id(res.data.id);
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -156,7 +148,6 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
         if (partsInputValue.trim()) {
             setPartsArray(prev => [...prev, { id: uuidv4(), label: partsInputValue }]);
             setPartsInputValue('');
-
             addInputPartRef.current.focus();
         }
     };
@@ -175,6 +166,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                 title='نوع تعمیر'
                                 placeHolder='نوع تعمیر خودرو'
                                 type='text'
+                                disabled={!havePermission}
                                 icon={ShockAbsorber}
                                 detail={{
                                     ...register('type_of_repair', {
@@ -196,6 +188,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                         render={({ field: { onChange, value } }) => {
                                             return (
                                                 <Autocomplete
+                                                    disabled={!havePermission}
                                                     options={postsList}
                                                     value={value?.label}
                                                     onChange={(event, newValue) => {
@@ -216,6 +209,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                 placeHolder='شماره هرم'
                                 type='text'
                                 icon={UserHandUp}
+                                disabled={!havePermission}
                                 detail={{
                                     ...register('pyramid_number')
                                 }}
@@ -224,6 +218,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
 
                         <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
                             <TimePicker
+                                disabled={!havePermission}
                                 title='زمان تقریبی شروع'
                                 hourDetail={{
                                     ...register('approximate_start_time_hour', {
@@ -245,6 +240,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                             />
 
                             <TimePicker
+                                disabled={!havePermission}
                                 title='زمان تقریبی پایان'
                                 hourDetail={{
                                     ...register('approximate_end_time_hour', {
@@ -274,6 +270,7 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                                         placeholder='کد قطعه'
                                         ref={addInputPartRef}
                                         value={partsInputValue}
+                                        disabled={!havePermission}
                                         onChange={e => setPartsInputValue(e.target.value)}
                                         onKeyDown={e => {
                                             if (e.key === 'Enter') {
@@ -302,8 +299,8 @@ const Diagnosis = ({ setStep, Step1Id, setStep2Id, modalFormStatus, chosenEditIt
                     </Grid>
 
                     <FormButton
-                        text={hasNextStepPermission ? 'بعدی' : 'ثبت'}
-                        icon={hasNextStepPermission && Arrow}
+                        text='بعدی'
+                        icon={Arrow}
                         loading={loader}
                         width='fit-content'
                         className='submit'

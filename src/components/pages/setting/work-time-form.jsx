@@ -20,15 +20,13 @@ import PERMISSION from '../../../utils/permission.ts';
 const WorkTimeForm = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const dispatch = useDispatch();
-    const { register, handleSubmit, setValue, formState } = useForm({
-        mode: 'onTouched'
-    });
-
-    const { errors } = formState;
-
     const [buttonLoader, setButtonLoader] = useState(false);
     const [reload, setReload] = useState(false);
     const [getTime, setGetTime] = useState();
+    const { register, handleSubmit, setValue, formState } = useForm({
+        mode: 'onTouched'
+    });
+    const { errors } = formState;
 
     const formSubmit = data => {
         setButtonLoader(true);

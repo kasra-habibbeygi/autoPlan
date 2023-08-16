@@ -43,10 +43,10 @@ const Time = ({
 }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [dataLoading, setDataLoading] = useState(true);
-
     const [deviationList, setDeviationList] = useState([]);
     const [reasonValue, setReasonValue] = useState();
     const [submitLoading, setSubmitLoading] = useState(false);
+    const havePermission = modalFormStatus === 'edit' ? userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME) : true;
     const [exactTime, setExactTime] = useState({
         start: '',
         end: ''
@@ -284,6 +284,7 @@ const Time = ({
                             />
                             <br />
                             <TimePicker
+                                disabled={!havePermission}
                                 title='زمان واقعی شروع'
                                 hourDetail={{
                                     ...register('real_start_hour', {
@@ -329,6 +330,7 @@ const Time = ({
                             <br />
                             <TimePicker
                                 title='زمان واقعی پایان'
+                                disabled={!havePermission}
                                 hourDetail={{
                                     ...register('real_finish_hour', {
                                         required: {
@@ -419,6 +421,7 @@ const Time = ({
                                     <p className='auto_complete_title'>علت انحراف</p>
                                     <div className='auto_complete'>
                                         <Autocomplete
+                                            disabled={!havePermission}
                                             options={deviationList}
                                             value={reasonValue}
                                             getOptionLabel={option => option?.label}
@@ -439,12 +442,12 @@ const Time = ({
                         loading={submitLoading}
                         width='fit-content'
                         className='submit'
-                        backgroundColor={'#174787'}
+                        backgroundColor='#174787'
                         onClick={handleSubmitForm}
                         height='48px'
                         type='submit'
                         padding='15px'
-                        margin={'20px 0 0 0'}
+                        margin='20px 0 0 0'
                         disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)}
                     />
                 </div>
@@ -458,12 +461,12 @@ const Time = ({
                             loading={submitLoading}
                             width='fit-content'
                             className='submit'
-                            backgroundColor={'#174787'}
+                            backgroundColor='#174787'
                             onClick={handleSubmitForm}
                             height='48px'
                             type='submit'
                             padding='15px'
-                            margin={'20px 0 0 0'}
+                            margin='20px 0 0 0'
                             disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME)}
                         />
                     </>

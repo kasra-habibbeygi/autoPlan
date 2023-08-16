@@ -84,7 +84,7 @@ const SideBar = () => {
                             </li>
                         )}
 
-                        {permissionHandler(['VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME', 'VEHICLE_SPECIFICATIONS.LIST']) && (
+                        {permissionHandler(['VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAILS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS', 'VEHICLE_SPECIFICATIONS.ADD_EDIT_TIME', 'VEHICLE_SPECIFICATIONS.LIST']) && (
                             <li>
                                 <NavLink to='/planning' onClick={() => dispatch(closeSideBar())}>
                                     <div className='item'>

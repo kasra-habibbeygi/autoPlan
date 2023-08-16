@@ -10,6 +10,8 @@ export const MainField = styled.div({
     gap: '30px',
     flexDirection: 'column',
     fontSize: '1.2rem',
+    background: 'white',
+    borderRadius: '18px',
 
     img: {
         width: '100px'

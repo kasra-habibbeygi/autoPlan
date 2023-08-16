@@ -11,7 +11,6 @@ import eye from './../../assets/images/global/Eye.svg';
 import UserPlusRounded from './../../assets/images/corrective/UserPlusRounded.svg';
 import RoundGraph from './../../assets/images/corrective/RoundGraph.svg';
 import { ActionCell } from '../deviation/deviation.style';
-import PERMISSION from '../../utils/permission.ts';
 
 //Components
 import Table from '../../components/template/Table';
@@ -22,7 +21,13 @@ import { AccessibilityWrapper, ModalStyleBg } from './accessibility.style';
 import ConfirmModal from '../../components/template/confirm-modal';
 import AddPost from './../../components/pages/accessibility/add-post';
 import AddPersonnel from './../../components/pages/accessibility/add-personell';
+import NotAccessField from '../../components/template/not-access';
+
+// MUI
 import { Tab, Tabs } from '@mui/material';
+
+// Tools
+import PERMISSION from '../../utils/permission.ts';
 
 const Accessibility = () => {
     const userPermissions = useSelector(state => state.User.info.permission);
@@ -240,23 +245,31 @@ const Accessibility = () => {
 
             {tabValue === 0 ? (
                 <div className='table_wrapper'>
-                    <Table
-                        columns={columnsPosts}
-                        rows={accessbitilityPost}
-                        pageStatus={pageStatus}
-                        setPageStatus={setPageStatus}
-                        loading={loader}
-                    />
+                    {userPermissions.includes(PERMISSION.ACCESS_POST.LIST) ? (
+                        <Table
+                            columns={columnsPosts}
+                            rows={accessbitilityPost}
+                            pageStatus={pageStatus}
+                            setPageStatus={setPageStatus}
+                            loading={loader}
+                        />
+                    ) : (
+                        <NotAccessField />
+                    )}
                 </div>
             ) : (
                 <div className='table_wrapper'>
-                    <Table
-                        columns={columnsPersonnel}
-                        rows={accessbitilityPersonel}
-                        pageStatus={pageStatus}
-                        setPageStatus={setPageStatus}
-                        loading={loaderTable}
-                    />
+                    {userPermissions.includes(PERMISSION.ACCESS_PERSONNEL.LIST) ? (
+                        <Table
+                            columns={columnsPersonnel}
+                            rows={accessbitilityPersonel}
+                            pageStatus={pageStatus}
+                            setPageStatus={setPageStatus}
+                            loading={loaderTable}
+                        />
+                    ) : (
+                        <NotAccessField />
+                    )}
                 </div>
             )}
 

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Axios from '../../../configs/axios';
-import PERMISSION from '../../../utils/permission.ts';
 import { useSelector } from 'react-redux';
 
 //Assets
@@ -19,11 +18,14 @@ import InputComponent from '../../form-groups/input-component';
 // MUI
 import { Autocomplete, TextField } from '@mui/material';
 
-const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload, setIsModalOpen }) => {
+// Tools
+import PERMISSION from '../../../utils/permission.ts';
+
+const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails, setReload }) => {
     const userPermissions = useSelector(state => state.User.info.permission);
     const [loader, setLoader] = useState(false);
-
-    const hasNextStepPermission = userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_DIAGNOSIS);
+    const havePermission =
+        modalFormStatus === 'edit' ? userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAILS) : true;
 
     const { register, handleSubmit, formState, control, setValue } = useForm({
         defaultValues: {
@@ -69,14 +71,9 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         if (modalFormStatus === 'edit' && chosenEditItemDetails?.id) {
             Axios.put(`/worker/admin/vehicle-specifications/retrieve_update/?pk=${chosenEditItemDetails?.id}`, newData)
                 .then(res => {
-                    if (hasNextStepPermission) {
-                        setStep(2);
-                        setStep1Id(res.data.id);
-                        setReload(prev => !prev);
-                    } else {
-                        setReload(prev => !prev);
-                        setIsModalOpen(false);
-                    }
+                    setReload(prev => !prev);
+                    setStep(2);
+                    setStep1Id(res.data.id);
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -85,14 +82,9 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
         } else {
             Axios.post('/worker/admin/vehicle-specifications/list_create/', newData)
                 .then(res => {
-                    if (hasNextStepPermission) {
-                        setStep(2);
-                        setStep1Id(res.data.id);
-                        setReload(prev => !prev);
-                    } else {
-                        setReload(prev => !prev);
-                        setIsModalOpen(false);
-                    }
+                    setReload(prev => !prev);
+                    setStep(2);
+                    setStep1Id(res.data.id);
                 })
                 .catch(() => {})
                 .finally(() => {
@@ -109,6 +101,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                     placeHolder='برند خودرو'
                     type='text'
                     icon={Bus}
+                    disabled={!havePermission}
                     detail={{
                         ...register('car_brand', {
                             required: {
@@ -124,6 +117,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                     placeHolder='مدل خودرو'
                     type='text'
                     icon={Bus}
+                    disabled={!havePermission}
                     detail={{
                         ...register('car_model', {
                             required: {
@@ -139,6 +133,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                     placeHolder='نام آورنده خودرو'
                     type='text'
                     icon={Bus}
+                    disabled={!havePermission}
                     detail={{
                         ...register('customer_name', {
                             required: {
@@ -154,6 +149,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                     placeHolder='09----------'
                     type='tel'
                     icon={PhoneIcon}
+                    disabled={!havePermission}
                     detail={{
                         ...register('customer_mobile_number', {
                             required: {
@@ -181,6 +177,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                             placeHolder='--'
                             type='tel'
                             className='Plaque_inputs'
+                            disabled={!havePermission}
                             detail={{
                                 ...register('plaque_4', {
                                     required: true
@@ -193,6 +190,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                             maxLength={3}
                             type='tel'
                             className='Plaque_inputs'
+                            disabled={!havePermission}
                             detail={{
                                 ...register('plaque_3', {
                                     required: true
@@ -208,6 +206,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                                 render={({ field: { onChange, value } }) => {
                                     return (
                                         <Autocomplete
+                                            disabled={!havePermission}
                                             options={Alphabet}
                                             value={value}
                                             defaultValue={Alphabet}
@@ -228,6 +227,7 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                             placeHolder='--'
                             maxLength={2}
                             type='tel'
+                            disabled={!havePermission}
                             className='Plaque_inputs'
                             detail={{
                                 ...register('plaque_1', {
@@ -245,14 +245,14 @@ const CarDetail = ({ setStep, setStep1Id, modalFormStatus, chosenEditItemDetails
                 </div>
                 <div className='button_box'>
                     <FormButton
-                        text={hasNextStepPermission ? 'بعدی' : 'ثبت'}
-                        icon={hasNextStepPermission && Arrow}
+                        text='بعدی'
+                        icon={Arrow}
                         loading={loader}
                         className='login'
                         backgroundColor={'#174787'}
                         height='48px'
                         type='submit'
-                        disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAIILS)}
+                        disabled={!userPermissions.includes(PERMISSION.VEHICLE_SPECIFICATIONS.ADD_EDIT_VEHICLE_DETAILS)}
                     />
                 </div>
             </form>
