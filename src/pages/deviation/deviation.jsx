@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import Axios from '../../configs/axios';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 
 //Assets
 import trashBin from './../../assets/images/global/TrashBin.svg';
 import pen from './../../assets/images/global/pen.svg';
-import enheraf from '../../assets/images/global/BlackHole.svg';
+import BlackHole from '../../assets/images/global/BlackHole.svg';
 import { ActionCell } from './deviation.style';
 
 //Components
@@ -168,7 +168,7 @@ const Deviation = () => {
                         title='علت انحراف'
                         placeHolder='علت انحراف خود را وارد کنید'
                         type='text'
-                        icon={enheraf}
+                        icon={BlackHole}
                         detail={{
                             ...register('reason', {
                                 required: {
@@ -182,8 +182,8 @@ const Deviation = () => {
                     <FormButton
                         text='ثبت'
                         type='submit'
-                        backgroundColor={'#174787'}
-                        color={'white'}
+                        backgroundColor='#174787'
+                        color='white'
                         height={48}
                         loading={buttonLoader.modalButton}
                     />

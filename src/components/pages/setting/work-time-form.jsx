@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 //Assets
 import { FormWrapper } from './work-time-form.style';
 import brokenArrow from './../../../assets/images/global/brokenArrow.svg';
-import PERMISSION from '../../../utils/permission.ts';
 
 //Components
 import FormButton from '../../form-groups/form-button';
 import TimePicker from '../../form-groups/time-picker';
+
+//Tools
+import PERMISSION from '../../../utils/permission.ts';
 
 const WorkTimeForm = () => {
     const userPermissions = useSelector(state => state.User.info.permission);

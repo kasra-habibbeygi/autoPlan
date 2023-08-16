@@ -16,6 +16,8 @@ import BarChartCustom from '../../components/pages/reporting/bar-chart-custom';
 import TimeBaseForm from '../../components/pages/reporting/time-base-form';
 
 const Reporting = () => {
+    const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
+    const colorsDeficiency = ['#ad9bfd', '#f8c75b', '#8bf795', '#e8f6fd'];
     const [chosenPeriod, setChosenPeriod] = useState(3);
     const [reportingChartData, setReportingChartData] = useState();
     const [deviationInOneMonth, setDeviationInOneMonth] = useState();
@@ -27,9 +29,6 @@ const Reporting = () => {
         deviationInMultiMonthsLoading: true,
         deviationInSixMonthsLoading: true
     });
-
-    const colorsReporting = ['#1c1c1c', '#baedbd', '#c6c7f8', '#95a4fc'];
-    const colorsDeficiency = ['#ad9bfd', '#f8c75b', '#8bf795', '#e8f6fd'];
 
     useEffect(() => {
         Axios.get('https://api.autoplaning.ir/api/acceptance-report-in-one-month/')

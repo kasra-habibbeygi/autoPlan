@@ -117,8 +117,6 @@ const Equipment = () => {
             date: Tools.changeTimeStampToDate(data.date)
         };
 
-        console.log(newData);
-
         if (modalStatus === 'add') {
             Axios.post('worker/admin/equipment-deficit/list_create/', newData)
                 .then(() => {
@@ -195,7 +193,6 @@ const Equipment = () => {
                 }}
             >
                 <h2> کسری تجهیزات </h2>
-
                 <form onSubmit={handleSubmit(formSubmit)}>
                     <Controller
                         control={control}

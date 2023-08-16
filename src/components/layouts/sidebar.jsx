@@ -22,13 +22,14 @@ import user from './../../assets/images/icons/User.svg';
 import { SidebarStyle } from './sidebar.style';
 import Accumulator from './../../assets/images/icons/Accumulator.svg';
 
-
 //Components
 import FormButton from '../form-groups/form-button';
 import ConfirmModal from '../template/confirm-modal';
 
 // Tools
 import PERMISSION from '../../utils/permission.ts';
+
+// MUI
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 
 const SideBar = () => {

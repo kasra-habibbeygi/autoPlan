@@ -69,6 +69,10 @@ export const SidebarStyle = styled.div(props => ({
         '& .arrow_icon': {
             width: '15px',
             height: '15px'
+        },
+
+        li: {
+            marginTop: '10px'
         }
     }
 }));
